@@ -1,0 +1,216 @@
+.twitter-profile-analytics {
+    border: 1px solid #eee;
+    border-radius: 4px;
+    margin-bottom:30px;
+}
+.border-bottom {
+    border-bottom: 1px solid #eee;
+}
+.border-right {
+    border-right: 1px solid #eee;
+}
+.tw-img-followers {
+    padding: 10px 0;
+}
+.twitter-profile-img{
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border-radius: 50%;
+    float: left;
+}
+.platform-profile {
+    width: 14px;
+    position: absolute;
+    bottom: 0;
+    left: 45px;
+    z-index: 1;
+}
+.analytics-filter-li {
+    display: inline;
+    padding-right:20px;
+}
+.analytics-filter-li a{
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: underline;
+}
+.analytics-header {
+    padding-left: 20px;
+    font-size: 20px;
+    color: #666;
+    line-height: 2;
+}
+.analytics-head {
+    border: 1px solid #3333;
+    padding: 8px;
+    height: 65px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.overview-cards-container {
+    margin-top:20px;
+}
+.overview-card {
+    padding: 10px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(47,53,56,.25);
+    box-shadow: 0 2px 4px 0 rgba(47,53,56,.25);
+}
+.card-img {
+    width: 20px;
+    height: 20px;
+}
+.card-analytics-body {
+    text-align: center;
+    overflow: hidden;
+    min-height: 310px;
+    padding-top: 65px;
+}
+.card-number {
+    color: #46a5d1;
+    font-size: 70px;
+    font-weight: 700;
+    height:100px;
+}
+.card-description {
+    font-size: 24px;
+}
+.card-footer {
+    text-align: center;
+}
+.card-header {
+    font-size: 20px;
+    padding-bottom: 30px;
+}
+.card-header i {
+    float: right;
+    cursor: pointer;
+    margin-top: 5px;
+}
+.mb20 {
+    margin-bottom: 20px;
+}
+.analytics-card {
+    min-height: 400px;
+    max-height: 400px;
+}
+.anl-desc{
+    float: left;
+}
+.anl-count {
+    float: right;
+    background: rgb(63, 92, 125);
+    border-radius: 4px;
+    padding: 2px 8px;
+    color: #fff;
+    line-height: 1;
+    font-weight: 600;
+    font-size: 1.6em;
+}
+.anl-post-page {
+    padding-top:140px;
+}
+.eng-card-section {
+    overflow:hidden;
+    padding: 35px 0;
+}
+.eng-card-section-middle {
+    border-top: 1px solid #dedfe0;
+    border-bottom: 1px solid #dedfe0;
+}
+.anl-posts-table {
+    width:100%;
+    font-size: 12px;
+}
+.anl-posts-table thead tr {
+    display: inline-table;
+    width:100%;
+}
+.anl-posts-table-th-first {
+    width:15%;
+}
+.anl-posts-table-th-second {
+    width:65%;
+}
+.pt-page-img {
+    width: 50px;
+    border-radius: 50%;
+}
+.post-table-images {
+    width: 30%;
+    float: left;
+    position: relative;
+}
+.pt-page-facebook {
+    width: 15px;
+    position: absolute;
+    bottom: 0;
+    left: 33px;
+    z-index: 1;
+}
+.post-table-page-date {
+    width: 70%;
+    float: right;
+    padding-left:20px;
+}
+.post-table-page-date p {
+    margin:0;
+    padding:0;
+}
+.pt-post-date {
+    color: #46a5d1;
+    font-size: 10px;
+}
+.pt-page-name {
+    font-size: 13px;
+}
+.analytics-head-left {
+    flex: 1;
+    font-size: 18px;
+    padding: 11px;
+    font-weight: bold;
+}
+.streams-default-container {
+    flex: 1;
+}
+.analytics-head-right {
+    flex: 1;
+    text-align: right;
+}
+.account-selection .profile-info img {
+    width: 40px !important;
+    height: 40px !important;
+}
+.table-loader-style {
+    text-align: center;
+}
+.anl-posts-table thead {
+    display: table-caption;
+}
+.anl-posts-table tbody {
+    height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: contents!important;
+}
+.MuiTooltip-tooltip-3 {
+    font-size: 1.5rem!important;
+}
+.text-center {
+    text-align: center;
+}
+.table-scrollbar {
+    position: relative;
+    max-height: 500px;
+    height: auto;
+    overflow: auto;
+}
+.table-wrapper-scroll-y {
+    display: block;
+}
+.anl-tooltip {
+    padding:10px;
+    font-size:13px;
+}

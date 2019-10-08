@@ -1,0 +1,31 @@
+.img-uploader input {
+  visibility: hidden;
+}
+
+/** Style for image uplaod */
+.img-upload-click {
+  width: 200px;
+  height: 200px;
+  border: 1px solid #dbdbdb;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.img-upload-click:hover {
+  background-color: #ece8e8;
+}
+
+.img-upload-click i {
+  line-height: 3.4;
+}
+
+.img-upload-click img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+.posts-lists li{
+  margin-bottom: 20px;
+}
