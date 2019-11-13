@@ -24,7 +24,7 @@ const menuItems = [
 ];
 
 const Scheduled = ({channels, selectedChannel, selectChannel}) => (
-    <div>
+    <div className="body-wrap">
         <VerticalMenu 
             menuItems={menuItems} 
             channels={channels} 

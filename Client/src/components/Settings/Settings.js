@@ -21,7 +21,7 @@ const menuItems = [
 ];
 
 const Settings = () => (
-    <div>
+    <div className="body-wrap">
         <VerticalSettingsMenu 
             menuItems={menuItems} 
             />

@@ -75,7 +75,7 @@ class TwitterReplies extends React.Component{
         const {replies, loading, items} = this.state;
 
         return (
-            <div>            
+            <div className="body-wrap">            
                 <div className="t-reply-container">
                     <div className="t-reply-heading">
                         <h3>Twitter {keyword ? keyword + ' results' : 'Replies'}</h3>

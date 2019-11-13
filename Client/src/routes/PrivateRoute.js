@@ -27,7 +27,7 @@ export const PrivateRoute = ({
             </div>
             :
             <div>
-                <BrowserView>
+                <BrowserView  viewClassName="app-wrap">
                     <TopMenu />
                     <Component {...props} />
                     <Composer />

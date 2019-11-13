@@ -19,11 +19,11 @@ const TopMenu = ({ setComposerModal, logout, profile, props }) => (
                     <NavLink to="/scheduled" activeClassName="active" className="first-nav-item">Social media manager</NavLink>
                 </li>
 
-                <li><NavLink to="/scheduled" activeClassName="active">PUBLISH</NavLink></li>
+                {/* <li><NavLink to="/scheduled" activeClassName="active">PUBLISH</NavLink></li> */}
                 <li><NavLink to="/streams" activeClassName="active">STREAMS</NavLink></li>
                 <li><NavLink to="/content-finder" activeClassName="active">CONTENT FINDER</NavLink></li>
                 <li><NavLink to="/analytics" activeClassName="active">ANALYTICS</NavLink></li>
-                <li><NavLink to="/twitter-booster" activeClassName="active">TWITTER BOOSTER</NavLink></li>
+                {/* <li><NavLink to="/twitter-booster" activeClassName="active">TWITTER BOOSTER</NavLink></li> */}
                 <li><NavLink to="/accounts" activeClassName="active">ACCOUNTS</NavLink></li>
             </ul>
             <div className="right-top-nav">
@@ -49,14 +49,14 @@ const TopMenu = ({ setComposerModal, logout, profile, props }) => (
             </div>
         </div>
         {!!profile.subscription ?
-            (profile.subscription.activeSubscription ?
-                <div className="top-alert"><span>You have {profile.role.trial_days} days remaining on your Twitter Booster trial.</span>
-                    Add your billing information now to start your subscription.
-         <button className="btn-text-pink" onClick={() => props.history.push('/twitter-booster/manage-accounts')}>Start subscription</button>
-                </div>
-                : ""
-            ) : ""
-        }
+           (!profile.subscription.activeSubscription ?
+               <div className="top-alert"><span>You have {profile.role.trial_days} days remaining on your Twitter Booster trial.</span>
+                   Add your billing information now to start your subscription.
+        <button className="btn-text-pink" onClick={() => props.history.push('/twitter-booster/manage-accounts')}>Start subscription</button>
+               </div>
+               : ""
+           ) : ""
+       }
     </div>
 );
 
