@@ -733,7 +733,7 @@ a:link {
 
 .support {
     position: absolute;
-    bottom: 120px;
+    bottom: 0px;
     width: 100%;
     // background: linear-gradient(to right, #48BBB8, #438AF1);
     background: white;
@@ -1833,6 +1833,16 @@ button.streammaker-btn:hover {
 
 .profile-form .form-field {
     margin-bottom: 20px;
+}
+.top-menu li a {
+    float: left;
+    margin: 2.5rem 0 0 5.5rem;
+    font-size: 1.6rem;
+    font-weight: normal;
+    padding-bottom: 32px;
+    color: #363636;
+    text-decoration: none;
+    text-transform: capitalize;
 }
 
 .top-menu li a:hover::after,
@@ -4650,3 +4660,24 @@ table.compare-plans-table {
     margin-bottom: 1.1rem;
     color: $primary_black;
 }
+.tab-list {
+    border-bottom: 1px solid #ccc;
+    padding-left: 0;
+  }
+  .tab-list-item {
+    display: inline-block;
+    list-style: none;
+    margin-bottom: -1px;
+    padding: 0.5rem 1.75rem;
+    cursor: pointer;
+    line-height: 13px;
+    text-align: center;
+    letter-spacing: 0.129174px;
+    color: $primary_black;
+    font-family: Rubik;
+    font-style: normal;
+  }
+  .tab-list-active {
+    border-bottom: 3px solid #2D86DA;
+    font-weight: 500;
+  }

@@ -10,21 +10,14 @@ const TopMenu = ({ setComposerModal, logout, profile, props }) => (
     <div className="navbar-wrap">
         <div className="navbar-uniclix">
             <a href={backendUrl} className="brand"><img src="/images/uniclix.png" /></a>
-
             <ul className="top-menu">
                 <li>
-                    <a href="https://twitter.uniclixapp.com/" target="_blank" className="first-nav-item">Twitter Booster</a>
+                <NavLink to="/scheduled" activeClassName="active" className="first-nav-item">Social media manager</NavLink>
+
                 </li>
                 <li>
-                    <NavLink to="/scheduled" activeClassName="active" className="first-nav-item">Social media manager</NavLink>
+                <a href="https://twitter.uniclixapp.com/" target="_blank" activeClassName="active">Twitter Booster</a>
                 </li>
-
-                {/* <li><NavLink to="/scheduled" activeClassName="active">PUBLISH</NavLink></li> */}
-                <li><NavLink to="/streams" activeClassName="active">STREAMS</NavLink></li>
-                <li><NavLink to="/content-finder" activeClassName="active">CONTENT FINDER</NavLink></li>
-                <li><NavLink to="/analytics" activeClassName="active">ANALYTICS</NavLink></li>
-                {/* <li><NavLink to="/twitter-booster" activeClassName="active">TWITTER BOOSTER</NavLink></li> */}
-                <li><NavLink to="/accounts" activeClassName="active">ACCOUNTS</NavLink></li>
             </ul>
             <div className="right-top-nav">
                 <div className="current-profile">
