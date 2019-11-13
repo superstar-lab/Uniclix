@@ -63,8 +63,11 @@
     height: 20px;
 }
 .card-analytics-body {
+    text-align: center;
+    overflow: hidden;
+    min-height: 310px;
+    padding-top: 65px;
 }
-
 .card-number {
     color: #46a5d1;
     font-size: 70px;
@@ -77,35 +80,22 @@
 .card-footer {
     text-align: center;
 }
-
 .card-header {
+    font-size: 20px;
+    padding-bottom: 30px;
 }
-
 .card-header i {
+    float: right;
+    cursor: pointer;
+    margin-top: 5px;
 }
-
 .mb20 {
     margin-bottom: 20px;
 }
 .analytics-card {
-    padding: 20px;
-    background: #FFFFFF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
-    border-radius: 6px;
+    min-height: 400px;
+    max-height: 400px;
 }
-
-.analytics-description{
-    clear: both;
-    padding-top:10px;
-    color: #363636;
-    text-align:center;
-}
-
-.analytics-description span{
-    font-weight:bold;
-    color: #D83E7F;
-}
-
 .anl-desc{
     float: left;
 }

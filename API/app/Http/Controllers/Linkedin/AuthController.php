@@ -36,7 +36,7 @@ class AuthController extends Controller
             
             return redirect("$clientUrl/redirect?accessToken=$token");
         }catch(\Exception $e){
-            return response()->json(["error" => "Something went wrong"], 400);
+            return response()->json(["error" => "Something went wrongssss"], 400);
         }
 
 

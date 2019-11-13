@@ -190,7 +190,7 @@ class Linkedin extends React.Component {
                                 clientId={linkedinAppId}
                                 redirectUri={`${apiUrl}/linkedin/callback`}
                                 onSuccess={this.onSuccess} 
-                                onError={() => console.log("something wrong.")}
+                                onError={(e) => console.log("something wrong.", e)}
                                 cssClass="add-channel-plus-btn"
                                 icon={<i className="fa fa-plus"></i>}
                                 />

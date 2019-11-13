@@ -1,0 +1,46 @@
+.navbar-wrap {
+    position: relative;
+}
+
+.app-wrap {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100vh;
+
+    .navbar-wrap {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .body-wrap {
+        display: flex;
+        flex-direction: row;
+        overflow: hidden;
+        flex: 1;
+
+        &>div {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            max-height: 100%;
+
+        }
+
+        .vertical-menu {
+            min-height: 400px;
+        }
+
+        .body-container {
+            padding: 0 90px 30px 90px;
+            margin-left: 20px;
+            flex: 1;
+            overflow: auto;
+            max-height: 100%;
+
+            .main-section {
+                padding: 30px 0 10px 0;
+            }
+        }
+    }
+}
