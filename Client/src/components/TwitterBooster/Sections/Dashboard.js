@@ -7,7 +7,6 @@ import 'react-dates/initialize';
 import TwitterOverviewCard from '../../Analytics/Twitter/Cards/TwitterOverviewCard';
 import TweetsTable from '../../Analytics/Twitter/Cards/TweetsTable';
 import Tabs from '../../Tabs';
-// require('./styles.css');
 
 class Dashboard extends React.Component {
 

@@ -8,7 +8,7 @@ const MenuItems = [
     {   
         id: "twitter-booster_monitor_activity",
         displayName: "Monitor Activity",
-        uri: "/twitter-booster/following",
+        uri: "/twitter-booster/monitor-activity",
         icon: "desktop"
     },
     {   

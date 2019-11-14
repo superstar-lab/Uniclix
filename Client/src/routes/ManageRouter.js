@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import Dashboard from '../components/TwitterBooster/Sections/Dashboard';
+import MonitorActivity from '../components/TwitterBooster/Sections/MonitorActivity';
 import AccountTargets from '../components/TwitterBooster/Sections/AccountTargets';
 import KeywordTargets from '../components/TwitterBooster/Sections/KeywordTargets';
 import Fans from '../components/TwitterBooster/Sections/Fans';
@@ -17,6 +18,7 @@ const ManageRouter = () => (
         <Switch>
             <Route exact path={`/twitter-booster`} render={() => <Redirect to="/twitter-booster/dashboard"/>} />
             <Route path={`/twitter-booster/dashboard`} component={Dashboard} />
+            <Route path={`/twitter-booster/monitor-activity`} component={MonitorActivity} />
             <Route path={`/twitter-booster/account-targets`} component={AccountTargets} />
             <Route path={`/twitter-booster/keyword-targets`} component={KeywordTargets} />
             <Route path={`/twitter-booster/fans`} component={Fans} />
