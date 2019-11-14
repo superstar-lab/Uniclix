@@ -20,7 +20,7 @@ export const PrivateRoute = ({
     ...rest}) => (
     <Route {...rest} component={(props) => (
         isAuthenticated ? 
-        (   (!!middleware)
+        (   (!!true)
             ? 
             <div>
                 <Middleware />
