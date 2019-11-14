@@ -17,7 +17,8 @@ const VerticalSettingsMenu = ({ menuItems, logout }) => {
 const MenuItems = ({ menuItems }) => (
     <ul className="v-menu-links clear-both">
         {menuItems.map((item) => (
-            <li key={item.id}><NavLink className="links" to={item.uri}>{item.displayName}</NavLink></li>
+            <li key={item.id}><NavLink className="links" to={item.uri}><i className={`fa fa-${item.icon}`}></i> <span>{item.displayName}</span></NavLink></li>
+            
         ))}
     </ul>
 );
