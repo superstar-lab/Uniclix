@@ -20,7 +20,8 @@
         flex: 1;
 
         &>div {
-            width: 100%;
+            // width: 100%;
+            width: auto;
             display: flex;
             justify-content: space-between;
             max-height: 100%;
