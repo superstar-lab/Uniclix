@@ -47,7 +47,7 @@ class Dashboard extends React.Component {
 
         return (
             <div>
-                <div className="section-header no-border">
+                <div className="section-header no-border mb-40">
                     <div className="section-header__first-row">
                         <h2>Posts</h2>
                     </div>
