@@ -2172,13 +2172,14 @@ button.streammaker-btn:hover {
     background: url(/images/user-plus-regular.svg);
 }
 
-.item-row:hover .profile-info .stats-info {
-    display: none;
-}
+// .item-row:hover .profile-info .stats-info {
+//     display: none;
+// }
 
-.item-row:hover .profile-info .item-actions {
+.item-row .profile-info .item-actions {
     display: block;
 }
+
 
 .item-row .user-action {
     width: 30px;
@@ -2778,7 +2779,8 @@ button.streammaker-btn:hover {
     font-size: 1.1em;
     color: #485576;
     cursor: pointer;
-    padding: 10px;
+    margin: 0px 15px 0px 0px;
+    // padding: 10px;
 }
 
 .btn-links>.fa-ellipsis-v:hover {
@@ -4688,4 +4690,7 @@ table.compare-plans-table {
   .tab-list-active {
     border-bottom: 3px solid #2D86DA;
     font-weight: 500;
+  }
+  .text-btn {
+    display: inline-block;
   }
