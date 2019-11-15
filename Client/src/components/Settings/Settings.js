@@ -13,19 +13,19 @@ const menuItems = [
         id: "team",
         displayName: "Team",
         uri: "/settings/team",
-        icon: "user"
+        icon: "users"
     },
     {
         id: "billing",
         displayName: "Manage Account",
         uri: "/settings/billing",
-        icon: "user"
+        icon: "user-cog"
     },
     {
         id: "billing",
         displayName: "Billing",
         uri: "/settings/billing",
-        icon: "user"
+        icon: "money-bill-alt"
     }
 ];
 
