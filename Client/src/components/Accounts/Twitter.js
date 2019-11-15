@@ -89,7 +89,7 @@ class Twitter extends React.Component {
 
     render(){
         return (
-            <div className="accounts-container">
+            <div className="">
             <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden}/>
                 <SweetAlert
                     show={!!this.state.action.id}
@@ -121,18 +121,10 @@ class Twitter extends React.Component {
                     }}
                 />
 
-                <h2>HAVE TWITTER ACCOUNTS?</h2>
-                <p>Connect them all, and we'll help you get the right audience.</p>
-                
-                <div className="flex_container-center">
-                    <div className="accounts-container__logo col-md-1">
-                        <div>
-                            <i className="fa fa-twitter"></i>
-                        </div>
-                    </div>
-                    <div className="accounts-container__content col-md-10">
-                        <div className="accounts-container__content__wrapper">
-                            <div className="accounts-container__content__wrapper__heading">
+                <div className="">
+                    <div className="accounts-container__content col-md-7">
+                        <div className="">
+                            <div className="">
                                 <h2>Let's grow your audience using Twitter!</h2>
                             </div> 
                             
@@ -140,7 +132,7 @@ class Twitter extends React.Component {
                             {!!this.props.loading && <Loader />}
                         </div> 
             
-                        <div className="accounts-container__content__wrapper__footer">
+                        <div className="">
                             <TwitterLogin loginUrl={twitterAccessTokenUrl}
                                         onFailure={this.onFailure} onSuccess={this.onSuccess}
                                         requestTokenUrl={twitterRequestTokenUrl}
@@ -152,6 +144,7 @@ class Twitter extends React.Component {
                             <span className="left-side-label">Have an account? Let's connect!</span>
                         </div> 
                     </div>
+                    <div className="col-md-5 middleware-side"></div>
                 </div>
               
             </div>
