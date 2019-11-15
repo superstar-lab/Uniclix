@@ -124,17 +124,10 @@ class Facebook extends React.Component {
         });
     }
 
-    render(){
+    render() {
         return (
-            <div className="accounts-container">
-                <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden}/>
-                <SelectAccountsModal 
-                    isOpen={this.state.accountsModal} 
-                    accounts={this.state.accounts}
-                    onSave={this.onSave}
-                    error={this.state.error}
-                />
-
+            <div className="">
+                <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden} />
                 <SweetAlert
                     show={!!this.state.action.id}
                     title={`Do you wish to ${this.state.action.type} this item?`}
@@ -144,12 +137,12 @@ class Facebook extends React.Component {
                     confirmButtonText="Yes"
                     cancelButtonText="No"
                     onConfirm={() => {
-                        if(this.state.action.type === 'delete'){
+                        if (this.state.action.type === 'delete') {
                             this.remove(this.state.action.id);
-                        }else{
+                        } else {
                             console.log('something went wrong');
                         }
-                       // this.setAction();
+                        //this.setAction();
                     }}
                 />
 
@@ -165,26 +158,20 @@ class Facebook extends React.Component {
                     }}
                 />
 
-                <h2>HAVE FACEBOOK ACCOUNTS?</h2>
-                <p>Connect them all, and we'll help you get the right audience.</p>
-                
-                <div className="flex_container-center">
-                    <div className="accounts-container__logo facebook_color col-md-1">
-                        <div>
-                            <i className="fa fa-facebook"></i>
-                        </div>
-                    </div>
-                    <div className="accounts-container__content col-md-10">
-                        <div className="accounts-container__content__wrapper">
-                            <div className="accounts-container__content__wrapper__heading">
-                                <h2>Let's grow your audience using Facebook!</h2>
-                            </div> 
-                            
-                            <ChannelItems channels={this.props.channels} setAction={this.setAction} /> 
-                            {!!this.props.loading && <Loader />}
-                        </div> 
-            
-                        <div className="accounts-container__content__wrapper__footer">
+                <div className="">
+                    <div className="col-xs-7 text-center">
+                    <div class="col-xs-12 text-center">
+                            <div className="">
+                                <div className="">
+                                    <h2>Connect your Facebook account</h2>
+                                    <p>Cats woo destroy the blinds. Eat an easter feather as if it were a bird then burp victoriously</p>
+                                </div>
+
+                                <ChannelItems channels={this.props.channels} setAction={this.setAction} />
+                                {!!this.props.loading && <Loader />}
+                            </div>
+
+                            <div className="">
                             <FacebookButton
                                 appId={facebookAppId}
                                 onSuccess={this.onSuccess}
@@ -193,9 +180,11 @@ class Facebook extends React.Component {
                                 textButton="" />
                             <span className="left-side-label">Have an account? Let's connect!</span>
                         </div> 
+                        </div>
                     </div>
+                    <div className="col-md-5 middleware-side"></div>
                 </div>
-              
+
             </div>
         );
     };

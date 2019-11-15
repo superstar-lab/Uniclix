@@ -1,12 +1,12 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import TwitterLogin from 'react-twitter-auth';
 import SweetAlert from "sweetalert2-react";
-import {twitterRequestTokenUrl, twitterAccessTokenUrl} from "../../config/api";
-import {startAddTwitterChannel, startSetChannels} from "../../actions/channels";
+import { twitterRequestTokenUrl, twitterAccessTokenUrl } from "../../config/api";
+import { startAddTwitterChannel, startSetChannels } from "../../actions/channels";
 import channelSelector from "../../selectors/channels";
-import {destroyChannel} from "../../requests/channels";
-import {logout} from "../../actions/auth";
+import { destroyChannel } from "../../requests/channels";
+import { logout } from "../../actions/auth";
 import Loader from "../../components/Loader";
 import ChannelItems from "./ChannelItems";
 import UpgradeAlert from "../UpgradeAlert";
@@ -52,45 +52,45 @@ class Twitter extends React.Component {
     onSuccess = (response) => {
         response.json().then(body => {
             this.props.startAddTwitterChannel(body.oauth_token, body.oauth_token_secret)
-            .catch(error => {
-                if(error.response.status === 403){
-                    this.setForbidden(true);
-                    return;
-                }
+                .catch(error => {
+                    if (error.response.status === 403) {
+                        this.setForbidden(true);
+                        return;
+                    }
 
-                if(error.response.status === 409){
-                    this.setError("This twitter account is already registered from another uniclix account.");
-                }
-                else{
-                    this.setError("Something went wrong!");
-                }
-            });
+                    if (error.response.status === 409) {
+                        this.setError("This twitter account is already registered from another uniclix account.");
+                    }
+                    else {
+                        this.setError("Something went wrong!");
+                    }
+                });
         });
     };
 
     remove = (id) => {
         return destroyChannel(id)
-        .then((response) => {
-            this.props.startSetChannels()
             .then((response) => {
-                // if(response.length < 1){
-                //     this.props.logout();
-                // }
+                this.props.startSetChannels()
+                    .then((response) => {
+                        // if(response.length < 1){
+                        //     this.props.logout();
+                        // }
+                    });
+            }).catch((e) => {
+                if (typeof e.response !== "undefined" && typeof e.response.data.error !== "undefined") {
+                    this.setState(() => ({
+                        error: e.response.data.error
+                    }));
+                    return;
+                }
             });
-        }).catch((e) => {
-            if(typeof e.response !== "undefined" && typeof e.response.data.error !== "undefined"){
-                this.setState(() => ({
-                    error: e.response.data.error
-                }));
-                return;
-            }
-        });
     }
 
-    render(){
+    render() {
         return (
             <div className="">
-            <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden}/>
+                <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden} />
                 <SweetAlert
                     show={!!this.state.action.id}
                     title={`Do you wish to ${this.state.action.type} this item?`}
@@ -100,9 +100,9 @@ class Twitter extends React.Component {
                     confirmButtonText="Yes"
                     cancelButtonText="No"
                     onConfirm={() => {
-                        if(this.state.action.type === 'delete'){
+                        if (this.state.action.type === 'delete') {
                             this.remove(this.state.action.id);
-                        }else{
+                        } else {
                             console.log('something went wrong');
                         }
                         //this.setAction();
@@ -122,39 +122,42 @@ class Twitter extends React.Component {
                 />
 
                 <div className="">
-                    <div className="accounts-container__content col-md-7">
-                        <div className="">
+                    <div className="col-xs-7 text-center">
+                    <div class="col-xs-12 text-center">
                             <div className="">
-                                <h2>Let's grow your audience using Twitter!</h2>
-                            </div> 
-                            
-                            <ChannelItems channels={this.props.channels} setAction={this.setAction} /> 
-                            {!!this.props.loading && <Loader />}
-                        </div> 
-            
-                        <div className="">
-                            <TwitterLogin loginUrl={twitterAccessTokenUrl}
-                                        onFailure={this.onFailure} onSuccess={this.onSuccess}
-                                        requestTokenUrl={twitterRequestTokenUrl}
-                                        showIcon={true}
-                                        forceLogin={true}
-                                        className="add-channel-plus-btn">
-                                        <i className="fa fa-plus"></i>
-                            </TwitterLogin>
-                            <span className="left-side-label">Have an account? Let's connect!</span>
-                        </div> 
+                                <div className="">
+                                    <h2>Connect your Twitter account</h2>
+                                    <p>Cats woo destroy the blinds. Eat an easter feather as if it were a bird then burp victoriously</p>
+                                </div>
+
+                                <ChannelItems channels={this.props.channels} setAction={this.setAction} />
+                                {!!this.props.loading && <Loader />}
+                            </div>
+
+                            <div className="">
+                                <TwitterLogin loginUrl={twitterAccessTokenUrl}
+                                    onFailure={this.onFailure} onSuccess={this.onSuccess}
+                                    requestTokenUrl={twitterRequestTokenUrl}
+                                    showIcon={true}
+                                    forceLogin={true}
+                                    className="add-channel-plus-btn">
+                                    <i className="fa fa-plus"></i>
+                                </TwitterLogin>
+                                <span className="left-side-label">Have an account? Let's connect!</span>
+                            </div>
+                        </div>
                     </div>
                     <div className="col-md-5 middleware-side"></div>
                 </div>
-              
+
             </div>
         );
     };
-} 
+}
 
 const mapStateToProps = (state) => {
 
-    const twitterChannelsFilter = {selected: undefined, provider: "twitter"};
+    const twitterChannelsFilter = { selected: undefined, provider: "twitter" };
     const channels = channelSelector(state.channels.list, twitterChannelsFilter);
     return {
         channels,

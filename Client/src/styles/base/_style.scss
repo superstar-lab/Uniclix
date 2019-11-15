@@ -3400,6 +3400,14 @@ button.doneBtn {
 
 .channel-container {
   max-height: 210px;
+  display: flex;
+    align-items: center;
+    margin: 20px 0;
+    width: 100%;
+    border: 1px dashed #909090;
+    padding: 15px 30px;
+    background: white;
+    border-radius: 6px;
   overflow-y: auto;
 }
 
@@ -3649,7 +3657,7 @@ aside .btn-group {
 .middleware-side {
   background-repeat: no-repeat;
   background-position: top right;
-  background-size: contain;
+  background-size: cover;
   height: 100vh;
 }
 
