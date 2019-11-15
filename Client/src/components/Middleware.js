@@ -306,42 +306,43 @@ class Middleware extends React.Component {
                 </div>
                 {this.state.loading && <LoaderWithOverlay />}
                 <div className="col-md-7 col-xs-12 text-center">
-                <SelectAccountsModal 
-                    isOpen={this.state.facebookPagesModal} 
-                    accounts={this.state.facebookPages}
-                    onSave={this.onFacebookPagesSave}
-                    error={this.state.error}
-                />
-                {middleware !== "loading" && <h2>{middleware === "channels" ? "Connect your social profiles." : ((!(!!addon) && addonTrial) || !!planParam ? "Start Your Free Trial" : "Boost Your Twitter")}</h2>}
-                {middleware !== "channels" && middleware !== "billing" && <Loader />}
-                {loading && <LoaderWithOverlay />}
-                
-                {middleware == "channels" &&
-                <div className="box channels-box">
+                    <div class="col-xs-12 text-center">
+                    <SelectAccountsModal 
+                        isOpen={this.state.facebookPagesModal} 
+                        accounts={this.state.facebookPages}
+                        onSave={this.onFacebookPagesSave}
+                        error={this.state.error}
+                    />
+                    {/* {middleware !== "loading" && <h2>{middleware === "channels" ? "Connect your social profiles." : ((!(!!addon) && addonTrial) || !!planParam ? "Start Your Free Trial" : "Boost Your Twitter")}</h2>} */}
+                    {middleware !== "channels" && middleware !== "billing" && <Loader />}
+                    {loading && <LoaderWithOverlay />}
                     
-                    {channels.length > 0 ? 
-                    <div className="channel-profile-container">                    
-                        <h5>Connect your social profiles:</h5>
+                    {middleware == "channels" &&
+                    <div className="box channels-box">
+                        
+                        {channels.length > 0 ? 
+                        <div className="">  
+                        <h5>Cats who destroy birds. Eat an easter feather as if it were a bird then burp victoriously</h5>
 
-                        <div className="channel-profiles">
-                            {channels.map(channel => (
-                                <div key={channel.id} className="channel-profile-box col-xs-12">
-                                    <img className="channel-profile-picture" src={channel.avatar} />
-                                    <div className="channel-profile-info">                                
-                                        <p className="channel-profile-name">{channel.name}</p>
-                                        <p className="channel-profile-type">{channel.type}</p>
-                                    </div>
-                                    <i className="fa fa-close" onClick={() => this.remove(channel.id)}></i>
-                                </div>  
-                            ))}
+                            <div className="channel-profiles">
+                                {channels.map(channel => (
+                                    <div key={channel.id} className="channel-profile-box col-xs-12">
+                                        <img className="channel-profile-picture" src={channel.avatar} />
+                                        <div className="channel-profile-info">                                
+                                            <p className="channel-profile-name">{channel.name}</p>
+                                            <p className="channel-profile-type">{channel.type}</p>
+                                        </div>
+                                        <i className="fa fa-close" onClick={() => this.remove(channel.id)}></i>
+                                    </div>  
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                    :
-                    
-<div>
-                    <div className="col-md-12">
-                        <h5>Click one of the buttons below to get started:</h5>
-                    </div>
+                        :
+                        <div className="header-title">
+                            {middleware !== "loading" && <h2>Connect your accounts</h2>}
+                            <h5>Click one of the buttons below to get started:</h5>
+                        </div>
+                    }
                     
                     <div className="channel-buttons">
                         <FacebookLogin
@@ -350,13 +351,13 @@ class Middleware extends React.Component {
                             fields={fbFields}
                             scope={fbScope}
                             callback={this.onFacebookSuccess} 
-                            cssClass=" col-md-12 twitter-middleware-btn"
+                            cssClass="col-md-12 twitter-middleware-btn"
                             icon={<i className="fa fa-facebook"></i>}
-                            textButton="Facebook"
+                            textButton="Connect my Facebook Account"
                             ref={this.facebookRef}
                             disableMobileRedirect={true}
                         />
-                        <button className="col-md-12 twitter-middleware-btn" onClick={(e) => this.twitterRef.current.onButtonClick(e)}> <i className="fa fa-twitter"></i> Twitter</button>
+                        <button className="col-md-12 twitter-middleware-btn" onClick={(e) => this.twitterRef.current.onButtonClick(e)}> <i className="fa fa-twitter"></i> Connect my Twitter Account</button>
 
                         <LinkedInButton 
                             clientId={linkedinAppId}
@@ -365,7 +366,7 @@ class Middleware extends React.Component {
                             onError={this.onFailure}
                             cssClass="col-md-12 twitter-middleware-btn"
                             icon={<i className="fa fa-linkedin"></i>}
-                            textButton="Linkedin"
+                            textButton="Connect my Linkedin Account"
                             ref={this.linkedinRef}
                         />
 
@@ -377,20 +378,24 @@ class Middleware extends React.Component {
                             className="hide"
                             ref={this.twitterRef}
                         ></TwitterLogin>
+                        {   
+                            continueBtn ?
+                            <button className="magento-btn mt50" onClick={this.setRole}>Continue to Uniclix</button>
+                            :
+                            <button className="magento-btn mt50 disabled-btn">Continue to Uniclix</button>
+                        }
                     </div>
+
+                    <div>
+                    
+                    
                     </div>
-                    }
-
-
-                    {   
-                        continueBtn ?
-                        <button className="magento-btn mt50" onClick={this.setRole}>Continue to Uniclix</button>
-                        :
-                        <button className="magento-btn mt50 disabled-btn">Continue to Uniclix</button>
-                    }
+                
                 </div>
-                }
+            }
 
+                
+            </div>
                 {middleware == "billing" && !!planData ?
                 <div className="box billing channels-box">
 
