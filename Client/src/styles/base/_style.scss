@@ -148,11 +148,15 @@ a:link {
   width: 70%;
 }
 
-.box.channels-box h2 {
-  font-weight: bold;
-  font-size: 3.2rem;
-}
-
+.box.channels-box{
+  h2 {
+    font-weight: bold;
+    font-size: 3.2rem;
+  }
+  h5 {
+    text-align: left;
+  }
+} 
 .added-channel-btn .channel-profile-info {
   display: flex;
   align-items: center;
@@ -172,19 +176,20 @@ a:link {
   margin-right: 10px;
 }
 
-.added-channel-btn:hover i {
-  display: flex !important;
-  color: #2d86da;
-  font-size: 1.4rem;
-  width: 35px;
-  height: 35px;
-  background: none;
-  margin: 0;
-}
+// .added-channel-btn:hover i {
+//   display: flex !important;
+//   color: #2d86da;
+//   // font-size: 1.4rem;
+//   // width: 35px;
+//   // height: 35px;
+//   background: none;
+//   margin: 0;
+// }
 
 .added-channel-btn i {
   // display: none !important;
   display: block;
+
 }
 
 .added-channel-btn i:hover {
@@ -2167,13 +2172,13 @@ button.streammaker-btn:hover {
   background: url(/images/user-plus-regular.svg);
 }
 
-// .item-row:hover .profile-info .stats-info {
-//     display: none;
-// }
-
-.item-row .profile-info .item-actions {
-  display: block;
+.item-row:hover .profile-info .stats-info {
+    display: none;
 }
+// /
+// .item-row .profile-info .item-actions {
+//   display: block;
+// }
 
 .item-row .user-action {
   width: 30px;
@@ -2185,6 +2190,7 @@ button.streammaker-btn:hover {
   margin-right: 25px;
   object-fit: scale-down;
   object-position: center;
+  background: red;
 }
 
 .item-row .user-action:hover {
@@ -4034,14 +4040,15 @@ aside .btn-group {
 }
 
 .twitter-middleware-btn i {
-  color: white;
+  // color: white;
+  color: #2d86da;
   width: 37px;
   height: 37px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 10px;
+  // margin-right: 10px;
 }
 
 .twitter-middleware-btn {
@@ -4722,4 +4729,10 @@ table.compare-plans-table {
   position: absolute;
     top: 49px;
     left: 66px;
+}
+.mt-2 {
+  margin-top: 20px !important;
+}
+.capitalized-text {
+  text-transform: capitalize !important;
 }

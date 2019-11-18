@@ -123,7 +123,7 @@ class Twitter extends React.Component {
 
                 <div className="login-container">
                     <div className="col-md-7 col-xs-12 text-center">
-                        <div class="col-xs-12 text-center">
+                        <div className="col-xs-12 text-center">
                             <div className="box channels-box">
                                 <h2>Connect your Twitter account</h2>
                                 <h5>Cats woo destroy the blinds. Eat an easter feather as if it were a bird then burp victoriously</h5>
@@ -137,7 +137,7 @@ class Twitter extends React.Component {
                                         requestTokenUrl={twitterRequestTokenUrl}
                                         showIcon={true}
                                         forceLogin={true}
-                                        className="magento-btn w100">
+                                        className="magento-btn w100 mt-2">
                                         <span className="left-side-label">Continue to Uniclix</span>
                                     </TwitterLogin>
                                 </div>

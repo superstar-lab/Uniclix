@@ -319,32 +319,29 @@ class Middleware extends React.Component {
                     
                     {middleware == "channels" &&
                     <div className="box channels-box">
-                        
-                        {channels.length > 0 ? 
+                        {channels.length > 0 
+                        ? 
                         <div className="">  
-                        <h5>Cats who destroy birds. Eat an easter feather as if it were a bird then burp victoriously</h5>
-
+                       
                             <div className="channel-profiles">
                                 {channels.map(channel => (
                                     <div key={channel.id} className="channel-profile-box col-xs-12">
+                                    <h2>You are connected succesfully with <span className="capitalized-text">{channel.type}</span></h2>
+                        <h5>Cats who destroy birds. Eat an easter feather as if it were a bird then burp victoriously</h5>
                                         <img className="channel-profile-picture" src={channel.avatar} />
-                                        <div className="channel-profile-info">                                
-                                            <p className="channel-profile-name">{channel.name}</p>
-                                            <p className="channel-profile-type">{channel.type}</p>
-                                        </div>
+                                        <p className="channel-profile-username">{channel.username}</p>
                                         <i className="fa fa-close" onClick={() => this.remove(channel.id)}></i>
                                     </div>  
                                 ))}
                             </div>
                         </div>
                         :
+                        <div>
                         <div className="header-title">
                             {middleware !== "loading" && <h2>Connect your accounts</h2>}
                             <h5>Click one of the buttons below to get started:</h5>
                         </div>
-                    }
-                    
-                    <div className="channel-buttons">
+                        <div className="channel-buttons">
                         <FacebookLogin
                             appId={facebookAppId}
                             autoLoad={false}
@@ -385,6 +382,10 @@ class Middleware extends React.Component {
                             <button className="magento-btn mt50 disabled-btn">Connect and continue</button>
                         }
                     </div>
+                    </div>
+                    }
+                    
+                    
 
                     <div>
                     
