@@ -121,20 +121,18 @@ class Twitter extends React.Component {
                     }}
                 />
 
-                <div className="">
-                    <div className="col-xs-7 text-center">
-                    <div class="col-xs-12 text-center">
-                            <div className="">
-                                <div className="">
-                                    <h2>Connect your Twitter account</h2>
-                                    <p>Cats woo destroy the blinds. Eat an easter feather as if it were a bird then burp victoriously</p>
-                                </div>
+                <div className="login-container">
+                    <div className="col-md-7 col-xs-12 text-center">
+                        <div class="col-xs-12 text-center">
+                            <div className="box channels-box">
+                                <h2>Connect your Twitter account</h2>
+                                <h5>Cats woo destroy the blinds. Eat an easter feather as if it were a bird then burp victoriously</h5>
 
                                 <ChannelItems channels={this.props.channels} setAction={this.setAction} />
                                 {!!this.props.loading && <Loader />}
                             </div>
 
-                            <div className="">
+                            {/* <div className="channel-buttons">
                                 <TwitterLogin loginUrl={twitterAccessTokenUrl}
                                     onFailure={this.onFailure} onSuccess={this.onSuccess}
                                     requestTokenUrl={twitterRequestTokenUrl}
@@ -142,9 +140,9 @@ class Twitter extends React.Component {
                                     forceLogin={true}
                                     className="add-channel-plus-btn">
                                     <i className="fa fa-plus"></i>
+                                    <span className="left-side-label">Have an account? Let's connect!</span>
                                 </TwitterLogin>
-                                <span className="left-side-label">Have an account? Let's connect!</span>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <div className="col-md-5 middleware-side"></div>

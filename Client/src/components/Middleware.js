@@ -306,7 +306,7 @@ class Middleware extends React.Component {
                 </div>
                 {this.state.loading && <LoaderWithOverlay />}
                 <div className="col-md-7 col-xs-12 text-center">
-                    <div class="col-xs-12 text-center">
+                    <div className="col-xs-12 text-center">
                     <SelectAccountsModal 
                         isOpen={this.state.facebookPagesModal} 
                         accounts={this.state.facebookPages}
@@ -380,9 +380,9 @@ class Middleware extends React.Component {
                         ></TwitterLogin>
                         {   
                             continueBtn ?
-                            <button className="magento-btn mt50" onClick={this.setRole}>Continue to Uniclix</button>
+                            <button className="magento-btn mt50" onClick={this.setRole}>Connect and continue</button>
                             :
-                            <button className="magento-btn mt50 disabled-btn">Continue to Uniclix</button>
+                            <button className="magento-btn mt50 disabled-btn">Connect and continue</button>
                         }
                     </div>
 

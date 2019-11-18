@@ -318,7 +318,10 @@ a:link {
   display: flex;
   justify-content: space-evenly;
 }
+.account-info {
+  width: 100%;
 
+}
 .account-info p {
   max-width: 250px !important;
 }
@@ -3398,6 +3401,12 @@ button.doneBtn {
   overflow: hidden;
 }
 
+.block-urls2 {
+  display: block;
+  overflow: hidden;
+  width: 100%;
+}
+
 .channel-container {
   max-height: 210px;
   display: flex;
@@ -4037,7 +4046,7 @@ aside .btn-group {
 .twitter-middleware-btn {
   display: flex;
   align-items: center;
-  margin: 0.5rem;
+  margin: 0.5rem 0;
   border: 1px dashed #909090;
   padding: 15px 30px;
   background: white;
@@ -4114,9 +4123,9 @@ aside .btn-group {
 .accounts-container__content__wrapper__heading,
 .accounts-container__content__wrapper__body {
   border-bottom: 1px solid #ececec;
-  border-radius: 3px;
-  margin: 0 20px;
-  padding: 10px;
+  margin: 0 auto;
+  width: 100%;
+  box-shadow: 0 4px 10px -6px #8080804f;
 }
 
 .accounts-container__content__wrapper__footer {
@@ -4698,4 +4707,18 @@ table.compare-plans-table {
 }
 .text-btn {
   display: inline-block;
+}
+.one-account {
+      display: flex;
+      align-items: center;
+      padding: 15px 30px;
+      background: white;
+      border-radius: 6px;
+      overflow-y: auto;
+      position: relative;
+}
+.twitter-badge {
+  position: absolute;
+    top: 49px;
+    left: 66px;
 }
