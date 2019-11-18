@@ -183,7 +183,8 @@ a:link {
 }
 
 .added-channel-btn i {
-  display: none !important;
+  // display: none !important;
+  display: block;
 }
 
 .added-channel-btn i:hover {

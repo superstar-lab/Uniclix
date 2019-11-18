@@ -128,21 +128,22 @@ class Twitter extends React.Component {
                                 <h2>Connect your Twitter account</h2>
                                 <h5>Cats woo destroy the blinds. Eat an easter feather as if it were a bird then burp victoriously</h5>
 
-                                <ChannelItems channels={this.props.channels} setAction={this.setAction} />
-                                {!!this.props.loading && <Loader />}
+
+                                <div className="channel-buttons">
+                                    <ChannelItems channels={this.props.channels} setAction={this.setAction} />
+                                    {!!this.props.loading && <Loader />}
+                                    <TwitterLogin loginUrl={twitterAccessTokenUrl}
+                                        onFailure={this.onFailure} onSuccess={this.onSuccess}
+                                        requestTokenUrl={twitterRequestTokenUrl}
+                                        showIcon={true}
+                                        forceLogin={true}
+                                        className="magento-btn w100">
+                                        <span className="left-side-label">Continue to Uniclix</span>
+                                    </TwitterLogin>
+                                </div>
                             </div>
 
-                            {/* <div className="channel-buttons">
-                                <TwitterLogin loginUrl={twitterAccessTokenUrl}
-                                    onFailure={this.onFailure} onSuccess={this.onSuccess}
-                                    requestTokenUrl={twitterRequestTokenUrl}
-                                    showIcon={true}
-                                    forceLogin={true}
-                                    className="add-channel-plus-btn">
-                                    <i className="fa fa-plus"></i>
-                                    <span className="left-side-label">Have an account? Let's connect!</span>
-                                </TwitterLogin>
-                            </div> */}
+
                         </div>
                     </div>
                     <div className="col-md-5 middleware-side"></div>
