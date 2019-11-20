@@ -29,6 +29,7 @@ class AppRouter extends React.Component {
                         <PrivateRoute path="/accounts" component={Accounts} />
                         <PrivateRoute path="/settings" component={Settings} />
                         <PrivateRoute path="/analytics" component={Analytics} />
+                        <PrivateRoute path="/social-media-manager" component={Accounts} />
                         <Route component={NotFoundPage}/>
                     </Switch>
                 </div>

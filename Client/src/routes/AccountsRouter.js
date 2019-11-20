@@ -5,6 +5,7 @@ import Facebook from '../components/Accounts/Facebook';
 import Linkedin from '../components/Accounts/Linkedin';
 import Pinterest from '../components/Accounts/Pinterest';
 import AccountLinks from '../components/Accounts/AccountLinks';
+import Social from '../components/Accounts/Social';
 
 const AccountsRouter = () => (
     <div>
@@ -14,6 +15,7 @@ const AccountsRouter = () => (
             <Route path={`/accounts/facebook`} component={Facebook} />
             <Route path={`/accounts/linkedin`} component={Linkedin} />
             <Route path={`/accounts/pinterest`} component={Pinterest} />
+            <Route path={`/social-media-manager/manage-accounts`} component={Social} />
         </Switch>
     </div>
 );

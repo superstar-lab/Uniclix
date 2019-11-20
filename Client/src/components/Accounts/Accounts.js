@@ -3,11 +3,11 @@ import AccountsRouter from "../../routes/AccountsRouter";
 
 class Accounts extends React.Component {
 
-    render(){
+    render() {
         return (
             <AccountsRouter />
         );
     };
-} 
+}
 
 export default Accounts;
