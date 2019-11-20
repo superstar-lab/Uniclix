@@ -127,8 +127,6 @@ class Twitter extends React.Component {
                             <div className="box channels-box">
                                 <h2>Connect your Twitter account</h2>
                                 <h5>Cats woo destroy the blinds. Eat an easter feather as if it were a bird then burp victoriously</h5>
-
-
                                 <div className="channel-buttons">
                                     <ChannelItems channels={this.props.channels} setAction={this.setAction} />
                                     {!!this.props.loading && <Loader />}
@@ -137,9 +135,10 @@ class Twitter extends React.Component {
                                         requestTokenUrl={twitterRequestTokenUrl}
                                         showIcon={true}
                                         forceLogin={true}
-                                        className="magento-btn w100 mt-2">
-                                        <span className="left-side-label">Continue to Uniclix</span>
+                                        className="add-channel-plus-btn mt-2">
+                                        <i className="fa fa-plus"></i>
                                     </TwitterLogin>
+                                    <span className="left-side-label">Add account</span>
                                 </div>
                             </div>
 

@@ -19,6 +19,7 @@ import Loader, { LoaderWithOverlay } from './Loader';
 import UpgradeAlert from "./UpgradeAlert";
 import { getParameterByName } from "../utils/helpers";
 import Checkout from "./Settings/Sections/Checkout";
+import Twitter from './Accounts/Twitter';
 
 class Middleware extends React.Component {
 
@@ -321,19 +322,21 @@ class Middleware extends React.Component {
                     <div className="box channels-box">
                         {channels.length > 0 
                         ? 
+                        //kur konektohesh nfillim
                         <div className="">  
-                       
-                            <div className="channel-profiles">
+                            <Twitter />
+
+                            {/* <div className="channel-profiles">
                                 {channels.map(channel => (
                                     <div key={channel.id} className="channel-profile-box col-xs-12">
-                                    <h2>You are connected succesfully with <span className="capitalized-text">{channel.type}</span></h2>
-                        <h5>Cats who destroy birds. Eat an easter feather as if it were a bird then burp victoriously</h5>
+                                    {/* <h2>You are connected succesfully with <span className="capitalized-text">{channel.type}</span></h2>
+                                    <h5>Cats who destroy birds. Eat an easter feather as if it were a bird then burp victoriously</h5>
                                         <img className="channel-profile-picture" src={channel.avatar} />
                                         <p className="channel-profile-username">{channel.username}</p>
-                                        <i className="fa fa-close" onClick={() => this.remove(channel.id)}></i>
+                                        <i className="fa fa-close" onClick={() => this.remove(channel.id)}></i> }
                                     </div>  
                                 ))}
-                            </div>
+                            </div> */}
                         </div>
                         :
                         <div>
@@ -375,12 +378,10 @@ class Middleware extends React.Component {
                             className="hide"
                             ref={this.twitterRef}
                         ></TwitterLogin>
-                        {   
-                            continueBtn ?
+                        { continueBtn ?
                             <button className="magento-btn mt50" onClick={this.setRole}>Connect and continue</button>
                             :
-                            <button className="magento-btn mt50 disabled-btn">Connect and continue</button>
-                        }
+                            <button className="magento-btn mt50 disabled-btn">Connect and continue</button> }
                     </div>
                     </div>
                     }
@@ -485,8 +486,11 @@ class Middleware extends React.Component {
 
                 }
                 </div>
+                {channels.length > 0 
+                        ? <div></div> :
                 <div className="col-md-5 middleware-side">
                 </div>
+                }
             </div>
         );
     }
