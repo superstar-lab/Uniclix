@@ -127,11 +127,13 @@ class Twitter extends React.Component {
                             <div className="box channels-box">
                                 <h2>Connect your Twitter account</h2>
                                 <h5>Cats woo destroy the blinds. Eat an easter feather as if it were a bird then burp victoriously</h5>
+                               
                                 <div className="channel-buttons">
                                     <ChannelItems channels={this.props.channels} setAction={this.setAction} />
                                     {!!this.props.loading && <Loader />}
                                     <TwitterLogin loginUrl={twitterAccessTokenUrl}
-                                        onFailure={this.onFailure} onSuccess={this.onSuccess}
+                                        onFailure={this.onFailure}
+                                         onSuccess={this.onSuccess}
                                         requestTokenUrl={twitterRequestTokenUrl}
                                         showIcon={true}
                                         forceLogin={true}
@@ -140,9 +142,8 @@ class Twitter extends React.Component {
                                     </TwitterLogin>
                                     <span className="left-side-label">Add account</span>
                                 </div>
+                                
                             </div>
-
-
                         </div>
                     </div>
                     <div className="col-md-5 middleware-side"></div>

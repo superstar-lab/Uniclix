@@ -19,10 +19,12 @@ import Loader, { LoaderWithOverlay } from './Loader';
 import UpgradeAlert from "./UpgradeAlert";
 import { getParameterByName } from "../utils/helpers";
 import Checkout from "./Settings/Sections/Checkout";
-import Twitter from './Accounts/Twitter';
+import ChannelItems from "./Accounts/ChannelItems";
+import SweetAlert from "sweetalert2-react";
+
+
 
 class Middleware extends React.Component {
-
     state = {
         continueBtn: this.props.channels.length > 0,
         facebookPagesModal: false,
@@ -82,6 +84,11 @@ class Middleware extends React.Component {
             }
         }
     }
+    defaultAction = {
+        id: "",
+        type: ""
+    };
+
 
     onFailure = (response) => {
         this.setState(() => ({ loading: false }));
@@ -221,6 +228,12 @@ class Middleware extends React.Component {
             });
     };
 
+    setAction = (action = this.defaultAction) => {
+        this.setState(() => ({
+            action
+        }));
+    }
+
     toggleFacebookPagesModal = () => {
         this.setState(() => ({
             facebookPagesModal: !this.state.facebookPagesModal
@@ -268,6 +281,7 @@ class Middleware extends React.Component {
     };
 
     remove = (id) => {
+        console.log('remove')
         this.setState(() => ({ loading: true }));
         return destroyChannel(id)
             .then((response) => {
@@ -305,6 +319,7 @@ class Middleware extends React.Component {
                 <div className="logo">
                     <img src="/images/uniclix.png" />
                 </div>
+                
                 {this.state.loading && <LoaderWithOverlay />}
                 <div className="col-md-7 col-xs-12 text-center">
                     <div className="col-xs-12 text-center">
@@ -324,19 +339,33 @@ class Middleware extends React.Component {
                         ? 
                         //kur konektohesh nfillim
                         <div className="">  
-                            <Twitter />
+                            {/* <Twitter /> */}
 
-                            {/* <div className="channel-profiles">
+                            <div className="channel-profiles">
                                 {channels.map(channel => (
                                     <div key={channel.id} className="channel-profile-box col-xs-12">
-                                    {/* <h2>You are connected succesfully with <span className="capitalized-text">{channel.type}</span></h2>
+                                     <h2>You are connected succesfully with <span className="capitalized-text">{channel.type}</span></h2>
                                     <h5>Cats who destroy birds. Eat an easter feather as if it were a bird then burp victoriously</h5>
-                                        <img className="channel-profile-picture" src={channel.avatar} />
-                                        <p className="channel-profile-username">{channel.username}</p>
-                                        <i className="fa fa-close" onClick={() => this.remove(channel.id)}></i> }
+                                        
+                                        <div className="channel-buttons">
+                                            <ChannelItems channels={this.props.channels} setAction={this.setAction} />
+                                            {/* <i className="fa fa-close" onClick={() => this.remove(channel.id)}></i> */}
+                                            {!!this.props.loading && <Loader />}
+                                            <TwitterLogin 
+                                                loginUrl={twitterAccessTokenUrl}
+                                                onFailure={this.onFailure}
+                                                onSuccess={this.onSuccess}
+                                                requestTokenUrl={twitterRequestTokenUrl}
+                                                showIcon={true}
+                                                forceLogin={true}
+                                                className="add-channel-plus-btn mt-2">
+                                                <i className="fa fa-plus"></i>
+                                            </TwitterLogin>
+                                            <span className="left-side-label">Add account</span>
+                                        </div>
                                     </div>  
                                 ))}
-                            </div> */}
+                            </div>
                         </div>
                         :
                         <div>
@@ -486,11 +515,8 @@ class Middleware extends React.Component {
 
                 }
                 </div>
-                {channels.length > 0 
-                        ? <div></div> :
                 <div className="col-md-5 middleware-side">
                 </div>
-                }
             </div>
         );
     }
@@ -499,6 +525,7 @@ class Middleware extends React.Component {
 const mapStateToProps = (state) => {
     const filter = { selected: 1, provider: undefined };
     const selectedChannel = channelSelector(state.channels.list, filter);
+
 
     return {
         middleware: state.middleware.step,

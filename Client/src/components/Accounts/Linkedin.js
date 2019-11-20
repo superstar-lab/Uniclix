@@ -159,20 +159,17 @@ class Linkedin extends React.Component {
                     }}
                 />
 
-                <div className="">
-                    <div className="col-xs-7 text-center">
+                <div className="login-container">
+                    <div className="col-md-7 col-xs-12 text-center">
                     <div class="col-xs-12 text-center">
-                            <div className="">
-                                <div className="">
-                                    <h2>Connect your Facebook account</h2>
+                            <div className="box channels-box">
+                                    <h2>Connect your Linkedin account</h2>
                                     <p>Cats woo destroy the blinds. Eat an easter feather as if it were a bird then burp victoriously</p>
-                                </div>
 
+                            <div className="channel-buttons">
                                 <ChannelItems channels={this.props.channels} setAction={this.setAction} />
                                 {!!this.props.loading && <Loader />}
-                            </div>
 
-                            <div className="">
                             <LinkedInButton
                                 clientId={linkedinAppId}
                                 redirectUri={`${apiUrl}/linkedin/callback`}
@@ -184,6 +181,8 @@ class Linkedin extends React.Component {
                             <span className="left-side-label">Have an account? Let's connect!</span>
                         </div> 
                         </div>
+                        </div>
+
                     </div>
                     <div className="col-md-5 middleware-side"></div>
                 </div>
