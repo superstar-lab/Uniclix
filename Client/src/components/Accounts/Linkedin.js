@@ -161,7 +161,7 @@ class Linkedin extends React.Component {
 
                 <div className="login-container">
                     <div className="col-md-7 col-xs-12 text-center">
-                    <div class="col-xs-12 text-center">
+                    <div className="col-xs-12 text-center">
                             <div className="box channels-box">
                                     <h2>Connect your Linkedin account</h2>
                                     <p>Cats woo destroy the blinds. Eat an easter feather as if it were a bird then burp victoriously</p>

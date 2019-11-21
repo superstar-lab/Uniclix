@@ -6,9 +6,7 @@ import 'react-dates/initialize';
 import Tabs from '../../Tabs';
 
 class MonitorActivity extends React.Component {
-    myClick() {
-        alert("Hello World!");
-    };
+   
     render() {
         return (
             <div>

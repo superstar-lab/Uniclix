@@ -160,7 +160,7 @@ class Facebook extends React.Component {
 
                 <div className="login-container">
                     <div className="col-xs-7 text-center">
-                        <div class="col-xs-12 text-center">
+                        <div className="col-xs-12 text-center">
                             <div className="box channels-box">
                                 <h2>Connect your Facebook account</h2>
                                 <h5>Cats woo destroy the blinds. Eat an easter feather as if it were a bird then burp victoriously</h5>

@@ -18,8 +18,8 @@ const menuItems = [
     {
         id: "billing",
         displayName: "Manage Account",
-        uri: "/settings/billing",
-        icon: "user-cog"
+        uri: "/settings/manage-account",
+        icon: "list"
     },
     {
         id: "billing",

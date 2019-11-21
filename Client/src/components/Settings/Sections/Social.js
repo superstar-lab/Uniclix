@@ -2,15 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TwitterLogin from 'react-twitter-auth';
 import SweetAlert from "sweetalert2-react";
-import { twitterRequestTokenUrl, twitterAccessTokenUrl } from "../../config/api";
-import { startAddTwitterChannel, startSetChannels } from "../../actions/channels";
-import channelSelector from "../../selectors/channels";
-import { destroyChannel } from "../../requests/channels";
-import { cancelSubscription } from "../../requests/billing";
-import { logout } from "../../actions/auth";
-import Loader from "../../components/Loader";
-import ChannelItems from "./ChannelItems";
-import UpgradeAlert from "../UpgradeAlert";
+import { twitterRequestTokenUrl, twitterAccessTokenUrl } from "../../../config/api";
+import { startAddTwitterChannel, startSetChannels } from "../../../actions/channels";
+import channelSelector from "../../../selectors/channels";
+import { destroyChannel } from "../../../requests/channels";
+import { cancelSubscription } from "../../../requests/billing";
+import { logout } from "../../../actions/auth";
+import Loader from "../../Loader";
+import ChannelItems from "../../Accounts/ChannelItems";
+import UpgradeAlert from "../../UpgradeAlert";
 import { Prompt } from 'react-router'
 import { withRouter } from "react-router";
 
@@ -184,7 +184,7 @@ class Social extends React.Component {
 
 
                     <div className="row mt20">
-                        <div className="col-md-7">
+                        <div className="col-md-10">
 
                             <div className="col-md-12">
                                 <ChannelItems channels={this.props.channels} setAction={this.setAction} />
@@ -204,7 +204,7 @@ class Social extends React.Component {
                             </div>
 
                         </div>
-                        {!!profile.subscription ?
+                        {/* {!!profile.subscription ?
                             (!profile.subscription.activeSubscription ?
                                 <div className="col-md-5">
                                     <div className="col-md-12 plan-info-container">
@@ -262,7 +262,7 @@ class Social extends React.Component {
                                     </div>
                                 </div>
                             ) : ""
-                        }
+                        } */}
                     </div>
 
                 </div>

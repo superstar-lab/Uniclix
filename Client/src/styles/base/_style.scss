@@ -4040,8 +4040,7 @@ aside .btn-group {
 }
 
 .twitter-middleware-btn i {
-  // color: white;
-  color: #2d86da;
+  color: white;
   width: 37px;
   height: 37px;
   border-radius: 50%;
@@ -4049,6 +4048,9 @@ aside .btn-group {
   align-items: center;
   justify-content: center;
   // margin-right: 10px;
+}
+.blue-icon i{
+  color: #2d86da;
 }
 
 .twitter-middleware-btn {

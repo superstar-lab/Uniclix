@@ -45,7 +45,7 @@ const TopMenu = ({ setComposerModal, logout, profile, props }) => (
            (!profile.subscription.activeSubscription ?
                <div className="top-alert"><span>You have {profile.role.trial_days} days remaining on your Twitter Booster trial.</span>
                    Add your billing information now to start your subscription.
-        <button className="btn-text-pink" onClick={() => props.history.push('/twitter-booster/manage-accounts')}>Start subscription</button>
+        <button className="btn-text-pink" onClick={() => props.history.push('/settings/manage-accounts')}>Start subscription</button>
                </div>
                : ""
            ) : ""

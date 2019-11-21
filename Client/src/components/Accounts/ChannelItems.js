@@ -20,7 +20,7 @@ const ChannelItem = ({ channel, setAction }) => (
                     </div>
                 </div>
             </div>
-            <div className="user-action mrnone" onClick={() => setAction({ id: channel.id, type: "delete" })}><i className="fa fa-trash"></i></div>
+            <div className="user-action mrnone blue-icon" onClick={() => setAction({ id: channel.id, type: "delete" })}><i className="fa fa-trash"></i></div>
 
         </div>
     </div>

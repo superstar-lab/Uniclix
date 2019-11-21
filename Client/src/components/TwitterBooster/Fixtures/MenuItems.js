@@ -2,7 +2,7 @@ const MenuItems = [
     {   
         id: "twitter-booster_manage_posts",
         displayName: "Manage Posts",
-        uri: "/social-media-manager/dashboard",
+        uri: "/twitter-booster/dashboard",
         icon: "pencil" 
     },
     {   
@@ -26,7 +26,7 @@ const MenuItems = [
     {   
         id: "twitter-booster_manage_accounts",
         displayName: "Manage Accounts",
-        uri: "/social-media-manager/manage-accounts",
+        uri: "/settings/manage-account",
         icon: "list" 
     },
 ];
