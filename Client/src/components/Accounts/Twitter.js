@@ -88,20 +88,26 @@ class Twitter extends React.Component {
     }
 
     render() {
+        const { forbidden, action } = this.state
+        const { channels } = this.props
+        console.log(channels, "channels")
         return (
             <div className="">
-                <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden} />
+                <UpgradeAlert
+                    isOpen={forbidden}
+                    text={"Your current plan does not support more accounts."}
+                    setForbidden={this.setForbidden} />
                 <SweetAlert
-                    show={!!this.state.action.id}
-                    title={`Do you wish to ${this.state.action.type} this item?`}
+                    show={!!action.id}
+                    title={`Do you wish to ${action.type} this item?`}
                     text="To confirm your decision, please click one of the buttons below."
                     showCancelButton
                     type="warning"
                     confirmButtonText="Yes"
                     cancelButtonText="No"
                     onConfirm={() => {
-                        if (this.state.action.type === 'delete') {
-                            this.remove(this.state.action.id);
+                        if (action.type === 'delete') {
+                            this.remove(action.id);
                         } else {
                             console.log('something went wrong');
                         }
@@ -127,13 +133,13 @@ class Twitter extends React.Component {
                             <div className="box channels-box">
                                 <h2>Connect your Twitter account</h2>
                                 <h5>Cats woo destroy the blinds. Eat an easter feather as if it were a bird then burp victoriously</h5>
-                               
+
                                 <div className="channel-buttons">
-                                    <ChannelItems channels={this.props.channels} setAction={this.setAction} />
+                                    <ChannelItems channels={channels} setAction={this.setAction} />
                                     {!!this.props.loading && <Loader />}
                                     <TwitterLogin loginUrl={twitterAccessTokenUrl}
                                         onFailure={this.onFailure}
-                                         onSuccess={this.onSuccess}
+                                        onSuccess={this.onSuccess}
                                         requestTokenUrl={twitterRequestTokenUrl}
                                         showIcon={true}
                                         forceLogin={true}
@@ -142,7 +148,7 @@ class Twitter extends React.Component {
                                     </TwitterLogin>
                                     <span className="left-side-label">Add account</span>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>

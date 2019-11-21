@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import TwitterLogin from 'react-twitter-auth';
 import SweetAlert from "sweetalert2-react";
 import { twitterRequestTokenUrl, twitterAccessTokenUrl } from "../../../config/api";
-import { startAddTwitterChannel, startSetChannels } from "../../../actions/channels";
+import { startAddTwitterChannel, startSetChannels, startAddLinkedinChannel, startAddFacebookChannel } from "../../../actions/channels";
 import channelSelector from "../../../selectors/channels";
 import { destroyChannel } from "../../../requests/channels";
 import { cancelSubscription } from "../../../requests/billing";
@@ -17,6 +17,7 @@ import { withRouter } from "react-router";
 class Social extends React.Component {
     constructor(props) {
         super(props);
+        console.log('props', props)
     }
 
     defaultAction = {
@@ -273,9 +274,7 @@ class Social extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-
-    const twitterChannelsFilter = { selected: undefined, provider: "twitter" };
-    const channels = channelSelector(state.channels.list, twitterChannelsFilter);
+    const channels = state.channels.list;
     const profile = state.profile
     return {
         channels,
@@ -285,6 +284,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+    startAddLinkedinChannel: (accessToken) => dispatch(startAddLinkedinChannel(accessToken)),
+    startAddFacebookChannel: (accessToken) => dispatch(startAddFacebookChannel(accessToken)),
     startAddTwitterChannel: (accessToken, accessTokenSecret) => dispatch(startAddTwitterChannel(accessToken, accessTokenSecret)),
     startSetChannels: () => dispatch(startSetChannels()),
     logout: () => dispatch(logout())

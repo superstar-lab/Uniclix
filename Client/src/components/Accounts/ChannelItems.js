@@ -14,8 +14,21 @@ const ChannelItem = ({ channel, setAction }) => (
                     <div className="channel-profile-info">
                         <img className="pull-left" onError={(e) => e.target.src = '/images/dummy_profile.png'} src={channel.avatar} />
                         <div>
-                            {/* <p className="profile-name">{ channel.name }  <span className="profile-state"></span></p> */}
-                            <p className="profile-username">@{channel.username}</p>
+                            <p className="profile-name">{channel.name}  <span className="profile-state"></span></p>
+                            
+                            {channel.username !== null ? 
+                                <p className="profile-username">@{channel.username}</p> :
+                                <p></p>
+                            }
+
+
+                            {/* {profile.role !== null && profile.role.name === 'free' ?
+                                <button disabled className="plan-btn free-plan disabled-btn">Current Plan</button>
+                                :
+                                <button onClick={() => this.onPlanClick('free')} className="plan-btn free-plan">Change</button>
+                            } */}
+
+
                         </div>
                     </div>
                 </div>
