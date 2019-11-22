@@ -17,7 +17,6 @@ import { withRouter } from "react-router";
 class Social extends React.Component {
     constructor(props) {
         super(props);
-        console.log('props', props)
     }
 
     defaultAction = {
@@ -134,10 +133,10 @@ class Social extends React.Component {
         const { profile } = this.props
         return (
             <React.Fragment>
-                <Prompt
+                {/* <Prompt
                     when={shouldBlockNavigation}
                     message='If you leave the page without proceeding to checkout all the accounts you linked will be lost.'
-                />
+                /> */}
                 <div className="main-container">
                     <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden} />
                     <SweetAlert
@@ -192,78 +191,16 @@ class Social extends React.Component {
                                 {!!this.props.loading && <Loader />}
 
                                 <div className="accounts-container__content__wrapper__footer">
-                                    <TwitterLogin loginUrl={twitterAccessTokenUrl}
-                                        onFailure={this.onFailure} onSuccess={this.onSuccess}
-                                        requestTokenUrl={twitterRequestTokenUrl}
-                                        showIcon={true}
-                                        forceLogin={true}
-                                        className="add-channel-plus-btn">
+                                    
+                                    <button className="add-channel-plus-btn" onClick={() => this.props.history.push('/accounts')}>
                                         <i className="fa fa-plus"></i>
-                                    </TwitterLogin>
-                                    <span className="left-side-label">Add account</span>
+                                    </button>
+                                    <span className="left-side-label">Add more accounts</span>
                                 </div>
                             </div>
 
                         </div>
-                        {/* {!!profile.subscription ?
-                            (!profile.subscription.activeSubscription ?
-                                <div className="col-md-5">
-                                    <div className="col-md-12 plan-info-container">
-                                        <h3>Trial</h3>
-
-                                        <div className="plan-content">
-                                            <p className="plan-content-description">3 days left trial</p>
-                                            <p className="plan-content-accounts">x{this.props.channels.length} accounts</p>
-                                        </div>
-
-                                        <button className="btn-blue" onClick={() => { this.startCheckout() }}>Start subscription</button>
-                                    </div>
-                                </div>
-                                :
-                                <div className="col-md-5">
-                                    <div className=" plan-info-container">
-                                        <h3>My Plan
-                                            <button
-                                                className="btn-text-pink"
-                                                onClick={() => this.cancelSubscription}
-                                            >Cancel subscription</button></h3>
-
-                                        <div className="plan-content table">
-                                            <div className="row-price">
-                                                <div className="col-price">
-                                                    <p className="plan-content-description">Current price</p>
-                                                    <p className="plan-content-accounts">x{this.props.channels.length} accounts</p>
-                                                </div>
-                                                <div className="col-price">
-                                                    <p className="price">$10</p>
-                                                </div>
-                                            </div>
-                                            <br />
-                                            <div className="row-price new-accounts">
-                                                <div className="col-price">
-                                                    <p className="plan-content-accounts">x2 accounts</p>
-                                                </div>
-                                                <div className="col-price">
-                                                    <p className="price">$20</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="order-total table">
-                                            <div className="row-price">
-                                                <div className="col-price">
-                                                    <p className="plan-content-description">TOTAL</p>
-                                                    <p className="plan-content-accounts">Monthly</p>
-                                                </div>
-                                                <div className="col-price">
-                                                    <p className="price">$30</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button className="btn-blue" onClick={() => { this.startCheckout() }}>Go to checkout</button>
-                                    </div>
-                                </div>
-                            ) : ""
-                        } */}
+                        
                     </div>
 
                 </div>
