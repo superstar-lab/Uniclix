@@ -175,9 +175,10 @@ class Social extends React.Component {
                                     <h2>Manage Accounts</h2>
                                 </div>
 
-                                <div className="section-header__second-row">
+                                <div className="mt-2">
                                     <h3>Linked Accounts</h3>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -185,13 +186,17 @@ class Social extends React.Component {
 
                     <div className="row mt20">
                         <div className="col-md-10">
-
                             <div className="col-md-12">
+                                <div class="form-group search-account">
+                                    <input type="search" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search Account" />
+                                    {/* <label for="exampleInputEmail1">Email address</label> */}
+                                    <span><i class="fa fa-search"></i></span>
+                                </div>
                                 <ChannelItems channels={this.props.channels} setAction={this.setAction} />
                                 {!!this.props.loading && <Loader />}
 
                                 <div className="accounts-container__content__wrapper__footer">
-                                    
+
                                     <button className="add-channel-plus-btn" onClick={() => this.props.history.push('/accounts')}>
                                         <i className="fa fa-plus"></i>
                                     </button>
@@ -200,7 +205,7 @@ class Social extends React.Component {
                             </div>
 
                         </div>
-                        
+
                     </div>
 
                 </div>

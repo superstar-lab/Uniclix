@@ -148,7 +148,7 @@ a:link {
   width: 70%;
 }
 
-.box.channels-box{
+.box.channels-box {
   h2 {
     font-weight: bold;
     font-size: 3.2rem;
@@ -156,7 +156,7 @@ a:link {
   h5 {
     text-align: left;
   }
-} 
+}
 .added-channel-btn .channel-profile-info {
   display: flex;
   align-items: center;
@@ -178,9 +178,9 @@ a:link {
 }
 .channel-profile-info .acc-name {
   margin: 0px;
-    text-align: left;
-    font-weight: bold;
-    text-transform: capitalize;
+  text-align: left;
+  font-weight: bold;
+  text-transform: capitalize;
 }
 
 // .added-channel-btn:hover i {
@@ -196,7 +196,6 @@ a:link {
 .added-channel-btn i {
   // display: none !important;
   display: block;
-
 }
 
 .added-channel-btn i:hover {
@@ -333,7 +332,6 @@ a:link {
 }
 .account-info {
   width: 100%;
-
 }
 .account-info p {
   max-width: 250px !important;
@@ -2180,7 +2178,7 @@ button.streammaker-btn:hover {
 }
 
 .item-row:hover .profile-info .stats-info {
-    display: none;
+  display: none;
 }
 // /
 // .item-row .profile-info .item-actions {
@@ -3424,13 +3422,13 @@ button.doneBtn {
 .channel-container {
   max-height: 210px;
   display: flex;
-    align-items: center;
-    margin: 20px 0;
-    width: 100%;
-    border: 1px dashed #909090;
-    padding: 15px 30px;
-    background: white;
-    border-radius: 6px;
+  align-items: center;
+  margin: 20px 0;
+  width: 100%;
+  border: 1px dashed #909090;
+  padding: 15px 30px;
+  background: white;
+  border-radius: 6px;
   overflow-y: auto;
 }
 
@@ -4056,7 +4054,7 @@ aside .btn-group {
   justify-content: center;
   // margin-right: 10px;
 }
-.blue-icon i{
+.blue-icon i {
   color: #2d86da;
 }
 
@@ -4081,9 +4079,9 @@ aside .btn-group {
   }
 }
 .header-title {
-    h5 {
-        float: left;
-    }
+  h5 {
+    float: left;
+  }
 }
 .login-container .channel-buttons {
   width: 100%;
@@ -4726,22 +4724,39 @@ table.compare-plans-table {
   display: inline-block;
 }
 .one-account {
-      display: flex;
-      align-items: center;
-      padding: 15px 30px;
-      background: white;
-      border-radius: 6px;
-      overflow-y: auto;
-      position: relative;
+  display: flex;
+  align-items: center;
+  padding: 15px 30px;
+  background: white;
+  border-radius: 6px;
+  overflow-y: auto;
+  position: relative;
 }
 .twitter-badge {
   position: absolute;
-    top: 49px;
-    left: 66px;
+  top: 49px;
+  left: 66px;
 }
 .mt-2 {
   margin-top: 20px !important;
 }
 .capitalized-text {
   text-transform: capitalize !important;
+}
+.search-account {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 6px;
+  input {
+    background: none;
+    border: none;
+    box-shadow: none;
+  }
+  span {
+    padding: 0px 15px;
+    i {
+      color: #2d86da;
+    }
+  }
 }
