@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import GeoSuggest from "react-geosuggest";
 import { updateProfile } from "../../../requests/profile";
 import momentTz from "moment-timezone";
@@ -197,14 +197,17 @@ class Profile extends React.Component {
                 }
                 <div className="tab-cnt">
                     <div className="tab-head">
-                        <div className={`tab-nav-item radio-tab ${isTabActive == 'personal-info' ? 'active' : ''}`}>
+                        <div className={`tab-nav-item ${isTabActive == 'personal-info' ? 'active' : ''}`}>
                             <button href="#personal-info" onClick={() => this.ChangeTab('personal-info')}>
-                                <span className="">
+                                <span className="icon-bg-profile">
                                     <i className="fa fa-user"></i>
                                 </span> Personal</button>
                         </div>
-                        <div className={`tab-nav-item radio-tab${isTabActive == 'company-info' ? 'active' : ''}`}>
-                            <button href="#company-info" onClick={() => this.ChangeTab('company-info')}><span><i className="fa fa-user"></i></span> Business</button>
+                        <div className={`tab-nav-item ${isTabActive == 'company-info' ? 'active' : ''}`}>
+                            <button href="#company-info" onClick={() => this.ChangeTab('company-info')}>
+                                <span className="icon-bg-profile">
+                                    <i class="fa fa-building"></i>
+                                </span> Business</button>
                         </div>
                     </div>
                     <div className="tab-body">
@@ -259,8 +262,10 @@ class Profile extends React.Component {
                                             </div>
                                         </div>
 
-                                        <div className="col-12 col-md-8">
-                                            <button className="magento-btn pull-left">Save</button>
+                                        <div className="col-12 col-md-12 col-sm-12">
+                                            <div className="col-md-2">
+                                                <button className="magento-btn pull-left">Save</button>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -305,8 +310,10 @@ class Profile extends React.Component {
                                         <input type="tel" className="form-control whiteBg" id="companyPhone" name="companyPhone" onChange={(e) => this.onFieldChange(e)} value={this.state.companyPhone} placeholder="+1 603-278-1000" />
                                     </div>
 
-                                    <div className="col-12 col-md-8">
-                                        <button className="magento-btn pull-left">Save</button>
+                                    <div className="col-12 col-md-12 col-sm-12">
+                                        <div className="col-md-2">
+                                            <button className="magento-btn pull-left">Save</button>
+                                        </div>
                                     </div>
                                 </div>
                             </form>

@@ -4760,3 +4760,19 @@ table.compare-plans-table {
     }
   }
 }
+.icon-bg-profile {
+  width: 50px;
+  height: 50px;
+  display: inline-flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  border-radius: 50%;
+  background: rgba(45, 134, 218, 0.15);
+  margin-right: 10px;
+  i {
+    color:#2D86DA;
+    font-size: 25px;
+    line-height: 25px;
+  }
+}
