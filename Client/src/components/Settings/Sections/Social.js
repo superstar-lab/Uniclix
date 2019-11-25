@@ -189,7 +189,6 @@ class Social extends React.Component {
                             <div className="col-md-12">
                                 <div class="form-group search-account">
                                     <input type="search" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search Account" />
-                                    {/* <label for="exampleInputEmail1">Email address</label> */}
                                     <span><i class="fa fa-search"></i></span>
                                 </div>
                                 <ChannelItems channels={this.props.channels} setAction={this.setAction} />

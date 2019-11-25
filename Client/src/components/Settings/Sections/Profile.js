@@ -197,11 +197,14 @@ class Profile extends React.Component {
                 }
                 <div className="tab-cnt">
                     <div className="tab-head">
-                        <div className={`tab-nav-item ${isTabActive == 'personal-info' ? 'active' : ''}`}>
-                            <button href="#personal-info" onClick={() => this.ChangeTab('personal-info')}>Personal information</button>
+                        <div className={`tab-nav-item radio-tab ${isTabActive == 'personal-info' ? 'active' : ''}`}>
+                            <button href="#personal-info" onClick={() => this.ChangeTab('personal-info')}>
+                                <span className="">
+                                    <i className="fa fa-user"></i>
+                                </span> Personal</button>
                         </div>
-                        <div className={`tab-nav-item ${isTabActive == 'company-info' ? 'active' : ''}`}>
-                            <button href="#company-info" onClick={() => this.ChangeTab('company-info')}>Company information</button>
+                        <div className={`tab-nav-item radio-tab${isTabActive == 'company-info' ? 'active' : ''}`}>
+                            <button href="#company-info" onClick={() => this.ChangeTab('company-info')}><span><i className="fa fa-user"></i></span> Business</button>
                         </div>
                     </div>
                     <div className="tab-body">

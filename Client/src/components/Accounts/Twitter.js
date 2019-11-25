@@ -90,7 +90,6 @@ class Twitter extends React.Component {
     render() {
         const { forbidden, action } = this.state
         const { channels } = this.props
-        console.log(channels, "channels")
         return (
             <div className="">
                 <UpgradeAlert
