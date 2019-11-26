@@ -187,6 +187,9 @@ class Profile extends React.Component {
                     <div className="section-header__first-row">
                         <h2>PROFILE</h2>
                     </div>
+                    <div className="section-header__second-row">
+                        <h4>What's your profile type ?</h4>
+                    </div>
                 </div>
                 {this.state.error &&
                     <div className="alert alert-danger">{error}</div>
@@ -197,16 +200,16 @@ class Profile extends React.Component {
                 }
                 <div className="tab-cnt">
                     <div className="tab-head">
-                        <div className={`tab-nav-item ${isTabActive == 'personal-info' ? 'active' : ''}`}>
+                        <div className={`radio-btn-profile ${isTabActive == 'personal-info' ? 'active' : ''}`}>
                             <button href="#personal-info" onClick={() => this.ChangeTab('personal-info')}>
                                 <span className="icon-bg-profile">
                                     <i className="fa fa-user"></i>
                                 </span> Personal</button>
                         </div>
-                        <div className={`tab-nav-item ${isTabActive == 'company-info' ? 'active' : ''}`}>
+                        <div className={`radio-btn-profile ${isTabActive == 'company-info' ? 'active' : ''}`}>
                             <button href="#company-info" onClick={() => this.ChangeTab('company-info')}>
                                 <span className="icon-bg-profile">
-                                    <i class="fa fa-building"></i>
+                                    <i className="fa fa-building"></i>
                                 </span> Business</button>
                         </div>
                     </div>
