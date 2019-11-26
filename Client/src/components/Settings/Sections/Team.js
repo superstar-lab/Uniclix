@@ -8,8 +8,6 @@ import { LoaderWithOverlay } from "../../Loader";
 import SweetAlert from 'sweetalert2-react';
 import { removeMember } from '../../../requests/team';
 import SocialAccountsPrompt from '../../SocialAccountsPrompt';
-import { NavLink } from "react-router-dom";
-import ChannelItems from '../../Accounts/ChannelItems';
 
 
 class Team extends React.Component {
@@ -77,6 +75,7 @@ class Team extends React.Component {
                 error: false
             }), () => {
                 this.fetchMembers();
+
             });
         }).catch(e => {
             console.log(e);
@@ -88,9 +87,11 @@ class Team extends React.Component {
             loading: false
         }));
         getTeamMembers(this.state.teamId).then(response => {
+            // console.log('team2',response)
+
             this.setState(() => ({
                 members: response,
-                error: false
+                error: false,
             }));
         }).catch(e => {
             this.setState(() => ({
@@ -207,10 +208,47 @@ class Team extends React.Component {
                     </div>
                     <div className="tab-body">
                         <div className={`cnt-item ${isTabActive == 'personal-info' ? 'active' : ''}`}>
-{/* 
-                            <ChannelItems channels={this.props.channels} setAction={this.setAction} />
-                            {!!this.props.loading && <Loader />} */}
+                            {teams.length > 1 && <div className="col-4 col-md-4 form-field">
+                                <select id={`teams`} onChange={this.onTeamChange} value={this.state.teamId} className="form-control">
+                                    {
+                                        this.state.teams.map((team, index) => (
+                                            <option key={index} value={team.id}>{team.name}</option>
+                                        ))
+                                    }
 
+                                </select>
+                            </div>
+                            }
+
+                            {!this.state.loading &&
+                                (!!this.state.members.length ?
+                                    <div>
+
+                                        <div>
+                                            <button onClick={this.toggleAddOrUpdateMember} className="btn upgrade-btn pull-right">Add New Team Member</button>
+                                        </div>
+
+                                        {members.map(member => (
+                                            <TeamMember
+                                                key={member.id}
+                                                member={member}
+                                                fetchMembers={this.loadTeams}
+                                                remove={this.setRemovePrompt}
+                                                update={this.setMemberToUpdate}
+                                            />
+                                        ))}
+
+                                    </div>
+                                    :
+
+                                    <SocialAccountsPrompt
+                                        image="/images/hello_bubble_smiley.svg"
+                                        title="Let's start by adding new members!"
+                                        description="To add members to your team, click the button below."
+                                        buttonText="Add new member"
+                                        action={this.toggleAddOrUpdateMember}
+                                    />)
+                            }
                         </div>
                         <div className={`cnt-item ${isTabActive == 'company-info' ? 'active' : ''}`}>
                             <p>busines info</p>
@@ -219,47 +257,7 @@ class Team extends React.Component {
                     </div>
                 </div>
 
-                {teams.length > 1 && <div className="col-4 col-md-4 form-field">
-                    <select id={`teams`} onChange={this.onTeamChange} value={this.state.teamId} className="form-control">
-                        {
-                            this.state.teams.map((team, index) => (
-                                <option key={index} value={team.id}>{team.name}</option>
-                            ))
-                        }
 
-                    </select>
-                </div>
-                }
-
-                {!this.state.loading &&
-                    (!!this.state.members.length ?
-                        <div>
-
-                            <div>
-                                <button onClick={this.toggleAddOrUpdateMember} className="btn upgrade-btn pull-right">Add New Team Member</button>
-                            </div>
-
-                            {members.map(member => (
-                                <TeamMember
-                                    key={member.id}
-                                    member={member}
-                                    fetchMembers={this.loadTeams}
-                                    remove={this.setRemovePrompt}
-                                    update={this.setMemberToUpdate}
-                                />
-                            ))}
-
-                        </div>
-                        :
-
-                        <SocialAccountsPrompt
-                            image="/images/hello_bubble_smiley.svg"
-                            title="Let's start by adding new members!"
-                            description="To add members to your team, click the button below."
-                            buttonTitle="Add new member"
-                            action={this.toggleAddOrUpdateMember}
-                        />)
-                }
             </div>
         );
     }

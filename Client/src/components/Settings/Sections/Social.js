@@ -195,7 +195,6 @@ class Social extends React.Component {
                                 {!!this.props.loading && <Loader />}
 
                                 <div className="accounts-container__content__wrapper__footer">
-
                                     <button className="add-channel-plus-btn" onClick={() => this.props.history.push('/accounts')}>
                                         <i className="fa fa-plus"></i>
                                     </button>

@@ -2536,7 +2536,9 @@ button.streammaker-btn:hover {
 .no-border {
   border: none !important;
 }
-
+.w-auto{
+  width: auto !important;
+}
 .show-flex {
   display: flex !important;
 }
@@ -4774,5 +4776,11 @@ table.compare-plans-table {
     color:#2D86DA;
     font-size: 25px;
     line-height: 25px;
+  }
+}
+.team-info {
+  text-align: center;
+  .profile-title{
+    font-weight: bold;
   }
 }
