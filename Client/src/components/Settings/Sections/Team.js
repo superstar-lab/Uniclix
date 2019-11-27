@@ -224,9 +224,7 @@ class Team extends React.Component {
                                 (!!this.state.members.length ?
                                     <div>
 
-                                        <div>
-                                            <button onClick={this.toggleAddOrUpdateMember} className="btn upgrade-btn pull-right">Add New Team Member</button>
-                                        </div>
+
 
                                         {members.map(member => (
                                             <TeamMember
@@ -237,6 +235,12 @@ class Team extends React.Component {
                                                 update={this.setMemberToUpdate}
                                             />
                                         ))}
+                                        <div className="accounts-container__content__wrapper__footer">
+                                            <button onClick={this.toggleAddOrUpdateMember} className="add-channel-plus-btn">
+                                                <i className="fa fa-plus"></i>
+                                            </button>
+                                            <span className="left-side-label">Add New Team Member</span>
+                                        </div>
 
                                     </div>
                                     :

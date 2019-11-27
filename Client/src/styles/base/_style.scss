@@ -2129,7 +2129,7 @@ button.streammaker-btn:hover {
       max-width: inherit;
     }
   }
-
+  
   .draft_editor_container {
     background: white;
     border: 1px solid #ccc;
@@ -2855,6 +2855,12 @@ button.streammaker-btn:hover {
 
 .mb-40 {
   margin-bottom: 40px !important;
+}
+.w50 {
+  width: 50% !important;
+}
+.h65{
+  height: 65px !important;
 }
 
 .w100 {
@@ -4754,6 +4760,9 @@ table.compare-plans-table {
     background: none;
     border: none;
     box-shadow: none;
+    &:focus {
+      box-shadow: none;
+    }
   }
   span {
     padding: 0px 15px;
@@ -4778,9 +4787,48 @@ table.compare-plans-table {
     line-height: 25px;
   }
 }
+.profile-email {
+  color: #ffffff;
+  font-weight: normal;
+  font-size: 1.5rem;
+  color: #909090;
+  margin: 0;
+  p {
+    max-width: inherit;
+  }
+}
+.team-info-hover{
+  display: none;
+}
 .team-info {
   text-align: center;
   .profile-title{
     font-weight: bold;
+  }
+  ul {
+    display: inline-flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+  }
+  .date-team {
+    font-size: 1.5rem;
+    color: #909090;
+    margin: 0;
+  }
+}
+.twitter-middleware-btn{
+  &:hover {
+    background: #EAF3fb;
+    .team-info{
+      display: none;
+    }
+    .team-info-hover {
+      display: flex;
+      font-size: 25px;
+      .user-action {
+        padding: 0px 40px;
+      }
+    }
   }
 }

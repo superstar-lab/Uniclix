@@ -15,36 +15,38 @@ class TeamMember extends React.Component {
 
     render() {
         const { member } = this.props;
-        console.log('mem', member)
+        // console.log('mem', member)
         return (
             <div>
-                {member.assignedChannels[0].active === 1 
-                ?
+                {/* {member.assignedChannels[0].active === 1  */}
                 <div className="twitter-middleware-btn added-channel-btn">
                     <div className="block-urls2">
-                        <div className="profile-info account-info pull-right">
+                        <div className="profile-info account-info pull-right h65">
                             <div className="channel-profile-info">
                                 <img className="pull-left" onError={(e) => e.target.src = '/images/dummy_profile.png'} src={member.assignedChannels[0].avatar} />
                                 <div>
                                     <p className="profile-name acc-name">{member.details.name}  <span className="profile-state"></span></p>
-                                    <p className="profile-username">{member.details.email}</p>
+                                    <p className="profile-email">{member.details.email}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {/* <div className="user-action mrnone blue-icon" onClick={() => setAction({ id: member.id, type: "delete" })}><i className="fa fa-trash"></i></div> */}
-                    <div className="item-actions pull-right">
+                    <div className="item-actions pull-right w50 h50">
                         <div className="team-info">
-                            <div className="row">
-                                <div className="col-md-6">
+                            <ul>
+                                <li>
                                     {/* <p>added {member.created_at}</p> */}
-                                    <p>added 12/05/2018</p>
-                                </div>
-                                <div className="col-md-6">
+                                    <p className="date-team">added 12/05/2018</p>
+                                </li>
+                                <li>
                                     <p className="profile-title">{member.is_admin ? "Admin" : "Member"}</p>
                                     <p>Role</p>
-                                </div>
-                            </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="team-info-hover pull-right">
+                            <div className="user-action mrnone blue-icon" onClick={() => setAction({ id: member.id, type: "delete" })}><i className="fa fa-edit"></i></div>
+                            <div className="user-action mrnone blue-icon" onClick={() => setAction({ id: member.id, type: "delete" })}><i className="fa fa-trash"></i></div>
                         </div>
                         {/* <ul className="v-center-align">
                             <li className="text-links">
@@ -56,11 +58,6 @@ class TeamMember extends React.Component {
                         </ul> */}
                     </div>
                 </div>
-                :
-                <div>
-                    <p>You dont have an active account</p>
-                </div>
-                }
             </div>
         );
 
