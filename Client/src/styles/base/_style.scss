@@ -4752,6 +4752,9 @@ table.compare-plans-table {
     background: none;
     border: none;
     box-shadow: none;
+    &:focus {
+      box-shadow: none;
+    }
   }
   span {
     padding: 0px 15px;
@@ -4771,7 +4774,7 @@ table.compare-plans-table {
   background: rgba(45, 134, 218, 0.15);
   margin-right: 10px;
   i {
-    color:#2D86DA;
+    color: #2d86da;
     font-size: 25px;
     line-height: 25px;
   }
