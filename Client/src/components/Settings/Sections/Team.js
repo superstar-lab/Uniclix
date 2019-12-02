@@ -194,7 +194,7 @@ class Team extends React.Component {
                         member={this.state.memberToUpdate}
                     />
                 </Modal>
-
+                    <div></div>
                 <div className="tab-cnt">
                     <div className="tab-head">
                         <div className={`tab-nav-item ${isTabActive == 'personal-info' ? 'active' : ''}`}>
