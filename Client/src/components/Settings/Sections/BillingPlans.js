@@ -75,39 +75,7 @@ class BillingPlans extends React.Component {
     render() {
         const { allPlans } = this.state;
         const { profile } = this.props;
-        const planHeading = allPlans.map((plan, index) => {
-            const btnText = plan["Name"] === "Free" ? "Get for free" : "Purchase plan";
-            const planName = this.state.billingPeriod === "annually" ? plan["Name"].toLowerCase() + "_annual" : plan["Name"].toLowerCase();
-
-            let planButton = "";
-            if ((profile.role.name === plan["Name"].toLowerCase() && profile.subscription.activeSubscription) || (profile.role.name === "free" && plan["Name"].toLowerCase() === "free")) {
-                planButton = <a className="btn plan-price-btn disabled-btn" data-period="annually" href="javascript:void(0);">Current Plan</a>;
-            } else if (plan["Name"] == "Free" && profile.role.name !== "free") {
-                planButton = <a className="btn plan-price-btn" onClick={() => this.onPlanClick("free")} href="javascript:void(0);">{btnText}</a>;
-            } else if (profile.role.name !== "free" && profile.subscription.activeSubscription) {
-                planButton = <a className="btn plan-price-btn" onClick={() => this.setPlanChange(planName)} href="javascript:void(0);">Change plan</a>;
-            } else {
-                planButton = (
-                    <Checkout
-                        plan={planName}
-                        subType="main"
-                        trialDays={30}
-                        setLoading={this.setLoading}
-                        setProfile={this.props.startSetProfile}
-                        amount={this.state.billingPeriod === "annually" ? (plan["Annual Billing"] * 100) : (plan["Monthly"] * 100)}
-                        text={btnText}>
-                        <a className="btn plan-price-btn" data-period="annually" href="javascript:void(0);">{btnText}</a>
-                    </Checkout>);
-            }
-
-            return (
-                <th key={`${index}-1`}>
-                    <h5>{plan["Name"]} {`${index}`}</h5>
-                    {/* {planButton} */}
-                </th>
-            );
-        });
-
+        console.log(allPlans);
         return (
             <div>
                 <UpgradeAlert
@@ -142,7 +110,12 @@ class BillingPlans extends React.Component {
                             <span className="billing-toggle">monthly billing</span>
                             <label className="label">
                                 <div className="toggle">
-                                    <input id="toggleMonthlyYearly" className="toggle-state" type="checkbox" name="check" value={this.state.billingPeriod} onChange={this.setBillingPeriod} checked={this.state.billingPeriod === "annually"} />
+                                    <input id="toggleMonthlyYearly"
+                                        className="toggle-state"
+                                        type="checkbox" name="check"
+                                        value={this.state.billingPeriod}
+                                        onChange={this.setBillingPeriod}
+                                        checked={this.state.billingPeriod === "annually"} />
                                     <div className="toggle-inner">
                                         <div className="indicator"></div>
                                     </div>
@@ -151,69 +124,35 @@ class BillingPlans extends React.Component {
                             </label>
                             <span className="billing-toggle">annual billing</span>
                         </div>
-                      
-                        <section class="pricing py-5">
-                            <div className="col-4 col-md-4 col-sm-12">
 
-                                <div class="card mb-5 mb-lg-0">
-                                    <div class="card-body">
-                                        <h5 class="card-title text-muted text-uppercase text-center">Free</h5>
-                                        <h6 class="card-price text-center">$0<span class="period">/month</span></h6>
-                                        {/* <hr> */}
-                                        <ul class="fa-ul">
-                                            <li><span class="fa-li"><i class="fa fa-check"></i></span>Single User</li>
-                                            <li><span class="fa-li"><i class="fa fa-check"></i></span>5GB Storage</li>
-                                            <li><span class="fa-li"><i class="fa fa-check"></i></span>Unlimited Public Projects</li>
-                                            <li><span class="fa-li"><i class="fa fa-check"></i></span>Community Access</li>
-                                            <li class="text-muted"><span class="fa-li"><i class="fa fa-times"></i></span>Unlimited Private Projects</li>
-                                            <li class="text-muted"><span class="fa-li"><i class="fa fa-times"></i></span>Dedicated Phone Support</li>
-                                            
-                                        </ul>
-                                        <a href="#" class="btn btn-block btn-primary text-uppercase">Button</a>
+                        <section className="pricing py-5">
+                            {allPlans.map((plan, index) => {
+                                return (
+                                    <div key={index} className="col-4 col-md-4 col-sm-12">
+                                        <div className="card mb-5 mb-lg-0">
+                                            <div className="card-body">
+                                                <h5 className="card-title text-muted text-uppercase text-center">{plan["Name"]}</h5>
+                                                {this.state.billingPeriod === "annually" ?
+                                                    <h6 className="card-price text-center">${plan['Annual Billing']}<span className="period">/annual</span></h6>
+                                                    :
+                                                    <h6 className="card-price text-center">${plan["Monthly"]}<span className="period">/month</span></h6>
+                                                }
+                                                <ul className="fa-ul">
+                                                    <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Social Accounts"]} social accounts </li>
+                                                    <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Users"]} user</li>
+                                                    <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Post Limitation"]} post</li>
+                                                    <li><span className="fa-li"><i className="fa fa-check"></i></span>manage and schedule posts {plan["Schedule and Publish"] != true ? plan["Schedule and Publish"] : ''}</li>
+                                                    <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Mentions"]} track mentions</li>
+                                                    <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Social Listening & Monitoring"]} monitor activity</li>
+                                                    {plan["Content Curation"] == true ? <li><span className="fa-li"><i className="fa fa-check"></i></span>Content Curation</li> : ''}
+                                                </ul>
+                                                <a href="#" className="btn btn-block btn-primary text-uppercase">Button</a>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div className="col-4 col-md-4 col-sm-12">
-
-                                <div class="card mb-5 mb-lg-0">
-                                    <div class="card-body">
-                                        <h5 class="card-title text-muted text-uppercase text-center">Free</h5>
-                                        <h6 class="card-price text-center">$0<span class="period">/month</span></h6>
-                                        {/* <hr> */}
-                                        <ul class="fa-ul">
-                                            <li><span class="fa-li"><i class="fa fa-check"></i></span>Single User</li>
-                                            <li><span class="fa-li"><i class="fa fa-check"></i></span>5GB Storage</li>
-                                            <li><span class="fa-li"><i class="fa fa-check"></i></span>Unlimited Public Projects</li>
-                                            <li><span class="fa-li"><i class="fa fa-check"></i></span>Community Access</li>
-                                            <li class="text-muted"><span class="fa-li"><i class="fa fa-times"></i></span>Unlimited Private Projects</li>
-                                            <li class="text-muted"><span class="fa-li"><i class="fa fa-times"></i></span>Dedicated Phone Support</li>
-                                          
-                                        </ul>
-                                        <a href="#" class="btn btn-block btn-primary text-uppercase">Button</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-4 col-md-4 col-sm-12">
-
-                                <div class="card mb-5 mb-lg-0">
-                                    <div class="card-body">
-                                        <h5 class="card-title text-muted text-uppercase text-center">Free</h5>
-                                        <h6 class="card-price text-center">$0<span class="period">/month</span></h6>
-                                        {/* <hr> */}
-                                        <ul class="fa-ul">
-                                            <li><span class="fa-li"><i class="fa fa-check"></i></span>Single User</li>
-                                            <li><span class="fa-li"><i class="fa fa-check"></i></span>5GB Storage</li>
-                                            <li><span class="fa-li"><i class="fa fa-check"></i></span>Unlimited Public Projects</li>
-                                            <li><span class="fa-li"><i class="fa fa-check"></i></span>Community Access</li>
-                                            <li class="text-muted"><span class="fa-li"><i class="fa fa-times"></i></span>Unlimited Private Projects</li>
-                                            <li class="text-muted"><span class="fa-li"><i class="fa fa-times"></i></span>Dedicated Phone Support</li>
-                                            
-                                        </ul>
-                                        <a href="#" class="btn btn-block btn-primary text-uppercase">Button</a>
-                                    </div>
-                                </div>
-                            </div>
+                                )
+                            })
+                            }
                         </section>
 
 
