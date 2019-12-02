@@ -103,8 +103,18 @@
   .modal-body,
   .modal-footer {
     padding: 20px 0 5px 0;
+    border: none;
   }
 }
+.modal-btn {
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  border-radius: 30px;
+  padding: 15px 50px;
+}
+
 
 .main-modal-style .btn-link,
 .main-content-style .btn-link {
@@ -127,8 +137,12 @@
   font-family: open-sansLight, arial, sans-serif;
   outline: none !important;
   border: none;
+  width: auto;
   &:focus {
     box-shadow: none;
+  }
+  &selected {
+    background: none;
   }
 }
 
@@ -244,4 +258,13 @@
 
 .modal-dialog.modal-dialog-centered.compose-dialog .main-modal-style {
   margin-left: -80px;
+}
+.modal-btn2 {
+  padding: 15px 50px;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+  color: #2d86da;
 }

@@ -213,31 +213,30 @@ class UpdateTeamMember extends React.Component {
                         </div>
 
                         <div className="form-group">
-                            <div class="mb20 clearer">
-                            <div class="accounts-container__content__wrapper__footer"><button onClick={this.toggleSelectChannelsModal} class="add-channel-plus-btn"><i class="fa fa-plus"></i></button><span class="left-side-label">Select Social Accounts</span></div>
-                                {/* <button  className="default-white-btn pull-right" ><span className="cus-plus-icon">+</span>Select Social Accounts</button> */}
-                            </div>
-                            <div className="clearer team-form scrollbar">
-                                {!!this.state.assignedChannels.length && <div>
+                            <label htmlFor="email">Account</label>
+                            <div className="scrollbar">
+                                {/* !! para this,state */}
+                                {/* {!!this.state.assignedChannels.length && <div>
                                     <div className="col-6 col-md-6 mb15">
-                                        <label class="bolden">Assign Social Account</label>
+                                        <label className="bolden">Assign Social Account</label>
                                     </div>
                                     <div className="col-6 col-md-6 mb15">
-                                        <label class="bolden">Permission Level</label>
+                                        <label className="bolden">Permission Level</label>
                                     </div>
-                                </div>}
+                                </div>} */}
                                 {this.state.assignedChannels.map((channel, index) => (
-                                    <div key={index}>
-                                        <div className="col-6 col-md-6 form-field">
+                                    <div className="col-12 col-md-12 form-field m-sm" key={index}>
+                                        <div className="input-group">
                                             <input type="text" value={`${channel.name} - ${channel.type}`} className="form-control whiteBg" onClick={this.toggleSelectChannelsModal} readOnly id={`channel-${channel.id}`} placeholder="Name of the social account" />
-                                        </div>
-                                        <div className="col-6 col-md-6 form-field">
-                                            <select id={`permission-${channel.id}`} onChange={(e) => this.setPermissionLevel(e, channel.id)} value={channel.permissionLevel} className="form-control">
+                                            <select id={`permission-${channel.id}`} onChange={(e) => this.setPermissionLevel(e, channel.id)} value={channel.permissionLevel} className="">
                                                 <option value="member">Approval Required</option>
                                                 <option value="publisher">Publisher</option>
                                             </select>
                                         </div>
                                     </div>))}
+                            </div>
+                            <div className="mb20">
+                                <div className="accounts-container__content__wrapper__footer"><button onClick={this.toggleSelectChannelsModal} className="add-channel-plus-btn"><i className="fa fa-plus"></i></button><span className="left-side-label">Select Social Accounts</span></div>
                             </div>
 
 
@@ -246,8 +245,8 @@ class UpdateTeamMember extends React.Component {
 
                     <div className="modal-footer">
                         <div>
-                            <button className="magento-btn small-btn pull-right" onClick={this.onSubmit}>Submit</button>
-                            <button onClick={this.props.close} className="btn btn-link pull-right">Cancel</button>
+                            <button className="magento-btn small-btn modal-btn pull-right" onClick={this.onSubmit}>Submit</button>
+                            <button onClick={this.props.close} className="btn btn-link pull-right modal-btn2 ">Cancel</button>
                         </div>
                     </div>
 
