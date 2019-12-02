@@ -1,242 +1,247 @@
 .modal {
-    text-align: center;
+  text-align: center;
 }
 
 .modal-dialog {
-    display: inline-block;
-    text-align: left;
-    vertical-align: middle;
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
 }
 
 .ReactModal__Content.ReactModal__Content--after-open.topicsModal .form-group {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
-.ReactModal__Content.ReactModal__Content--after-open.topicsModal .form-group>div {
-    width: 100%;
+.ReactModal__Content.ReactModal__Content--after-open.topicsModal .form-group > div {
+  width: 100%;
 }
 
 .ReactModal__Content.ReactModal__Content--after-open.topicsModal input {
-    border-radius: 100px;
-    width: 100%;
-    padding: 15px;
-    height: 38px;
-    box-shadow: none;
-    outline: none;
-    margin: 10px 0;
-    border: 1px solid #e1e1e1;
+  border-radius: 100px;
+  width: 100%;
+  padding: 15px;
+  height: 38px;
+  box-shadow: none;
+  outline: none;
+  margin: 10px 0;
+  border: 1px solid #e1e1e1;
 }
 
 .ReactModal__Content.ReactModal__Content--after-open.topicsModal h3 {
-    border-bottom: 1px solid #e1e1e1;
-    margin-top: 0;
-    padding-bottom: 10px;
-    font-size: 1.8rem;
-    font-weight: 700;
+  border-bottom: 1px solid #e1e1e1;
+  margin-top: 0;
+  padding-bottom: 10px;
+  font-size: 1.8rem;
+  font-weight: 700;
 }
 
 .ReactModal__Content.ReactModal__Content--after-open.topicsModal {
-    background: white;
-    border-radius: 5px;
-    max-width: 500px;
-    width: 500px;
-    padding: 15px;
+  background: white;
+  border-radius: 5px;
+  max-width: 500px;
+  width: 500px;
+  padding: 15px;
 }
 
 .ReactModal__Content.ReactModal__Content--after-open.topicsModal .right-inline {
-    border-top: 1px solid #e1e1e1;
-    text-align: right;
-    padding-bottom: 0;
-    padding-right: 0;
+  border-top: 1px solid #e1e1e1;
+  text-align: right;
+  padding-bottom: 0;
+  padding-right: 0;
 }
 
 .small-btn {
-    width: auto;
-    padding: 10px 30px;
+  width: auto;
+  padding: 10px 30px;
 }
 
 .modal-header-container h3,
 .main-content-style h3 {
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin: 0;
+  margin: 0;
+  font-weight: normal;
+  font-size: 18px;
+  font-family: Rubik;
+  margin: 0;
 }
 
 .main-content-style h3 {
-    margin: 10px 0 30px;
+  margin: 10px 0 30px;
 }
 
 .modal-header-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #e1e1e1;
-    padding-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-
 .main-content-style {
-    padding: 15px;
-    width: 100%;
-    margin: 30px auto;
+  padding: 15px;
+  width: 100%;
+  margin: 30px auto;
 }
 
 .main-modal-style .custom-control,
 .main-content-style .custom-control {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .main-modal-style .seperator,
 .main-content-style .seperator {
-    border-top: 1px solid #e1e1e1;
-    margin: 30px 0;
-    overflow: hidden;
-    clear: both;
+  border-top: 1px solid #e1e1e1;
+  margin: 30px 0;
+  overflow: hidden;
+  clear: both;
 }
 
 .main-modal-style {
-    padding: 15px;
-    width: 700px;
+  padding: 30px;
+  width: 92vh;
+  background: #f5f7fb;
+  border-radius: 8px;
 
-    .modal-body,
-    .modal-footer {
-        padding: 20px 0 5px 0;
-    }
+  .modal-body,
+  .modal-footer {
+    padding: 20px 0 5px 0;
+  }
 }
 
 .main-modal-style .btn-link,
 .main-content-style .btn-link {
-    color: #212121;
+  color: #212121;
 }
 
 .main-modal-style .custom-control label,
 .main-content-style .custom-control label {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
-
 
 .main-modal-style input,
 .main-content-style input,
 .main-modal-style select,
 .main-content-style select {
-    background: none;
+  background: none;
+  box-shadow: none;
+  color: #212121;
+  font-family: open-sansLight, arial, sans-serif;
+  outline: none !important;
+  border: none;
+  &:focus {
     box-shadow: none;
-    color: #212121;
-    font-family: open-sansLight, arial, sans-serif;
-    outline: none !important;
-    border: none;
-    padding: 20px 10px;
+  }
 }
 
 .main-content-style h5 {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .main-modal-style label,
 .main-content-style label {
-    font-family: open-sansLight, sans-serif;
-    text-transform: capitalize;
-    color: #212121;
+  text-transform: capitalize;
+  color: #363636;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
 }
 
-.main-modal-style [class ^="col-"],
-.main-content-style [class ^="col-"] {
-    padding-right: 0;
-    padding-left: 0;
+.main-modal-style [class^="col-"],
+.main-content-style [class^="col-"] {
+  padding-right: 0;
+  padding-left: 0;
 }
 
-.main-modal-style [class ^="col-"]:not(:last-child),
-.main-content-style [class ^="col-"]:not(:last-child) {
-    padding-right: 20px;
-}
-
+// .main-modal-style [class ^="col-"]:not(:last-child),
+// .main-content-style [class ^="col-"]:not(:last-child) {
+//     padding-right: 20px;
+// }
 
 .modal-menu {
-    padding: 0;
-    border-right: 1px solid #e1e1e1;
+  padding: 0;
+  border-right: 1px solid #e1e1e1;
 
-    li {
-        font-size: 1.4rem;
-        font-weight: bold;
-        padding: 10px 10px;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
+  li {
+    font-size: 1.4rem;
+    font-weight: bold;
+    padding: 10px 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 
-        &.selected {
-            background: #e5e5e5;
-            box-sizing: border-box;
-            border-left: 3px solid #747D95;
-            padding: 10px 7px;
-        }
-
-        &:hover {
-            background: #eee;
-            box-sizing: border-box;
-        }
-
-        &>i {
-            display: block;
-            font-size: 2.5rem;
-            width: 30px;
-        }
-
-        &>p {
-            margin: 0;
-        }
+    &.selected {
+      background: #e5e5e5;
+      box-sizing: border-box;
+      border-left: 3px solid #747d95;
+      padding: 10px 7px;
     }
+
+    &:hover {
+      background: #eee;
+      box-sizing: border-box;
+    }
+
+    & > i {
+      display: block;
+      font-size: 2.5rem;
+      width: 30px;
+    }
+
+    & > p {
+      margin: 0;
+    }
+  }
 }
 
-.modal-results .selection-container input:checked~.checkmark {
-    background-color: #485576;
+.modal-results .selection-container input:checked ~ .checkmark {
+  background-color: #485576;
 }
 
 .modal-results .checkmark {
-    position: absolute;
-    top: 15px;
-    left: 0;
-    height: 18px;
-    width: 18px;
-    background-color: #eee;
+  position: absolute;
+  top: 15px;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  background-color: #eee;
 }
 
 .modal-results .selection-container .checkmark:after {
-    top: 6px;
-    left: 6px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: white;
+  top: 6px;
+  left: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: white;
 }
 
 .modal-results .channel-selection-container {
-    border: 1px solid #e1e1e1;
-    align-items: center;
-    padding: 5px 5px;
-    margin-bottom: 10px;
-    display: flex;
-    border-radius: 5px;
+  border: 1px solid #e1e1e1;
+  align-items: center;
+  padding: 5px 5px;
+  margin-bottom: 10px;
+  display: flex;
+  border-radius: 5px;
 }
 
 .modal-results .channel-selection-container.selected {
-    border: 1px solid #485576;
+  border: 1px solid #485576;
 }
 
 .modal-results .channel-selection-container label {
-    margin-bottom: 0;
-    font-size: 1.3rem;
-    font-family: open-sansLight, sans-serif;
-    color: #485576;
+  margin-bottom: 0;
+  font-size: 1.3rem;
+  font-family: open-sansLight, sans-serif;
+  color: #485576;
 }
 
-.modal-results .channel-selection-container label>img {
-    border: 1px solid #e5e5e5;
-    border-radius: 100px;
-    margin-right: 5px;
+.modal-results .channel-selection-container label > img {
+  border: 1px solid #e5e5e5;
+  border-radius: 100px;
+  margin-right: 5px;
 }
 
 .modal-dialog.modal-dialog-centered.compose-dialog .main-modal-style {
-    margin-left: -80px;
+  margin-left: -80px;
 }
