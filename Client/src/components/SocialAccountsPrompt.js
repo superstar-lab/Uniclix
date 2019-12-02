@@ -17,9 +17,9 @@ const SocialAccountsPrompt = ({
         {text && 
             <p>{text}</p>
         }
-        <h5>{buttonTitle ? buttonTitle : ''}</h5>
+        <h5>{buttonTitle}</h5>
         { action ? 
-            <button className="magento-btn w-auto" onClick={action}>{buttonText}</button>
+            <button className="magento-btn" onClick={action}>{buttonText}</button>
             :
             buttonLink && <NavLink to={buttonLink}><button className="magento-btn">{buttonText}</button></NavLink>
         }

@@ -2129,7 +2129,7 @@ button.streammaker-btn:hover {
       max-width: inherit;
     }
   }
-  
+
   .draft_editor_container {
     background: white;
     border: 1px solid #ccc;
@@ -2536,9 +2536,7 @@ button.streammaker-btn:hover {
 .no-border {
   border: none !important;
 }
-.w-auto{
-  width: auto !important;
-}
+
 .show-flex {
   display: flex !important;
 }
@@ -2855,12 +2853,6 @@ button.streammaker-btn:hover {
 
 .mb-40 {
   margin-bottom: 40px !important;
-}
-.w50 {
-  width: 50% !important;
-}
-.h65{
-  height: 65px !important;
 }
 
 .w100 {
@@ -4748,6 +4740,9 @@ table.compare-plans-table {
 .mt-2 {
   margin-top: 20px !important;
 }
+.mt-3 {
+  margin-top: 30px !important;
+}
 .capitalized-text {
   text-transform: capitalize !important;
 }
@@ -4782,53 +4777,8 @@ table.compare-plans-table {
   background: rgba(45, 134, 218, 0.15);
   margin-right: 10px;
   i {
-    color:#2D86DA;
+    color: #2d86da;
     font-size: 25px;
     line-height: 25px;
-  }
-}
-.profile-email {
-  color: #ffffff;
-  font-weight: normal;
-  font-size: 1.5rem;
-  color: #909090;
-  margin: 0;
-  p {
-    max-width: inherit;
-  }
-}
-.team-info-hover{
-  display: none;
-}
-.team-info {
-  text-align: center;
-  .profile-title{
-    font-weight: bold;
-  }
-  ul {
-    display: inline-flex;
-    justify-content: space-evenly;
-    align-items: center;
-    width: 100%;
-  }
-  .date-team {
-    font-size: 1.5rem;
-    color: #909090;
-    margin: 0;
-  }
-}
-.twitter-middleware-btn{
-  &:hover {
-    background: #EAF3fb;
-    .team-info{
-      display: none;
-    }
-    .team-info-hover {
-      display: flex;
-      font-size: 25px;
-      .user-action {
-        padding: 0px 40px;
-      }
-    }
   }
 }

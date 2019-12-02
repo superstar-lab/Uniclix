@@ -199,7 +199,7 @@ class Profile extends React.Component {
                     <div className="alert alert-success">{success}</div>
                 }
                 <div className="tab-cnt">
-                    <div className="tab-head no-border">
+                    <div className="tab-head">
                         <div className={`radio-btn-profile ${isTabActive == 'personal-info' ? 'active' : ''}`}>
                             <button href="#personal-info" onClick={() => this.ChangeTab('personal-info')}>
                                 <span className="icon-bg-profile">
