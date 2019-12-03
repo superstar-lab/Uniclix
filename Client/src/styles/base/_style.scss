@@ -3150,9 +3150,13 @@ button.doneBtn {
 
 .card-title {
   font-weight: bold;
-  font-size: $m-size;
+  color: #d83e7f;
+  font-size: 22px;
 }
-
+.card-selected {
+  color: #2d86da;
+  font-size: 22px;
+}
 .card-content {
   width: 1000px;
 }
@@ -4847,10 +4851,10 @@ section.pricing {
   margin: 1.5rem 0;
 }
 .pricing .card-title {
-  margin: 10px 0px 15px 0px;
-  font-size: 0.9rem;
+  margin: 20px 0px 15px 0px;
+  font-size: 22px;
+  padding-top: 20px;
   letter-spacing: 0.1rem;
-  font-weight: bold;
 }
 .pricing .card-price {
   font-size: 3rem;
@@ -4869,7 +4873,6 @@ section.pricing {
 .billing-top {
   width: 100%;
 }
-
 
 .input-group {
   display: flex;
@@ -4916,7 +4919,6 @@ section.pricing {
   border-radius: 5rem;
   padding: 1rem;
   width: 50%;
-  margin: 0 auto;
   display: flex;
   justify-content: center;
   background: none;
@@ -4927,6 +4929,14 @@ section.pricing {
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
+  position: absolute;
+  left: 50%;
+  bottom: 0px;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+  &:hover {
+    color: #2d86da;
+  }
 }
 .billing-btn.active {
   background: #2d86da;

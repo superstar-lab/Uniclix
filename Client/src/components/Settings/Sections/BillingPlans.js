@@ -15,7 +15,10 @@ class BillingPlans extends React.Component {
         planChange: false,
         loading: false,
         roleBilling: "",
+        buttontext: "Upgrade"
     }
+
+
     componentDidMount() {
         getPlanData().then(response => {
             this.setState({
@@ -68,6 +71,13 @@ class BillingPlans extends React.Component {
             planChange: planName
         }));
     };
+    setChangeButtonText = () => {
+        this.setState(() => ({
+            buttontext: "Confirm Order"
+        }));
+    };
+
+
     setLoading = (loading = false) => {
         this.setState(() => ({
             loading
@@ -127,25 +137,27 @@ class BillingPlans extends React.Component {
                             {allPlans.map((plan, index) => {
                                 return (
                                     <div key={index} className="col-4 col-md-4 col-sm-12">
-                                        <div className="card">
-                                            <div className={`card-body billing-body-c ${plan["Name"].toLowerCase() == this.state.roleBilling ? 'active' : ''}`}>
-                                                {plan["Name"].toLowerCase() == this.state.roleBilling ? 'selected account' : ''}
+                                        <div className={`card billing-body-c ${plan["Name"].toLowerCase() == this.state.roleBilling ? 'active' : ''}`}>
+                                            <div className="card-body">
+                                                <h6 className="card-selected text-center">{plan["Name"].toLowerCase() == this.state.roleBilling ? 'Selected plan' : ''}</h6>
                                                 <h5 className="card-title text-muted text-uppercase text-center">{plan["Name"]}</h5>
                                                 {this.state.billingPeriod === "annually" ?
                                                     <h6 className="card-price text-center">${plan['Annual Billing']}<span className="period">/annual</span></h6>
                                                     :
                                                     <h6 className="card-price text-center">${plan["Monthly"]}<span className="period">/month</span></h6>
                                                 }
-                                                <ul className="fa-ul">
-                                                    <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Social Accounts"]} social accounts </li>
-                                                    <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Users"]} user</li>
-                                                    <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Post Limitation"]} post</li>
-                                                    <li><span className="fa-li"><i className="fa fa-check"></i></span>manage and schedule posts {plan["Schedule and Publish"] != true ? plan["Schedule and Publish"] : ''}</li>
-                                                    <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Mentions"]} track mentions</li>
-                                                    <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Social Listening & Monitoring"]} monitor activity</li>
-                                                    {plan["Content Curation"] == true ? <li><span className="fa-li"><i className="fa fa-check"></i></span>Content Curation</li> : ''}
-                                                </ul>
-                                                <button className={`btn billing-btn text-uppercase ${plan["Name"].toLowerCase() == this.state.roleBilling ? 'active' : ''}`}   onClick={() => this.setRole(plan["Name"])}>Button</button>
+                                                <div className="container">
+                                                    <ul className="fa-ul ">
+                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Social Accounts"]} social accounts </li>
+                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Users"]} user</li>
+                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Post Limitation"]} post</li>
+                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Schedule and Publish"] != true ? 'manage and schedule posts' : ''}</li>
+                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Mentions"]} track mentions</li>
+                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Social Listening & Monitoring"]} monitor activity</li>
+                                                        {plan["Content Curation"] == true ? <li><span className="fa-li"><i className="fa fa-check"></i></span>Content Curation</li> : ''}
+                                                    </ul>
+                                                </div>
+                                                <button className={`btn billing-btn  ${plan["Name"].toLowerCase() == this.state.roleBilling ? 'active' : ''}`} onClick={() => this.setRole(plan["Name"])}>{plan["Name"].toLowerCase() == this.state.roleBilling ? 'Confirm Order' : 'Upgrade'}</button>
                                             </div>
                                         </div>
                                     </div>
