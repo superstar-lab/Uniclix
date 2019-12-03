@@ -2129,7 +2129,7 @@ button.streammaker-btn:hover {
       max-width: inherit;
     }
   }
-  
+
   .draft_editor_container {
     background: white;
     border: 1px solid #ccc;
@@ -2536,7 +2536,7 @@ button.streammaker-btn:hover {
 .no-border {
   border: none !important;
 }
-.w-auto{
+.w-auto {
   width: auto !important;
 }
 .show-flex {
@@ -2859,7 +2859,7 @@ button.streammaker-btn:hover {
 .w50 {
   width: 50% !important;
 }
-.h65{
+.h65 {
   height: 65px !important;
 }
 
@@ -3189,17 +3189,6 @@ button.doneBtn {
   height: 300px;
   object-fit: cover;
   border: 1px solid #dfdfdf;
-}
-
-.card-body {
-  position: relative;
-  width: 276px;
-  height: 500px;
-  background: #EAF3FB;
-  border: 1px solid #2D86DA;
-  box-sizing: border-box;
-  box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.1);
-  border-radius: 6px;
 }
 
 .article-share {
@@ -3612,7 +3601,7 @@ button.doneBtn {
   outline: none;
 }
 .add-channel-plus-btn2 {
-  background: #2D86DA;
+  background: #2d86da;
   padding: 16px 17px;
   border: none;
   font-size: 1.2rem;
@@ -4794,7 +4783,7 @@ table.compare-plans-table {
   background: rgba(45, 134, 218, 0.15);
   margin-right: 10px;
   i {
-    color:#2D86DA;
+    color: #2d86da;
     font-size: 25px;
     line-height: 25px;
   }
@@ -4809,12 +4798,12 @@ table.compare-plans-table {
     max-width: inherit;
   }
 }
-.team-info-hover{
+.team-info-hover {
   display: none;
 }
 .team-info {
   text-align: center;
-  .profile-title{
+  .profile-title {
     font-weight: bold;
   }
   ul {
@@ -4829,10 +4818,10 @@ table.compare-plans-table {
     margin: 0;
   }
 }
-.twitter-middleware-btn{
+.twitter-middleware-btn {
   &:hover {
-    background: #EAF3fb;
-    .team-info{
+    background: #eaf3fb;
+    .team-info {
       display: none;
     }
     .team-info-hover {
@@ -4846,7 +4835,7 @@ table.compare-plans-table {
 }
 section.pricing {
   background: #007bff;
-  background: linear-gradient(to right, #0062E6, #33AEFF);
+  background: linear-gradient(to right, #0062e6, #33aeff);
 }
 .pricing .card {
   border: none;
@@ -4860,7 +4849,7 @@ section.pricing {
 .pricing .card-title {
   margin: 10px 0px 15px 0px;
   font-size: 0.9rem;
-  letter-spacing: .1rem;
+  letter-spacing: 0.1rem;
   font-weight: bold;
 }
 .pricing .card-price {
@@ -4876,33 +4865,12 @@ section.pricing {
 .pricing .text-muted {
   opacity: 0.7;
 }
-.pricing .btn {
-    font-size: 80%;
-    border-radius: 5rem;
-    letter-spacing: .1rem;
-    font-weight: bold;
-    padding: 1rem;
-    margin-top: 30px;
-    opacity: 0.7;
-    width: 200px;
-    margin-left: 40px;
-}
-.billing-top{
+
+.billing-top {
   width: 100%;
 }
 
-/* Hover Effects on Card */
 
-@media (min-width: 992px) {
-  .pricing .card:hover {
-    margin-top: -.25rem;
-    margin-bottom: .25rem;
-    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.3);
-  }
-  .pricing .card:hover .btn {
-    opacity: 1;
-  }
-}
 .input-group {
   display: flex;
   background: white;
@@ -4913,7 +4881,7 @@ section.pricing {
   padding: 5px 10px;
   button {
     padding: 10px 11px;
-    background: #2D86DA;
+    background: #2d86da;
     border: none;
     color: white;
   }
@@ -4932,10 +4900,35 @@ section.pricing {
   position: relative;
   width: 276px;
   height: 500px;
-  background: #FFFFFF;
-  border: 1px solid #2D86DA;
+  background: #ffffff;
   box-sizing: border-box;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
   border-radius: 6px;
   margin-bottom: 20px;
+}
+.billing-body-c.active {
+  background: #eaf3fb;
+  border: 1px solid #2d86da;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.1);
+}
+.billing-btn {
+  border-radius: 5rem;
+  padding: 1rem;
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  background: none;
+  border: 2px solid #2d86da;
+  color: #2d86da;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+}
+.billing-btn.active {
+  background: #2d86da;
+  color: white;
 }

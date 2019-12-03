@@ -14,15 +14,16 @@ class BillingPlans extends React.Component {
         billingPeriod: this.props.profile.subscription.annual ? "annually" : "monthly",
         planChange: false,
         loading: false,
-        role: 'free'
+        roleBilling: "",
     }
     componentDidMount() {
         getPlanData().then(response => {
             this.setState({
-                allPlans: response.allPlans
+                allPlans: response.allPlans,
+                roleBilling: this.props.profile.role.name
             });
         });
-    }
+    };
     onPlanClick = (plan) => {
         this.setState(() => ({
             planChange: false,
@@ -48,12 +49,15 @@ class BillingPlans extends React.Component {
     setBillingPeriod = () => {
         this.setState(() => ({ billingPeriod: this.state.billingPeriod === "annually" ? "monthly" : "annually" }));
     };
+
     setRole = (role) => {
-        this.setState(() => ({
-            role: role
-        }));
-        console.log(role, 'role');
-    };
+        let item = role.toLowerCase();
+        console.log(item)
+        this.setState({
+            roleBilling: item
+        });
+        console.log(this.state.roleBilling, 'role');
+    }
     setForbidden = (forbidden = false) => {
         this.setState(() => ({
             forbidden
@@ -72,7 +76,6 @@ class BillingPlans extends React.Component {
     render() {
         const { allPlans } = this.state;
         const { profile } = this.props;
-        this.setRole(profile.role.name)
         // console.log('all plans', allPlans);
         // console.log('useri', profile.role.name);
         return (
@@ -124,9 +127,9 @@ class BillingPlans extends React.Component {
                             {allPlans.map((plan, index) => {
                                 return (
                                     <div key={index} className="col-4 col-md-4 col-sm-12">
-                                        <div className="card mb-5 mb-lg-0">
-                                            <div className="card-body billing-body-c">
-                                                {plan["Name"].toLowerCase() == this.state.role ? 'selected account' : ''}
+                                        <div className="card">
+                                            <div className={`card-body billing-body-c ${plan["Name"].toLowerCase() == this.state.roleBilling ? 'active' : ''}`}>
+                                                {plan["Name"].toLowerCase() == this.state.roleBilling ? 'selected account' : ''}
                                                 <h5 className="card-title text-muted text-uppercase text-center">{plan["Name"]}</h5>
                                                 {this.state.billingPeriod === "annually" ?
                                                     <h6 className="card-price text-center">${plan['Annual Billing']}<span className="period">/annual</span></h6>
@@ -142,7 +145,7 @@ class BillingPlans extends React.Component {
                                                     <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Social Listening & Monitoring"]} monitor activity</li>
                                                     {plan["Content Curation"] == true ? <li><span className="fa-li"><i className="fa fa-check"></i></span>Content Curation</li> : ''}
                                                 </ul>
-                                                <a href="#" className="btn btn-block btn-primary text-uppercase" onClick={() => this.setRole(plan["Name"].toLowerCase())}>Button</a>
+                                                <button className={`btn billing-btn text-uppercase ${plan["Name"].toLowerCase() == this.state.roleBilling ? 'active' : ''}`}   onClick={() => this.setRole(plan["Name"])}>Button</button>
                                             </div>
                                         </div>
                                     </div>
