@@ -3611,6 +3611,15 @@ button.doneBtn {
   color: #46b9e6;
   outline: none;
 }
+.add-channel-plus-btn2 {
+  background: #2D86DA;
+  padding: 16px 17px;
+  border: none;
+  font-size: 1.2rem;
+  border-radius: 100px;
+  color: white;
+  outline: none;
+}
 
 .left-side-label {
   font-size: $m-size;
@@ -4918,4 +4927,15 @@ section.pricing {
     opacity: 0.85;
     letter-spacing: 0.149163px;
   }
+}
+.billing-body-c {
+  position: relative;
+  width: 276px;
+  height: 500px;
+  background: #FFFFFF;
+  border: 1px solid #2D86DA;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  margin-bottom: 20px;
 }

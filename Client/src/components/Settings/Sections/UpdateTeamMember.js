@@ -236,7 +236,7 @@ class UpdateTeamMember extends React.Component {
                                     </div>))}
                             </div>
                             <div className="mb20">
-                                <div className="accounts-container__content__wrapper__footer"><button onClick={this.toggleSelectChannelsModal} className="add-channel-plus-btn"><i className="fa fa-plus"></i></button><span className="left-side-label">Select Social Accounts</span></div>
+                                <div className="accounts-container__content__wrapper__footer"><button onClick={this.toggleSelectChannelsModal} className="add-channel-plus-btn2"><i className="fa fa-plus"></i></button><span className="left-side-label">Select Social Accounts</span></div>
                             </div>
 
 

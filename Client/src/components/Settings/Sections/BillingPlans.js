@@ -6,7 +6,6 @@ import UpgradeAlert from '../../UpgradeAlert';
 import SweetAlert from "sweetalert2-react";
 import Checkout from './Checkout';
 import Loader, { LoaderWithOverlay } from '../../Loader';
-
 class BillingPlans extends React.Component {
     state = {
         allPlans: [],
@@ -14,9 +13,9 @@ class BillingPlans extends React.Component {
         redirect: '/accounts',
         billingPeriod: this.props.profile.subscription.annual ? "annually" : "monthly",
         planChange: false,
-        loading: false
+        loading: false,
+        role: 'free'
     }
-
     componentDidMount() {
         getPlanData().then(response => {
             this.setState({
@@ -24,14 +23,11 @@ class BillingPlans extends React.Component {
             });
         });
     }
-
     onPlanClick = (plan) => {
-
         this.setState(() => ({
             planChange: false,
             loading: true
         }));
-
         changePlan(plan).then(response => {
             this.props.startSetProfile();
             this.setLoading();
@@ -49,33 +45,36 @@ class BillingPlans extends React.Component {
                 }
             });
     };
-
     setBillingPeriod = () => {
         this.setState(() => ({ billingPeriod: this.state.billingPeriod === "annually" ? "monthly" : "annually" }));
     };
-
+    setRole = (role) => {
+        this.setState(() => ({
+            role: role
+        }));
+        console.log(role, 'role');
+    };
     setForbidden = (forbidden = false) => {
         this.setState(() => ({
             forbidden
         }));
     };
-
     setPlanChange = (planName) => {
         this.setState(() => ({
             planChange: planName
         }));
     };
-
     setLoading = (loading = false) => {
         this.setState(() => ({
             loading
         }));
     };
-
     render() {
         const { allPlans } = this.state;
         const { profile } = this.props;
-        console.log(allPlans);
+        this.setRole(profile.role.name)
+        // console.log('all plans', allPlans);
+        // console.log('useri', profile.role.name);
         return (
             <div>
                 <UpgradeAlert
@@ -87,8 +86,6 @@ class BillingPlans extends React.Component {
                     type="info"
                     redirectUri={this.state.redirect}
                 />
-
-
                 <SweetAlert
                     show={!!this.state.planChange}
                     title={`You are about to change to ${this.state.planChange}`}
@@ -102,7 +99,6 @@ class BillingPlans extends React.Component {
                     }}
                     onCancel={() => this.setPlanChange(false)}
                 />
-
                 {this.state.loading && <LoaderWithOverlay />}
                 {allPlans.length > 0 ?
                     <div className="container billing-top">
@@ -124,13 +120,13 @@ class BillingPlans extends React.Component {
                             </label>
                             <span className="billing-toggle">annual billing</span>
                         </div>
-
                         <section className="pricing py-5">
                             {allPlans.map((plan, index) => {
                                 return (
                                     <div key={index} className="col-4 col-md-4 col-sm-12">
                                         <div className="card mb-5 mb-lg-0">
-                                            <div className="card-body">
+                                            <div className="card-body billing-body-c">
+                                                {plan["Name"].toLowerCase() == this.state.role ? 'selected account' : ''}
                                                 <h5 className="card-title text-muted text-uppercase text-center">{plan["Name"]}</h5>
                                                 {this.state.billingPeriod === "annually" ?
                                                     <h6 className="card-price text-center">${plan['Annual Billing']}<span className="period">/annual</span></h6>
@@ -146,7 +142,7 @@ class BillingPlans extends React.Component {
                                                     <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Social Listening & Monitoring"]} monitor activity</li>
                                                     {plan["Content Curation"] == true ? <li><span className="fa-li"><i className="fa fa-check"></i></span>Content Curation</li> : ''}
                                                 </ul>
-                                                <a href="#" className="btn btn-block btn-primary text-uppercase">Button</a>
+                                                <a href="#" className="btn btn-block btn-primary text-uppercase" onClick={() => this.setRole(plan["Name"].toLowerCase())}>Button</a>
                                             </div>
                                         </div>
                                     </div>
@@ -154,23 +150,18 @@ class BillingPlans extends React.Component {
                             })
                             }
                         </section>
-
-
-
-                    </div> : <Loader />}
+                    </div> : <Loader />
+                }
             </div>
         );
     }
 }
-
 const mapStateToProps = (state) => {
     return {
         profile: state.profile
     };
 };
-
 const mapDispatchToProps = (dispatch) => ({
     startSetProfile: () => dispatch(startSetProfile())
 });
-
 export default connect(mapStateToProps, mapDispatchToProps)(BillingPlans);
