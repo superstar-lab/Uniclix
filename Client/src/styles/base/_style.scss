@@ -4359,7 +4359,14 @@ button.default-white-btn:hover {
   font-size: 16px;
   padding-top: 20px;
 }
-
+.fa-li {
+  position: absolute;
+  left: -2.14285714em;
+  width: 2.14285714em;
+  top: .14285714em;
+  text-align: center;
+  color: #2D86DA;
+}
 .plan-see-more a {
   color: #489fd7;
   text-decoration: none;
@@ -4859,6 +4866,7 @@ section.pricing {
 .pricing .card-price {
   font-size: 3rem;
   margin: 10px 0px 15px 0px;
+  color: #363636;
 }
 .pricing .card-price .period {
   font-size: 0.8rem;
@@ -4914,6 +4922,9 @@ section.pricing {
   border: 1px solid #2d86da;
   box-sizing: border-box;
   box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.1);
+  .card-price{
+    color: #2D86DA;
+  }
 }
 .billing-btn {
   border-radius: 5rem;
