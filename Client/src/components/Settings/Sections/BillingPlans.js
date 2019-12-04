@@ -83,6 +83,12 @@ class BillingPlans extends React.Component {
             loading
         }));
     };
+    startCheckout = () => {
+        this.setState({ shouldBlockNavigation: false })
+        setTimeout(() => {
+            this.props.history.push('/twitter-booster/checkout')
+        }, 0)
+    }
     render() {
         const { allPlans } = this.state;
         const { profile } = this.props;
@@ -170,22 +176,12 @@ class BillingPlans extends React.Component {
                                                         // duhet edhe ni button, Confirm Order / Cancel Subscribtion
                                                         <button className={`btn billing-btn  ${plan["Name"].toLowerCase() == this.state.roleBilling ? 'active' : ''}`} onClick={() => this.setRole(plan["Name"])}>Cancel Subscription</button>
                                                         :
-                                                        <Checkout
-                                                            plan={plan["Name"].toLowerCase()}
-                                                            subType="main"
-                                                            trialDays={0}
-                                                            setLoading={this.setLoading}
-                                                            setProfile={this.props.startSetProfile}
-                                                            amount={this.state.billingPeriod === "annually" ? (plan["Annual Billing"] * 100) : (plan["Monthly"] * 100)}
-                                                            text="">
-                                                            <button className="btn billing-btn">Upgrade</button>
-                                                        </Checkout>
+                                                        
+                                                        <button className="btn billing-btn" onClick={() => { this.startCheckout() }}>Upgrade</button>
+
+                                                        
                                                 }
-
-                                                {/* <button className={`btn billing-btn  ${plan["Name"].toLowerCase() == this.state.roleBilling ? 'active' : ''}`} onClick={() => this.setRole(plan["Name"])}>Upgrade</button> */}
-
                                             </div>
-
                                         </div>
                                     </div>
                                 )

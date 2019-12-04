@@ -12,6 +12,8 @@ import InactiveFollowing from '../components/TwitterBooster/Sections/InactiveFol
 import Following from '../components/TwitterBooster/Sections/Following';
 import WhiteList from '../components/TwitterBooster/Sections/WhiteList';
 import BlackList from '../components/TwitterBooster/Sections/BlackList';
+import Checkout from '../components/Accounts/Checkout';
+
 
 const ManageRouter = () => (
     <div>
@@ -20,6 +22,7 @@ const ManageRouter = () => (
             <Route path={`/twitter-booster/dashboard`} component={Dashboard} />
             <Route path={`/twitter-booster/monitor-activity`} component={MonitorActivity} />
             <Route path={`/twitter-booster/account-targets`} component={AccountTargets} />
+            <Route path={`/twitter-booster/checkout`} component={Checkout} />
             <Route path={`/twitter-booster/keyword-targets`} component={KeywordTargets} />
             <Route path={`/twitter-booster/fans`} component={Fans} />
             <Route path={`/twitter-booster/non-followers`} component={NonFollowers} />
