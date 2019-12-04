@@ -15,6 +15,9 @@ class TeamMember extends React.Component {
 
     render() {
         const { member } = this.props;
+        let created_at_date = member.created_at;
+        created_at_date = created_at_date.split(' ')[0];
+        created_at_date = created_at_date.split("-").reverse().join("-");
         return (
             <div>
                 {/* {member.assignedChannels[0].active === 1  */}
@@ -34,8 +37,7 @@ class TeamMember extends React.Component {
                         <div className="team-info">
                             <ul>
                                 <li>
-                                    {/* <p>added {member.created_at}</p> */}
-                                    <p className="date-team">added 12/05/2018</p>
+                                    <p className="date-team">added {created_at_date}</p>
                                 </li>
                                 <li>
                                     <p className="profile-title">{member.is_admin ? "Admin" : "Member"}</p>

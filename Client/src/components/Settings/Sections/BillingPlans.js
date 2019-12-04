@@ -86,8 +86,15 @@ class BillingPlans extends React.Component {
     render() {
         const { allPlans } = this.state;
         const { profile } = this.props;
-        // console.log('all plans', allPlans);
-        // console.log('useri', profile.role.name);
+
+        let planData = allPlans.filter(plan => plan["Name"].toLowerCase() === profile.role.name);
+        planData = planData.length > 0 ? planData[0] : false;
+        console.log('plan ', allPlans)
+        let planName = "";
+        if (planData) {
+            planName = this.state.billingPeriod === "annually" ? planData["Name"].toLowerCase() + "_annual" : planData["Name"].toLowerCase();
+        }
+
         return (
             <div>
                 <UpgradeAlert
@@ -157,8 +164,28 @@ class BillingPlans extends React.Component {
                                                         {plan["Content Curation"] == true ? <li><span className="fa-li"><i className="fa fa-check"></i></span>Content Curation</li> : ''}
                                                     </ul>
                                                 </div>
-                                                <button className={`btn billing-btn  ${plan["Name"].toLowerCase() == this.state.roleBilling ? 'active' : ''}`} onClick={() => this.setRole(plan["Name"])}>{plan["Name"].toLowerCase() == this.state.roleBilling ? 'Confirm Order' : 'Upgrade'}</button>
+                                                {
+                                                    plan["Name"].toLowerCase() == this.state.roleBilling
+                                                        ?
+                                                        // duhet edhe ni button, Confirm Order / Cancel Subscribtion
+                                                        <button className={`btn billing-btn  ${plan["Name"].toLowerCase() == this.state.roleBilling ? 'active' : ''}`} onClick={() => this.setRole(plan["Name"])}>Cancel Subscription</button>
+                                                        :
+                                                        <Checkout
+                                                            plan={plan["Name"].toLowerCase()}
+                                                            subType="main"
+                                                            trialDays={0}
+                                                            setLoading={this.setLoading}
+                                                            setProfile={this.props.startSetProfile}
+                                                            amount={this.state.billingPeriod === "annually" ? (plan["Annual Billing"] * 100) : (plan["Monthly"] * 100)}
+                                                            text="">
+                                                            <button className="btn billing-btn">Upgrade</button>
+                                                        </Checkout>
+                                                }
+
+                                                {/* <button className={`btn billing-btn  ${plan["Name"].toLowerCase() == this.state.roleBilling ? 'active' : ''}`} onClick={() => this.setRole(plan["Name"])}>Upgrade</button> */}
+
                                             </div>
+
                                         </div>
                                     </div>
                                 )
