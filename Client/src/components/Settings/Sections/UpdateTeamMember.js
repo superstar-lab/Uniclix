@@ -54,7 +54,6 @@ class UpdateTeamMember extends React.Component {
 
     onChannelSelectionChange = (obj) => {
         const selectedPinterestChannel = !obj.selected && obj.type == "pinterest" ? obj : false;
-
         const publishChannels = this.state.publishChannels.map((channel) => {
             if (channel.id === obj.id) {
                 return {
@@ -62,12 +61,10 @@ class UpdateTeamMember extends React.Component {
                     selected: channel.selected ? 0 : 1
                 }
             }
-
             return {
                 ...channel
             };
         });
-
         this.setState(() => ({
             publishChannels,
             selectedPinterestChannel
@@ -77,7 +74,6 @@ class UpdateTeamMember extends React.Component {
     setAssignedChannels = () => {
         const assignedChannels = this.state.publishChannels.filter(channel => channel.selected === 1)
             .map(channel => ({ ...channel, permissionLevel: channel.permissionLevel ? channel.permissionLevel : "member" }));
-
         this.setState(() => ({
             assignedChannels
         }));
@@ -91,7 +87,6 @@ class UpdateTeamMember extends React.Component {
                     permissionLevel: e.target.value
                 }
             }
-
             return {
                 ...channel
             }
@@ -103,7 +98,6 @@ class UpdateTeamMember extends React.Component {
     };
 
     toggleSelectChannelsModal = () => {
-
         this.setState(() => ({
             selectChannelsModal: !this.state.selectChannelsModal
         }));
@@ -198,7 +192,12 @@ class UpdateTeamMember extends React.Component {
                                 <label htmlFor="name">Name</label>
                                 <input type="text" className="form-control" onChange={(e) => this.onFieldChange(e)} id="name" value={this.state.name} placeholder="John Doe" />
                             </div> */}
-
+                            <div className="col-12 col-md-12 form-field m-sm">
+                                <label htmlFor="name">Name</label>
+                                <div className="input-group">
+                                    <input type="name" className="form-control" id="name" onChange={(e) => this.onFieldChange(e)} value={this.state.name} placeholder="John Doe" />
+                                </div>
+                            </div>
                             <div className="col-12 col-md-12 form-field m-sm">
                                 <label htmlFor="email">Email</label>
                                 <div className="input-group">

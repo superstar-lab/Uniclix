@@ -46,12 +46,12 @@ class TeamMember extends React.Component {
                             </ul>
                         </div>
                         <div className="team-info-hover pull-right">
-                            <div className="user-action mrnone blue-icon" onClick={() => setAction({ id: member.id, type: "delete" })}><i className="fa fa-edit"></i></div>
-                            <div className="user-action mrnone blue-icon" onClick={() => setAction({ id: member.id, type: "delete" })}><i className="fa fa-trash"></i></div>
+                            <div className="user-action mrnone blue-icon" onClick={this.update} ><i className="fa fa-edit"></i></div>
+                            <div className="user-action mrnone blue-icon" onClick={this.remove}><i className="fa fa-trash"></i></div>
                         </div>
                         {/* <ul className="v-center-align">
                             <li className="text-links">
-                                <a href="javascript:void(0);" onClick={this.update} className="link-cursor">Edit</a>
+                                <a href="javascript:void(0);" onClick=className="link-cursor">Edit</a>
                             </li>
                             <li className="text-links">
                                 <a href="javascript:void(0);" onClick={this.remove} className="link-cursor">Remove</a>

@@ -154,7 +154,6 @@ class Team extends React.Component {
 
     render() {
         const { members, teams, isTabActive, targets } = this.state;
-
         return (
 
             <div>
@@ -223,9 +222,6 @@ class Team extends React.Component {
                             {!this.state.loading &&
                                 (!!this.state.members.length ?
                                     <div>
-
-
-
                                         {members.map(member => (
                                             <TeamMember
                                                 key={member.id}
