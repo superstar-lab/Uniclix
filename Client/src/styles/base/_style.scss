@@ -153,10 +153,12 @@ a:link {
     font-weight: bold;
     font-size: 3.2rem;
   }
+
   h5 {
     text-align: left;
   }
 }
+
 .added-channel-btn .channel-profile-info {
   display: flex;
   align-items: center;
@@ -176,6 +178,7 @@ a:link {
   margin-right: 10px;
   width: 50px;
 }
+
 .channel-profile-info .acc-name {
   margin: 0px;
   text-align: left;
@@ -330,15 +333,17 @@ a:link {
   display: flex;
   justify-content: space-evenly;
 }
+
 .account-info {
   width: 100%;
 }
+
 .account-info p {
   max-width: 250px !important;
 }
 
-.box-container > button,
-.social-login > button {
+.box-container>button,
+.social-login>button {
   background: #00aced;
   border: none;
   padding: 10px 20px;
@@ -353,7 +358,7 @@ a:link {
   margin-top: 10px;
 }
 
-.box-container > span {
+.box-container>span {
   display: block;
   transition: none !important;
   margin-top: 10px;
@@ -427,13 +432,13 @@ a:link {
   }
 
   /* On mouse-over, add a grey background color */
-  &:hover input ~ .checkmark {
+  &:hover input~.checkmark {
     background-color: white;
     border: 1px solid #485576;
   }
 
   /* When the radio button is checked, add a blue background */
-  input:checked ~ .checkmark {
+  input:checked~.checkmark {
     background-color: white;
     border: 1px solid #485576;
   }
@@ -446,7 +451,7 @@ a:link {
   }
 
   /* Show the indicator (dot/circle) when checked */
-  input:checked ~ .checkmark:after {
+  input:checked~.checkmark:after {
     display: block;
   }
 
@@ -471,11 +476,11 @@ a:link {
   border-bottom: 1px solid #e2e2e2;
 }
 
-.addedItemLabels > span {
+.addedItemLabels>span {
   display: none;
 }
 
-.addedItemLabels:hover > span {
+.addedItemLabels:hover>span {
   position: absolute;
   display: flex;
   justify-content: center;
@@ -846,14 +851,14 @@ a:link {
   margin-left: 5px;
 }
 
-.stream-action-icons > span {
+.stream-action-icons>span {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.stream-action-icons > span > .fa,
-.stream-action-icons > .fa {
+.stream-action-icons>span>.fa,
+.stream-action-icons>.fa {
   border: 1px solid #c5c5c5;
   border-radius: 100%;
   width: 25px;
@@ -934,7 +939,7 @@ a:link {
 }
 
 .stream-feed-container .post-info img,
-.stream-feed-container .post-info > div {
+.stream-feed-container .post-info>div {
   display: block;
   float: left;
 }
@@ -983,7 +988,7 @@ a:link {
   padding: 10px;
 }
 
-.stream-title > .social-icon {
+.stream-title>.social-icon {
   color: white !important;
   width: 17px;
   height: 17px;
@@ -1192,7 +1197,7 @@ a:link {
   margin: 0 10px;
 }
 
-.profile-text-placeholder > div {
+.profile-text-placeholder>div {
   width: 100%;
   height: 10px;
   margin: 10px;
@@ -1204,7 +1209,7 @@ a:link {
   margin: 20px 0;
 }
 
-.text-placeholder > div {
+.text-placeholder>div {
   width: 100%;
   height: 10px;
   margin: 10px 0;
@@ -1218,7 +1223,7 @@ a:link {
   justify-content: space-between;
 }
 
-.iconx-placeholder > div {
+.iconx-placeholder>div {
   height: 20px;
   width: 50px;
   background: #f1f1f1;
@@ -1466,7 +1471,7 @@ button.streammaker-btn:hover {
   height: 100vh;
 }
 
-.ReactModalPortal .ReactModal__Content > .tailored-post-container {
+.ReactModalPortal .ReactModal__Content>.tailored-post-container {
   height: 450px;
 }
 
@@ -1734,7 +1739,7 @@ button.streammaker-btn:hover {
   transition: background 0.3s;
 }
 
-.support div > a {
+.support div>a {
   display: block;
   color: #363636;
   background: #ffffff;
@@ -1842,6 +1847,7 @@ button.streammaker-btn:hover {
 .profile-form .form-field {
   margin-bottom: 20px;
 }
+
 .top-menu li a {
   float: left;
   margin: 2.5rem 0 0 5.5rem;
@@ -1895,6 +1901,7 @@ button.streammaker-btn:hover {
 .mb-4 {
   margin-bottom: 40px;
 }
+
 .section-header__first-row,
 .section-header__second-row {
   display: flex;
@@ -2110,7 +2117,7 @@ button.streammaker-btn:hover {
     margin-top: 5px;
   }
 
-  .user-info > img {
+  .user-info>img {
     width: 70px;
     height: 70px;
   }
@@ -2180,6 +2187,7 @@ button.streammaker-btn:hover {
 .item-row:hover .profile-info .stats-info {
   display: none;
 }
+
 // /
 // .item-row .profile-info .item-actions {
 //   display: block;
@@ -2477,7 +2485,7 @@ button.streammaker-btn:hover {
   border-right: 1px solid rgba(255, 255, 255, 0.3) !important;
 }
 
-.SingleDatePicker > div {
+.SingleDatePicker>div {
   display: flex;
   flex-direction: column-reverse;
 }
@@ -2536,9 +2544,11 @@ button.streammaker-btn:hover {
 .no-border {
   border: none !important;
 }
+
 .w-auto {
   width: auto !important;
 }
+
 .show-flex {
   display: flex !important;
 }
@@ -2547,7 +2557,7 @@ button.streammaker-btn:hover {
   display: flex !important;
 }
 
-.ReactModalPortal > div {
+.ReactModalPortal>div {
   opacity: 0;
 }
 
@@ -2645,7 +2655,7 @@ button.streammaker-btn:hover {
   margin: 0;
 }
 
-.item-actions li > i {
+.item-actions li>i {
   margin: 50px 10px 0 10px;
   border: 1px solid #e1e1e1;
   border-radius: 100px;
@@ -2765,7 +2775,7 @@ button.streammaker-btn:hover {
   background: rgba(0, 0, 0, 0.1);
 }
 
-.media-box > img {
+.media-box>img {
   width: 100%;
   height: 200px;
   object-fit: cover;
@@ -2778,7 +2788,7 @@ button.streammaker-btn:hover {
   vertical-align: middle;
 }
 
-.btn-links > .fa-ellipsis-v {
+.btn-links>.fa-ellipsis-v {
   font-size: 1.1em;
   color: #485576;
   cursor: pointer;
@@ -2786,12 +2796,12 @@ button.streammaker-btn:hover {
   // padding: 10px;
 }
 
-.btn-links > .fa-ellipsis-v:hover {
+.btn-links>.fa-ellipsis-v:hover {
   border: 1px solid #485576;
 }
 
-.t-action-menu > button,
-.t-action-menu > a {
+.t-action-menu>button,
+.t-action-menu>a {
   display: flex;
   align-items: center;
   text-align: left;
@@ -2804,19 +2814,19 @@ button.streammaker-btn:hover {
   font-family: open-sansBold, Arial;
 }
 
-.t-action-menu > button:hover,
-.t-action-menu > a:hover {
+.t-action-menu>button:hover,
+.t-action-menu>a:hover {
   background: #485576;
   color: white;
 }
 
-.menu-with-icons > button,
-.menu-with-icons > a {
+.menu-with-icons>button,
+.menu-with-icons>a {
   display: flex;
   justify-content: left;
 }
 
-.t-action-menu > button > i {
+.t-action-menu>button>i {
   margin-right: 5px;
 }
 
@@ -2856,9 +2866,11 @@ button.streammaker-btn:hover {
 .mb-40 {
   margin-bottom: 40px !important;
 }
+
 .w50 {
   width: 50% !important;
 }
+
 .h65 {
   height: 65px !important;
 }
@@ -3128,11 +3140,11 @@ button.doneBtn {
   padding: 8px;
 }
 
-.compose-header li:hover > .remove-overlay {
+.compose-header li:hover>.remove-overlay {
   display: block;
 }
 
-.compose-header li:hover > img {
+.compose-header li:hover>img {
   display: none;
 }
 
@@ -3153,10 +3165,12 @@ button.doneBtn {
   color: #d83e7f;
   font-size: 22px;
 }
+
 .card-selected {
   color: #2d86da;
   font-size: 22px;
 }
+
 .card-content {
   width: 1000px;
 }
@@ -3220,11 +3234,11 @@ button.doneBtn {
 
 /*Pricing table css*/
 
-.pricing-table .table-striped > tbody > tr:nth-of-type(even) {
+.pricing-table .table-striped>tbody>tr:nth-of-type(even) {
   background-color: #f2f2f2;
 }
 
-.pricing-table .table-striped > tbody > tr:nth-of-type(odd) {
+.pricing-table .table-striped>tbody>tr:nth-of-type(odd) {
   background-color: #f9f9f9;
 }
 
@@ -3232,8 +3246,8 @@ button.doneBtn {
   background-color: white !important;
 }
 
-.pricing-table .table > tbody > tr > th,
-.pricing-table .table > tbody > tr > td {
+.pricing-table .table>tbody>tr>th,
+.pricing-table .table>tbody>tr>td {
   border: none;
   text-align: center;
   height: 70px;
@@ -3241,7 +3255,7 @@ button.doneBtn {
   font-size: 1.2em;
 }
 
-.pricing-table .table > tbody > tr > th.plan {
+.pricing-table .table>tbody>tr>th.plan {
   background: lightslategray;
   color: white;
   width: 170px;
@@ -3251,31 +3265,31 @@ button.doneBtn {
   font-size: 1.1em;
 }
 
-.pricing-table .table > tbody > tr > th.plan-free {
+.pricing-table .table>tbody>tr>th.plan-free {
   background: #f1c232;
 }
 
-.pricing-table .table > tbody > tr > th.plan-basic {
+.pricing-table .table>tbody>tr>th.plan-basic {
   background: #4ec2c1;
 }
 
-.pricing-table .table > tbody > tr > th.plan-plus {
+.pricing-table .table>tbody>tr>th.plan-plus {
   background: #44546a;
 }
 
-.pricing-table .table > tbody > tr > th.plan-premium {
+.pricing-table .table>tbody>tr>th.plan-premium {
   background: #a64d79;
 }
 
-.pricing-table .table > tbody > tr > th.plan-pro {
+.pricing-table .table>tbody>tr>th.plan-pro {
   background: #5b9bd5;
 }
 
-.pricing-table .table > tbody > tr > th.plan-agency {
+.pricing-table .table>tbody>tr>th.plan-agency {
   background: #a5a5a5;
 }
 
-.pricing-table .table > tbody > tr > th.plan-twitter-growth {
+.pricing-table .table>tbody>tr>th.plan-twitter-growth {
   background: #0ca750;
 }
 
@@ -3604,6 +3618,7 @@ button.doneBtn {
   color: #46b9e6;
   outline: none;
 }
+
 .add-channel-plus-btn2 {
   background: #2d86da;
   padding: 16px 17px;
@@ -3641,7 +3656,7 @@ aside .btn-group {
   font-weight: bold;
 }
 
-.plan-content > p {
+.plan-content>p {
   margin: 0;
 }
 
@@ -3995,7 +4010,7 @@ aside .btn-group {
   border: 1px solid #ddd !important;
 }
 
-.active > .bordered-tab {
+.active>.bordered-tab {
   border-bottom: 1px solid transparent !important;
 }
 
@@ -4057,45 +4072,16 @@ aside .btn-group {
   margin-left: 10px;
 }
 
-.twitter-middleware-btn i {
-  color: white;
-  width: 37px;
-  height: 37px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  // margin-right: 10px;
-}
 .blue-icon i {
   color: #2d86da;
 }
 
-.twitter-middleware-btn {
-  display: flex;
-  align-items: center;
-  margin: 0.5rem 0;
-  border: 1px dashed #909090;
-  padding: 15px 30px;
-  background: white;
-  border-radius: 6px;
-  width: 100%;
-
-  .fa-facebook {
-    background: #4267b2;
-  }
-  .fa-twitter {
-    background: #1da1f2;
-  }
-  .fa-linkedin {
-    background: #0077b5;
-  }
-}
 .header-title {
   h5 {
     float: left;
   }
 }
+
 .login-container .channel-buttons {
   width: 100%;
 }
@@ -4230,12 +4216,12 @@ aside .btn-group {
 }
 
 /* On mouse-over, add a grey background color */
-.selection-container:hover input ~ .checkmark {
+.selection-container:hover input~.checkmark {
   background-color: #ccc;
 }
 
 /* When the radio button is checked, add a blue background */
-.selection-container input:checked ~ .checkmark {
+.selection-container input:checked~.checkmark {
   background-color: #2196f3;
 }
 
@@ -4247,7 +4233,7 @@ aside .btn-group {
 }
 
 /* Show the indicator (dot/circle) when checked */
-.selection-container input:checked ~ .checkmark:after {
+.selection-container input:checked~.checkmark:after {
   display: block;
 }
 
@@ -4359,6 +4345,7 @@ button.default-white-btn:hover {
   font-size: 16px;
   padding-top: 20px;
 }
+
 .fa-li {
   position: absolute;
   left: -2.14285714em;
@@ -4367,6 +4354,7 @@ button.default-white-btn:hover {
   text-align: center;
   color: #2D86DA;
 }
+
 .plan-see-more a {
   color: #489fd7;
   text-decoration: none;
@@ -4506,11 +4494,11 @@ table.compare-plans-table {
   transition: transform 0.35s cubic-bezier(0.85, 0.05, 0.18, 1.35);
 }
 
-.toggle-state:checked ~ .active-bg {
+.toggle-state:checked~.active-bg {
   transform: translate3d(-50%, 0, 0);
 }
 
-.toggle-state:checked ~ .toggle-inner .indicator {
+.toggle-state:checked~.toggle-inner .indicator {
   transform: translate3d(25%, 0, 0);
 }
 
@@ -4685,15 +4673,15 @@ table.compare-plans-table {
     transition: 0.4s;
   }
 
-  input:checked + .slider {
+  input:checked+.slider {
     background-color: $primary_blue;
   }
 
-  input:focus + .slider {
+  input:focus+.slider {
     box-shadow: 0 0 1px $primary_blue;
   }
 
-  input:checked + .slider:before {
+  input:checked+.slider:before {
     content: "";
     -webkit-transform: translateX(30px);
     -ms-transform: translateX(30px);
@@ -4719,10 +4707,12 @@ table.compare-plans-table {
   margin-bottom: 1.1rem;
   color: $primary_black;
 }
+
 .tab-list {
   border-bottom: 1px solid #ccc;
   padding-left: 0;
 }
+
 .tab-list-item {
   display: inline-block;
   list-style: none;
@@ -4736,13 +4726,16 @@ table.compare-plans-table {
   font-family: Rubik;
   font-style: normal;
 }
+
 .tab-list-active {
   border-bottom: 3px solid #2d86da;
   font-weight: 500;
 }
+
 .text-btn {
   display: inline-block;
 }
+
 .one-account {
   display: flex;
   align-items: center;
@@ -4752,37 +4745,46 @@ table.compare-plans-table {
   overflow-y: auto;
   position: relative;
 }
+
 .twitter-badge {
   position: absolute;
   top: 49px;
   left: 66px;
 }
+
 .mt-2 {
   margin-top: 20px !important;
 }
+
 .capitalized-text {
   text-transform: capitalize !important;
 }
+
 .search-account {
   display: flex;
   align-items: center;
   background: white;
   border-radius: 6px;
+
   input {
     background: none;
     border: none;
     box-shadow: none;
+
     &:focus {
       box-shadow: none;
     }
   }
+
   span {
     padding: 0px 15px;
+
     i {
       color: #2d86da;
     }
   }
 }
+
 .icon-bg-profile {
   width: 50px;
   height: 50px;
@@ -4793,87 +4795,139 @@ table.compare-plans-table {
   border-radius: 50%;
   background: rgba(45, 134, 218, 0.15);
   margin-right: 10px;
+
   i {
     color: #2d86da;
     font-size: 25px;
     line-height: 25px;
   }
 }
+
 .profile-email {
   color: #ffffff;
   font-weight: normal;
   font-size: 1.5rem;
   color: #909090;
   margin: 0;
+
   p {
     max-width: inherit;
   }
 }
+
 .team-info-hover {
   display: none;
 }
+
 .team-info {
   text-align: center;
+
   .profile-title {
     font-weight: bold;
   }
+
   ul {
     display: inline-flex;
     justify-content: space-evenly;
     align-items: center;
     width: 100%;
   }
+
   .date-team {
     font-size: 1.5rem;
     color: #909090;
     margin: 0;
   }
 }
+
 .twitter-middleware-btn {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0;
+  border: 1px dashed #909090;
+  padding: 15px 30px;
+  background: white;
+  border-radius: 6px;
+  width: 100%;
+
+  i {
+    color: white;
+    width: 37px;
+    height: 37px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+  }
+
+  .fa-facebook {
+    background: #4267b2;
+  }
+
+  .fa-twitter {
+    background: #1da1f2;
+  }
+
+  .fa-linkedin {
+    background: #0077b5;
+  }
+
   &:hover {
     background: #eaf3fb;
+
     .team-info {
       display: none;
     }
+
     .team-info-hover {
       display: flex;
       font-size: 25px;
+
       .user-action {
         padding: 0px 40px;
       }
     }
   }
 }
+
 section.pricing {
   background: #007bff;
   background: linear-gradient(to right, #0062e6, #33aeff);
 }
+
 .pricing .card {
   border: none;
   border-radius: 1rem;
   transition: all 0.2s;
   box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
 }
+
 .pricing hr {
   margin: 1.5rem 0;
 }
+
 .pricing .card-title {
   margin: 20px 0px 15px 0px;
   font-size: 22px;
   padding-top: 20px;
   letter-spacing: 0.1rem;
 }
+
 .pricing .card-price {
   font-size: 3rem;
   margin: 10px 0px 15px 0px;
   color: #363636;
 }
+
 .pricing .card-price .period {
   font-size: 0.8rem;
 }
+
 .pricing ul li {
   margin-bottom: 2rem;
 }
+
 .pricing .text-muted {
   opacity: 0.7;
 }
@@ -4888,14 +4942,17 @@ section.pricing {
   border-radius: 8px;
   padding: 10px;
 }
+
 .second_add_account {
   padding: 5px 10px;
+
   button {
     padding: 10px 11px;
     background: #2d86da;
     border: none;
     color: white;
   }
+
   span {
     font-family: Lato;
     font-style: normal;
@@ -4907,6 +4964,7 @@ section.pricing {
     letter-spacing: 0.149163px;
   }
 }
+
 .billing-body-c {
   position: relative;
   width: 276px;
@@ -4917,15 +4975,18 @@ section.pricing {
   border-radius: 6px;
   margin-bottom: 20px;
 }
+
 .billing-body-c.active {
   background: #eaf3fb;
   border: 1px solid #2d86da;
   box-sizing: border-box;
   box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.1);
-  .card-price{
+
+  .card-price {
     color: #2D86DA;
   }
 }
+
 .billing-btn {
   border-radius: 5rem;
   padding: 1rem 2rem;
@@ -4944,25 +5005,30 @@ section.pricing {
   bottom: 0px;
   transform: translate(-50%, -50%);
   margin: 0 auto;
+
   &:hover {
     color: #2d86da;
   }
 }
+
 .billing-btn.active {
   background: #2d86da;
   color: white;
 }
+
 .switch {
   position: relative;
   display: inline-block;
   width: 62px;
   margin-left: 10px;
   height: 30px;
+
   input {
     opacity: 0;
     width: 0;
     height: 0;
   }
+
   .slider {
     position: absolute;
     cursor: pointer;
@@ -4974,6 +5040,7 @@ section.pricing {
     -webkit-transition: 0.4s;
     transition: 0.4s;
   }
+
   .slider:before {
     position: absolute;
     content: "";
@@ -4985,49 +5052,60 @@ section.pricing {
     -webkit-transition: 0.4s;
     transition: 0.4s;
   }
+
   &.checked .slider {
     background-color: $primary_blue;
   }
-  input:focus + .slider {
+
+  input:focus+.slider {
     box-shadow: 0 0 1px $primary_blue;
   }
+
   &.checked .slider:before {
     content: "";
     -webkit-transform: translateX(30px);
     -ms-transform: translateX(30px);
     transform: translateX(30px);
   }
+
   .slider.round {
     border-radius: 34px;
   }
+
   .slider.round:before {
     border-radius: 50%;
   }
+
   p {
     position: absolute;
     top: 4px;
     color: $white;
     font-size: 1.6rem;
     line-height: 23px;
+
     &.off {
       right: 8px;
     }
+
     &.on {
       left: 8px;
       display: none;
     }
   }
+
   &.checked {
     p {
       &.off {
         display: none;
       }
+
       &.on {
         display: block;
       }
     }
   }
 }
+
 .subsection-header {
   font-family: Rubik;
   font-style: normal;
@@ -5037,9 +5115,11 @@ section.pricing {
   margin-bottom: 1.1rem;
   color: $primary_black;
 }
+
 .form-country {
   position: relative;
   z-index: 9;
+
   .country-list {
     background: $white;
     width: 100%;
@@ -5048,6 +5128,7 @@ section.pricing {
     top: 100%;
     max-height: 240px;
     overflow: auto;
+
     li {
       cursor: pointer;
       padding: 1rem 1.4rem;

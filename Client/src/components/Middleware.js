@@ -11,22 +11,19 @@ import FacebookLogin from 'react-facebook-login';
 import { twitterRequestTokenUrl, twitterAccessTokenUrl, backendUrl, facebookAppId, linkedinAppId, pinterestAppId } from "../config/api";
 import LinkedInButton from "./LinkedInButton";
 import { changePlan, activateAddon, cancelAddon, getPlanData } from '../requests/billing';
-import PinterestButton from "./PinterestButton";
+// import PinterestButton from "./PinterestButton";
 import channelSelector, { findAccounts } from "../selectors/channels";
 import { fbFields, fbScope } from "./FacebookButton";
 import { destroyChannel } from "../requests/channels";
 import Loader, { LoaderWithOverlay } from './Loader';
-import UpgradeAlert from "./UpgradeAlert";
 import { getParameterByName } from "../utils/helpers";
 import Checkout from "./Settings/Sections/Checkout";
 import ChannelItems from "./Accounts/ChannelItems";
-import SweetAlert from "sweetalert2-react";
 
 
 
 class Middleware extends React.Component {
     state = {
-        continueBtn: this.props.channels.length > 0,
         facebookPagesModal: false,
         facebookPages: [],
         twitterBooster: this.props.location.search.indexOf('twitter-booster') != -1,
@@ -36,7 +33,8 @@ class Middleware extends React.Component {
         addonTrial: getParameterByName("addontrial", this.props.location.search),
         allPlans: [],
         loading: false,
-        forbidden: false
+        forbidden: false,
+        addAccounts: ""
     }
 
     twitterRef = React.createRef();
@@ -64,12 +62,6 @@ class Middleware extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.channels !== this.props.channels) {
-            this.setState(() => ({
-                continueBtn: this.props.channels.length > 0
-            }));
-        }
-
         if (prevProps.profile.subscription !== this.props.profile.subscription || prevProps.profile.addon !== this.props.profile.addon) {
             if ((this.state.plan || this.state.addon) && !this.props.profile.subscription.activeSubscription && !this.props.profile.addon.activeAddon && !this.state.addonTrial) {
                 this.props.setMiddleware("billing");
@@ -84,6 +76,7 @@ class Middleware extends React.Component {
             }
         }
     }
+
     defaultAction = {
         id: "",
         type: ""
@@ -154,7 +147,7 @@ class Middleware extends React.Component {
             response.json().then(body => {
                 this.props.startAddTwitterChannel(body.oauth_token, body.oauth_token_secret)
                     .then(response => {
-                        this.setState(() => ({ loading: false }));
+                        this.setState(() => ({ loading: false, addAccounts: "twitter" }));
                     }).catch(error => {
                         this.setState(() => ({ loading: false }));
                         if (error.response.status === 403) {
@@ -182,7 +175,8 @@ class Middleware extends React.Component {
                                 this.setState(() => ({
                                     facebookPages: response,
                                     facebookPagesModal: true,
-                                    loading: false
+                                    loading: false,
+                                    addAccounts: 'facebook'
                                 }));
                             }
                         });
@@ -202,7 +196,6 @@ class Middleware extends React.Component {
                     });
             }
         } catch (e) {
-            console.log(e);
             this.setState(() => ({ loading: false }));
         }
 
@@ -215,7 +208,7 @@ class Middleware extends React.Component {
         }));
         saveAccounts(accounts)
             .then(() => {
-                this.setState(() => ({ loading: false }));
+                this.setState(() => ({ loading: false, addAccounts: "facebook" }));
                 this.props.startSetChannels();
                 this.toggleFacebookPagesModal();
             }).catch(error => {
@@ -244,7 +237,7 @@ class Middleware extends React.Component {
         try {
             this.setState(() => ({ loading: true }));
             this.props.startAddLinkedinChannel(response.accessToken).then(() => {
-                this.setState(() => ({ loading: false }));
+                this.setState(() => ({ loading: false, addAccounts: "linkedin" }));
             }).catch(error => {
                 this.setState(() => ({ loading: false }));
                 if (error.response.status === 403) {
@@ -262,7 +255,7 @@ class Middleware extends React.Component {
         try {
             this.setState(() => ({ loading: true }));
             this.props.startAddPinterestChannel(response.accessToken).then(() => {
-                this.setState(() => ({ loading: false }));
+                this.setState(() => ({ loading: false, addAccounts: "pinterest"}));
             }).catch(error => {
                 this.setState(() => ({ loading: false }));
                 if (error.response.status === 403) {
@@ -281,7 +274,6 @@ class Middleware extends React.Component {
     };
 
     remove = (id) => {
-        console.log('remove')
         this.setState(() => ({ loading: true }));
         return destroyChannel(id)
             .then((response) => {
@@ -303,9 +295,75 @@ class Middleware extends React.Component {
             });
     }
 
+    renderTypeaccounts(param) {
+        switch(param.type) {
+        case 'twitter':
+            return (
+                <div className="channel-buttons">
+                    <ChannelItems channels={[param]} setAction={()=>this.remove(param.id)} />
+                    {!!this.props.loading && <Loader />}
+                </div>
+            );
+        case 'facebook':
+            return (
+                <div className="channel-buttons">
+                    <ChannelItems channels={[param]} setAction={()=>this.remove(param.id)} />
+                    {!!this.props.loading && <Loader />}
+                </div>
+            );
+          default:
+            return 'foo';
+        }
+      }
+
+    renderTypeLoginAccounts(param) {
+        switch(param) {
+          case 'twitter':
+            return (
+                <div className="channel-buttons">
+                   <TwitterLogin 
+                        loginUrl={twitterAccessTokenUrl}
+                        onFailure={this.onFailure} 
+                        onSuccess={this.onTwitterSuccess}
+                        requestTokenUrl={twitterRequestTokenUrl}
+                        showIcon={false}
+                        forceLogin={true}
+                        className="hide"
+                        ref={this.twitterRef}
+                        >
+                    </TwitterLogin>  
+                    <button 
+                        className="col-md-12 twitter-middleware-btn" 
+                        onClick={(e) => this.twitterRef.current.onButtonClick(e)}> 
+                        <i className="fa fa-twitter"></i> Add Another Account</button>
+                </div>
+            );
+        case 'facebook':
+            return(
+            <FacebookLogin
+                appId={facebookAppId}
+                autoLoad={false}
+                fields={fbFields}
+                scope={fbScope}
+                callback={this.onFacebookSuccess} 
+                cssClass="col-md-12 twitter-middleware-btn"
+                icon={<i className="fa fa-facebook"></i>}
+                textButton="Connect my Facebook Account"
+                ref={this.facebookRef}
+                disableMobileRedirect={true}
+            />)
+        default:
+            return 'foo';
+        }
+    }
+
+    showAllChannels = ()=>{
+        this.setState({addAccounts: ""})
+    }
+
     render() {
         const { middleware, channels } = this.props;
-        const { continueBtn, loading, twitterBooster, allPlans, addon, addonTrial } = this.state;
+        const { loading, allPlans, addon, addonTrial, addAccounts } = this.state;
         let planParam = getParameterByName("plan", this.props.location.search);
         let planData = allPlans.filter(plan => plan["Name"].toLowerCase() === planParam);
         planData = planData.length > 0 ? planData[0] : false;
@@ -313,7 +371,9 @@ class Middleware extends React.Component {
         if (planData) {
             planName = this.state.billingPeriod === "annually" ? planData["Name"].toLowerCase() + "_annual" : planData["Name"].toLowerCase();
         }
-
+        let countLinkedFacebookAcc = channels.filter(item => item.type == 'facebook').length
+        let countLinkedTwitterAcc = channels.filter(item => item.type == 'twitter').length
+        let countLinkedLinkedinAcc = channels.filter(item => item.type == 'linkedin').length
         return (
             <div className="login-container">
                 <div className="logo">
@@ -323,113 +383,97 @@ class Middleware extends React.Component {
                 {this.state.loading && <LoaderWithOverlay />}
                 <div className="col-md-7 col-xs-12 text-center">
                     <div className="col-xs-12 text-center">
-                    <SelectAccountsModal 
-                        isOpen={this.state.facebookPagesModal} 
-                        accounts={this.state.facebookPages}
-                        onSave={this.onFacebookPagesSave}
-                        error={this.state.error}
-                    />
-                    {/* {middleware !== "loading" && <h2>{middleware === "channels" ? "Connect your social profiles." : ((!(!!addon) && addonTrial) || !!planParam ? "Start Your Free Trial" : "Boost Your Twitter")}</h2>} */}
-                    {middleware !== "channels" && middleware !== "billing" && <Loader />}
-                    {loading && <LoaderWithOverlay />}
-                    
-                    {middleware == "channels" &&
-                    <div className="box channels-box">
-                        {channels.length > 0 
-                        ? 
-                        //kur konektohesh nfillim
-                        <div className="">  
-                            {/* <Twitter /> */}
+                        <SelectAccountsModal 
+                            isOpen={this.state.facebookPagesModal} 
+                            accounts={this.state.facebookPages}
+                            onSave={this.onFacebookPagesSave}
+                            error={this.state.error}
+                        />
+                        {middleware !== "channels" && middleware !== "billing" && <Loader />}
+                        {loading && <LoaderWithOverlay />}
+                        
+                        {middleware == "channels" &&
+                            <div className="box channels-box">
+                                {channels.length > 0 && addAccounts.length > 0 
+                                ? 
+                                <div className="">  
+                                    <div className="channel-profiles">
+                                        <h2>Connected your <span className="capitalized-text">{addAccounts}</span> account</h2>
+                                        <h5>Cats who destroy birds. Eat an easter feather as if it were a bird then burp victoriously</h5>
+                                            
+                                        {channels.map(channel => {
+                                            if(addAccounts == channel.type ){
+                                            return(
+                                            <div key={channel.id} className="channel-profile-box col-xs-12">
+                                                {this.renderTypeaccounts(channel)}                                        
+                                            </div> 
+                                             )}
+                                            })}
+                                        {this.renderTypeLoginAccounts(addAccounts)}
+                                        <button className="magento-btn mt50" onClick={()=>this.showAllChannels()}>Continue</button>
+                                    </div>
+                                </div>
+                                :
+                                <div>
+                                    <div className="header-title">
+                                        {middleware !== "loading" && <h2>Connect your accounts</h2>}
+                                        <h5>Click one of the buttons below to get started:</h5>
+                                    </div>
+                                    <div className="channel-buttons">
+                                        <FacebookLogin
+                                            appId={facebookAppId}
+                                            autoLoad={false}
+                                            fields={fbFields}
+                                            scope={fbScope}
+                                            callback={this.onFacebookSuccess} 
+                                            cssClass="col-md-12 twitter-middleware-btn"
+                                            icon={<i className="fa fa-facebook"></i>}
+                                            textButton={countLinkedFacebookAcc ? countLinkedFacebookAcc + " Connected Facebook accounts":"Connect my Facebook Account"}
+                                            ref={this.facebookRef}
+                                            disableMobileRedirect={true}
+                                        />
 
-                            <div className="channel-profiles">
-                                {channels.map(channel => (
-                                    <div key={channel.id} className="channel-profile-box col-xs-12">
-                                     <h2>You are connected succesfully with <span className="capitalized-text">{channel.type}</span></h2>
-                                    <h5>Cats who destroy birds. Eat an easter feather as if it were a bird then burp victoriously</h5>
-                                        
-                                        <div className="channel-buttons">
-                                            <ChannelItems channels={this.props.channels} setAction={this.setAction} />
-                                            {/* <i className="fa fa-close" onClick={() => this.remove(channel.id)}></i> */}
-                                            {!!this.props.loading && <Loader />}
-                                            <TwitterLogin 
-                                                loginUrl={twitterAccessTokenUrl}
-                                                onFailure={this.onFailure}
-                                                onSuccess={this.onSuccess}
-                                                requestTokenUrl={twitterRequestTokenUrl}
-                                                showIcon={true}
-                                                forceLogin={true}
-                                                className="add-channel-plus-btn mt-2">
-                                                <i className="fa fa-plus"></i>
-                                            </TwitterLogin>
-                                            <span className="left-side-label">Add account</span>
-                                        </div>
-                                    </div>  
-                                ))}
-                            </div>
-                        </div>
-                        :
+                                        <button 
+                                        className="col-md-12 twitter-middleware-btn" 
+                                        onClick={(e) => this.twitterRef.current.onButtonClick(e)}> 
+                                        <i className="fa fa-twitter"></i>
+                                        {countLinkedTwitterAcc ? countLinkedTwitterAcc + " connected Twitter accounts" : "Connect my Twitter Account"}
+                                        </button>
+
+                                        <LinkedInButton 
+                                            clientId={linkedinAppId}
+                                            redirectUri={`${backendUrl}/api/linkedin/callback`}
+                                            onSuccess={this.onLinkedInSuccess}
+                                            onError={this.onFailure}
+                                            cssClass="col-md-12 twitter-middleware-btn"
+                                            icon={<i className="fa fa-linkedin"></i>}
+                                            countLinkedLinkedinAcc
+                                            textButton={countLinkedLinkedinAcc ? countLinkedLinkedinAcc + " Connected Linkedin accounts": "Connect my Linkedin Account"}
+                                            ref={this.linkedinRef}
+                                        />
+
+                                        <TwitterLogin loginUrl={twitterAccessTokenUrl}
+                                            onFailure={this.onFailure} onSuccess={this.onTwitterSuccess}
+                                            requestTokenUrl={twitterRequestTokenUrl}
+                                            showIcon={false}
+                                            forceLogin={true}
+                                            className="hide"
+                                            ref={this.twitterRef}
+                                        ></TwitterLogin>
+                                        { channels.length > 0  ?
+                                            <button className="magento-btn mt50" onClick={this.setRole}>Connect and continue</button>
+                                            :
+                                            <button className="magento-btn mt50 disabled-btn">Connect and continue</button> }
+                                    </div>
+                                </div>
+                            }
                         <div>
-                        <div className="header-title">
-                            {middleware !== "loading" && <h2>Connect your accounts</h2>}
-                            <h5>Click one of the buttons below to get started:</h5>
-                        </div>
-                        <div className="channel-buttons">
-                        <FacebookLogin
-                            appId={facebookAppId}
-                            autoLoad={false}
-                            fields={fbFields}
-                            scope={fbScope}
-                            callback={this.onFacebookSuccess} 
-                            cssClass="col-md-12 twitter-middleware-btn"
-                            icon={<i className="fa fa-facebook"></i>}
-                            textButton="Connect my Facebook Account"
-                            ref={this.facebookRef}
-                            disableMobileRedirect={true}
-                        />
-                        <button className="col-md-12 twitter-middleware-btn" onClick={(e) => this.twitterRef.current.onButtonClick(e)}> <i className="fa fa-twitter"></i> Connect my Twitter Account</button>
-
-                        <LinkedInButton 
-                            clientId={linkedinAppId}
-                            redirectUri={`${backendUrl}/api/linkedin/callback`}
-                            onSuccess={this.onLinkedInSuccess}
-                            onError={this.onFailure}
-                            cssClass="col-md-12 twitter-middleware-btn"
-                            icon={<i className="fa fa-linkedin"></i>}
-                            textButton="Connect my Linkedin Account"
-                            ref={this.linkedinRef}
-                        />
-
-                        <TwitterLogin loginUrl={twitterAccessTokenUrl}
-                            onFailure={this.onFailure} onSuccess={this.onTwitterSuccess}
-                            requestTokenUrl={twitterRequestTokenUrl}
-                            showIcon={false}
-                            forceLogin={true}
-                            className="hide"
-                            ref={this.twitterRef}
-                        ></TwitterLogin>
-                        { continueBtn ?
-                            <button className="magento-btn mt50" onClick={this.setRole}>Connect and continue</button>
-                            :
-                            <button className="magento-btn mt50 disabled-btn">Connect and continue</button> }
                     </div>
-                    </div>
-                    }
-                    
-                    
-
-                    <div>
-                    
-                    
-                    </div>
-                
                 </div>
             }
-
-                
-            </div>
-                {middleware == "billing" && !!planData ?
-                <div className="box billing channels-box">
-
+        </div>
+        {middleware == "billing" && !!planData ?
+            <div className="box billing channels-box">
                     <div className="col-md-12">
                         <h5>Select Your Billing Cycle</h5>
                     </div>
