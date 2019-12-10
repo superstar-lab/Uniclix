@@ -296,24 +296,12 @@ class Middleware extends React.Component {
     }
 
     renderTypeaccounts(param) {
-        switch(param.type) {
-        case 'twitter':
-            return (
-                <div className="channel-buttons">
-                    <ChannelItems channels={[param]} setAction={()=>this.remove(param.id)} />
-                    {!!this.props.loading && <Loader />}
-                </div>
-            );
-        case 'facebook':
-            return (
-                <div className="channel-buttons">
-                    <ChannelItems channels={[param]} setAction={()=>this.remove(param.id)} />
-                    {!!this.props.loading && <Loader />}
-                </div>
-            );
-          default:
-            return 'foo';
-        }
+        return (
+            <div className="channel-buttons">
+                <ChannelItems channels={[param]} setAction={()=>this.remove(param.id)} />
+                {!!this.props.loading && <Loader />}
+            </div>
+        )
       }
 
     renderTypeLoginAccounts(param) {
@@ -351,7 +339,21 @@ class Middleware extends React.Component {
                 textButton="Connect my Facebook Account"
                 ref={this.facebookRef}
                 disableMobileRedirect={true}
-            />)
+            />);
+        case 'linkedin':
+            return(
+                <LinkedInButton 
+                clientId={linkedinAppId}
+                redirectUri={`${backendUrl}/api/linkedin/callback`}
+                onSuccess={this.onLinkedInSuccess}
+                onError={this.onFailure}
+                cssClass="col-md-12 twitter-middleware-btn"
+                icon={<i className="fa fa-linkedin"></i>}
+                countLinkedLinkedinAcc
+                textButton={countLinkedLinkedinAcc ? countLinkedLinkedinAcc + " Connected Linkedin accounts": "Connect my Linkedin Account"}
+                ref={this.linkedinRef}
+            />
+            )
         default:
             return 'foo';
         }
