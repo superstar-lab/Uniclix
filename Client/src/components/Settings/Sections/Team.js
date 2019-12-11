@@ -240,14 +240,14 @@ class Team extends React.Component {
 
                                     </div>
                                     :
+                                    <div className="accounts-container__content__wrapper__footer">
+                                    <button onClick={this.toggleAddOrUpdateMember} className="add-channel-plus-btn">
+                                        <i className="fa fa-plus"></i>
+                                    </button>
+                                    <span className="left-side-label">Add New Team Member</span>
+                                </div>
 
-                                    <SocialAccountsPrompt
-                                        image="/images/hello_bubble_smiley.svg"
-                                        title="Let's start by adding new members!"
-                                        description="To add members to your team, click the button below."
-                                        buttonText="Add new member"
-                                        action={this.toggleAddOrUpdateMember}
-                                    />)
+                                   )
                             }
                         </div>
                         <div className={`cnt-item ${isTabActive == 'company-info' ? 'active' : ''}`}>

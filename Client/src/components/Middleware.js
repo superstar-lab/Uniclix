@@ -431,7 +431,7 @@ class Middleware extends React.Component {
                                             callback={this.onFacebookSuccess} 
                                             cssClass="col-md-12 twitter-middleware-btn"
                                             icon={<i className="fa fa-facebook"></i>}
-                                            textButton={countLinkedFacebookAcc ? countLinkedFacebookAcc + " Connected Facebook accounts":"Connect my Facebook Account"}
+                                            textButton={countLinkedFacebookAcc ? countLinkedFacebookAcc + " Connected Facebook Accounts. Add more" : "Connect my Facebook Account"}
                                             ref={this.facebookRef}
                                             disableMobileRedirect={true}
                                         />
@@ -440,7 +440,7 @@ class Middleware extends React.Component {
                                         className="col-md-12 twitter-middleware-btn" 
                                         onClick={(e) => this.twitterRef.current.onButtonClick(e)}> 
                                         <i className="fa fa-twitter"></i>
-                                        {countLinkedTwitterAcc ? countLinkedTwitterAcc + " connected Twitter accounts" : "Connect my Twitter Account"}
+                                        {countLinkedTwitterAcc ? countLinkedTwitterAcc + " connected Twitter Accounts. Add more" : "Connect my Twitter Account"}
                                         </button>
 
                                         <LinkedInButton 
@@ -451,7 +451,7 @@ class Middleware extends React.Component {
                                             cssClass="col-md-12 twitter-middleware-btn"
                                             icon={<i className="fa fa-linkedin"></i>}
                                             countLinkedLinkedinAcc
-                                            textButton={countLinkedLinkedinAcc ? countLinkedLinkedinAcc + " Connected Linkedin accounts": "Connect my Linkedin Account"}
+                                            textButton={countLinkedLinkedinAcc ? countLinkedLinkedinAcc + " Connected Linkedin Accounts. Add more" : "Connect my Linkedin Account"}
                                             ref={this.linkedinRef}
                                         />
 
