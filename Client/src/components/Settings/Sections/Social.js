@@ -128,14 +128,17 @@ class Social extends React.Component {
             });
     }
 
-    AddOtherAccounts = () => {
-        this.setState({ addneacc: true })
+    AddOtherAccounts = (val) => {
+        this.setState({ addneacc: val })
     }
     render() {
         const { shouldBlockNavigation, addneacc } = this.state
         return (
-
-            addneacc ? <ConnectAccounts middleware={'channels'} /> :
+            addneacc ?
+                <ConnectAccounts
+                    middleware={'channels'}
+                    AddOtherAccounts={this.AddOtherAccounts} />
+                :
                 <React.Fragment>
                     <Prompt
                         when={shouldBlockNavigation}
@@ -199,7 +202,7 @@ class Social extends React.Component {
 
                                     <div className="accounts-container__content__wrapper__footer">
 
-                                        <button className="add-channel-plus-btn" onClick={() => this.AddOtherAccounts()}>
+                                        <button className="add-channel-plus-btn" onClick={() => this.AddOtherAccounts(true)}>
                                             <i className="fa fa-plus"></i>
                                         </button>
                                         <span className="left-side-label">Add more accounts</span>

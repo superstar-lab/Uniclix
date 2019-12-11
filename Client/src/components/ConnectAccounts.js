@@ -76,7 +76,6 @@ class ConnectAccounts extends React.Component {
             changePlan(plan).then(response => {
                 this.props.startSetProfile().then(() => {
                     this.setState(() => ({ loading: false }));
-                    this.props.setMiddleware(false);
                 });
             }).then()
                 .catch(error => {
@@ -104,7 +103,6 @@ class ConnectAccounts extends React.Component {
 
         this.props.startSetProfile().then(() => {
             this.setState(() => ({ loading: false }));
-            this.props.setMiddleware(false);
         });
     };
 
@@ -332,9 +330,9 @@ class ConnectAccounts extends React.Component {
     }
 
     render() {
-        const { middleware, channels } = this.props;
+        const { channels, AddOtherAccounts } = this.props;
+        console.log(AddOtherAccounts)
         const { loading, addAccounts } = this.state;
-console.log(middleware, 'middleware')
         let countLinkedFacebookAcc = channels.length > 0 ? channels.filter(item => item.type == 'facebook').length : 0
         let countLinkedTwitterAcc = channels.length > 0 ? channels.filter(item => item.type == 'twitter').length : 0
         let countLinkedLinkedinAcc = channels.length > 0 ? channels.filter(item => item.type == 'linkedin').length : 0
@@ -351,86 +349,79 @@ console.log(middleware, 'middleware')
                     />
                     {loading && <LoaderWithOverlay />}
 
-                    {middleware == "channels" &&
-                        <div className="box channels-box">
-                            {channels.length > 0 && addAccounts.length > 0
-                                ?
-                                <div className="">
-                                    <div className="channel-profiles">
-                                        <h2>Connected your <span className="capitalized-text">{addAccounts}</span> account</h2>
-                                        <h5>Cats who destroy birds. Eat an easter feather as if it were a bird then burp victoriously</h5>
+                    <div className="box channels-box">
+                        {channels.length > 0 && addAccounts.length > 0
+                            ?
+                            <div className="">
+                                <div className="channel-profiles">
+                                    <h2>Connected your <span className="capitalized-text">{addAccounts}</span> account</h2>
+                                    <h5>Cats who destroy birds. Eat an easter feather as if it were a bird then burp victoriously</h5>
 
-                                        {channels.map(channel => {
-                                            if (addAccounts == channel.type) {
-                                                return (
-                                                    <div key={channel.id} className="channel-profile-box col-xs-12">
-                                                        {this.renderTypeaccounts(channel)}
-                                                    </div>
-                                                )
-                                            }
-                                        })}
-                                        {this.renderTypeLoginAccounts(addAccounts)}
-                                        <button className="magento-btn mt50" onClick={() => this.showAllChannels()}>Continue</button>
-                                    </div>
+                                    {channels.map(channel => {
+                                        if (addAccounts == channel.type) {
+                                            return (
+                                                <div key={channel.id} className="channel-profile-box col-xs-12">
+                                                    {this.renderTypeaccounts(channel)}
+                                                </div>
+                                            )
+                                        }
+                                    })}
+                                    {this.renderTypeLoginAccounts(addAccounts)}
+                                    <button className="magento-btn mt50" onClick={() => this.showAllChannels()}>Continue</button>
                                 </div>
-                                :
-                                <div>
-                                    <div className="header-title">
-                                        {middleware !== "loading" && <h2>Connect your accounts</h2>}
-                                        <h5>Click one of the buttons below to get started:</h5>
-                                    </div>
-                                    <div className="channel-buttons">
-                                        <FacebookLogin
-                                            appId={facebookAppId}
-                                            autoLoad={false}
-                                            fields={fbFields}
-                                            scope={fbScope}
-                                            callback={this.onFacebookSuccess}
-                                            cssClass="col-md-12 twitter-middleware-btn"
-                                            icon={<i className="fa fa-facebook"></i>}
-                                            textButton={countLinkedFacebookAcc ? countLinkedFacebookAcc + " Connected Facebook accounts" : "Connect my Facebook Account"}
-                                            ref={this.facebookRef}
-                                            disableMobileRedirect={true}
-                                        />
-
-                                        <button
-                                            className="col-md-12 twitter-middleware-btn"
-                                            onClick={(e) => this.twitterRef.current.onButtonClick(e)}>
-                                            <i className="fa fa-twitter"></i>
-                                            {countLinkedTwitterAcc ? countLinkedTwitterAcc + " connected Twitter accounts" : "Connect my Twitter Account"}
-                                        </button>
-
-                                        <LinkedInButton
-                                            clientId={linkedinAppId}
-                                            redirectUri={`${backendUrl}/api/linkedin/callback`}
-                                            onSuccess={this.onLinkedInSuccess}
-                                            onError={this.onFailure}
-                                            cssClass="col-md-12 twitter-middleware-btn"
-                                            icon={<i className="fa fa-linkedin"></i>}
-                                            countLinkedLinkedinAcc
-                                            textButton={countLinkedLinkedinAcc ? countLinkedLinkedinAcc + " Connected Linkedin accounts" : "Connect my Linkedin Account"}
-                                            ref={this.linkedinRef}
-                                        />
-
-                                        <TwitterLogin loginUrl={twitterAccessTokenUrl}
-                                            onFailure={this.onFailure} onSuccess={this.onTwitterSuccess}
-                                            requestTokenUrl={twitterRequestTokenUrl}
-                                            showIcon={false}
-                                            forceLogin={true}
-                                            className="hide"
-                                            ref={this.twitterRef}
-                                        ></TwitterLogin>
-                                        {channels.length > 0 ?
-                                            <button className="magento-btn mt50" onClick={this.setRole}>Connect and continue</button>
-                                            :
-                                            <button className="magento-btn mt50 disabled-btn">Connect and continue</button>}
-                                    </div>
-                                </div>
-                            }
-                            <div>
                             </div>
-                        </div>
-                    }
+                            :
+                            <div>
+                                <div className="header-title">
+                                    <h2>Connect your accounts</h2>
+                                    <h5>Click one of the buttons below to get started:</h5>
+                                </div>
+                                <div className="channel-buttons">
+                                    <FacebookLogin
+                                        appId={facebookAppId}
+                                        autoLoad={false}
+                                        fields={fbFields}
+                                        scope={fbScope}
+                                        callback={this.onFacebookSuccess}
+                                        cssClass="col-md-12 twitter-middleware-btn"
+                                        icon={<i className="fa fa-facebook"></i>}
+                                        textButton={countLinkedFacebookAcc ? countLinkedFacebookAcc + " Connected Facebook accounts" : "Connect my Facebook Account"}
+                                        ref={this.facebookRef}
+                                        disableMobileRedirect={true}
+                                    />
+
+                                    <button
+                                        className="col-md-12 twitter-middleware-btn"
+                                        onClick={(e) => this.twitterRef.current.onButtonClick(e)}>
+                                        <i className="fa fa-twitter"></i>
+                                        {countLinkedTwitterAcc ? countLinkedTwitterAcc + " connected Twitter accounts" : "Connect my Twitter Account"}
+                                    </button>
+
+                                    <LinkedInButton
+                                        clientId={linkedinAppId}
+                                        redirectUri={`${backendUrl}/api/linkedin/callback`}
+                                        onSuccess={this.onLinkedInSuccess}
+                                        onError={this.onFailure}
+                                        cssClass="col-md-12 twitter-middleware-btn"
+                                        icon={<i className="fa fa-linkedin"></i>}
+                                        countLinkedLinkedinAcc
+                                        textButton={countLinkedLinkedinAcc ? countLinkedLinkedinAcc + " Connected Linkedin accounts" : "Connect my Linkedin Account"}
+                                        ref={this.linkedinRef}
+                                    />
+
+                                    <TwitterLogin loginUrl={twitterAccessTokenUrl}
+                                        onFailure={this.onFailure} onSuccess={this.onTwitterSuccess}
+                                        requestTokenUrl={twitterRequestTokenUrl}
+                                        showIcon={false}
+                                        forceLogin={true}
+                                        className="hide"
+                                        ref={this.twitterRef}
+                                    ></TwitterLogin>
+                                    <button className="magento-btn mt50" onClick={()=>AddOtherAccounts(false)}>Save</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         );
@@ -440,7 +431,6 @@ console.log(middleware, 'middleware')
 const mapStateToProps = (state) => {
     const filter = { selected: 1, provider: undefined };
     const selectedChannel = channelSelector(state.channels.list, filter);
-
 
     return {
         channels: state.channels.list,
