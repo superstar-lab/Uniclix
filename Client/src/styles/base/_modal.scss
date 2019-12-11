@@ -12,7 +12,7 @@
   margin-bottom: 0;
 }
 
-.ReactModal__Content.ReactModal__Content--after-open.topicsModal .form-group > div {
+.ReactModal__Content.ReactModal__Content--after-open.topicsModal .form-group>div {
   width: 100%;
 }
 
@@ -50,9 +50,43 @@
   padding-right: 0;
 }
 
+
+.main-modal-style {
+  padding: 30px;
+  width: 92vh;
+  background: #f5f7fb;
+  border-radius: 8px;
+
+  .modal-body,
+  .modal-footer {
+    padding: 20px 0 5px 0;
+    border: none;
+  }
+}
+
+.modal-btn {
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  border-radius: 30px;
+  padding: 15px 50px;
+}
+
+
 .small-btn {
   width: auto;
   padding: 10px 30px;
+}
+
+.modal {
+
+  .main-modal-style input,
+  .main-content-style input,
+  .main-modal-style select,
+  .main-content-style select {
+    width: auto;
+  }
 }
 
 .modal-header-container h3,
@@ -94,28 +128,6 @@
   clear: both;
 }
 
-.main-modal-style {
-  padding: 30px;
-  width: 92vh;
-  background: #f5f7fb;
-  border-radius: 8px;
-
-  .modal-body,
-  .modal-footer {
-    padding: 20px 0 5px 0;
-    border: none;
-  }
-}
-.modal-btn {
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  border-radius: 30px;
-  padding: 15px 50px;
-}
-
-
 .main-modal-style .btn-link,
 .main-content-style .btn-link {
   color: #212121;
@@ -137,10 +149,11 @@
   font-family: open-sansLight, arial, sans-serif;
   outline: none !important;
   border: none;
-  width: auto;
+
   &:focus {
     box-shadow: none;
   }
+
   &selected {
     background: none;
   }
@@ -167,11 +180,6 @@
   padding-left: 0;
 }
 
-// .main-modal-style [class ^="col-"]:not(:last-child),
-// .main-content-style [class ^="col-"]:not(:last-child) {
-//     padding-right: 20px;
-// }
-
 .modal-menu {
   padding: 0;
   border-right: 1px solid #e1e1e1;
@@ -196,19 +204,19 @@
       box-sizing: border-box;
     }
 
-    & > i {
+    &>i {
       display: block;
       font-size: 2.5rem;
       width: 30px;
     }
 
-    & > p {
+    &>p {
       margin: 0;
     }
   }
 }
 
-.modal-results .selection-container input:checked ~ .checkmark {
+.modal-results .selection-container input:checked~.checkmark {
   background-color: #485576;
 }
 
@@ -250,7 +258,7 @@
   color: #485576;
 }
 
-.modal-results .channel-selection-container label > img {
+.modal-results .channel-selection-container label>img {
   border: 1px solid #e5e5e5;
   border-radius: 100px;
   margin-right: 5px;
@@ -259,6 +267,7 @@
 .modal-dialog.modal-dialog-centered.compose-dialog .main-modal-style {
   margin-left: -80px;
 }
+
 .modal-btn2 {
   padding: 15px 50px;
   font-family: Rubik;
@@ -266,5 +275,5 @@
   font-weight: 500;
   font-size: 14px;
   line-height: 14px;
-  color: #2d86da!important;
+  color: #2d86da !important;
 }
