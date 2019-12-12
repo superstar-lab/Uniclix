@@ -25,8 +25,8 @@ import {getPages, savePages} from "../requests/linkedin/channels";
 
 class Middleware extends React.Component {
     state = {
-        facebookPagesModal: false,
-        facebookPages: [],
+        bussinesModal: false,
+        bussinesPages: [],
         twitterBooster: this.props.location.search.indexOf('twitter-booster') != -1,
         billingPeriod: getParameterByName("period", this.props.location.search) || "annually",
         plan: getParameterByName("plan", this.props.location.search),
@@ -174,8 +174,8 @@ class Middleware extends React.Component {
 
                             if (response.length) {
                                 this.setState(() => ({
-                                    facebookPages: response,
-                                    facebookPagesModal: true,
+                                    bussinesPages: response,
+                                    bussinesModal: true,
                                     loading: false,
                                     addAccounts: 'facebook'
                                 }));
@@ -202,16 +202,16 @@ class Middleware extends React.Component {
 
     };
 
-    onFacebookPagesSave = (accounts) => {
+    onBussinesPagesSave = (accounts) => {
         this.setState(() => ({
             error: "",
             loading: true
         }));
         saveAccounts(accounts)
             .then(() => {
-                this.setState(() => ({ loading: false, addAccounts: "facebook" }));
+                this.setState(() => ({ loading: false}));
                 this.props.startSetChannels();
-                this.toggleFacebookPagesModal();
+                this.togglebussinesModal();
             }).catch(error => {
                 this.setState(() => ({ loading: false }));
                 if (error.response.status === 403) {
@@ -228,9 +228,9 @@ class Middleware extends React.Component {
         }));
     }
 
-    toggleFacebookPagesModal = () => {
+    togglebussinesModal = () => {
         this.setState(() => ({
-            facebookPagesModal: !this.state.facebookPagesModal
+            bussinesModal: !this.state.bussinesModal
         }));
     }
 
@@ -374,7 +374,7 @@ class Middleware extends React.Component {
 
     render() {
         const { middleware, channels } = this.props;
-        const { loading, allPlans, addon, addonTrial, addAccounts } = this.state;
+        const { loading, allPlans, addon, addonTrial, addAccounts, bussinesModal, bussinesPages } = this.state;
         let planParam = getParameterByName("plan", this.props.location.search);
         let planData = allPlans.filter(plan => plan["Name"].toLowerCase() === planParam);
         planData = planData.length > 0 ? planData[0] : false;
@@ -396,9 +396,9 @@ class Middleware extends React.Component {
                 <div className="col-md-7 col-xs-12 text-center">
                     <div className="col-xs-12 text-center">
                         <SelectAccountsModal 
-                            isOpen={this.state.facebookPagesModal} 
-                            accounts={this.state.facebookPages}
-                            onSave={this.onFacebookPagesSave}
+                            isOpen={bussinesModal} 
+                            accounts={bussinesPages}
+                            onSave={this.onBussinesPagesSave}
                             error={this.state.error}
                         />
                         {middleware !== "channels" && middleware !== "billing" && <Loader />}
