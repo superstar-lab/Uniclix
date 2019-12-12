@@ -207,8 +207,9 @@ class Middleware extends React.Component {
             error: "",
             loading: true
         }));
-        saveAccounts(accounts)
-            .then(() => {
+        
+        if(this.state.addAccounts == 'linkedin'){
+            savePages(accounts).then(() => {
                 this.setState(() => ({ loading: false}));
                 this.props.startSetChannels();
                 this.togglebussinesModal();
@@ -220,6 +221,21 @@ class Middleware extends React.Component {
                     this.setError("Something went wrong!");
                 }
             });
+        }else{
+        saveAccounts(accounts).then(() => {
+            this.setState(() => ({ loading: false}));
+            this.props.startSetChannels();
+            this.togglebussinesModal();
+        }).catch(error => {
+            this.setState(() => ({ loading: false }));
+            if (error.response.status === 403) {
+                this.setForbidden(true);
+            } else {
+                this.setError("Something went wrong!");
+            }
+        });
+    }
+            
     };
 
     setAction = (action = this.defaultAction) => {
