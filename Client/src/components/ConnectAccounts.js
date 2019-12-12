@@ -224,7 +224,7 @@ class ConnectAccounts extends React.Component {
                     if (response.length) {
                         this.setState(() => ({
                             bussinesPages: response,
-                            bussinesModal: true,
+                            bussinesPagesModal: true,
                             addAccounts: "linkedin"
                         }));
                     }
