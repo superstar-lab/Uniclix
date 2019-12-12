@@ -8,17 +8,22 @@ import { validateEmail, validateUrl } from "../../../utils/validator";
 import { getKeywordTargets } from '../../../requests/twitter/channels';
 import { startSetProfile } from "../../../actions/profile";
 import { LoaderWithOverlay } from "../../Loader";
+import Countries from "../../../fixtures/country";
 
 class Profile extends React.Component {
 
     state = {
         name: "",
+        addresse: "",
         email: "",
         website: "",
         type: "",
+        countries: [],
+        openCountry: false,
         organizationName: "",
         reason: "",
         topics: [],
+        country: "",
         targets: [],
         topic: "",
         locations: [],
@@ -36,10 +41,26 @@ class Profile extends React.Component {
         this.initializeProfileData();
         this.fetchTargets();
     }
+    setLocation = (val) => {
+        console.log(val)
+        this.setState({ location: val, openCountry: false })
+    }
+    filterCountry = (e) => {
+        let val = e.target.value;
+        let countries = Countries.filter(item => item.toLowerCase().includes(val.toLowerCase()))
+
+        this.setState({
+            countries: countries,
+            location: val
+        })
+    }
     fetchTargets = () => {
         getKeywordTargets()
             .then((response) => {
                 if (typeof (response.items) === "undefined") return;
+                this.setState(() => ({
+                    countries: Countries
+                }));
 
                 this.setState(() => ({
                     targets: response.targets
@@ -72,6 +93,11 @@ class Profile extends React.Component {
             stateCopy["name"] = user.name ? user.name : "";
             stateCopy["email"] = user.email ? user.email : "";
             stateCopy["website"] = user.website ? user.website : "";
+            stateCopy["addresse"] = user.addresse ? user.addresse : "";
+            stateCopy["companyEmail"] = user.companyEmail ? user.companyEmail : "";
+            stateCopy["companyPhone"] = user.companyPhone ? user.companyPhone : "";
+            stateCopy["location"] = user.location ? user.location : "";
+            stateCopy["type"] = user.type ? user.type : "";
             stateCopy["organizationName"] = user.organization_name ? user.organization_name : "";
             stateCopy["reason"] = user.usage_reason ? user.usage_reason : "Myself";
             stateCopy["topics"] = topics.map((topic) => topic.topic);
@@ -90,7 +116,7 @@ class Profile extends React.Component {
 
     onLocationsFieldChange = (location) => {
         this.setState(() => ({
-            location
+            location:location
         }));
     };
 
@@ -147,7 +173,12 @@ class Profile extends React.Component {
             topics: this.state.topics,
             locations: this.state.locations,
             timezone: this.state.timezone,
-            reason: this.state.reason
+            reason: this.state.reason,
+            addresse: this.state.addresse,
+            location: this.state.location,
+            companyEmail: this.state.companyEmail,
+            companyPhone: this.state.companyPhone,
+            type: this.state.type
         }).then((response) => {
             this.props.startSetProfile();
             this.setState(() => ({
@@ -178,7 +209,10 @@ class Profile extends React.Component {
     }
 
     render() {
-        const { isTabActive, success, error, locations, targets } = this.state;
+        const { isTabActive, success, error, countries, locations, openCountry, location, targets } = this.state;
+        const items = countries.map((item) => {
+            return <li onClick={() => this.setLocation(item)}> {item} </li>;
+        });
         return (
             <div>
                 {this.state.loading && <LoaderWithOverlay />}
@@ -287,22 +321,30 @@ class Profile extends React.Component {
                                         <label htmlFor="topics">Company Name</label>
                                         <input type="text" className="form-control whiteBg" id="organizationName" onChange={(e) => this.onFieldChange(e)} value={this.state.organizationName} placeholder="Company" />
                                     </div>
-                                    <div className="col-12 col-md-8 form-field">
-                                        <label htmlFor="website">Country</label>
-                                        <GeoSuggest
-                                            className="col-12"
-                                            inputClassName="form-control whiteBg"
-                                            placeholder="Write your country name"
-                                            onSuggestSelect={this.onLocationsFieldChange}
-                                            initialValue={this.state.location && this.state.location.label}
-                                            disabled={this.state.locations.length >= 5 ? true : false}
-                                        />
-                                        <input type="hidden" id="website" readOnly={true} value={this.state.locations.map(location => ` ${location.label}`)} onClick={this.toggleLocationsModal} placeholder="New York City, Amsterdam, Venice..." />
+                                    <div className="col-12 col-md-8 form-field form-country">
+                                        <label htmlFor="location">Country</label>
+
+                                        <input
+                                            className="form-control whiteBg"
+                                            type="text"
+                                            id="location"
+                                            onFocus={() => this.setState({ openCountry: true })}
+                                            onBlur={() => { setTimeout(() => { this.setState({ openCountry: false }) }, 600) }}
+                                            autoComplete="false"
+                                            value={this.state.location}
+                                            autoComplete="new-password"
+                                            onChange={(e) => this.filterCountry(e)}
+                                            placeholder="Select Country" />
+                                        {openCountry &&
+                                            <ul className="country-list">
+                                                {items}
+                                            </ul>
+                                        }
                                     </div>
 
                                     <div className="col-12 col-md-8 form-field">
                                         <label htmlFor="topics">Addresse</label>
-                                        <input type="text" className="form-control whiteBg" id="Addresse" name="addresse" onChange={(e) => this.onFieldChange(e)} value={this.state.addresse} placeholder="Example: 22 E 22Th St, New York, NY 10033" />
+                                        <input type="text" className="form-control whiteBg" id="addresse" name="addresse" onChange={(e) => this.onFieldChange(e)} value={this.state.addresse} placeholder="Example: 22 E 22Th St, New York, NY 10033" />
                                     </div>
                                     <div className="col-12 col-md-8 form-field">
                                         <label htmlFor="topics">Company Email</label>

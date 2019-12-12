@@ -116,6 +116,7 @@ const Countries = [
     "Kiribati",
     "Korea, Democratic People's Republic of",
     "Korea, Republic of",
+    "Kosovo",
     "Kuwait",
     "Kyrgyzstan",
     "Lao People's Democratic Republic",
