@@ -17,13 +17,14 @@ import { destroyChannel } from "../requests/channels";
 import Loader, { LoaderWithOverlay } from './Loader';
 import { getParameterByName } from "../utils/helpers";
 import ChannelItems from "./Accounts/ChannelItems";
+import {getPages, savePages} from "../requests/linkedin/channels";
 
 
 
 class ConnectAccounts extends React.Component {
     state = {
-        facebookPagesModal: false,
-        facebookPages: [],
+        bussinesPagesModal: false,
+        bussinesPages: [],
         twitterBooster: this.props.location.search.indexOf('twitter-booster') != -1,
         billingPeriod: getParameterByName("period", this.props.location.search) || "annually",
         plan: getParameterByName("plan", this.props.location.search),
@@ -139,8 +140,8 @@ class ConnectAccounts extends React.Component {
 
                             if (response.length) {
                                 this.setState(() => ({
-                                    facebookPages: response,
-                                    facebookPagesModal: true,
+                                    bussinesPages: response,
+                                    bussinesPagesModal: true,
                                     loading: false,
                                     addAccounts: 'facebook'
                                 }));
@@ -167,7 +168,7 @@ class ConnectAccounts extends React.Component {
 
     };
 
-    onFacebookPagesSave = (accounts) => {
+    onBussinesPagesSave = (accounts) => {
         this.setState(() => ({
             error: "",
             loading: true
@@ -176,7 +177,7 @@ class ConnectAccounts extends React.Component {
             .then(() => {
                 this.setState(() => ({ loading: false, addAccounts: "facebook" }));
                 this.props.startSetChannels();
-                this.toggleFacebookPagesModal();
+                this.togglebussinesPagesModal();
             }).catch(error => {
                 this.setState(() => ({ loading: false }));
                 if (error.response.status === 403) {
@@ -193,9 +194,9 @@ class ConnectAccounts extends React.Component {
         }));
     }
 
-    toggleFacebookPagesModal = () => {
+    togglebussinesPagesModal = () => {
         this.setState(() => ({
-            facebookPagesModal: !this.state.facebookPagesModal
+            bussinesPagesModal: !this.state.bussinesPagesModal
         }));
     }
 
@@ -204,6 +205,15 @@ class ConnectAccounts extends React.Component {
             this.setState(() => ({ loading: true }));
             this.props.startAddLinkedinChannel(response.accessToken).then(() => {
                 this.setState(() => ({ loading: false, addAccounts: "linkedin" }));
+                getPages().then((response) =>{
+                    if(response.length){
+                        this.setState(() => ({
+                            bussinesPages: response,
+                            bussinesModal: true,
+                            addAccounts: "linkedin"
+                        }));
+                    }
+                });
             }).catch(error => {
                 this.setState(() => ({ loading: false }));
                 if (error.response.status === 403) {
@@ -331,21 +341,20 @@ class ConnectAccounts extends React.Component {
 
     render() {
         const { channels, AddOtherAccounts } = this.props;
-        console.log(AddOtherAccounts)
-        const { loading, addAccounts } = this.state;
+        const { loading, addAccounts, bussinesPagesModal, bussinesPages, error } = this.state;
         let countLinkedFacebookAcc = channels.length > 0 ? channels.filter(item => item.type == 'facebook').length : 0
         let countLinkedTwitterAcc = channels.length > 0 ? channels.filter(item => item.type == 'twitter').length : 0
         let countLinkedLinkedinAcc = channels.length > 0 ? channels.filter(item => item.type == 'linkedin').length : 0
         return (
             <div className="main-container">
 
-                {this.state.loading && <LoaderWithOverlay />}
+                {loading && <LoaderWithOverlay />}
                 <div className="col-xs-12 text-center">
                     <SelectAccountsModal
-                        isOpen={this.state.facebookPagesModal}
-                        accounts={this.state.facebookPages}
-                        onSave={this.onFacebookPagesSave}
-                        error={this.state.error}
+                        isOpen={bussinesPagesModal}
+                        accounts={bussinesPages}
+                        onSave={this.onBussinesPagesSave}
+                        error={error}
                     />
                     {loading && <LoaderWithOverlay />}
 
