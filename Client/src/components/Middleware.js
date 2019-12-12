@@ -19,6 +19,7 @@ import Loader, { LoaderWithOverlay } from './Loader';
 import { getParameterByName } from "../utils/helpers";
 import Checkout from "./Settings/Sections/Checkout";
 import ChannelItems from "./Accounts/ChannelItems";
+import {getPages, savePages} from "../requests/linkedin/channels";
 
 
 
@@ -238,6 +239,14 @@ class Middleware extends React.Component {
             this.setState(() => ({ loading: true }));
             this.props.startAddLinkedinChannel(response.accessToken).then(() => {
                 this.setState(() => ({ loading: false, addAccounts: "linkedin" }));
+                getPages().then((response) =>{
+                    if(response.length){
+                        this.setState(() => ({
+                            pages: response,
+                            pagesModal: true
+                        }));
+                    }
+                });
             }).catch(error => {
                 this.setState(() => ({ loading: false }));
                 if (error.response.status === 403) {
