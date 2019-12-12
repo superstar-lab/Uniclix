@@ -17,7 +17,7 @@ import { destroyChannel } from "../requests/channels";
 import Loader, { LoaderWithOverlay } from './Loader';
 import { getParameterByName } from "../utils/helpers";
 import ChannelItems from "./Accounts/ChannelItems";
-import {getPages, savePages} from "../requests/linkedin/channels";
+import { getPages, savePages } from "../requests/linkedin/channels";
 
 
 
@@ -173,9 +173,10 @@ class ConnectAccounts extends React.Component {
             error: "",
             loading: true
         }));
-        saveAccounts(accounts)
-            .then(() => {
-                this.setState(() => ({ loading: false, addAccounts: "facebook" }));
+
+        if (this.state.addAccounts == 'linkedin') {
+            savePages(accounts).then(() => {
+                this.setState(() => ({ loading: false }));
                 this.props.startSetChannels();
                 this.togglebussinesPagesModal();
             }).catch(error => {
@@ -186,6 +187,20 @@ class ConnectAccounts extends React.Component {
                     this.setError("Something went wrong!");
                 }
             });
+        } else {
+            saveAccounts(accounts).then(() => {
+                this.setState(() => ({ loading: false }));
+                this.props.startSetChannels();
+                this.togglebussinesPagesModal();
+            }).catch(error => {
+                this.setState(() => ({ loading: false }));
+                if (error.response.status === 403) {
+                    this.setForbidden(true);
+                } else {
+                    this.setError("Something went wrong!");
+                }
+            });
+        }
     };
 
     setAction = (action = this.defaultAction) => {
@@ -205,8 +220,8 @@ class ConnectAccounts extends React.Component {
             this.setState(() => ({ loading: true }));
             this.props.startAddLinkedinChannel(response.accessToken).then(() => {
                 this.setState(() => ({ loading: false, addAccounts: "linkedin" }));
-                getPages().then((response) =>{
-                    if(response.length){
+                getPages().then((response) => {
+                    if (response.length) {
                         this.setState(() => ({
                             bussinesPages: response,
                             bussinesModal: true,
@@ -426,7 +441,7 @@ class ConnectAccounts extends React.Component {
                                         className="hide"
                                         ref={this.twitterRef}
                                     ></TwitterLogin>
-                                    <button className="magento-btn mt50" onClick={()=>AddOtherAccounts(false)}>Save</button>
+                                    <button className="magento-btn mt50" onClick={() => AddOtherAccounts(false)}>Save</button>
                                 </div>
                             </div>
                         }
