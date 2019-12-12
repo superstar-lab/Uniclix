@@ -242,8 +242,9 @@ class Middleware extends React.Component {
                 getPages().then((response) =>{
                     if(response.length){
                         this.setState(() => ({
-                            pages: response,
-                            pagesModal: true
+                            bussinesPages: response,
+                            bussinesModal: true,
+                            addAccounts: "linkedin"
                         }));
                     }
                 });
