@@ -125,17 +125,10 @@ class Linkedin extends React.Component {
         });
     }
 
-    render(){
+    render() {
         return (
-            <div className="accounts-container">
-            <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden}/>
-                <SelectAccountsModal 
-                    isOpen={this.state.pagesModal} 
-                    accounts={this.state.pages}
-                    onSave={this.onSave}
-                    error={this.state.error}
-                />
-
+            <div className="">
+                <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden} />
                 <SweetAlert
                     show={!!this.state.action.id}
                     title={`Do you wish to ${this.state.action.type} this item?`}
@@ -145,12 +138,12 @@ class Linkedin extends React.Component {
                     confirmButtonText="Yes"
                     cancelButtonText="No"
                     onConfirm={() => {
-                        if(this.state.action.type === 'delete'){
+                        if (this.state.action.type === 'delete') {
                             this.remove(this.state.action.id);
-                        }else{
+                        } else {
                             console.log('something went wrong');
                         }
-                        // this.setAction();
+                        //this.setAction();
                     }}
                 />
 
@@ -166,39 +159,34 @@ class Linkedin extends React.Component {
                     }}
                 />
 
-                <h2>HAVE LINKEDIN ACCOUNTS?</h2>
-                <p>Connect them all, and we'll help you get the right audience.</p>
-                
-                <div className="flex_container-center">
-                    <div className="accounts-container__logo linkedin_color col-md-1">
-                        <div>
-                            <i className="fa fa-linkedin"></i>
-                        </div>
-                    </div>
-                    <div className="accounts-container__content col-md-10">
-                        <div className="accounts-container__content__wrapper">
-                            <div className="accounts-container__content__wrapper__heading">
-                                <h2>Let's grow your audience using LinkedIn!</h2>
-                            </div> 
-                            
-                            <ChannelItems channels={this.props.channels} setAction={this.setAction} /> 
-                            {!!this.props.loading && <Loader />}
-                        </div> 
-            
-                        <div className="accounts-container__content__wrapper__footer">
+                <div className="login-container">
+                    <div className="col-md-7 col-xs-12 text-center">
+                    <div className="col-xs-12 text-center">
+                            <div className="box channels-box">
+                                    <h2>Connect your Linkedin account</h2>
+                                    <p>Cats woo destroy the blinds. Eat an easter feather as if it were a bird then burp victoriously</p>
+
+                            <div className="channel-buttons">
+                                <ChannelItems channels={this.props.channels} setAction={this.setAction} />
+                                {!!this.props.loading && <Loader />}
+
                             <LinkedInButton
                                 clientId={linkedinAppId}
                                 redirectUri={`${apiUrl}/linkedin/callback`}
                                 onSuccess={this.onSuccess} 
-                                onError={() => console.log("something wrong.")}
+                                onError={(e) => console.log("something wrong.", e)}
                                 cssClass="add-channel-plus-btn"
                                 icon={<i className="fa fa-plus"></i>}
                                 />
                             <span className="left-side-label">Have an account? Let's connect!</span>
                         </div> 
+                        </div>
+                        </div>
+
                     </div>
+                    <div className="col-md-5 middleware-side"></div>
                 </div>
-              
+
             </div>
         );
     };

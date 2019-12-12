@@ -10,7 +10,7 @@ import SocialAccountsPrompt from '../SocialAccountsPrompt';
 const Manage = ({channels, selectedChannel, selectChannel}) => { 
     const hasChannel = typeof(selectedChannel.username) !== "undefined"; 
     return (
-        <div>
+        <div className="body-wrap">
             {!!hasChannel ? <div>
                 <VerticalMenu 
                     menuItems={MenuItems} 

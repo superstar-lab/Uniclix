@@ -1,0 +1,135 @@
+.middleware {
+    background: #f8f8f8;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+
+    h2 {
+        text-align: center;
+        font-weight: bold;
+        font-size: 4rem;
+        letter-spacing: 1px;
+        color: black;
+        margin-top: 0;
+        margin-bottom: 30px;
+    }
+
+    h5 {
+        font-weight: bold;
+        font-size: 2rem;
+        margin-bottom: 30px;
+        text-align: left;
+    }
+
+    .channel-buttons {
+        width: 100%;
+        overflow: hidden;
+
+        button>i {
+            font-size: 3.5rem;
+            width: 55px;
+        }
+
+        button {
+            background: blue;
+            border: none;
+            color: white;
+            width: 100%;
+            padding: 13px 20px;
+            text-align: left;
+            border-radius: 5px;
+            font-size: 2rem;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            float: left;
+        }
+    }
+
+    .box {
+        background: white;
+        padding: 50px;
+        width: 65%;
+        text-align: center;
+    }
+
+    .channel-profile-container {
+        margin-left: 15px;
+    }
+
+    .channel-profile-box,
+    .channel-buttons button {
+        margin-bottom: 10px;
+    }
+
+    .channel-profile-box {
+        float: left;
+        position: relative;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        border: 1px solid #f0f0f0;
+        padding: 10px;
+        width: auto;
+        margin-right: 20px;
+        border-radius: 5px;
+
+        .fa {
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: #485576;
+            border-radius: 100%;
+            width: 13px;
+            height: 13px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 9px;
+            margin: 3px;
+            opacity: .5;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+        .channel-profiles {
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .channel-profile-type {
+            font-weight: light;
+            color: #aaa;
+        }
+
+        .channel-profile-name {
+            font-size: 1.7rem;
+        }
+        .channel-profile-username {
+            font-size: 1.7rem;
+            display: flex;
+            align-content: center;
+        }
+
+        p {
+            margin: 0;
+            color: #485576;
+        }
+
+        img {
+            width: 60px;
+            object-fit: cover;
+            border-radius: 100%;
+            border: 1px solid #f0f0f0;
+            margin-right: 15px;
+        }
+    }
+}

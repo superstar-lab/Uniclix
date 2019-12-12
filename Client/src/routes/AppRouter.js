@@ -26,9 +26,10 @@ class AppRouter extends React.Component {
                         <PrivateRoute path="/twitter-booster" component={TwitterBooster} />
                         <PrivateRoute path="/scheduled" component={Scheduled} />
                         <PrivateRoute path="/streams" component={Streams} />
-                        <PrivateRoute path="/accounts" component={Accounts} />
+                        <PrivateRoute path="/accounts" component={Settings} />
                         <PrivateRoute path="/settings" component={Settings} />
                         <PrivateRoute path="/analytics" component={Analytics} />
+                        <PrivateRoute path="/social-media-manager" component={Accounts} />
                         <Route component={NotFoundPage}/>
                     </Switch>
                 </div>

@@ -1,14 +1,14 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import SweetAlert from "sweetalert2-react";
 import FacebookButton from '../FacebookButton';
 import SelectAccountsModal from './SelectAccountsModal';
-import {facebookAppId} from "../../config/api";
-import {startAddFacebookChannel, startSetChannels} from "../../actions/channels";
+import { facebookAppId } from "../../config/api";
+import { startAddFacebookChannel, startSetChannels } from "../../actions/channels";
 import channelSelector from "../../selectors/channels";
-import {destroyChannel} from "../../requests/channels";
-import {getAccounts, saveAccounts} from "../../requests/facebook/channels";
-import {logout} from "../../actions/auth";
+import { destroyChannel } from "../../requests/channels";
+import { getAccounts, saveAccounts } from "../../requests/facebook/channels";
+import { logout } from "../../actions/auth";
 import Loader from "../../components/Loader";
 import ChannelItems from "./ChannelItems";
 import UpgradeAlert from "../UpgradeAlert";
@@ -54,31 +54,31 @@ class Facebook extends React.Component {
     };
 
     onSuccess = (response) => {
-        if(response){
+        if (response) {
             this.props.startAddFacebookChannel(response.accessToken)
-            .then(() => {
-                getAccounts().then((response) => {
+                .then(() => {
+                    getAccounts().then((response) => {
 
-                    if(response.length){
-                        this.setState(() => ({
-                            accounts: response,
-                            accountsModal: true
-                        }));
+                        if (response.length) {
+                            this.setState(() => ({
+                                accounts: response,
+                                accountsModal: true
+                            }));
+                        }
+                    });
+                }).catch(error => {
+                    if (error.response.status === 403) {
+                        this.setForbidden(true);
+                        return;
+                    }
+
+                    if (error.response.status === 409) {
+                        this.setError("This facebook account is already registered from another uniclix account.");
+                    }
+                    else {
+                        this.setError("Something went wrong!");
                     }
                 });
-            }).catch(error => {
-                if(error.response.status === 403){
-                    this.setForbidden(true);
-                    return;
-                }               
-                
-                if(error.response.status === 409){
-                    this.setError("This facebook account is already registered from another uniclix account.");
-                }
-                else{
-                    this.setError("Something went wrong!");
-                }
-            });
         }
     };
 
@@ -87,16 +87,16 @@ class Facebook extends React.Component {
             error: ""
         }));
         saveAccounts(accounts)
-        .then(() => {
-            this.props.startSetChannels();
-            this.toggleAccountsModal();
-        }).catch( error => {
-            if(error.response.status === 403){
-                this.setForbidden(true);
-            }else{
-                this.setError("Something went wrong!");
-            }
-        });
+            .then(() => {
+                this.props.startSetChannels();
+                this.toggleAccountsModal();
+            }).catch(error => {
+                if (error.response.status === 403) {
+                    this.setForbidden(true);
+                } else {
+                    this.setError("Something went wrong!");
+                }
+            });
     };
 
     toggleAccountsModal = () => {
@@ -107,34 +107,27 @@ class Facebook extends React.Component {
 
     remove = (id) => {
         destroyChannel(id)
-        .then((response) => {
-            this.props.startSetChannels()
             .then((response) => {
-                // if(response.length < 1){
-                //     this.props.logout();
-                // }
+                this.props.startSetChannels()
+                    .then((response) => {
+                        // if(response.length < 1){
+                        //     this.props.logout();
+                        // }
+                    });
+            }).catch((e) => {
+                if (typeof e.response !== "undefined" && typeof e.response.data.error !== "undefined") {
+                    this.setState(() => ({
+                        error: e.response.data.error
+                    }));
+                    return;
+                }
             });
-        }).catch((e) => {
-            if(typeof e.response !== "undefined" && typeof e.response.data.error !== "undefined"){
-                this.setState(() => ({
-                    error: e.response.data.error
-                }));
-                return;
-            }
-        });
     }
 
-    render(){
+    render() {
         return (
-            <div className="accounts-container">
-                <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden}/>
-                <SelectAccountsModal 
-                    isOpen={this.state.accountsModal} 
-                    accounts={this.state.accounts}
-                    onSave={this.onSave}
-                    error={this.state.error}
-                />
-
+            <div className="">
+                <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden} />
                 <SweetAlert
                     show={!!this.state.action.id}
                     title={`Do you wish to ${this.state.action.type} this item?`}
@@ -144,12 +137,12 @@ class Facebook extends React.Component {
                     confirmButtonText="Yes"
                     cancelButtonText="No"
                     onConfirm={() => {
-                        if(this.state.action.type === 'delete'){
+                        if (this.state.action.type === 'delete') {
                             this.remove(this.state.action.id);
-                        }else{
+                        } else {
                             console.log('something went wrong');
                         }
-                       // this.setAction();
+                        //this.setAction();
                     }}
                 />
 
@@ -165,45 +158,41 @@ class Facebook extends React.Component {
                     }}
                 />
 
-                <h2>HAVE FACEBOOK ACCOUNTS?</h2>
-                <p>Connect them all, and we'll help you get the right audience.</p>
-                
-                <div className="flex_container-center">
-                    <div className="accounts-container__logo facebook_color col-md-1">
-                        <div>
-                            <i className="fa fa-facebook"></i>
+                <div className="login-container">
+                    <div className="col-xs-7 text-center">
+                        <div className="col-xs-12 text-center">
+                            <div className="box channels-box">
+                                <h2>Connect your Facebook account</h2>
+                                <h5>Cats woo destroy the blinds. Eat an easter feather as if it were a bird then burp victoriously</h5>
+
+                                <div className="channel-buttons">
+                                    <ChannelItems channels={this.props.channels} setAction={this.setAction} />
+                                    {!!this.props.loading && <Loader />}
+                                    <FacebookButton
+                                        appId={facebookAppId}
+                                        onSuccess={this.onSuccess}
+                                        icon={<i className="fa fa-plus"></i>}
+                                        cssClass="add-channel-plus-btn mt-2"
+                                        textButton=""
+                                    />
+                                    <span className="left-side-label">Add account</span>
+                                </div>
+                                
+                            </div>
                         </div>
+
                     </div>
-                    <div className="accounts-container__content col-md-10">
-                        <div className="accounts-container__content__wrapper">
-                            <div className="accounts-container__content__wrapper__heading">
-                                <h2>Let's grow your audience using Facebook!</h2>
-                            </div> 
-                            
-                            <ChannelItems channels={this.props.channels} setAction={this.setAction} /> 
-                            {!!this.props.loading && <Loader />}
-                        </div> 
-            
-                        <div className="accounts-container__content__wrapper__footer">
-                            <FacebookButton
-                                appId={facebookAppId}
-                                onSuccess={this.onSuccess}
-                                icon={<i className="fa fa-plus"></i>}
-                                cssClass="add-channel-plus-btn"
-                                textButton="" />
-                            <span className="left-side-label">Have an account? Let's connect!</span>
-                        </div> 
-                    </div>
+                    <div className="col-md-5 middleware-side"></div>
                 </div>
-              
+
             </div>
         );
     };
-} 
+}
 
 const mapStateToProps = (state) => {
 
-    const facebookChannelsFilter = {selected: undefined, provider: "facebook"};
+    const facebookChannelsFilter = { selected: undefined, provider: "facebook" };
     const channels = channelSelector(state.channels.list, facebookChannelsFilter);
     return {
         channels,

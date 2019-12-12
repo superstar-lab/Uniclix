@@ -1,36 +1,72 @@
 import React from 'react';
 import VerticalSettingsMenu from "../Menus/VerticalSettingsMenu";
 import SettingsRouter from '../../routes/SettingsRouter';
+import channelSelector from "../../selectors/channels";
+import { setGlobalChannel } from '../../actions/channels';
+import { connect } from "react-redux";
 
 const menuItems = [
-    {   
+    {
         id: "profile",
         displayName: "Profile",
-        uri: "/settings/profile" 
+        uri: "/settings/profile",
+        icon: "user"
     },
-    {   
+    {
         id: "team",
         displayName: "Team",
-        uri: "/settings/team" 
+        uri: "/settings/team",
+        icon: "users"
     },
-    {   
+    {
+        id: "manage-account",
+        displayName: "Manage Account",
+        uri: "/settings/manage-account",
+        icon: "list"
+    },
+    {
         id: "billing",
         displayName: "Billing",
-        uri: "/settings/billing" 
+        uri: "/settings/billing",
+        icon: "money-bill-alt"
     }
 ];
 
-const Settings = () => (
-    <div>
-        <VerticalSettingsMenu 
-            menuItems={menuItems} 
+const Settings = ({ channels, selectedChannel, selectChannel }) => (
+    <div className="body-wrap">
+        <div>
+            <VerticalSettingsMenu
+                menuItems={menuItems}
+                channels={channels}
+                selectedChannel={selectedChannel}
+                selectChannel={selectChannel}
             />
             <div className="body-container">
                 <div className="main-section">
-                    <SettingsRouter/>
+                    <SettingsRouter />
                 </div>
             </div>
+        </div>
     </div>
 );
 
-export default Settings;
+
+const mapStateToProps = (state) => {
+
+    const unselectedGlobalChannels = { selected: 0, provider: undefined };
+    const selectedGlobalChannel = { selected: 1, provider: undefined };
+
+    const channels = channelSelector(state.channels.list, unselectedGlobalChannels);
+    const selectedChannel = channelSelector(state.channels.list, selectedGlobalChannel);
+
+    return {
+        channels,
+        selectedChannel: selectedChannel.length ? selectedChannel[0] : {}
+    };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+    selectChannel: (id) => dispatch(setGlobalChannel(id))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

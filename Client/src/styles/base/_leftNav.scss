@@ -1,0 +1,136 @@
+/* Left Nav ======= */
+.vertical-menu {
+    position: relative;
+    top: 0;
+    float: left;
+    height: 100%;
+    width: 235px;
+    overflow: hidden;
+    background: white;
+    z-index: 999;
+    border-top-right-radius: 50px;
+
+
+    /* Profile Info ===========*/
+    .profile-info {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: #515151;
+        cursor: pointer;
+        padding: 35px 10px;
+        margin: 0;
+        border-bottom: 2px solid #f5f7fb;
+
+        img {
+            width: 45px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 100%;
+            border: 1px solid #ccc;
+        }
+
+        &>div {
+            padding: 3px 10px;
+        }
+
+        p {
+            margin: 0;
+            ;
+            max-width: 111px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .profile-name {
+            font-weight: normal;
+            text-transform: uppercase;
+        }
+
+        .profile-username {
+            font-weight: normal;
+            font-size: 1.4rem;
+        }
+    }
+
+    .dropdown-menu {
+        width: 212px;
+    }
+
+    .v-menu-links {
+        padding-top: 30px;
+        height: calc(100% - 300px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        background: $white;
+
+        li {
+            background: $white;
+
+            a.active {
+                position: relative;
+                color: #2d86e0;
+
+                &::before,
+                &::after {
+                    background: $white;
+                    position: absolute;
+                    right: 6px;
+                    content: "";
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    pointer-events: none;
+                }
+
+                &::before {
+                    bottom: 100%;
+                    box-shadow: 16px 16px 0 #f5f7fb;
+                }
+
+                &::after {
+                    top: 100%;
+                    box-shadow: 16px -16px 0 #f5f7fb;
+                }
+            }
+        }
+    }
+
+    li a:hover {
+        text-decoration: none;
+        color: #2d86e0;
+    }
+
+    .active {
+        text-decoration: none;
+        color: #2d86e0;
+        font-weight: bold;
+        background: $light_gray;
+        border-radius: 100px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .links {
+        color: #363636;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        margin: 0 0 0 .5rem;
+        width: 100%;
+        font-size: 1.6rem;
+        font-weight: normal;
+        vertical-align: middle;
+        line-height: 30px;
+        padding: 1rem 3rem;
+
+        i {
+            margin-right: 10px;
+            display: block;
+            width: 25px;
+        }
+    }
+}

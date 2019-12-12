@@ -1,0 +1,85 @@
+.tab-cnt {
+    display: flex;
+    width: 100%;
+    margin-top: 20px;
+    flex-direction: column;
+
+    .tab-head {
+        display: flex;
+        width: 100%;
+        // border-bottom: 1px solid $white_gray;
+        flex-wrap: wrap;
+        .tab-nav-item {
+            border-bottom: none;
+            box-sizing: border-box;
+            margin-right: 30px;
+            button {
+                font-family: Rubik;
+                font-size: 16px;
+                line-height: 13px;
+                text-align: center;
+                padding: 10px 20px;
+                display: block;
+                color: $primary_black;
+                border: 0;
+                outline: none;
+                border-bottom: 3px solid transparent;
+                transition: linear 0.05s;
+                background: transparent;
+            }
+
+            &.active {
+                border-bottom: 3px solid #D83E7F;
+                font-weight: 500;
+            }
+        }
+        .radio-btn-profile {
+            border: 1px solid #2D86DA;
+            box-sizing: border-box;
+            background: #FFFFFF;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+            border-radius: 6px;
+            margin-right: 30px;
+            button {
+                font-family: Rubik;
+                font-size: 16px;
+                line-height: 13px;
+                text-align: center;
+                padding: 15px 40px;
+                display: block;
+                color: $primary_black;
+                border: 0;
+                outline: none;
+                border-bottom: 3px solid transparent;
+                transition: linear 0.05s;
+                background: transparent;
+            }
+
+            &.active {
+                border: 1px solid #2D86DA;
+                box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.1);
+                font-weight: 500;
+                background: #EAF3FB;
+            }
+        }
+    }
+
+    .tab-body {
+        display: flex;
+        width: 100%;
+        border-bottom: 1px solid $white_gray;
+        flex-wrap: wrap;
+
+        .cnt-item {
+            display: none;
+            width: 100%;
+            opacity: 0;
+            transition: linear 0.2s;
+
+            &.active {
+                opacity: 1;
+                display: inline-block;
+            }
+        }
+    }
+}

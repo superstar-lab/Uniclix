@@ -29,7 +29,7 @@ const menuItems = [
 ];
 
 const Analytics = () => (
-    <div>
+    <div className="body-wrap">
         <VerticalAnalyticsMenu 
             menuItems={menuItems} 
             />

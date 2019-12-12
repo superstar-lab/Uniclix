@@ -1,0 +1,70 @@
+@media screen and (min-width: 768px) {
+    .modal:before {
+        display: inline-block;
+        vertical-align: middle;
+        content: " ";
+        height: 100%;
+    }
+}
+
+@media screen and (max-width: 900px) {
+
+    .middleware {
+        display: block;
+    }
+
+    .middleware .box {
+        width: 100%;
+        padding: 10px;
+        margin: 10px auto;
+    }
+
+    .middleware h2 {
+        font-size: 3rem;
+        margin-top: 20px;
+    }
+}
+
+
+
+@media only screen and (max-width: 425px) {
+    .vertical-menu {
+        margin-left: -212px;
+    }
+
+    .body-container {
+        margin-left: 0px;
+    }
+
+    .dashboard-info li {
+        width: 100%;
+        display: block;
+    }
+
+    .social-login.login-btns {
+        width: 100%;
+        text-align: center;
+        padding: 0px 50px 25px 50px
+    }
+
+    .form-container .login-form {
+        width: 100%;
+        margin-top: 110px;
+    }
+
+    .auth-switch-container {
+        position: absolute;
+        top: 20px;
+        right: 50px;
+        font-size: 1.2rem;
+    }
+
+    .register-side,
+    .login-side {
+        background-image: none;
+    }
+
+    .box-container {
+        padding: 25px 25px;
+    }
+}

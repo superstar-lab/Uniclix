@@ -18,7 +18,8 @@ class BillingProfile extends React.Component {
         forbidden: false,
         planChange: false,
         planCancel: false,
-        planResume: false
+        planResume: false,
+        roleBilling: this.props.profile.role.name
     }
 
     componentDidMount() {

@@ -1,34 +1,69 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {NavLink} from "react-router-dom";
-import {backendUrl} from "../../config/api";
-import {setComposerModal} from "../../actions/composer";
+import { connect } from 'react-redux';
+import { NavLink } from "react-router-dom";
+import { withRouter } from "react-router";
+import { backendUrl } from "../../config/api";
+import { setComposerModal } from "../../actions/composer";
+import { startLogout } from "../../actions/auth";
 
-const TopMenu = ({setComposerModal}) => (
-    <div className="navbar-uniclix">
-        <a href={backendUrl} className="brand"><img src="/images/uniclix.png"/></a>
+const TopMenu = ({ setComposerModal, logout, profile, props }) => (
+    <div className="navbar-wrap">
+        <div className="navbar-uniclix">
+            <a href={backendUrl} className="brand"><img src="/images/uniclix.png" /></a>
+            <ul className="top-menu">
+                <li>
+                <NavLink to="/scheduled" activeclassname="active" className="first-nav-item">Social media manager</NavLink>
 
-        <ul className="top-menu">
-            <li><NavLink to="/scheduled" activeClassName="active">PUBLISH</NavLink></li>
-            <li><NavLink to="/streams" activeClassName="active">STREAMS</NavLink></li> 
-            <li><NavLink to="/content-finder" activeClassName="active">CONTENT FINDER</NavLink></li> 
-            <li><NavLink to="/analytics" activeClassName="active">ANALYTICS</NavLink></li> 
-            <li><NavLink to="/twitter-booster" activeClassName="active">TWITTER BOOSTER</NavLink></li> 
-            <li><NavLink to="/accounts" activeClassName="active">ACCOUNTS</NavLink></li>
-        </ul>
-
-        <ul className="nav-buttons">
-            <li><NavLink to="/settings/billing" className="upgrade-btn">Upgrade for more features</NavLink></li> 
-            <li><NavLink to="/settings" activeClassName="active" className="top-icons"><i className="fa fa-gear"></i></NavLink></li>
-            <li>
-                <a onClick={() => setComposerModal(true)} className="compose-btn">Compose</a>
-            </li>  
-        </ul>
+                </li>
+                <li>
+                <a href="https://twitter.uniclixapp.com/" target="_blank" activeclassname="active">Twitter Booster</a>
+                </li>
+            </ul>
+            <div className="right-top-nav">
+                <div className="current-profile">
+                    {typeof profile !== 'undefined' && typeof profile.user !== 'undefined' && <div className="current-profile-info">
+                        <p className="current-profile-name">{profile.user.name}</p>
+                        <p className="current-profile-email">{profile.user.email}</p>
+                    </div>}
+                    <div className="current-profile-avatar">
+                        <img src="/images/dummy_profile.png" />
+                    </div>
+                </div>
+                <ul className="current-profile-links">
+                    <li>
+                        <NavLink to="/settings" activeClassName="active" className="first-nav-item">
+                            <i className={`fa fa-cog `}></i> Settings</NavLink>
+                    </li>
+                    <li>
+                        <a className="link-cursor first-nav-item" onClick={logout}>
+                            <i className={`fa fa-sign-out-alt`}></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        {!!profile.subscription ?
+           (!profile.subscription.activeSubscription ?
+               <div className="top-alert"><span>You have {profile.role.trial_days} days remaining on your Twitter Booster trial.</span>
+                   Add your billing information now to start your subscription.
+        <button className="btn-text-pink" onClick={() => props.history.push('/settings/manage-account')}>Start subscription</button>
+               </div>
+               : ""
+           ) : ""
+       }
     </div>
 );
 
+const mapStateToProps = (state, props) => {
+    const profile = state.profile
+    return {
+        profile,
+        props
+    };
+};
+
 const mapDispatchToProps = (dispatch) => ({
-    setComposerModal: (isOpen) => dispatch(setComposerModal(isOpen))
+    setComposerModal: (isOpen) => dispatch(setComposerModal(isOpen)),
+    logout: () => dispatch(startLogout())
 });
 
-export default connect(undefined, mapDispatchToProps)(TopMenu);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TopMenu));

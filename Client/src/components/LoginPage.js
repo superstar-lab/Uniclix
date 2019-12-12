@@ -10,6 +10,7 @@ import {registerUser, loginUser} from '../requests/auth';
 import {LoaderWithOverlay} from "./Loader";
 import LinkedInButton from "./LinkedInButton";
 import PinterestButton from "./PinterestButton";
+import RegisterPage from './RegisterPage'
 
 export class LoginPage extends React.Component{
 
@@ -176,90 +177,63 @@ export class LoginPage extends React.Component{
     render(){
         
         return (
-            <div className="login-container">
+             <div className="login-container">
+                <div className="logo">
+                    <img src="/images/uniclix.png" />
+                </div>
                 {this.state.loading && <LoaderWithOverlay />}
-                <div className="box-container">
+                <div className="col-md-7 col-xs-12 text-center">
 
-                    <div className="row">
-                        <div className="col-md-6 col-sm-6 col-xs-12 text-center">
-                            <div className="col-xs-12 text-center">
-                                <img className="img-responsive" src="/images/login_image.png" />
-                            </div>
-                            
-                        </div>
+                    <div className="col-xs-12 text-center">
+                        <div className="form-container">
 
-                        <div className="col-md-6 col-sm-6 col-xs-12 text-center">
-                            <div className="col-xs-12 text-center">
-                               <div className="form-container">
-
-                                    {!this.state.register ?
-                                        <div className="login-form">
-                                            {!!this.state.error.length && 
-                                            <div className="alert alert-danger">
-                                                {this.state.error}
-                                            </div>}
-
-                                            <h4>Sign in with your account</h4>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInputEmail1">Email address:</label>
-                                                <input type="email" onChange={this.onEmailChange} value={this.state.email} className="form-control" id="inputEmail1" aria-describedby="emailHelp" required/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="inputPassword1">Password:</label>
-                                                <input type="password" onChange={this.onPasswordChange} value={this.state.password} className="form-control" id="inputPassword1" required/>
-                                            </div>                                    
-                                            
-                                            <button type="submit" onClick={this.onLoginSubmit} className="btn magento-btn full-width">Sign in</button>
-                                            <button type="submit" onClick={this.toggleRegister} className="btn btn-link">Create a new account</button>
-                                            <a href={`${backendUrl}/password/reset`} className="btn btn-link">Forgot password?</a>
-                                        </div>
-                                    :
-                                    <div className="login-form">
-                                        {!!this.state.error.length && 
+                            {!this.state.register ?
+                                <div className="login-form">
+                                    {!!this.state.error.length &&
                                         <div className="alert alert-danger">
                                             {this.state.error}
                                         </div>}
 
-                                        <h4>Let's get your account setup</h4>
-                                        <div className="form-group">
-                                            <label htmlFor="inputName1">Full Name:</label>
-                                            <input type="text" onChange={this.onNameChange} minLength="6" className="form-control" value={this.state.name} id="inputName1" aria-describedby="emailHelp" required/>
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="inputEmail1">Email address:</label>
-                                            <input type="email" onChange={this.onEmailChange} minLength="8" className="form-control" value={this.state.email} id="inputEmail1" aria-describedby="emailHelp" required/>
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="inputPassword1">Password:</label>
-                                            <input type="password" onChange={this.onPasswordChange} minLength="8" 
-                                            className={`form-control ${this.state.password !== "" && this.state.password.length < 8 ? 'red-border' : ''}`}
-                                            value={this.state.password} id="inputPassword1" required/>
-                                        </div>
-                                        <div className="form-group">
-                                        <label htmlFor="inputConfirmPassword1">Confirm Password:</label>
-                                            <input type="password" 
-                                            onChange={this.onConfirmPasswordChange}
-                                            className={`form-control 
-                                            ${this.state.confirmPassword !== "" && this.state.confirmPassword !== this.state.password ? 'red-border' : ''}`} 
-                                            value={this.state.confirmPassword} id="inputConfirmPassword1"
-                                            />
-                                        </div>
-
-                                        
-                                        <button type="submit" onClick={this.onRegisterSubmit} className="btn magento-btn full-width">Sign up</button>
-                                        <button type="submit" onClick={this.toggleRegister} className="btn btn-link">Already have an account</button>
-                                        <p className="inline-txt">I agree with Uniclix <a href={`${backendUrl}/privacy-policy`} target="_blank" className="btn btn-link"> Terms of Services</a></p>
+                                    <h3>Login with your Uniclix account</h3>
+                                    <div className="form-group">
+                                        <label htmlFor="exampleInputEmail1">Email address</label>
+                                        <input type="email" onChange={this.onEmailChange} value={this.state.email} className="form-control" placeholder="email@domain.com" id="inputEmail1" aria-describedby="emailHelp" required />
                                     </div>
+                                    <div className="form-group">
+                                        <label htmlFor="inputPassword1">Password</label>
+                                        <input type="password" placeholder="Your account password" onChange={this.onPasswordChange} value={this.state.password} className="form-control" id="inputPassword1" required />
+                                    </div>
+                                    <p className="inline-txt">Forgot your password? &nbsp;<a href={`${backendUrl}/password/reset`} className="btn btn-text-blue"> Recover</a></p>
+                                    {this.state.email && this.state.password ?
+                                        <button type="submit" onClick={this.onLoginSubmit} className="btn magento-btn full-width">Log in</button> :
+                                        <button type="submit" className="btn magento-btn full-width disabled-btn" disabled>Log in</button>
                                     }
-
-            
                                 </div>
-                            </div>
- 
+                                :
+                                <RegisterPage register={this.state.register} />
+                            }
+
+
                         </div>
                     </div>
+
                 </div>
-            </div>  
+
+                {!this.state.register ?
+                    <div className="col-md-5 login-side">
+                        <div className="auth-switch-container">
+                            <button type="submit" onClick={this.toggleRegister} className="btn magento-btn full-width">Sign up</button>
+                        </div>
+                    </div>
+                    :
+
+                    <div className="col-md-5 register-side">
+                        <div className="auth-switch-container">
+                            <span>Already have an account?</span><button type="submit" onClick={this.toggleRegister} className="btn btn-text-pink auth-switch-btn">Log in</button>
+                        </div>
+                    </div>
+                }
+            </div>
         );
     }
 };
