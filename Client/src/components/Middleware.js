@@ -349,7 +349,7 @@ class Middleware extends React.Component {
                     <button 
                         className="col-md-12 twitter-middleware-btn" 
                         onClick={(e) => this.twitterRef.current.onButtonClick(e)}> 
-                        <i className="fa fa-twitter"></i> Add Another Account</button>
+                        <i className="fab fa-twitter"></i> Add Another Account</button>
                 </div>
             );
         case 'facebook':
@@ -361,7 +361,7 @@ class Middleware extends React.Component {
                 scope={fbScope}
                 callback={this.onFacebookSuccess} 
                 cssClass="col-md-12 twitter-middleware-btn"
-                icon={<i className="fa fa-facebook"></i>}
+                icon={<i className="fab fa-facebook"></i>}
                 textButton="Connect my Facebook Account"
                 ref={this.facebookRef}
                 disableMobileRedirect={true}
@@ -374,7 +374,7 @@ class Middleware extends React.Component {
                 onSuccess={this.onLinkedInSuccess}
                 onError={this.onFailure}
                 cssClass="col-md-12 twitter-middleware-btn"
-                icon={<i className="fa fa-linkedin"></i>}
+                icon={<i className="fab fa-linkedin"></i>}
                 countLinkedLinkedinAcc
                 textButton={"Connect my Linkedin Account"}
                 ref={this.linkedinRef}
@@ -456,7 +456,7 @@ class Middleware extends React.Component {
                                             scope={fbScope}
                                             callback={this.onFacebookSuccess} 
                                             cssClass="col-md-12 twitter-middleware-btn"
-                                            icon={<i className="fa fa-facebook"></i>}
+                                            icon={<i className="fab fa-facebook"></i>}
                                             textButton={countLinkedFacebookAcc ? countLinkedFacebookAcc + " Connected Facebook Accounts. Add more" : "Connect my Facebook Account"}
                                             ref={this.facebookRef}
                                             disableMobileRedirect={true}
@@ -465,7 +465,7 @@ class Middleware extends React.Component {
                                         <button 
                                         className="col-md-12 twitter-middleware-btn" 
                                         onClick={(e) => this.twitterRef.current.onButtonClick(e)}> 
-                                        <i className="fa fa-twitter"></i>
+                                        <i className="fab fa-twitter"></i>
                                         {countLinkedTwitterAcc ? countLinkedTwitterAcc + " connected Twitter Accounts. Add more" : "Connect my Twitter Account"}
                                         </button>
 
@@ -475,7 +475,7 @@ class Middleware extends React.Component {
                                             onSuccess={this.onLinkedInSuccess}
                                             onError={this.onFailure}
                                             cssClass="col-md-12 twitter-middleware-btn"
-                                            icon={<i className="fa fa-linkedin"></i>}
+                                            icon={<i className="fab fa-linkedin"></i>}
                                             countLinkedLinkedinAcc
                                             textButton={countLinkedLinkedinAcc ? countLinkedLinkedinAcc + " Connected Linkedin Accounts. Add more" : "Connect my Linkedin Account"}
                                             ref={this.linkedinRef}

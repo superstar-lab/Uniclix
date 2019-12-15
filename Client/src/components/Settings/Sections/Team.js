@@ -241,18 +241,58 @@ class Team extends React.Component {
                                     </div>
                                     :
                                     <div className="accounts-container__content__wrapper__footer">
-                                    <button onClick={this.toggleAddOrUpdateMember} className="add-channel-plus-btn">
-                                        <i className="fa fa-plus"></i>
-                                    </button>
-                                    <span className="left-side-label">Add New Team Member</span>
-                                </div>
+                                        <button onClick={this.toggleAddOrUpdateMember} className="add-channel-plus-btn">
+                                            <i className="fa fa-plus"></i>
+                                        </button>
+                                        <span className="left-side-label">Add New Team Member</span>
+                                    </div>
 
-                                   )
+                                )
                             }
                         </div>
                         <div className={`cnt-item ${isTabActive == 'company-info' ? 'active' : ''}`}>
-                            <p>busines info</p>
+                            {teams.length > 1 && <div className="col-4 col-md-4 form-field">
+                                <select id={`teams`} onChange={this.onTeamChange} value={this.state.teamId} className="form-control">
+                                    {
+                                        this.state.teams.map((team, index) => (
+                                            <option key={index} value={team.id}>{team.name}</option>
+                                        ))
+                                    }
 
+                                </select>
+                            </div>
+                            }
+
+                            {!this.state.loading &&
+                                (!!this.state.members.length ?
+                                    <div>
+                                        {members.map(member => (
+                                            <TeamMember
+                                                key={member.id}
+                                                member={member}
+                                                fetchMembers={this.loadTeams}
+                                                remove={this.setRemovePrompt}
+                                                update={this.setMemberToUpdate}
+                                            />
+                                        ))}
+                                        <div className="accounts-container__content__wrapper__footer">
+                                            <button onClick={this.toggleAddOrUpdateMember} className="add-channel-plus-btn">
+                                                <i className="fa fa-plus"></i>
+                                            </button>
+                                            <span className="left-side-label">Add New Team Member</span>
+                                        </div>
+
+                                    </div>
+                                    :
+                                    <div className="accounts-container__content__wrapper__footer">
+                                        <button onClick={this.toggleAddOrUpdateMember} className="add-channel-plus-btn">
+                                            <i className="fa fa-plus"></i>
+                                        </button>
+                                        <span className="left-side-label">Add New Team Member</span>
+                                    </div>
+
+                                )
+                            }
                         </div>
                     </div>
                 </div>

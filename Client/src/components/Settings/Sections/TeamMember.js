@@ -20,7 +20,6 @@ class TeamMember extends React.Component {
         created_at_date = created_at_date.split("-").reverse().join("-");
         return (
             <div>
-                {/* {member.assignedChannels[0].active === 1  */}
                 <div className="twitter-middleware-btn added-channel-btn">
                     <div className="block-urls2">
                         <div className="profile-info account-info pull-right h65">
@@ -46,17 +45,13 @@ class TeamMember extends React.Component {
                             </ul>
                         </div>
                         <div className="team-info-hover pull-right">
-                            <div className="user-action mrnone blue-icon" onClick={this.update} ><i className="fa fa-edit"></i></div>
-                            <div className="user-action mrnone blue-icon" onClick={this.remove}><i className="fa fa-trash"></i></div>
+                            <div className="user-action mrnone blue-icon">
+                                <div onClick={this.update}><i class="fas fa-user-edit"></i></div>
+                                <div onClick={this.remove}>
+                                    <i className="fas fa-user-slash" aria-hidden="true"></i>
+                                </div>
+                            </div>
                         </div>
-                        {/* <ul className="v-center-align">
-                            <li className="text-links">
-                                <a href="javascript:void(0);" onClick=className="link-cursor">Edit</a>
-                            </li>
-                            <li className="text-links">
-                                <a href="javascript:void(0);" onClick={this.remove} className="link-cursor">Remove</a>
-                            </li>
-                        </ul> */}
                     </div>
                 </div>
             </div>

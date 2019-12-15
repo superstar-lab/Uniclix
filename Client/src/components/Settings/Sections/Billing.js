@@ -1,56 +1,108 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { startSetProfile } from "../../../actions/profile";
-import { changePlan, activateAddon, cancelAddon } from '../../../requests/billing';
+import { changePlan, getPlanData } from '../../../requests/billing';
 import UpgradeAlert from '../../UpgradeAlert';
-
+import SweetAlert from "sweetalert2-react";
+import Checkout from './Checkout';
+import Loader, { LoaderWithOverlay } from '../../Loader';
 class Billing extends React.Component {
-
     state = {
-        forbidden: false,
+        allPlans: [],
         error: 'Please delete some accounts to correspond to the limits of your new plan.',
-        redirect: '/accounts'
+        redirect: '/accounts',
+        billingPeriod: this.props.profile.subscription.annual ? "annually" : "monthly",
+        planChange: false,
+        loading: false,
+        roleBilling: "",
+        buttontext: "Upgrade"
     }
 
+
+    componentDidMount() {
+        getPlanData().then(response => {
+            this.setState({
+                allPlans: response.allPlans,
+                roleBilling: this.props.profile.role.name
+            });
+        });
+    };
     onPlanClick = (plan) => {
+        this.setState(() => ({
+            planChange: false,
+            loading: true
+        }));
         changePlan(plan).then(response => {
             this.props.startSetProfile();
+            this.setLoading();
         }).then()
             .catch(error => {
+                this.setLoading();
                 if (error.response.status === 403) {
                     this.setState(() => ({
                         forbidden: true,
                         error: error.response.data.error,
-                        redirect: error.response.data.redirect  
+                        redirect: error.response.data.redirect
                     }))
                 } else {
                     this.setError("Something went wrong!");
                 }
             });
     };
-
-    onAddonClick = (addon) => {
-        activateAddon(addon).then(response => {
-            this.props.startSetProfile();
-        });
+    setBillingPeriod = () => {
+        this.setState(() => ({ billingPeriod: this.state.billingPeriod === "annually" ? "monthly" : "annually" }));
     };
 
-    onAddonCancel = (addon) => {
-        cancelAddon(addon).then(response => {
-            this.props.startSetProfile();
+    setRole = (role) => {
+        let item = role.toLowerCase();
+        console.log(item)
+        this.setState({
+            roleBilling: item
         });
-    };
-
+        console.log(this.state.roleBilling, 'role');
+    }
     setForbidden = (forbidden = false) => {
         this.setState(() => ({
             forbidden
         }));
     };
+    setPlanChange = (planName) => {
+        this.setState(() => ({
+            planChange: planName
+        }));
+    };
+    setChangeButtonText = () => {
+        this.setState(() => ({
+            buttontext: "Confirm Order"
+        }));
+    };
 
+
+    setLoading = (loading = false) => {
+        this.setState(() => ({
+            loading
+        }));
+    };
+    startCheckout = () => {
+        this.setState({ shouldBlockNavigation: false })
+        setTimeout(() => {
+            this.props.history.push('/twitter-booster/checkout')
+        }, 0)
+    }
     render() {
+        const { allPlans } = this.state;
         const { profile } = this.props;
+
+        let planData = allPlans.filter(plan => plan["Name"].toLowerCase() === profile.role.name);
+        planData = planData.length > 0 ? planData[0] : false;
+        console.log('plan ', allPlans)
+        let planName = "";
+        if (planData) {
+            planName = this.state.billingPeriod === "annually" ? planData["Name"].toLowerCase() + "_annual" : planData["Name"].toLowerCase();
+        }
+
         return (
-            <div className="flex-container flex-space-between pricing-table">
+            <div>
                 <UpgradeAlert
                     isOpen={this.state.forbidden}
                     setForbidden={this.setForbidden}
@@ -60,175 +112,94 @@ class Billing extends React.Component {
                     type="info"
                     redirectUri={this.state.redirect}
                 />
-                <table className="table table-striped flex-center">
-                    <tbody>
-                        <tr>
-                            <th scope="col" className="empty-td"></th>
-                            <th scope="col" className={`plan plan-free`}>Free</th>
-                            <th scope="col" className={`plan plan-basic`}>Basic $10</th>
-                            <th scope="col" className={`plan plan-plus animated wobble`}>Plus $15</th>
-                            <th scope="col" className={`plan plan-premium`}>Premium $35</th>
-                            <th scope="col" className={`plan plan-pro`}>Pro $70</th>
-                            <th scope="col" className={`plan plan-agency`}>Agency $140</th>
-                            <th scope="col" className={`plan plan-twitter-growth`}>Twitter Growth $9.99</th>
-                        </tr>
+                <SweetAlert
+                    show={!!this.state.planChange}
+                    title={`You are about to change to ${this.state.planChange}`}
+                    text="Do you wish to proceed with this change?"
+                    showCancelButton
+                    type="info"
+                    confirmButtonText="Yes"
+                    cancelButtonText="No"
+                    onConfirm={() => {
+                        this.onPlanClick(this.state.planChange);
+                    }}
+                    onCancel={() => this.setPlanChange(false)}
+                />
+                {this.state.loading && <LoaderWithOverlay />}
+                {allPlans.length > 0 ?
+                    <div className="container billing-top">
+                        <div className="montly-annual text-right">
+                            <span className="billing-toggle">monthly billing</span>
+                            <label className="label">
+                                <div className="toggle">
+                                    <input id="toggleMonthlyYearly"
+                                        className="toggle-state"
+                                        type="checkbox" name="check"
+                                        value={this.state.billingPeriod}
+                                        onChange={this.setBillingPeriod}
+                                        checked={this.state.billingPeriod === "annually"} />
+                                    <div className="toggle-inner">
+                                        <div className="indicator"></div>
+                                    </div>
+                                    <div className="active-bg"></div>
+                                </div>
+                            </label>
+                            <span className="billing-toggle">annual billing</span>
+                        </div>
+                        <section className="pricing py-5">
+                            {allPlans.map((plan, index) => {
+                                return (
+                                    <div key={index} className="col-4 col-md-4 col-sm-12">
+                                        <div className={`card billing-body-c ${plan["Name"].toLowerCase() == this.state.roleBilling ? 'active' : ''}`}>
+                                            <div className="card-body">
+                                                <h6 className="card-selected text-center">{plan["Name"].toLowerCase() == this.state.roleBilling ? 'Selected plan' : ''}</h6>
+                                                <h5 className="card-title text-muted text-uppercase text-center">{plan["Name"]}</h5>
+                                                {this.state.billingPeriod === "annually" ?
+                                                    <h6 className="card-price text-center">${plan['Annual Billing']}<span className="period">/annual</span></h6>
+                                                    :
+                                                    <h6 className="card-price text-center">${plan["Monthly"]}<span className="period">/month</span></h6>
+                                                }
+                                                <div className="container">
+                                                    <ul className="fa-ul ">
+                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Social Accounts"]} social accounts </li>
+                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Users"]} user</li>
+                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Post Limitation"]} post</li>
+                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Schedule and Publish"] != true ? 'manage and schedule posts' : ''}</li>
+                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Mentions"]} track mentions</li>
+                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Social Listening & Monitoring"]} monitor activity</li>
+                                                        {plan["Content Curation"] == true ? <li><span className="fa-li"><i className="fa fa-check"></i></span>Content Curation</li> : ''}
+                                                    </ul>
+                                                </div>
+                                                {
+                                                    plan["Name"].toLowerCase() == this.state.roleBilling
+                                                        ?
+                                                        // duhet edhe ni button, Confirm Order / Cancel Subscribtion
+                                                        <button className={`btn billing-btn  ${plan["Name"].toLowerCase() == this.state.roleBilling ? 'active' : ''}`} onClick={() => this.setRole(plan["Name"])}>Cancel Subscription</button>
+                                                        :
 
-                        <tr>
-                            <td className="feature-category"><i className="fa fa-angle-right"></i>Social Accounts</td>
-                            <td>1</td>
-                            <td>6</td>
-                            <td>10</td>
-                            <td>25</td>
-                            <td>50</td>
-                            <td>100</td>
-                            <td>Recommended Followers</td>
-                        </tr>
-                        <tr>
-                            <td className="feature-category"><i className="fa fa-angle-right"></i>Post Limitation</td>
-                            <td>10 posts per account </td>
-                            <td>Unlimited</td>
-                            <td>Unlimited</td>
-                            <td>Unlimited</td>
-                            <td>Unlimited</td>
-                            <td>Unlimited</td>
-                            <td>Recommended Unfollowers</td>
-                        </tr>
-                        <tr>
-                            <td className="feature-category"><i className="fa fa-angle-right"></i>Schedule and Publish</td>
-                            <td>Limited</td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td>Target Audience</td>
-                        </tr>
-                        <tr>
-                            <td className="feature-category"><i className="fa fa-angle-right"></i>Content Curation</td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td>Clear Inactive Users</td>
-                        </tr>
-                        <tr>
-                            <td className="feature-category"><i className="fa fa-angle-right"></i>Mentions</td>
-                            <td><i className="fa fa-close pink-cross"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td>Reply to Followers</td>
-                        </tr>
-                        <tr>
-                            <td className="feature-category"><i className="fa fa-angle-right"></i>Social Listening & Monitoring</td>
-                            <td><i className="fa fa-close pink-cross"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td>Mentions</td>
-                        </tr>
-                        <tr>
-                            <td className="feature-category"><i className="fa fa-angle-right"></i>Analytics</td>
-                            <td>Limited</td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td className="feature-category"><i className="fa fa-angle-right"></i>Advanced schedule</td>
-                            <td><i className="fa fa-close pink-cross"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td><i className="fa fa-check green-check"></i></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td className="empty-td"></td>
-                            <td>
-                                {profile.role !== null && profile.role.name === 'free' ?
-                                    <button disabled className="plan-btn free-plan disabled-btn">Current Plan</button>
-                                    :
-                                    <button onClick={() => this.onPlanClick('free')} className="plan-btn free-plan">Change</button>
-                                }
+                                                        <button className="btn billing-btn" onClick={() => { this.startCheckout() }}>Upgrade</button>
 
-                            </td>
-                            <td>
-                                {profile.role !== null && profile.role.name === 'basic' ?
-                                    <button disabled className="plan-btn basic-plan disabled-btn">Current Plan</button>
-                                    :
-                                    <button onClick={() => this.onPlanClick('basic')} className="plan-btn basic-plan">Sign Up Free</button>
-                                }
 
-                            </td>
-                            <td>
-                                {profile.role !== null && profile.role.name === 'plus' ?
-                                    <button disabled className="plan-btn plus-plan disabled-btn">Current Plan</button>
-                                    :
-                                    <button onClick={() => this.onPlanClick('plus')} className="plan-btn plus-plan">Sign Up Free</button>
-                                }
-
-                            </td>
-                            <td>
-                                {profile.role !== null && profile.role.name === 'premium' ?
-                                    <button disabled className="plan-btn premium-plan disabled-btn">Current Plan</button>
-                                    :
-                                    <button onClick={() => this.onPlanClick('premium')} className="plan-btn premium-plan">Sign Up Free</button>
-                                }
-
-                            </td>
-
-                            <td>
-                                {profile.role !== null && profile.role.name === 'pro' ?
-                                    <button disabled className="plan-btn pro-plan disabled-btn">Current Plan</button>
-                                    :
-                                    <button onClick={() => this.onPlanClick('pro')} className="plan-btn pro-plan">Sign Up Free</button>
-                                }
-                            </td>
-
-                            <td>
-                                {profile.role !== null && profile.role.name === 'agency' ?
-                                    <button disabled className="plan-btn agency-plan disabled-btn">Current Plan</button>
-                                    :
-                                    <button onClick={() => this.onPlanClick('agency')} className="plan-btn agency-plan">Sign Up Free</button>
-                                }
-
-                            </td>
-
-                            <td>
-                                {profile.roleAddons.length && profile.roleAddons[0].name === 'twitter_growth' ?
-                                    <button onClick={() => this.onAddonCancel('twitter_growth')} className="plan-btn twitter-growth-addon">Cancel Addon</button>
-                                    :
-                                    <button onClick={() => this.onAddonClick('twitter_growth')} className="plan-btn twitter-growth-addon">Sign Up Free</button>
-                                }
-                            </td>
-
-                        </tr>
-                    </tbody>
-                </table>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                            }
+                        </section>
+                    </div> : <Loader />
+                }
             </div>
         );
     }
 }
-
 const mapStateToProps = (state) => {
     return {
         profile: state.profile
     };
 };
-
 const mapDispatchToProps = (dispatch) => ({
     startSetProfile: () => dispatch(startSetProfile())
 });
-
 export default connect(mapStateToProps, mapDispatchToProps)(Billing);

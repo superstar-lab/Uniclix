@@ -4851,7 +4851,7 @@ table.compare-plans-table {
   width: 100%;
 
   i {
-    color: #2D86DA;
+    color: #fff;
     width: 37px;
     height: 37px;
     border-radius: 50%;
@@ -4883,9 +4883,35 @@ table.compare-plans-table {
     .team-info-hover {
       display: flex;
       font-size: 25px;
+    }
 
-      .user-action {
-        padding: 0px 40px;
+    .user-action {
+      padding: 0px 40px;
+      display: flex;
+
+      div {
+        margin: 0 10px;
+        padding: 10px;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+          background: rgba(45, 134, 218, 0.12);
+        }
+
+        i {
+          margin-right: 0;
+          font-size: 20px;
+          color: #2D86DA;
+
+          &:hover {
+            background: none;
+          }
+        }
       }
     }
   }
@@ -4967,23 +4993,25 @@ section.pricing {
 
 .billing-body-c {
   position: relative;
-  width: 276px;
-  height: 500px;
+  width: 100%;
+  min-height: 500px;
   background: #ffffff;
   box-sizing: border-box;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
   border-radius: 6px;
+  padding: 10px;
+  ;
   margin-bottom: 20px;
-}
 
-.billing-body-c.active {
-  background: #eaf3fb;
-  border: 1px solid #2d86da;
-  box-sizing: border-box;
-  box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.1);
+  &.active {
+    background: #eaf3fb;
+    border: 1px solid #2d86da;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.1);
 
-  .card-price {
-    color: #2D86DA;
+    .card-price {
+      color: #2D86DA;
+    }
   }
 }
 

@@ -40,7 +40,7 @@ class ProfileInfo extends React.Component {
         return channels
         let msDiff = new Date(this.props.trialEnded).getTime() - new Date().getTime();
         if (Math.floor(msDiff / (1000 * 60 * 60 * 24)) >= 0) {
-           
+
         } else {
             let activeChannels = channels.filter(channel => {
                 if (channel.details.paid == 1)
@@ -111,7 +111,6 @@ const MenuItems = ({ menuItems }) => (
     <ul className="v-menu-links clear-both">
         {menuItems.map((item) => (
             <li key={item.id}><NavLink className="links" to={item.uri}><i className={`fa fa-${item.icon}`}></i> <span>{item.displayName}</span></NavLink></li>
-
         ))}
     </ul>
 );
