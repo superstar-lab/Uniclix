@@ -2,7 +2,7 @@ const MenuItems = [
     {   
         id: "twitter-booster_manage_posts",
         displayName: "Manage Posts",
-        uri: "/twitter-booster/dashboard",
+        uri: "/scheduled",
         icon: "pencil" 
     },
     {   

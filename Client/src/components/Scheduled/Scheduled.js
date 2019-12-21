@@ -24,27 +24,25 @@ import ScheduledRouter from '../../routes/ScheduledRouter';
 //     }
 // ];
 
-const Scheduled = ({channels, selectedChannel, selectChannel}) => (
+const Scheduled = ({ channels, selectedChannel, selectChannel }) => (
     <div className="body-wrap">
-        <VerticalMenu 
-            menuItems={MenuItems} 
-            channels={channels} 
+        <VerticalMenu
+            menuItems={MenuItems}
+            channels={channels}
             selectedChannel={selectedChannel}
             selectChannel={selectChannel}
-            />
-            <div className="body-container">
-                <div className="main-section">
-                    <ScheduledRouter/>
-                </div>
-            </div>
+        />
+        <div className="body-container">
+            <ScheduledRouter />
+        </div>
     </div>
 );
 
 const mapStateToProps = (state) => {
 
-    const unselectedGlobalChannels = {selected: 0, provider: undefined};
-    const selectedGlobalChannel = {selected: 1, provider: undefined};
-    
+    const unselectedGlobalChannels = { selected: 0, provider: undefined };
+    const selectedGlobalChannel = { selected: 1, provider: undefined };
+
     const channels = channelSelector(state.channels.list, unselectedGlobalChannels);
     const selectedChannel = channelSelector(state.channels.list, selectedGlobalChannel);
 
