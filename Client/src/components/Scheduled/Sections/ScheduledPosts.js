@@ -8,7 +8,7 @@ import { scheduledPosts, destroyPost, postNow } from '../../../requests/channels
 import PostListCalendar from '../../PostListCalendar';
 import Loader from '../../Loader';
 import Tabs from '../../Tabs';
-import PastScheduled from './PastScheduled';
+import UnapprovedPosts from './UnapprovedPosts';
 
 export class ScheduledPosts extends React.Component {
 
@@ -314,7 +314,7 @@ export class ScheduledPosts extends React.Component {
                         />
                     </div>
                     <div label="Awaiting Approval">
-                        <PastScheduled />
+                        <UnapprovedPosts />
                     </div>
                     {/* <div label="Draft"></div> */}
                 </Tabs>
