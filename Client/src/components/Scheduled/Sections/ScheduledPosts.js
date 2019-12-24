@@ -5,7 +5,7 @@ import UpgradeAlert from '../../UpgradeAlert';
 import { setComposerModal } from "../../../actions/composer";
 import channelSelector from '../../../selectors/channels';
 import { scheduledPosts, destroyPost, postNow } from '../../../requests/channels';
-import PostList from '../../PostList';
+import PostListCalendar from '../../PostListCalendar';
 import Loader from '../../Loader';
 import Tabs from '../../Tabs';
 import PastScheduled from './PastScheduled';
@@ -24,7 +24,26 @@ export class ScheduledPosts extends React.Component {
         action: this.defaultAction,
         forbidden: false,
         error: false,
-        events: []
+        titleDate: "",
+        events: [],
+        viewType: "week",
+        currentDate: new Date(),
+        Navigate: 'week',
+        calendarDate: new Date(),
+        viewTypes: [
+            {
+                id: 'month',
+                label: 'Month'
+            },
+            {
+                id: 'week',
+                label: 'Week'
+            },
+            {
+                id: 'day',
+                label: 'Day'
+            }
+        ]
     }
 
     componentDidMount() {
@@ -113,33 +132,9 @@ export class ScheduledPosts extends React.Component {
     };
 
     formatEvents = (events) => {
-        // {
-        //     "salon_id": 1,
-        //     "employee_id": 10,
-        //     "start_time": "2019-05-29T11:00",
-        //     "salons_service_ids": ["611"],
-        //     "stilerocard_service_ids": [],
-        //     "styleocard_service_ids": [],
-        //     "client_notice": "",
-        //     "with_stilerocard": false,
-        //     "payment_method": "at_property",
-        //     id: 0,
-        //     allDay: false,
-        //     title: 'Board meeting',
-        //     resource: '190- CH',
-        //     hexColor: "8edffc",
-        //     start: new Date(2019, 0, 29, 9, 0, 0),
-        //     end: new Date(2019, 0, 29, 13, 0, 0),
-        //     resource: {
-        //         price: '190- CH',
-        //         staf: 'John Smith',
-        //         services: ['Hair Styling', 'Wash Hair', 'Massage', 'Gel', 'Hair Styling', 'Wash'],
-        //         diff: new Date(new Date().setHours(new Date().getHours()))
-        //     },
-        // }
-        let StructureEvents = events.map((event) =>{
+        let StructureEvents = events.map((event) => {
             let timeevent = new Date(event[0].scheduled_at);
-            timeevent.setTime(timeevent.getTime() + (60*60*1000));
+            timeevent.setTime(timeevent.getTime() + (60 * 60 * 1000));
             event[0].start = new Date(event[0].scheduled_at)
             event[0].end = new Date(timeevent)
             return event[0];
@@ -159,6 +154,13 @@ export class ScheduledPosts extends React.Component {
                     page: 1,
                     events: this.formatEvents(response.items)
                 }));
+
+                setTimeout(() => {
+                    console.log(document.getElementsByClassName('rbc-toolbar-label')[0].innerHTML)
+                    this.setState({
+                        titleDate: document.getElementsByClassName('rbc-toolbar-label')[0].innerHTML
+                    })
+                }, 10)
             }).catch((error) => {
 
                 if (typeof error.response.data.message != 'undefined') {
@@ -199,6 +201,80 @@ export class ScheduledPosts extends React.Component {
             });
     };
 
+
+
+
+    changeView = (item) => {
+        console.log( item.target.value, " item.target.value")
+        this.setState({
+            viewType: item.target.value,
+            Navigate: item.target.value
+        })
+        setTimeout(() => {
+            this.setState({
+                titleDate: document.getElementsByClassName('rbc-toolbar-label')[0].innerHTML
+            })
+        }, 10)
+    }
+
+    onNextDate = () => {
+        let { currentDate, viewType } = this.state
+        let newDate = new Date();
+        switch (viewType) {
+            case 'day':
+                newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
+                break;
+            case 'week':
+                newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 7);
+                break
+            case 'month':
+                newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
+                break
+            default:
+                newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
+                break;
+        }
+        this.setState({
+            calendarDate: newDate,
+            currentDate: newDate,
+        })
+
+        setTimeout(() => {
+            this.setState({
+                titleDate: document.getElementsByClassName('rbc-toolbar-label')[0].innerHTML
+            })
+        }, 1)
+    }
+
+    onPrevDate = () => {
+        let { currentDate, viewType } = this.state
+        let newDate = new Date();
+        switch (viewType) {
+            case 'day':
+                newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - 1);
+                break;
+            case 'week':
+                newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - 7);
+                break
+            case 'month':
+                newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
+                break
+            default:
+                newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - 1);
+                break;
+        }
+        this.setState({
+            calendarDate: newDate,
+            currentDate: newDate,
+        })
+
+        setTimeout(() => {
+            this.setState({
+                titleDate: document.getElementsByClassName('rbc-toolbar-label')[0].innerHTML
+            })
+        }, 1)
+    }
+
     render() {
         return (
             <div className="main-section">
@@ -215,7 +291,7 @@ export class ScheduledPosts extends React.Component {
                 </div>
                 <Tabs>
                     <div label="Schedule">
-                        <PostList
+                        <PostListCalendar
                             action={this.state.action}
                             setAction={this.setAction}
                             destroyPost={this.destroy}
@@ -223,16 +299,24 @@ export class ScheduledPosts extends React.Component {
                             error={this.state.error}
                             setError={this.setError}
                             posts={this.state.posts}
+                            title=""
+                            calendarDate={this.state.calendarDate}
+                            viewTypes={this.state.viewTypes}
+                            viewType={this.state.viewType}
                             events={this.state.events}
                             loading={this.state.loading}
-                            title=""
+                            changeView={this.changeView}
+                            onPrevDate={this.onPrevDate}
+                            onNextDate={this.onNextDate}
+                            Navigate={this.state.Navigate}
+                            titleDate={this.state.titleDate}
                             type="scheduled-posts"
                         />
                     </div>
                     <div label="Awaiting Approval">
                         <PastScheduled />
                     </div>
-                    <div label="Draft"></div>
+                    {/* <div label="Draft"></div> */}
                 </Tabs>
                 <BottomScrollListener onBottom={this.loadMore} />
                 {this.state.loading && <Loader />}

@@ -254,7 +254,8 @@
         }
     }
 }
-.block-center{
+
+.block-center {
     width: 100%;
     height: 100%;
     display: flex;
@@ -637,14 +638,141 @@
     color: #717171;
     cursor: default;
 }
+
 // .fa-money-bill-alt{
 //     background: url(/images/billing.svg) center center no-repeat;
 //     height: 25px;
 // }
 
 // Events calendar
-.card-event-calendar{
-    h2{
-        font-size: 12px;
+.rbc-month-row {
+    overflow: visible;
+}
+
+.rbc-day-slot .rbc-event {
+    border: 0;
+    border-left: 4px solid;
+}
+
+.rbc-time-view {
+    .rbc-timeslot-group {
+        min-height: 65px;
     }
+}
+
+.rbc-event {
+    border-left: 4px solid;
+    background-color: #fff;
+    position: relative;
+
+    .card-event-calendar {
+        span {
+            font-size: 16px;
+            color: $primary_black;
+            line-height: 24px;
+        }
+
+        h2 {
+            font-size: 12px;
+            white-space: normal;
+            margin: 1% 0;
+            color: $primary_black;
+        }
+    }
+
+    .open-event {
+        color: $primary_black;
+        flex-direction: column;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #fff;
+        width: 0;
+        min-height: 0;
+        padding: 10px;
+        opacity: 0;
+        transition: linear 0.1s;
+        display: flex;
+    }
+
+    &.rbc-selected {
+        background-color: #fff;
+        overflow: visible;
+        z-index: 999;
+
+        .open-event {
+            min-width: 100%;
+            min-width: 110px;
+            min-height: 100%;
+            padding: 10px;
+            opacity: 1;
+            width: auto;
+        }
+        .event-header{
+            display: flex;
+        }
+    }
+
+    .rbc-event-label {
+        display: none;
+    }
+}
+
+.calendar-events-head {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+
+    .calendar-navigation {
+        display: flex;
+        align-items: center;
+
+        button {
+            border: 0;
+            outline: 0;
+            color: #2D86DA;
+            font-size: 20px;
+            background: transparent;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        span {
+            color: #000000;
+            font-size: 14px;
+            margin: 0 15px;
+            font-weight: 500;
+        }
+    }
+
+    .calendar-view {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        label {
+            padding-right: 10px;
+            white-space: nowrap;
+        }
+
+        select {
+            width: auto;
+        }
+    }
+}
+
+.rbc-time-content {
+    overflow: visible;
+}
+
+.rbc-time-view,
+.rbc-month-view {
+    border: 0;
+    border-top: 1px solid #DDD;
+}
+
+.rbc-toolbar {
+    display: none !important;
 }

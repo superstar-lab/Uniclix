@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import BottomScrollListener from 'react-bottom-scroll-listener';
 import UpgradeAlert from '../../UpgradeAlert';
 import channelSelector from '../../../selectors/channels';
-import {pastScheduled, destroyPost, postNow} from '../../../requests/channels';
+import { pastScheduled, destroyPost, postNow } from '../../../requests/channels';
 import PostList from '../../PostList';
 import Loader from '../../Loader';
 
-export class PastScheduled extends React.Component{
+export class PastScheduled extends React.Component {
 
     defaultAction = {
         type: '',
@@ -24,14 +24,14 @@ export class PastScheduled extends React.Component{
     }
 
     componentDidMount() {
-        
-        if(!this.props.channelsLoading){
+
+        if (!this.props.channelsLoading) {
             this.fetchPosts();
         }
     }
 
     componentDidUpdate(prevProps) {
-        if((this.props.selectedChannel !== prevProps.selectedChannel)){
+        if ((this.props.selectedChannel !== prevProps.selectedChannel)) {
             this.fetchPosts();
         }
     }
@@ -41,7 +41,7 @@ export class PastScheduled extends React.Component{
             error
         }));
     };
-    
+
     setLoading = (loading = false) => {
         this.setState(() => ({
             loading
@@ -63,49 +63,49 @@ export class PastScheduled extends React.Component{
     publishPost = (postId) => {
         this.setLoading(true);
         return postNow(postId)
-        .then((response) => {
-            this.fetchPosts();
-            this.setLoading(false);
-        }).catch((error) => {
+            .then((response) => {
+                this.fetchPosts();
+                this.setLoading(false);
+            }).catch((error) => {
 
-            if(typeof error.response.data.message != 'undefined'){
-                this.setState(() => ({
-                    error: error.response.data.message
-                }));
-            }
+                if (typeof error.response.data.message != 'undefined') {
+                    this.setState(() => ({
+                        error: error.response.data.message
+                    }));
+                }
 
-            if(typeof error.response.data.error != 'undefined'){
-                this.setState(() => ({
-                    error: error.response.data.error
-                }));
-            }
+                if (typeof error.response.data.error != 'undefined') {
+                    this.setState(() => ({
+                        error: error.response.data.error
+                    }));
+                }
 
-            this.setLoading(false);
-        });
+                this.setLoading(false);
+            });
     };
 
     destroy = (postId) => {
         this.setLoading(true);
         return destroyPost(postId)
-        .then((response) => {
-            this.fetchPosts();
-            this.setLoading(false);
-        }).catch((error) => {
+            .then((response) => {
+                this.fetchPosts();
+                this.setLoading(false);
+            }).catch((error) => {
 
-            if(typeof error.response.data.message != 'undefined'){
-                this.setState(() => ({
-                    error: error.response.data.message
-                }));
-            }
+                if (typeof error.response.data.message != 'undefined') {
+                    this.setState(() => ({
+                        error: error.response.data.message
+                    }));
+                }
 
-            if(typeof error.response.data.error != 'undefined'){
-                this.setState(() => ({
-                    error: error.response.data.error
-                }));
-            }
+                if (typeof error.response.data.error != 'undefined') {
+                    this.setState(() => ({
+                        error: error.response.data.error
+                    }));
+                }
 
-            this.setLoading(false);
-        })
+                this.setLoading(false);
+            })
     }
 
     fetchPosts = () => {
@@ -120,13 +120,13 @@ export class PastScheduled extends React.Component{
                 }));
             }).catch((error) => {
 
-                if(typeof error.response.data.message != 'undefined'){
+                if (typeof error.response.data.message != 'undefined') {
                     this.setState(() => ({
                         error: error.response.data.message
                     }));
                 }
 
-                if(error.response.status === 403){
+                if (error.response.status === 403) {
                     this.setForbidden(true);
                 }
 
@@ -147,10 +147,10 @@ export class PastScheduled extends React.Component{
             }).catch((error) => {
                 this.setLoading(false);
 
-                if(error.response.status === 401){
-                    
-                    if(this.props.selectedChannel.active){
-                       this.props.startSetChannels();
+                if (error.response.status === 401) {
+
+                    if (this.props.selectedChannel.active) {
+                        this.props.startSetChannels();
                     }
                 }
 
@@ -158,11 +158,11 @@ export class PastScheduled extends React.Component{
             });
     };
 
-    render(){
-        return(
+    render() {
+        return (
             <div>
-            <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden}/>
-                <PostList 
+                <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
+                <PostList
                     action={this.state.action}
                     setAction={this.setAction}
                     destroyPost={this.destroy}
@@ -178,14 +178,14 @@ export class PastScheduled extends React.Component{
                 <BottomScrollListener onBottom={this.loadMore} />
                 {this.state.loading && <Loader />}
             </div>
-            
+
         );
     }
 }
 
 //TODO refresh schedule page when publishing, fetch past scheduled posts
 const mapStateToProps = (state) => {
-    const selectedGlobalChannel = {selected: 1, provider: undefined};
+    const selectedGlobalChannel = { selected: 1, provider: undefined };
     const selectedChannel = channelSelector(state.channels.list, selectedGlobalChannel);
 
     return {

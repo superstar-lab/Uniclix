@@ -6,10 +6,6 @@ import { setPost } from '../actions/posts';
 import Loader from './Loader';
 import { setComposerModal } from "../actions/composer";
 import SocialAccountsPrompt from "./SocialAccountsPrompt";
-import { Calendar, momentLocalizer } from 'react-big-calendar'
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-
-const localizer = momentLocalizer(moment)
 
 export const PostList = ({
     action,
@@ -21,13 +17,10 @@ export const PostList = ({
     setError,
     posts,
     loading,
-    title,
     type,
-    events,
     setPost,
     setComposerModal
 }) => {
-    console.log(events)
     return (
         <div>
             <SweetAlert
@@ -80,34 +73,7 @@ export const PostList = ({
             {loading && <Loader />}
 
             <div className="row">
-                <div className="col-xs-12 col-md-8">
-                    {(events.length > 0 && !loading) && <Calendar
-                        localizer={localizer}
-                        events={events}
-                        popup={false}
-                        eventPropGetter={
-                            (event) => {
-                                let newStyle = {
-                                    backgroundColor: 'blue',
-                                    padding: 10
-                                };
-                                return {
-                                    style: newStyle,
-                                };
-                            }
-                        }
-                        components={{
-                            event: ({ event: event }) => (
-                                <div className="card-event-calendar">
-                                    <span>12:00</span>
-                                    <h2>{event.content}</h2>
-                                </div>
-                            )
-                        }}
-                    />
-                    }
-                </div>
-                <div className="col-xs-12 col-md-4">
+                <div className="col-xs-12 col-md-12">
                     {posts.map((postGroup, index) => (
                         <div key={index} className="item-list shadow-box">
                             <div className="item-header schedule-header">

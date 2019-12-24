@@ -2010,16 +2010,21 @@ button.streammaker-btn:hover {
 
 .item-header {
   overflow: hidden;
-  padding-bottom: 20px;
+  padding-bottom: 15px;
 }
 
 .schedule-header {
   border-bottom: none;
-}
 
-.schedule-header h4 {
-  font-weight: bold;
-  color: #777;
+  h4 {
+    font-family: Rubik;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 16px;
+    letter-spacing: 0.149163px;
+    color: #363636;
+    margin: 0;
+  }
 }
 
 .schedule-row {
@@ -2027,12 +2032,12 @@ button.streammaker-btn:hover {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border-bottom: none !important;
-  border-top: 1px solid #e2e2e2;
-}
+  border-left: 10px solid #0073B1;
+  border-radius: 6px 0px 0px 6px;
 
-.schedule-row .item-actions li {
-  margin-top: 0 !important;
+  .item-actions li {
+    margin-top: 0 !important;
+  }
 }
 
 .clearfix::after {
