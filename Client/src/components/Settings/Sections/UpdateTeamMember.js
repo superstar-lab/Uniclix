@@ -204,7 +204,7 @@ class UpdateTeamMember extends React.Component {
                                     <input type="email" className="form-control" id="email" onChange={(e) => this.onFieldChange(e)} value={this.state.email} placeholder="johndoe@example.com" />
                                     <select type="text" value={this.state.admin} onChange={(e) => this.setRole(e)} name="admin" className="" id="admin">
                                         <option selected value="null">Select Role</option>
-                                        <option value="false">Menager</option>
+                                        <option value="false">Member</option>
                                         <option value="true">Admin</option>
                                     </select>
                                 </div>

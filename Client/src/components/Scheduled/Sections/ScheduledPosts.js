@@ -9,6 +9,7 @@ import PostListCalendar from '../../PostListCalendar';
 import Loader from '../../Loader';
 import Tabs from '../../Tabs';
 import UnapprovedPosts from './UnapprovedPosts';
+import PastScheduled from './PastScheduled';
 
 export class ScheduledPosts extends React.Component {
 
@@ -132,12 +133,18 @@ export class ScheduledPosts extends React.Component {
     };
 
     formatEvents = (events) => {
-        let StructureEvents = events.map((event) => {
-            let timeevent = new Date(event[0].scheduled_at);
-            timeevent.setTime(timeevent.getTime() + (60 * 60 * 1000));
-            event[0].start = new Date(event[0].scheduled_at)
-            event[0].end = new Date(timeevent)
-            return event[0];
+        let StructureEvents = []
+        events.map((event) => {
+            let eventItem = event.map((eventItem) => {
+                let timeevent = new Date(eventItem.scheduled_at);
+                let timeeventstart = timeevent.setTime(timeevent - (60 * timeevent.getMinutes() * 1000));
+                timeevent.setTime(timeeventstart + (60 * 60 * 1000));
+                eventItem.start = new Date(timeeventstart)
+                eventItem.end = new Date(timeevent)
+                StructureEvents.push(eventItem)
+                return eventItem;
+            })
+            return eventItem;
         })
         return StructureEvents
     }
@@ -156,7 +163,6 @@ export class ScheduledPosts extends React.Component {
                 }));
 
                 setTimeout(() => {
-                    console.log(document.getElementsByClassName('rbc-toolbar-label')[0].innerHTML)
                     this.setState({
                         titleDate: document.getElementsByClassName('rbc-toolbar-label')[0].innerHTML
                     })
@@ -205,7 +211,6 @@ export class ScheduledPosts extends React.Component {
 
 
     changeView = (item) => {
-        console.log( item.target.value, " item.target.value")
         this.setState({
             viewType: item.target.value,
             Navigate: item.target.value
@@ -282,7 +287,7 @@ export class ScheduledPosts extends React.Component {
                 <div className="section-header no-border mb-40">
                     <div className="section-header__first-row row">
                         <div className="col-xs-12 col-md-8 ">
-                            <h2>SCHEDULED POSTS</h2>
+                            <h2>POSTS</h2>
                         </div>
                         <div className="col-xs-12 col-md-4">
                             <button className="magento-btn pull-right" onClick={() => { this.props.setComposerModal(true) }}>New Post</button>
@@ -316,7 +321,9 @@ export class ScheduledPosts extends React.Component {
                     <div label="Awaiting Approval">
                         <UnapprovedPosts />
                     </div>
-                    {/* <div label="Draft"></div> */}
+                    <div label="Past Posts">
+                        <PastScheduled />
+                    </div>
                 </Tabs>
                 <BottomScrollListener onBottom={this.loadMore} />
                 {this.state.loading && <Loader />}

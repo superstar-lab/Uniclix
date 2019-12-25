@@ -89,7 +89,7 @@ export const PostListCalendar = ({
             {loading && <Loader />}
 
             <div className="row">
-                <div className="col-xs-12 col-md-8">
+                <div className="col-xs-12 col-md-12 col-lg-9">
                     {(events.length > 0 && !loading) &&
                         <div className="calendar-events ">
                             <div className="calendar-events-head row">
@@ -123,13 +123,17 @@ export const PostListCalendar = ({
                                 defaultView='week'
                                 view={viewType}
                                 popup={false}
+                                selectable={true}
                                 defaultDate={calendarDate}
                                 date={calendarDate}
                                 onNavigate={() => ({ calendarDate, viewType, Navigate })}
+                                onSelectSlot={(slotInfo) => {
+                                    setComposerModal(true, slotInfo.start)
+                                }}
                                 eventPropGetter={
                                     (event) => {
                                         let newStyle = {
-                                            borderColor: 'blue',
+                                            borderColor: '#0073B1',
                                             padding: 8
                                         };
                                         return {
@@ -139,7 +143,7 @@ export const PostListCalendar = ({
                                 }
                                 components={{
                                     event: ({ event: event }) => {
-                                        let timeEvent = new Date(event.start);
+                                        let timeEvent = new Date(event.scheduled_at);
                                         return (
                                             <div className="card-event-calendar">
                                                 <span>{moment(timeEvent).format("h:mm A")}</span>
@@ -160,28 +164,27 @@ export const PostListCalendar = ({
                                                                         type: type !== 'past-scheduled' ? 'edit' : 'store'
                                                                     });
                                                             }} className="link-cursor">
-                                                                {`${type === 'past-scheduled' ? 'Reschedule' : 'Edit'}`}
+                                                                {type === 'past-scheduled' ?
+                                                                    <i class="fas fa-history flip-h"></i>
+                                                                    :
+                                                                    <i class="fas fa-pen"></i>
+                                                                }
                                                             </a>
-                                                            <a className="link-cursor danger-btn" onClick={() => setAction({ type: 'delete', id: event.id })}>Delete</a>
-                                                            {type !== "unapproved-posts" ?
-                                                                <a className="link-cursor"
-                                                                    onClick={() => setAction({ type: 'post', id: event.id })}>
-                                                                    Post Now
+                                                            <a className="link-cursor danger-btn"
+                                                                onClick={() => setAction({ type: 'delete', id: event.id })}>
+                                                                <i class="far fa-trash-alt"></i>
                                                             </a>
-                                                                :
-                                                                <a className="link-cursor"
-                                                                    onClick={() => approvePost(event.id)}>
-                                                                    Approve
+
+                                                            <a onClick={() => {
+                                                                let element = document.getElementsByClassName("rbc-selected");
+                                                                element[0].classList.remove("rbc-selected");
+                                                            }}>
+                                                                <i class="fas fa-times"></i>
                                                             </a>
-                                                            }
                                                         </div>
                                                     </div>
-                                                    <span>{
-                                                        new Intl.DateTimeFormat('en-GB', {
-                                                            weekday: "short",
-                                                            year: 'numeric',
-                                                            hour12: true,
-                                                        }).format(timeEvent)}
+                                                    <span>
+                                                        {moment(timeEvent).format("ddd DD, LT")}
                                                     </span>
                                                     <p>{event.content}</p>
                                                 </div>
@@ -194,7 +197,7 @@ export const PostListCalendar = ({
                         </div>
                     }
                 </div>
-                <div className="col-xs-12 col-md-4">
+                <div className="col-xs-12 col-md-12 col-lg-3">
                     {posts.map((postGroup, index) => (
                         <div key={index} className="item-list shadow-box">
                             <div className="item-header schedule-header">
@@ -261,7 +264,7 @@ export const PostListCalendar = ({
 }
 const mapDispatchToProps = (dispatch) => ({
     setPost: (post) => dispatch(setPost(post)),
-    setComposerModal: (modal) => dispatch(setComposerModal(modal))
+    setComposerModal: (modal, data = null) => dispatch(setComposerModal(modal, data))
 });
 
 export default connect(undefined, mapDispatchToProps)(PostListCalendar);
