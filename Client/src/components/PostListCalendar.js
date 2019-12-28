@@ -123,6 +123,7 @@ export const PostListCalendar = ({
                                 defaultView='week'
                                 view={viewType}
                                 popup={false}
+                                popupOffset={10}
                                 selectable={true}
                                 defaultDate={calendarDate}
                                 date={calendarDate}
@@ -199,7 +200,7 @@ export const PostListCalendar = ({
                 </div>
                 <div className="col-xs-12 col-md-12 col-lg-3">
                     {posts.map((postGroup, index) => (
-                        <div key={index} className="item-list shadow-box">
+                        <div key={index} className="item-list shadow-box item-list-row">
                             <div className="item-header schedule-header">
                                 <h4>{
                                     moment(postGroup[0].scheduled_at_original).calendar(null, {
@@ -215,42 +216,16 @@ export const PostListCalendar = ({
 
                             {postGroup.map((post) => (
                                 <div key={post.id} className={`item-row schedule-row ${type}`}>
-                                    <div className="profile-info pull-left">
+                                    <div className="profile-info profile-info-row">
 
                                         <h4>{moment(post.scheduled_at_original).format("h:mm A")}<small className="red-txt">{post.status < 0 ? ' (failed)' : ''}</small></h4>
 
                                         {!!(typeof (post.payload.images) !== "undefined") && post.payload.images.map((image, index) => (
                                             <img key={index} src={image.absolutePath} />
                                         ))}
-
+                                        <label>Bussines</label>
                                     </div>
-                                    <div className="item-actions pull-right">
-                                        <ul>
-                                            <li className="text-links link-inactive">
-                                                <a onClick={() => {
-                                                    setComposerModal(true);
-                                                    setPost(
-                                                        {
-                                                            id: post.id,
-                                                            content: post.content,
-                                                            images: typeof (post.payload.images) !== "undefined" ? post.payload.images.map((image) => image.absolutePath) : [],
-                                                            scheduled_at: post.scheduled_at,
-                                                            scheduled_at_original: post.scheduled_at_original,
-                                                            type: type !== 'past-scheduled' ? 'edit' : 'store'
-                                                        });
-                                                }} className="link-cursor">
-                                                    {`${type === 'past-scheduled' ? 'Reschedule' : 'Edit'}`}
-                                                </a>
-                                            </li>
-                                            <li className="text-links link-inactive"><a className="link-cursor danger-btn" onClick={() => setAction({ type: 'delete', id: post.id })}>Delete</a></li>
-                                            {type !== "unapproved-posts" ?
-                                                <li className="text-links"><a className="link-cursor" onClick={() => setAction({ type: 'post', id: post.id })}>Post Now</a></li>
-                                                :
-                                                <li className="text-links"><a className="link-cursor" onClick={() => approvePost(post.id)}>Approve</a></li>
-                                            }
-                                        </ul>
-                                    </div>
-                                    <div className="profile-info pull-left">
+                                    <div className="profile-info profile-info-row">
                                         <span>{post.content}</span>
                                     </div>
                                 </div>

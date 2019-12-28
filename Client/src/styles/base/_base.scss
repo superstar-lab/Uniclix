@@ -823,3 +823,78 @@
 .rbc-toolbar {
     display: none !important;
 }
+
+.modal-dialog {
+    .modal-content {
+        padding: 15px;
+        background-color: #F5F7FB;
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+
+            &::before,
+            &::after {
+                display: none;
+            }
+
+            h2 {
+                font-family: Rubik;
+                font-style: normal;
+                font-weight: 500;
+                font-size: 18px;
+                line-height: 16px;
+                letter-spacing: 0.149163px;
+                color: #363636;
+            }
+        }
+
+
+        .compose-header {
+            width: 100%;
+            overflow: hidden;
+            margin: 10px 0;
+
+            li {
+                float: left;
+                position: relative;
+                border: 1px solid #ccc;
+                border-radius: 100%;
+                width: 34px;
+                height: 34px;
+                text-align: center;
+                line-height: 2.3;
+                margin: 0 8px;
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                &:first-child {
+                    margin-right: 0;
+                }
+
+                img {
+                    width: 100%;
+                    border-radius: 100%;
+                }
+
+                &:hover {
+                    >.remove-overlay {
+                        display: block;
+                    }
+
+                    >img {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        .draft_editor_container {
+            background: #fff;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+    }
+}

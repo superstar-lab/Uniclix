@@ -2030,6 +2030,7 @@ button.streammaker-btn:hover {
 .schedule-row {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   border-left: 10px solid #0073B1;
@@ -2044,6 +2045,39 @@ button.streammaker-btn:hover {
   content: "";
   clear: both;
   display: table;
+}
+
+.item-list-row {
+  .profile-info {
+    &.profile-info-row {
+
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+      h4 {
+        font-family: Rubik;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: 0.137298px;
+        color: #363636;
+        margin: 0;
+      }
+
+      label {
+        padding: 5px;
+        background-color: #0073B1;
+        border-radius: 4px;
+        color: #fff;
+        font-family: Rubik;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 16px;
+      }
+    }
+  }
 }
 
 .item-row {
@@ -2257,11 +2291,6 @@ button.streammaker-btn:hover {
 
 .modal-header {
   padding: 5px !important;
-}
-
-.compose-header {
-  width: 95%;
-  overflow: hidden;
 }
 
 .close {
@@ -2610,27 +2639,6 @@ button.streammaker-btn:hover {
 
 .compose-dialog {
   max-width: 520px;
-}
-
-.compose-header li {
-  float: left;
-  position: relative;
-  border: 1px solid #ccc;
-  border-radius: 100%;
-  width: 34px;
-  height: 34px;
-  text-align: center;
-  line-height: 2.3;
-  margin-left: 5px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.compose-header li img {
-  width: 100%;
-  border-radius: 100%;
 }
 
 .item-row .bottom-info {
@@ -3143,14 +3151,6 @@ button.doneBtn {
   text-align: center;
   border-radius: 100%;
   padding: 8px;
-}
-
-.compose-header li:hover>.remove-overlay {
-  display: block;
-}
-
-.compose-header li:hover>img {
-  display: none;
 }
 
 .right-radius {

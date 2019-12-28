@@ -216,10 +216,12 @@ export class ScheduledPosts extends React.Component {
             Navigate: item.target.value
         })
         setTimeout(() => {
-            this.setState({
-                titleDate: document.getElementsByClassName('rbc-toolbar-label')[0].innerHTML
-            })
-        }, 10)
+            if (document.getElementsByClassName('rbc-toolbar-label')[0]) {
+                this.setState({
+                    titleDate: document.getElementsByClassName('rbc-toolbar-label')[0].innerHTML
+                })
+            }
+        }, 15)
     }
 
     onNextDate = () => {

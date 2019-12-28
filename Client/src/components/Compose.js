@@ -331,23 +331,19 @@ class Compose extends React.Component {
                             :
 
                             <div className="modal-content">
-
                                 <div className="modal-header">
+                                    <h2>Post</h2>
                                     <button type="button" id="closeModal"
                                         onClick={() => {
                                             this.props.setPost(undefined);
                                             this.props.setComposerModal(!this.state.openModal);
                                             this.setState(() => (this.defaultState))
-                                        }} className="close fa fa-times-circle">
+                                        }} className="close fa fa-times">
                                     </button>
+                                </div>
+
+                                <div>
                                     <ul className="compose-header">
-                                        {
-                                            this.state.type !== "edit" &&
-                                            <li onClick={this.toggleSelectChannelsModal}
-                                                className="add-new-channel"><i className="fa fa-plus"></i></li>
-                                        }
-
-
                                         {!!this.state.publishChannels.length &&
                                             channelSelector(
                                                 this.state.publishChannels,
@@ -361,7 +357,11 @@ class Compose extends React.Component {
                                                         <i className={`fa fa-${channel.type} ${channel.type}_bg smallIcon`}></i>
                                                     </li>
                                                 ))}
-
+                                        {
+                                            this.state.type !== "edit" &&
+                                            <li onClick={this.toggleSelectChannelsModal}
+                                                className="add-new-channel"><i className="fa fa-plus"></i></li>
+                                        }
                                     </ul>
                                 </div>
 
@@ -372,7 +372,13 @@ class Compose extends React.Component {
                                     content={this.state.content}
                                     pictures={this.state.pictures}
                                 />
-
+                                <div className="group-field">
+                                    <select className="form-control whiteBg">
+                                        <option>Bussines</option>
+                                        <option>Bussines</option>
+                                        <option>Bussines</option>
+                                    </select>
+                                </div>
                                 <div className="modal-footer" style={{ position: "relative" }}>
                                     <PublishButton
                                         action={this.publish}
