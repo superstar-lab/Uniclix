@@ -35,6 +35,7 @@ export const PostListCalendar = ({
     viewTypes,
     viewType,
     Navigate,
+    timeZones,
     calendarDate
 }) => {
     return (
@@ -89,6 +90,21 @@ export const PostListCalendar = ({
             {loading && <Loader />}
 
             <div className="row">
+                <div className="time-zone col-12 col-md-9 ">
+                    <div className="pull-right">
+                        <label htmlFor="name">Set Timezone (UTC)</label>
+                        <select type="text"
+                            value={viewType}
+                            // onChange={(e) => changeView(e)}
+                            name="type"
+                            className="form-control whiteBg" id="type">
+                            <option disabled>Choose type</option>
+                            {timeZones.map(timeZone => (
+                                <option value={timeZone}>{timeZone}</option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
                 <div className="col-xs-12 col-md-12 col-lg-9">
                     {(events.length > 0 && !loading) &&
                         <div className="calendar-events ">

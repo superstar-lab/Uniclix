@@ -898,3 +898,15 @@
         }
     }
 }
+.time-zone{
+    div{
+        margin-top: -50px;
+        display: flex;
+        align-items: center;
+        label{
+            float: left;
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+    }
+}
