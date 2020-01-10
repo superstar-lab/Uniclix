@@ -898,15 +898,25 @@
         }
     }
 }
-.time-zone{
-    div{
+
+.time-zone {
+    div {
         margin-top: -50px;
         display: flex;
         align-items: center;
-        label{
+
+        label {
             float: left;
             margin-right: 10px;
             white-space: nowrap;
         }
+    }
+}
+
+.item-row {
+    .row {
+        flex: 1;
+        align-items: center;
+        display: flex;
     }
 }

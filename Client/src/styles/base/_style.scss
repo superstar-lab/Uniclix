@@ -1896,6 +1896,10 @@ button.streammaker-btn:hover {
 .section-header {
   color: #363636;
   border-bottom: 1px solid #dbdbdb;
+
+  .magento-btn {
+    width: auto;
+  }
 }
 
 .mb-4 {
@@ -2054,6 +2058,7 @@ button.streammaker-btn:hover {
       width: 100%;
       justify-content: space-between;
       align-items: center;
+
       h4 {
         font-family: Rubik;
         font-style: normal;

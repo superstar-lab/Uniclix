@@ -73,10 +73,27 @@ export const PostList = ({
             {loading && <Loader />}
 
             <div className="row">
+                <div className="col-xs-12 header-posts-table">
+                    <div className="col-xs-12 col-md-4">
+                        <h4>Content</h4>
+                    </div>
+                    <div className="col-xs-12 col-md-1">
+                        <h4>Category</h4>
+                    </div>
+                    <div className="col-xs-12 col-md-3">
+                        <h4>Networks</h4>
+                    </div>
+                    <div className="col-xs-12 col-md-2">
+                        <h4>Publish date</h4>
+                    </div>
+                    <div className="col-xs-12 col-md-2">
+                        <h4>User</h4>
+                    </div>
+                </div>
                 <div className="col-xs-12 col-md-12">
                     {posts.map((postGroup, index) => (
                         <div key={index} className="item-list shadow-box">
-                            <div className="item-header schedule-header">
+                            {/* <div className="item-header schedule-header">
                                 <h4>{
                                     moment(postGroup[0].scheduled_at_original).calendar(null, {
                                         sameDay: '[Today]',
@@ -87,45 +104,64 @@ export const PostList = ({
                                         sameElse: 'DD/MM/YYYY'
                                     })
                                 }</h4>
-                            </div>
+                            </div> */}
 
                             {postGroup.map((post) => (
                                 <div key={post.id} className={`item-row schedule-row ${type}`}>
-                                    <div className="profile-info pull-left">
 
-                                        <h4>{moment(post.scheduled_at_original).format("h:mm A")}<small className="red-txt">{post.status < 0 ? ' (failed)' : ''}</small></h4>
-                                        <span>{post.content}</span>
+                                    <div className="row">
+                                        <div className="col-xs-12 col-md-4">
+                                            {!!(typeof (post.payload.images) !== "undefined") && post.payload.images.map((image, index) => (
 
-                                        {!!(typeof (post.payload.images) !== "undefined") && post.payload.images.map((image, index) => (
-                                            <img key={index} src={image.absolutePath} />
-                                        ))}
+                                                <div className="profile-info pull-left">
+                                                    <img key={index} src={image.absolutePath} />
+                                                </div>
+                                            ))}
 
-                                    </div>
-                                    <div className="item-actions pull-right">
-                                        <ul>
-                                            <li className="text-links link-inactive">
-                                                <a onClick={() => {
-                                                    setComposerModal(true);
-                                                    setPost(
-                                                        {
-                                                            id: post.id,
-                                                            content: post.content,
-                                                            images: typeof (post.payload.images) !== "undefined" ? post.payload.images.map((image) => image.absolutePath) : [],
-                                                            scheduled_at: post.scheduled_at,
-                                                            scheduled_at_original: post.scheduled_at_original,
-                                                            type: type !== 'past-scheduled' ? 'edit' : 'store'
-                                                        });
-                                                }} className="link-cursor">
-                                                    {`${type === 'past-scheduled' ? 'Reschedule' : 'Edit'}`}
-                                                </a>
-                                            </li>
-                                            <li className="text-links link-inactive"><a className="link-cursor danger-btn" onClick={() => setAction({ type: 'delete', id: post.id })}>Delete</a></li>
-                                            {type !== "unapproved-posts" ?
-                                                <li className="text-links"><a className="link-cursor" onClick={() => setAction({ type: 'post', id: post.id })}>Post Now</a></li>
-                                                :
-                                                <li className="text-links"><a className="link-cursor" onClick={() => approvePost(post.id)}>Approve</a></li>
-                                            }
-                                        </ul>
+                                            <span>{post.content}</span>
+                                        </div>
+                                        <div className="col-xs-12 col-md-1">
+                                            <h4>Category</h4>
+                                        </div>
+                                        <div className="col-xs-12 col-md-3">
+                                            <h4>Networks</h4>
+                                        </div>
+                                        <div className="col-xs-12 col-md-2">
+                                            <h4>{moment(post.scheduled_at_original).format("DD MMM.")}<br/>  
+                                            {moment(post.scheduled_at_original).format("h:mm A")}
+                                                <small className="red-txt">{post.status < 0 ? ' (failed)' : ''}</small>
+                                            </h4>
+                                        </div>
+                                        <div className="col-xs-12 col-md-2">
+                                            <h4>User</h4>
+                                            <div className="item-actions pull-right">
+                                                <ul>
+                                                    <li className="text-links link-inactive">
+                                                        <a onClick={() => {
+                                                            setComposerModal(true);
+                                                            setPost(
+                                                                {
+                                                                    id: post.id,
+                                                                    content: post.content,
+                                                                    images: typeof (post.payload.images) !== "undefined" ? post.payload.images.map((image) => image.absolutePath) : [],
+                                                                    scheduled_at: post.scheduled_at,
+                                                                    scheduled_at_original: post.scheduled_at_original,
+                                                                    type: type !== 'past-scheduled' ? 'edit' : 'store'
+                                                                });
+                                                        }} className="link-cursor">
+                                                            {`${type === 'past-scheduled' ? 'Reschedule' : 'Edit'}`}
+                                                        </a>
+                                                    </li>
+                                                    <li className="text-links link-inactive"><a className="link-cursor danger-btn" onClick={() => setAction({ type: 'delete', id: post.id })}>Delete</a></li>
+                                                    {type !== "unapproved-posts" ?
+                                                        <li className="text-links"><a className="link-cursor" onClick={() => setAction({ type: 'post', id: post.id })}>Post Now</a></li>
+                                                        :
+                                                        <li className="text-links"><a className="link-cursor" onClick={() => approvePost(post.id)}>Approve</a></li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             ))}
