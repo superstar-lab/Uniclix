@@ -7,7 +7,7 @@ import DraftEditor from './DraftEditor';
 import UpgradeAlert from './UpgradeAlert';
 import channelSelector, { publishChannels as publishableChannels } from '../selectors/channels';
 import boardsSelector from '../selectors/boards';
-import { publish } from '../requests/channels';
+import { publish, getCategories } from '../requests/channels';
 import { setPost, setPostedArticle } from "../actions/posts";
 import { LoaderWithOverlay } from "./Loader";
 import { startSetChannels } from "../actions/channels";
@@ -25,7 +25,8 @@ class Compose extends React.Component {
         type: "store",
         images: [],
         scheduled_at: moment(),
-        scheduled_at_original: moment()
+        scheduled_at_original: moment(),
+        category_id: ""
     };
 
     defaultState = {
@@ -46,13 +47,16 @@ class Compose extends React.Component {
         pinterestRestricted: false,
         scheduledLabel: "",
         error: false,
-        forbidden: false
+        forbidden: false,
+        category: 1,
+        categories: []
     };
 
     state = this.defaultState;
 
     componentDidMount() {
         this.setRestrictions();
+        this.setCategory();
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -99,7 +103,16 @@ class Compose extends React.Component {
             this.setRestrictions();
         }
     }
-
+    setCategory = () => {
+        getCategories()
+            .then((response) => {
+                this.setState(() => ({
+                    categories: response.categories
+                }))
+            }).catch((error) => {
+                console.log(error)
+            })
+    };
     setRestrictions = () => {
 
         const selectedChannels = channelSelector(this.state.publishChannels, { selected: true, provider: undefined });
@@ -148,6 +161,17 @@ class Compose extends React.Component {
         this.setState(() => ({
             scheduledLabel
         }));
+    };
+
+    updateCategory = (e) => {
+        let category = e.target.value;
+
+        this.setState({
+            category: category
+        });
+        console.log(category)
+        console.log(this.state.category)
+
     };
 
     onChannelSelectionChange = (obj) => {
@@ -241,7 +265,7 @@ class Compose extends React.Component {
         const articleId = this.props.post && typeof (this.props.post.articleId) !== "undefined" ? this.props.post.articleId : "";
         const images = this.state.pictures;
         const publishChannels = channelSelector(this.state.publishChannels, { selected: true, provider: undefined });
-
+        const category_id = this.state.category;
         this.setState(() => ({
             loading: true
         }));
@@ -254,7 +278,8 @@ class Compose extends React.Component {
             scheduled,
             type,
             id,
-            articleId
+            articleId,
+            category_id
         })
             .then((response) => {
                 this.setState(() => ({
@@ -373,10 +398,11 @@ class Compose extends React.Component {
                                     pictures={this.state.pictures}
                                 />
                                 <div className="group-field">
-                                    <select className="form-control whiteBg">
-                                        <option>Bussines</option>
-                                        <option>Bussines</option>
-                                        <option>Bussines</option>
+
+                                    <select name="category" id="category" onChange={(e) => this.updateCategory(e)} className="form-control whiteBg">
+                                        {this.state.categories.map((item) => (
+                                            <option key={item.id} value={item.id}>{item.category_name}</option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div className="modal-footer" style={{ position: "relative" }}>

@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Admin\PostCategory;
 use Illuminate\Database\Eloquent\Model;
 
 class ScheduledPost extends Model
-{   
+{
     protected $fillable = [
         "channel_id",
         "content",
@@ -15,27 +16,35 @@ class ScheduledPost extends Model
         "status",
         "posted",
         "approved",
-        "article_id"
+        "article_id",
+        "category_id"
     ];
-    
-    public function channel(){
+
+    public function channel()
+    {
 
         return $this->belongsTo(Channel::class);
     }
 
-    public function destroyCompletely(){
+    public function category()
+    {
+        return $this->belongsTo(PostCategory::class);
+    }
+
+    public function destroyCompletely()
+    {
         $payload = unserialize($this->payload);
         $images = $payload['images'];
 
-        foreach($images as $image){
-            $exists = self::where("payload", "like", "%".$image['absolutePath']."%")->exists();
+        foreach ($images as $image) {
+            $exists = self::where("payload", "like", "%" . $image['absolutePath'] . "%")->exists();
 
-            if(!$exists){
+            if (!$exists) {
                 $filePath = str_replace("storage", "public", $image['relativePath']);
                 \Storage::delete($filePath);
             }
         }
 
-        $this->delete();  
+        $this->delete();
     }
 }

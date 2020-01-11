@@ -19,7 +19,7 @@ class ScheduledController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->user = auth()->user();
-            if(!$this->user->hasPermission("scheduling")) return response()->json(["error" => "You need to upgrade to unlock this feature."], 403);
+            if (!$this->user->hasPermission("scheduling")) return response()->json(["error" => "You need to upgrade to unlock this feature."], 403);
             $this->selectedChannel = $this->user->selectedChannel();
             return $next($request);
         });
@@ -28,16 +28,16 @@ class ScheduledController extends Controller
     public function unapprovedPosts(Request $request)
     {
         $posts = $this->selectedChannel->scheduledPosts()
-        ->where("posted", 0)
-        ->where("approved", 0)
-        ->orderBy('scheduled_at', 'asc')
-        ->paginate(20);
+            ->where("posted", 0)
+            ->where("approved", 0)
+            ->orderBy('scheduled_at', 'asc')
+            ->paginate(20);
 
-        foreach($posts as $post){
+        foreach ($posts as $post) {
             $post->payload = unserialize($post->payload);
         }
-        
-        $posts = $posts->groupBy(function($date) {
+
+        $posts = $posts->groupBy(function ($date) {
             return Carbon::parse($date->scheduled_at_original)->format('Y-m-d');
         });
 
@@ -47,16 +47,17 @@ class ScheduledController extends Controller
     public function scheduledPosts(Request $request)
     {
         $posts = $this->selectedChannel->scheduledPosts()
-        ->where("posted", 0)
-        ->where("approved", 1)
-        ->orderBy('scheduled_at', 'asc')
-        ->paginate(20);
+            ->with('category')
+            ->where("posted", 0)
+            ->where("approved", 1)
+            ->orderBy('scheduled_at', 'asc')
+            ->paginate(20);
 
-        foreach($posts as $post){
+        foreach ($posts as $post) {
             $post->payload = unserialize($post->payload);
         }
-        
-        $posts = $posts->groupBy(function($date) {
+
+        $posts = $posts->groupBy(function ($date) {
             return Carbon::parse($date->scheduled_at_original)->format('Y-m-d');
         });
 
@@ -66,15 +67,15 @@ class ScheduledController extends Controller
     public function pastScheduled(Request $request)
     {
         $posts = $this->selectedChannel->scheduledPosts()
-        ->where("posted", 1)
-        ->orderBy('scheduled_at', 'desc')
-        ->paginate(20);
+            ->where("posted", 1)
+            ->orderBy('scheduled_at', 'desc')
+            ->paginate(20);
 
-        foreach($posts as $post){
+        foreach ($posts as $post) {
             $post->payload = unserialize($post->payload);
         }
-        
-        $posts = $posts->groupBy(function($date) {
+
+        $posts = $posts->groupBy(function ($date) {
             return Carbon::parse($date->scheduled_at_original)->format('Y-m-d');
         });
 
