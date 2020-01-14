@@ -4,9 +4,8 @@ import UpgradeAlert from '../../UpgradeAlert';
 import channelSelector from "../../../selectors/channels";
 import { startSetChannels } from "../../../actions/channels";
 import 'react-dates/initialize';
-import TwitterOverviewCard from '../../Analytics/Twitter/Cards/TwitterOverviewCard';
 import TweetsTable from '../../Analytics/Twitter/Cards/TweetsTable';
-import Tabs from '../../Tabs';
+import TwitterOverviewCard from '../../Analytics/Twitter/TwitterOverviewCard';
 
 class Dashboard extends React.Component {
 
@@ -47,58 +46,46 @@ class Dashboard extends React.Component {
         return (
             <div>
                 <div className="section-header no-border mb-40">
+                    <h1 className="page-title">Analytics</h1>
                     <div className="section-header__first-row">
-                        <h2>Posts</h2>
+                        <h3>Twitter Overview</h3>
                     </div>
                 </div>
-
-                <Tabs>
-                    <div label="Scheduled">
-                        See ya later, <em>Alligator</em>!
-                    </div>
-                    <div label="Awaiting Aproval">
-                        After 'while, <em>Crocodile</em>!
-                        </div>
-                    <div label="Draft">
-                        Nothing to see here, this tab is <em>extinct</em>!
-                    </div>
-                </Tabs>
-
                 <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
                 {!this.state.forbidden &&
                     <div>
                         <div className="row overview-cards-container mb20">
                             <div className="col-md-3 col-xs-12">
                                 <TwitterOverviewCard
-                                    name='Tweets'
+                                    title="Tweets"
                                     type="tweetsCount"
-                                    description='tweets'
-                                    tooltipDesc='The number of tweets published from your Twitter account'
-                                    {...propData} />
+                                    icon="edit"
+                                    {...propData}
+                                />
                             </div>
                             <div className="col-md-3 col-xs-12">
                                 <TwitterOverviewCard
-                                    name='Followers'
+                                    title="Followers"
                                     type="followersCount"
-                                    description='followers'
-                                    tooltipDesc='The number of people who are following your Twitter account'
-                                    {...propData} />
+                                    icon="followers"
+                                    {...propData}
+                                />
                             </div>
                             <div className="col-md-3 col-xs-12">
                                 <TwitterOverviewCard
-                                    name='Following'
+                                    title="Engagements"
                                     type="followingCount"
-                                    description='following'
-                                    tooltipDesc='Toatal number of people you are following on your Twitter accounts'
-                                    {...propData} />
+                                    icon="chart"
+                                    {...propData}
+                                />
                             </div>
                             <div className="col-md-3 col-xs-12">
                                 <TwitterOverviewCard
-                                    name='Likes'
+                                    title="Impressions"
                                     type="totalLikesCount"
-                                    description='likes'
-                                    tooltipDesc='Number of likes with your selected account'
-                                    {...propData} />
+                                    icon="eye"
+                                    {...propData}
+                                />
                             </div>
                         </div>
 

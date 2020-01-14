@@ -1,3 +1,9 @@
+.page-title {
+    font-family: Rubik;
+    font-weight: 500;
+    margin-bottom: 40px;
+}
+
 .twitter-profile-analytics {
     border: 1px solid #eee;
     border-radius: 4px;
@@ -51,6 +57,7 @@
 }
 .overview-cards-container {
     margin-top:20px;
+    padding: 0 25px;
 }
 .overview-card {
     padding: 10px;
@@ -92,6 +99,44 @@
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
     border-radius: 6px;
+}
+
+.analytics-overview-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #FFFFFF;
+    width: 229px;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.03);
+    border-radius: 7px;
+    padding-top: 6px;
+    padding-bottom: 18px;
+
+    .icon-container {
+        display: flex;
+        justify-content: center;
+        background-color: #EAF3FB;
+        width: 65px;
+        height: 65px;
+        border-radius: 170px;
+
+        img {
+            width: 25px;
+        }
+    }
+
+    .ammount {
+        font-size: 2em;
+        font-weight: bold;
+        font-family: Rubik;
+    }
+
+    .title {
+        font-size: 1.1em;
+        font-weight: 500;
+        font-family: Rubik;
+    }
 }
 
 .analytics-description{
