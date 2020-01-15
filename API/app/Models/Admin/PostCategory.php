@@ -13,11 +13,12 @@ class PostCategory extends Model
     protected $table = 'posts_categories';
 
     protected $fillable = [
-        'category_name'
+        'category_name',
+        'color'
     ];
 
     public function post()
     {
-    	return $this->hasMany(Post::class);
+        return $this->hasMany(Post::class);
     }
 }

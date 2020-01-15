@@ -46,6 +46,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('/post/category', 'PublishController@getPostCategory');
 
+    Route::get('/hashtags', 'PublishController@getHashtags');
+
     Route::get('/articles', 'ArticlesController@articles');
 
     Route::get('/streams', 'StreamsController@index');
