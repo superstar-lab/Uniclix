@@ -10,6 +10,7 @@ import Loader from '../../Loader';
 import Tabs from '../../Tabs';
 import UnapprovedPosts from './UnapprovedPosts';
 import PastScheduled from './PastScheduled';
+import moment from 'moment';
 
 export class ScheduledPosts extends React.Component {
 
@@ -193,9 +194,7 @@ export class ScheduledPosts extends React.Component {
         this.setLoading(true);
         scheduledPosts()
             .then((response) => {
-
                 this.setState(() => ({
-                    posts: response.items,
                     loading: false,
                     forbidden: false,
                     page: 1,
@@ -221,7 +220,32 @@ export class ScheduledPosts extends React.Component {
 
                 this.setLoading(false);
             });
-    };
+
+        let todayDate = moment().format('YYYY-MM-DD');
+        scheduledPosts(1, todayDate, todayDate)
+            .then((response) => {
+
+                this.setState(() => ({
+                    posts: response.items,
+                    loading: false,
+                    forbidden: false,
+                    page: 1,
+                }));
+
+            }).catch((error) => {
+                if (typeof error.response.data.message != 'undefined') {
+                    this.setState(() => ({
+                        error: error.response.data.message
+                    }));
+                }
+
+                if (error.response.status === 403) {
+                    this.setForbidden(true);
+                }
+
+                this.setLoading(false);
+            });
+    }
 
     loadMore = () => {
         this.setLoading(true);

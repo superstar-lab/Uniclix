@@ -13,8 +13,13 @@ import { LoaderWithOverlay } from "./Loader";
 import { startSetChannels } from "../actions/channels";
 import SelectChannelsModal from "./SelectChannelsModal";
 import SelectPinterestBoards from './SelectPinterestBoards';
-import PublishButton from './PublishButton';
 import { setComposerModal } from "../actions/composer";
+import formatTime from "../utils/formatTime";
+import 'react-dates/initialize';
+import { SingleDatePicker } from 'react-dates';
+import 'react-dates/lib/css/_datepicker.css';
+import momentTz from "moment-timezone";
+import { minutes } from "../fixtures/time";
 
 
 class Compose extends React.Component {
@@ -48,8 +53,32 @@ class Compose extends React.Component {
         scheduledLabel: "",
         error: false,
         forbidden: false,
-        category: 1,
-        categories: []
+        categories: [],
+        filtredCategories: [],
+        showCalendar: false,
+        calendarFocused: false,
+        postDate: moment(),
+        category: "",
+        countries: [],
+        openCategory: false,
+        calendarDataDate: moment().format("MMM. DD, YYYY"),
+        calendarDataTime: moment().add(1, "hours").format('hh:mm'),
+        calendarDataPeriod: 'AM',
+        calendarData: {
+            time: {
+                hour: moment().add(1, "hours").format("hh"),
+                minutes: minutes[Math.floor(Math.random() * minutes.length)],
+                time: moment().format("A")
+            }
+        },
+        publishState: {
+            name: "Post at Best Time",
+            value: "best"
+        },
+        publishTimestamp: null,
+        publishDateTime: null,
+        publishUTCDateTime: moment().utc().format("YYYY-MM-DDTHH:mm"),
+        publishTimezone: momentTz.tz.guess()
     };
 
     state = this.defaultState;
@@ -57,6 +86,7 @@ class Compose extends React.Component {
     componentDidMount() {
         this.setRestrictions();
         this.setCategory();
+
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -102,12 +132,32 @@ class Compose extends React.Component {
             || prevState.publishChannels !== this.state.publishChannels) {
             this.setRestrictions();
         }
+        if (this.props.startAt !== prevProps.startAt) {
+            this.setState({
+                canSchedule: true,
+                calendarDataDate: moment(this.props.startAt).format("MMM. DD, YYYY"),
+                publishState: {
+                    name: "Custom Time",
+                    value: "date"
+                },
+                publishDateTime: this.props.startAt,
+                postDate: moment(this.props.startAt),
+                calendarData: {
+                    time: {
+                        hour: moment(this.props.startAt).format("hh"),
+                        minutes: moment(this.props.startAt).format("mm"),
+                        time: moment(this.props.startAt).format("A"),
+                    }
+                },
+            })
+        }
     }
     setCategory = () => {
         getCategories()
             .then((response) => {
                 this.setState(() => ({
-                    categories: response.categories
+                    categories: response.categories,
+                    filtredCategories: response.categories
                 }))
             }).catch((error) => {
                 console.log(error)
@@ -169,9 +219,6 @@ class Compose extends React.Component {
         this.setState({
             category: category
         });
-        console.log(category)
-        console.log(this.state.category)
-
     };
 
     onChannelSelectionChange = (obj) => {
@@ -266,6 +313,7 @@ class Compose extends React.Component {
         const images = this.state.pictures;
         const publishChannels = channelSelector(this.state.publishChannels, { selected: true, provider: undefined });
         const category_id = this.state.category;
+
         this.setState(() => ({
             loading: true
         }));
@@ -318,9 +366,58 @@ class Compose extends React.Component {
             });
     }
 
+    onFocusChange = ({ focused }) => {
+        this.setState((prevState) => ({
+            calendarFocused: focused,
+            showCalendar: !focused ? focused : prevState.showCalendar
+        }));
+    };
+
+    onDateChange = (postDate) => {
+        this.setState(() => ({ postDate }), () => this.setPublishTimestamp());
+    };
+
+
+    filterCategory = (e) => {
+        let val = e.target.value;
+        let cats = this.state.categories;
+        let filtredCategories = cats.filter(item => item.category_name.toLowerCase().includes(val.toLowerCase()))
+
+        this.setState({
+            filtredCategories: filtredCategories,
+            categoryName: val
+        })
+    }
+    selectCategory = (val, name) => {
+        this.setState({ category: val, categoryName: name, openCountry: false })
+    }
+
+    setPublishTimestamp = () => {
+        this.setState({
+            calendarDataDate: moment(this.state.postDate).format("MMM. DD, YYYY"),
+            publishDateTime: moment(this.state.postDate).format("YYYY-MM-DDTHH:mmZ"),
+        })
+    };
+    formatChangeTime = (val) => {
+        this.setState({
+            calendarDataTime: formatTime(val)
+        })
+
+    }
+
     render() {
 
-        const scheduledLabel = this.state.scheduledLabel && <div className="schedule-info">{this.state.scheduledLabel}</div>;
+        // const scheduledLabel = this.state.scheduledLabel && <div className="schedule-info">{this.state.scheduledLabel}</div>;
+        const { filtredCategories, openCategory,
+            postDate, showCalendar, calendarFocused,
+            calendarDataDate,
+            calendarDataPeriod,
+            openPT,
+            categoryName,
+            calendarDataTime } = this.state;
+        const items = filtredCategories.map((item) => {
+            return <li onClick={() => this.selectCategory(item.id, item.category_name)}> {item.category_name} </li>;
+        });
         return (
             <Modal isOpen={this.state.openModal}
                 closeTimeoutMS={300}
@@ -345,16 +442,13 @@ class Compose extends React.Component {
                         </Modal>
 
                         {this.state.selectChannelsModal ?
-
                             <SelectChannelsModal
                                 channels={this.state.publishChannels}
                                 onChange={this.onChannelSelectionChange}
                                 toggle={this.toggleSelectChannelsModal}
                                 toggleComposer={this.toggleModal}
                             />
-
                             :
-
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h2>Post</h2>
@@ -390,35 +484,138 @@ class Compose extends React.Component {
                                     </ul>
                                 </div>
 
-                                <DraftEditor
-                                    scheduledLabel={scheduledLabel}
-                                    onChange={this.updateContent}
-                                    onImagesChange={this.updatePictures}
-                                    content={this.state.content}
-                                    pictures={this.state.pictures}
-                                />
-                                <div className="group-field">
-
-                                    <select name="category" id="category" onChange={(e) => this.updateCategory(e)} className="form-control whiteBg">
-                                        {this.state.categories.map((item) => (
-                                            <option key={item.id} value={item.id}>{item.category_name}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="modal-footer" style={{ position: "relative" }}>
-                                    <PublishButton
-                                        action={this.publish}
-                                        onChange={this.updateScheduledLabel}
-                                        startAt={this.props.startAt}
-                                        restricted={this.state.restricted || this.state.twitterRestricted || this.state.pinterestRestricted}
+                                <div className="compose-body">
+                                    <DraftEditor
+                                        scheduledLabel={null}
+                                        onChange={this.updateContent}
+                                        onImagesChange={this.updatePictures}
+                                        content={this.state.content}
+                                        pictures={this.state.pictures}
                                     />
+                                    <div className="group-field">
+                                        <div className={`form-field form-country ${openCategory ? 'open-country' : ''}`}>
+                                            <label htmlFor="location">Category</label>
 
-                                    <p className={`letter-count ${this.state.twitterRestricted && this.state.letterCount > 280 ? 'red-txt' : ''}`}>{this.state.letterCount}</p>
+                                            <input
+                                                className="form-control whiteBg"
+                                                type="text"
+                                                id="location"
+                                                onFocus={() => this.setState({ openCategory: true })}
+                                                onBlur={() => { setTimeout(() => { this.setState({ openCategory: false }) }, 600) }}
+                                                autoComplete="false"
+                                                value={categoryName}
+                                                autoComplete="new-password"
+                                                onChange={(e) => this.filterCategory(e)}
+                                                placeholder="Select or create your category" />
+                                            {openCategory &&
+                                                <ul className="country-list">
+                                                    {items}
+                                                </ul>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className="group-field">
+                                        <div className="row">
+                                            <div className="col-xs-12 col-md-4">
+                                                <label>Schedule</label>
+                                                <input type="text"
+                                                    onFocus={() => this.setState({ showCalendar: true, calendarFocused: true })}
+                                                    onBlur={() => {
+                                                        setTimeout(() => {
+                                                            this.setState({ showCalendar: false, calendarFocused: false })
+                                                        }, 600)
+                                                    }}
+                                                    value={calendarDataDate}
+                                                    placeholde="Date"
+                                                    className="form-control whiteBg" name="schedule_date"
+                                                    autoComplete="new-password" />
+                                                {!!showCalendar &&
+                                                    <div className="uc-calendar">
+                                                        <SingleDatePicker
+                                                            onDateChange={this.onDateChange}
+                                                            date={postDate}
+                                                            focused={calendarFocused}
+                                                            onFocusChange={this.onFocusChange}
+                                                            numberOfMonths={1}
+                                                            showDefaultInputIcon={false}
+                                                            keepOpenOnDateSelect={true}
+                                                            keepFocusOnInput={true}
+                                                            inputIconPosition="after"
+                                                            readOnly={true}
+                                                            small={true}
+                                                        />
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div className="col-xs-12 col-md-2">
+                                                <input type="text"
+                                                    className="form-control whiteBg"
+                                                    onChange={(e) => this.formatChangeTime(e.target.value)}
+                                                    placeholder="HH:MM"
+                                                    value={calendarDataTime}
+                                                    name="schedule_date" />
+                                            </div>
+                                            <div className="col-xs-12 col-md-2">
+                                                <div className={`form-field form-country ${openPT ? 'open-country' : ''}`}>
+                                                    <input
+                                                        className="form-control whiteBg"
+                                                        type="text"
+                                                        id="periodTime"
+                                                        onFocus={() => this.setState({ openPT: true })}
+                                                        onBlur={() => { setTimeout(() => { this.setState({ openPT: false }) }, 600) }}
+                                                        autoComplete="false"
+                                                        value={calendarDataPeriod}
+                                                        autoComplete="new-password"
+                                                        placeholder="Select or create your category" />
+                                                    {openPT &&
+                                                        <ul className="country-list">
+                                                            <li onClick={() => this.setState({ calendarDataPeriod: 'AM' })}> AM </li>
+                                                            <li onClick={() => this.setState({ calendarDataPeriod: 'PM' })}> PM </li>
+                                                        </ul>
+                                                    }
+                                                </div>
+
+                                            </div>
+                                            <div className="col-xs-12 col-md-4">
+                                                <label className="checkbox-inline">
+                                                    <input type="checkbox"
+                                                        className="form-control whiteBg"
+                                                        onChange={() => { }}
+                                                        name="schedule_date" />
+                                                    Post at best time
+                                                    </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="modal-footer" style={{ position: "relative" }}>
+                                        <div className="pull-right">
+                                            <button onClick={() => {
+                                                if (!this.props.restricted && (this.state.canSchedule || this.state.publishState.value !== 'date')) {
+                                                    this.publish({
+                                                        publishState: this.state.publishState,
+                                                        publishTimestamp: this.state.publishTimestamp,
+                                                        publishDateTime: this.state.publishDateTime,
+                                                        publishUTCDateTime: this.state.publishUTCDateTime,
+                                                        publishTimezone: this.state.publishTimezone
+                                                    }, this.state.publishState.value);
+                                                }
+                                            }} className={`publish-btn default-button ${
+                                                !this.props.restricted && (this.state.canSchedule || this.state.publishState.value !== 'date') ?
+                                                    '' : 'disabled-btn'}`}>
+                                                {this.state.publishState.name}</button>
+                                            {/* <PublishButton
+                                                action={this.publish}
+                                                onChange={this.updateScheduledLabel}
+                                                startAt={this.props.startAt}
+                                                restricted={this.state.restricted || this.state.twitterRestricted || this.state.pinterestRestricted}
+                                            /> */}
+                                            {/* <p className={`letter-count ${this.state.twitterRestricted && this.state.letterCount > 280 ? 'red-txt' : ''}`}>{this.state.letterCount}</p> */}
+                                        </div>
+                                    </div>
+                                    {!!this.state.error && <div className='alert alert-danger'>{this.state.error}</div>}
                                 </div>
-                                {!!this.state.error && <div className='alert alert-danger'>{this.state.error}</div>}
                             </div>
                         }
-
                     </div>
                 </div>
             </Modal>
