@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Notifications\PublishApprovalNotification;
 use App\Notifications\PostApprovedNotification;
 use App\Models\Admin\PostCategory;
+use App\Models\Hashtag;
 
 class PublishController extends Controller
 {
@@ -305,6 +306,16 @@ class PublishController extends Controller
         try {
             $post_categories = PostCategory::all();
             return response()->json(["categories" => $post_categories]);
+        } catch (\Exception $e) {
+            return getErrorResponse($e);
+        }
+    }
+
+    public function getHashtags()
+    {
+        try {
+            $hashtags = Hashtag::all();
+            return response()->json(["hashtags" => $hashtags]);
         } catch (\Exception $e) {
             return getErrorResponse($e);
         }

@@ -53,6 +53,26 @@ class ScheduledController extends Controller
             ->orderBy('scheduled_at', 'asc')
             ->paginate(20);
 
+        $from_date = $request->input('from_date');
+        $to_date = $request->input('to_date');
+        if ($from_date && $to_date) {
+            $posts = $this->selectedChannel->scheduledPosts()
+                ->with('category')
+                ->where("posted", 0)
+                ->where("approved", 1)
+                ->whereDate('scheduled_at', '>=', $from_date)
+                ->whereDate('scheduled_at', '<=', $to_date)
+                ->orderBy('scheduled_at', 'asc')
+                ->paginate(20);
+        } else {
+            $posts = $this->selectedChannel->scheduledPosts()
+                ->with('category')
+                ->where("posted", 0)
+                ->where("approved", 1)
+                ->orderBy('scheduled_at', 'asc')
+                ->paginate(20);
+        }
+
         foreach ($posts as $post) {
             $post->payload = unserialize($post->payload);
         }

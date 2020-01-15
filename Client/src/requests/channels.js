@@ -54,7 +54,7 @@ export const unapprovedPosts = (page = 1) => {
 };
 
 export const scheduledPosts = (page = 1) => {
-    return axios.get(`${apiUrl}/scheduled/posts?page=${page}`)
+    return axios.get(`${apiUrl}/scheduled/posts?page=${page}&to_date=2022-01-16&from_date=2019-01-16`)
         .then((response) => {
             return response.data;
         });
