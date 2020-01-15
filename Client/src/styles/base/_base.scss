@@ -889,6 +889,16 @@
                     }
                 }
             }
+
+            .add-new-channel {
+                background: #2D86DA;
+                border: none;
+
+                i {
+                    color: #fff;
+                    font-size: 12px;
+                }
+            }
         }
 
         .draft_editor_container {

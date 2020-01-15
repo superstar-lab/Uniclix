@@ -56,7 +56,7 @@ class ScheduledController extends Controller
 
         $from_date = $request->input('from_date');
         $to_date = $request->input('to_date');
-        if ($from_date && $to_date) {
+        if ($from_date != 'null' && $to_date != 'null') {
             $posts = $this->selectedChannel->scheduledPosts()
                 ->with('category')
                 ->where("posted", 0)

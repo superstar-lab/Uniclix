@@ -77,16 +77,6 @@ export const PostListCalendar = ({
                 }}
             />
 
-            {(posts.length < 1 && !loading) &&
-                <SocialAccountsPrompt
-                    image="/images/connect_twitter_accounts.svg"
-                    title={type !== "past-scheduled" ? "Save time with scheduled post" : "You have no old posts"}
-                    description={type == "unapproved-posts" ? "You have no post in approval queue" : "Use Compose box to schedule posts and publish automatically throughout the day or week"}
-                    buttonTitle="Publish now and get started"
-                    action={() => setComposerModal(true)}
-                />
-            }
-
             {loading && <Loader />}
 
             <div className="row">
@@ -106,7 +96,7 @@ export const PostListCalendar = ({
                     </div>
                 </div>
                 <div className="col-xs-12 col-md-12 col-lg-9">
-                    {(events.length > 0 && !loading) &&
+                    {!loading &&
                         <div className="calendar-events ">
                             <div className="calendar-events-head row">
                                 <div className="calendar-navigation  col-12 col-md-6">
