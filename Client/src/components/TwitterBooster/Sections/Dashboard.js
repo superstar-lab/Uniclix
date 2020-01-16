@@ -6,6 +6,7 @@ import { startSetChannels } from "../../../actions/channels";
 import 'react-dates/initialize';
 import TweetsTable from '../../Analytics/Twitter/Cards/TweetsTable';
 import TwitterOverviewCard from '../../Analytics/Twitter/TwitterOverviewCard';
+import ChartsSection from '../../Analytics/Sections/ChartsSection';
 
 class Dashboard extends React.Component {
 
@@ -44,8 +45,8 @@ class Dashboard extends React.Component {
         }
 
         return (
-            <div>
-                <div className="section-header no-border mb-40">
+            <div className="analytics-page">
+                <div className="section-header mb-20">
                     <h1 className="page-title">Analytics</h1>
                     <div className="section-header__first-row">
                         <h3>Twitter Overview</h3>
@@ -88,7 +89,7 @@ class Dashboard extends React.Component {
                                 />
                             </div>
                         </div>
-
+                        <ChartsSection {...propData} />
                         <div className="row mb20">
                             <div className="col-xs-12">
                                 <TweetsTable
@@ -98,9 +99,7 @@ class Dashboard extends React.Component {
                                     {...propData} />
                             </div>
                         </div>
-
                     </div>}
-
             </div>
         );
     }
