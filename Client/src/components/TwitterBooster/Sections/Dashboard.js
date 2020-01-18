@@ -7,18 +7,19 @@ import 'react-dates/initialize';
 import TweetsTable from '../../Analytics/Twitter/Cards/TweetsTable';
 import TwitterOverviewCard from '../../Analytics/Twitter/TwitterOverviewCard';
 import ChartsSection from '../../Analytics/Sections/ChartsSection';
+import AccountSelector from '../../../components/AccountSelector';
 
 class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
-    }
-
-    state = {
-        data: false,
-        forbidden: false,
-        calendarChange: false,
-        loading: this.props.channelsLoading
+        this.state = {
+            data: false,
+            forbidden: false,
+            calendarChange: false,
+            loading: props.channelsLoading,
+            selectedAccount: props.selectedChannel.id
+        }
     }
 
     setLoading = (loading = false) => {
@@ -35,12 +36,15 @@ class Dashboard extends React.Component {
         }
     };
 
+    onAccountChange = (value) => this.setState({selectedAccount: value});
 
     render() {
+        const { selectedAccount } = this.state;
+
         const propData = {
             calendarChange: this.state.calendarChange,
             setForbidden: this.setForbidden,
-            selectedAccount: this.props.selectedChannel.id,
+            selectedAccount,
             selectedChannel: this.props.selectedChannel
         }
 
@@ -50,6 +54,11 @@ class Dashboard extends React.Component {
                     <h1 className="page-title">Analytics</h1>
                     <div className="section-header__first-row">
                         <h3>Twitter Overview</h3>
+                        <AccountSelector
+                            socialMedia="twitter"
+                            onChange={this.onAccountChange}
+                            value={selectedAccount}
+                        />
                     </div>
                 </div>
                 <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
