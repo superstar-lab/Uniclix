@@ -21,9 +21,22 @@
         line-height: 14px;
     }
 
-    line.recharts-xAxis.xAxis,
+    line.recharts-yAxis.yAxis,
     line.recharts-xAxis.xAxis {
         display: none;
+    }
+
+    .recharts-curve.recharts-area-curve {
+        stroke-width: 2;
+    }
+
+    .chart-container {
+        margin-top: 20px;
+    }
+
+    .recharts-surface,
+    .chart-container {
+        height: 350px;
     }
 }
 
@@ -165,6 +178,40 @@
 .selection-row {
     display: flex;
     justify-content: space-between;
+    padding: 0 35px;
+
+    .left-info {
+        min-width: 282px;
+    }
+
+    .date-range-picker {
+        font-family: Rubik;
+        font-weight: 500;
+        font-size: 0.9em;   
+        min-width: 225px;
+
+        .date-range-container {
+            min-width: inherit;
+            justify-content: center;
+            display: flex;
+
+            .text {
+                margin: 0 10px;
+                min-width: 125px;
+                text-align: center;
+            }
+    
+            .arrow img {
+                height: 0.9em;
+                cursor: pointer;
+            }
+    
+            .arrow.right img {
+                transform: rotate(180deg);
+            }
+        }
+        
+    }
 
     .period-buttons {
         display: flex;
@@ -185,6 +232,106 @@
         .selected {
             background-color: #2D86DA;
             color: #FFF;
+        }
+    }
+
+    .engagement-balls {
+        display: flex;
+
+        .ball-text {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.9em;
+            margin-right: 20px;
+
+            .ball {
+                width: 15px;
+                height: 15px;
+                border-radius: 15px;
+                margin-right: 5px;
+            }
+
+            .ball.reactions {
+                background-color: #D83E7F;
+            }
+
+            .ball.comments {
+                background-color: #2D86DA;
+            }
+
+            .ball.shares {
+                background-color: #EB8666;
+            }
+        }
+    }
+}
+
+.engagements-cards-section {
+    display: flex;
+    justify-content: space-around;
+    font-family: Rubik;
+    width: 950px;
+    margin: 50px auto 0;
+
+    .engagements-card {
+        background-color: #FFF;
+        padding: 20px;
+
+        .graphics {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+
+            .left-side {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                margin-right: 30px;
+                width: 120px;
+
+                .total {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 10px;
+                    
+                    img {
+                        height: 19px;
+                        width: 25px;
+                        margin-right: 5px;
+                    }
+
+                    span.number {
+                        font-size: 1.5em;
+                        font-weight: 500;
+                    }
+                }
+
+
+                .engagement-label {
+                    color: #909090;
+                    font-size: 0.9em;
+                }
+            }
+
+            .right-side {
+                img {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+
+        span.amount {
+            color: #D83E7F;
+            font-weight: 500;
+            margin-right: 3px;
+        }
+
+        .total-period {
+            font-size: 0.9em;
+            font-weight: 500;
+            display: flex;
+            justify-content: center;
         }
     }
 }

@@ -3,7 +3,7 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
 
-class PostsChart extends React.Component {
+class SimpleAreaChart extends React.Component {
   render() {
     const { data, dataKey } = this.props;
 
@@ -19,16 +19,18 @@ class PostsChart extends React.Component {
           <XAxis
             dataKey="name"
             axisLine={false}
+            tickMargin={20}
             />
           <YAxis
             axisLine={false}
+            tickMargin={20}
           />
           <Tooltip />
           <Area
             type="monotone"
             dataKey={dataKey}
             stroke="#D83E7F"
-            fill="rgba(216, 62, 127, 0.12)"
+            fill="rgba(216, 62, 127, 0.3)"
           />
         </AreaChart>
       </ResponsiveContainer>
@@ -37,4 +39,4 @@ class PostsChart extends React.Component {
 }
 
 
-export default PostsChart;
+export default SimpleAreaChart;

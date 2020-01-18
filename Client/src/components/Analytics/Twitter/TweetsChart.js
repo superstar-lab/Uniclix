@@ -3,29 +3,29 @@ import React from 'react';
 import { UTC_MONTHS } from '../../../utils/constants';
 
 import { pageInsightsByType } from '../../../requests/twitter/channels';
-import PostsChart from '../PostsChart';
+import SimpleAreaChart from '../SimpleAreaChart';
 
 const data = [
   {
-    name: 'Page A', Tweets: 4000, pv: 2400, amt: 2400,
+    name: 'Page A', Tweets: 30
   },
   {
-    name: 'Page B', Tweets: 3000, pv: 1398, amt: 2210,
+    name: 'Page B', Tweets: 24
   },
   {
-    name: 'Page C', Tweets: 2000, pv: 9800, amt: 2290,
+    name: 'Page C', Tweets: 31
   },
   {
-    name: 'Page D', Tweets: 2780, pv: 3908, amt: 2000,
+    name: 'Page D', Tweets: 28
   },
   {
-    name: 'Page E', Tweets: 1890, pv: 4800, amt: 2181,
+    name: 'Page E', Tweets: 41
   },
   {
-    name: 'Page F', Tweets: 2390, pv: 3800, amt: 2500,
+    name: 'Page F', Tweets: 22
   },
   {
-    name: 'Page G', Tweets: 3490, pv: 4300, amt: 2100,
+    name: 'Page G', Tweets: 25
   },
 ];
 
@@ -93,18 +93,18 @@ class TweetsChart extends React.Component {
     }    
   }
 
-  componentDidMount() {
-    this.getAnalyticsData();
-  }
+  // componentDidMount() {
+  //   this.getAnalyticsData();
+  // }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.period !== prevProps.period) {
-      this.getAnalyticsData();
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.period !== prevProps.period) {
+  //     this.getAnalyticsData();
+  //   }
+  // }
 
   render() {
-    return <PostsChart data={data} dataKey="Tweets" />;
+    return <SimpleAreaChart data={data} dataKey="Tweets" />;
   }
 }
 
