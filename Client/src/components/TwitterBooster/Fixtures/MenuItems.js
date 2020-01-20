@@ -20,8 +20,8 @@ const MenuItems = [
     {   
         id: "twitter-booster_analytics",
         displayName: "Analytics",
-        uri: "/twitter-booster/dashboard",
-        icon: "analytics"
+        uri: "/analytics/twitter",
+        icon: "chart-bar"
     },
     {   
         id: "twitter-booster_manage_accounts",
