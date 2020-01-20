@@ -1,15 +1,21 @@
 /* Left Nav ======= */
 .vertical-menu {
-    position: relative;
-    top: 0;
-    float: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     height: 100%;
     width: 235px;
-    overflow: hidden;
+    overflow-x: hidden;
     background: white;
     z-index: 999;
     border-top-right-radius: 50px;
+    overflow-y: scroll;
 
+    .selected-profile {
+        flex-direction: column;
+        border-bottom: 0.5px solid #DBDBDB;
+        padding: 35px 10px;
+    }
 
     /* Profile Info ===========*/
     .profile-info {
@@ -17,12 +23,9 @@
         width: 100%;
         justify-content: center;
         align-items: center;
-        flex-direction: column;
-        color: #515151;
+        color: #363636;
         cursor: pointer;
-        padding: 35px 10px;
         margin: 0;
-        border-bottom: 2px solid #f5f7fb;
 
         img {
             width: 45px;
@@ -39,20 +42,59 @@
         p {
             margin: 0;
             ;
-            max-width: 111px;
+            max-width: 150px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
-        .profile-name {
-            font-weight: normal;
-            text-transform: uppercase;
+        .profile-name,
+        .profile-username {
+            font-family: Lato;;
+            font-size: 0.9em;
+        }
+    }
+
+    .add-profile {
+        cursor: pointer;
+
+        .circle {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #FFF;
+            background-color: #2D86DA;
+            border-radius: 25px;
+            margin-right: 10px;
         }
 
-        .profile-username {
-            font-weight: normal;
-            font-size: 1.4rem;
+        p {
+            margin: 0;
+            font-family: Lato;;
+            font-size: 0.9em;
+            color: #363636;
+        }
+    }
+
+    .support-section {
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        :hover {
+            color: #2d86e0;
+        }
+
+        .button {
+            font-family: Lato;
+            font-size: 1em;
+        }
+
+        i {
+            margin-right: 20px;
         }
     }
 
@@ -62,9 +104,6 @@
 
     .v-menu-links {
         padding-top: 30px;
-        height: calc(100% - 300px);
-        overflow-y: auto;
-        overflow-x: hidden;
         background: $white;
 
         li {
