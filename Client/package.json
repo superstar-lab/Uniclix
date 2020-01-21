@@ -16,6 +16,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.12.0-1",
     "@material-ui/core": "^3.9.3",
+    "antd": "^3.26.7",
     "axios": "^0.19.0",
     "babel-core": "6.26.3",
     "babel-loader": "7.1.5",
@@ -77,6 +78,7 @@
     "react-toastr": "^3.0.0",
     "react-twitter-auth": "0.0.12",
     "reactjs-popup": "1.2.0",
+    "recharts": "^2.0.0-beta.1",
     "redux": "4.0.0",
     "redux-thunk": "2.3.0",
     "sass-loader": "7.0.3",

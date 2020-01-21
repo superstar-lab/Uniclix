@@ -6,18 +6,20 @@ import { startSetChannels } from "../../../actions/channels";
 import 'react-dates/initialize';
 import TweetsTable from '../../Analytics/Twitter/Cards/TweetsTable';
 import TwitterOverviewCard from '../../Analytics/Twitter/TwitterOverviewCard';
+import ChartsSection from '../../Analytics/Sections/ChartsSection';
+import AccountSelector from '../../../components/AccountSelector';
 
 class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
-    }
-
-    state = {
-        data: false,
-        forbidden: false,
-        calendarChange: false,
-        loading: this.props.channelsLoading
+        this.state = {
+            data: false,
+            forbidden: false,
+            calendarChange: false,
+            loading: props.channelsLoading,
+            selectedAccount: props.selectedChannel.id
+        }
     }
 
     setLoading = (loading = false) => {
@@ -34,21 +36,29 @@ class Dashboard extends React.Component {
         }
     };
 
+    onAccountChange = (value) => this.setState({selectedAccount: value});
 
     render() {
+        const { selectedAccount } = this.state;
+
         const propData = {
             calendarChange: this.state.calendarChange,
             setForbidden: this.setForbidden,
-            selectedAccount: this.props.selectedChannel.id,
+            selectedAccount,
             selectedChannel: this.props.selectedChannel
         }
 
         return (
-            <div>
-                <div className="section-header no-border mb-40">
+            <div className="analytics-page">
+                <div className="section-header mb-20">
                     <h1 className="page-title">Analytics</h1>
                     <div className="section-header__first-row">
                         <h3>Twitter Overview</h3>
+                        <AccountSelector
+                            socialMedia="twitter"
+                            onChange={this.onAccountChange}
+                            value={selectedAccount}
+                        />
                     </div>
                 </div>
                 <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
@@ -88,7 +98,7 @@ class Dashboard extends React.Component {
                                 />
                             </div>
                         </div>
-
+                        <ChartsSection {...propData} />
                         <div className="row mb20">
                             <div className="col-xs-12">
                                 <TweetsTable
@@ -98,9 +108,7 @@ class Dashboard extends React.Component {
                                     {...propData} />
                             </div>
                         </div>
-
                     </div>}
-
             </div>
         );
     }

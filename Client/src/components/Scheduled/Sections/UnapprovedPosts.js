@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import BottomScrollListener from 'react-bottom-scroll-listener';
 import UpgradeAlert from '../../UpgradeAlert';
-import channelSelector from '../../../selectors/channels';
+import channelSelector, { publishChannels as publishableChannels } from '../../../selectors/channels';
 import {unapprovedPosts, destroyPost, postNow, approvePost} from '../../../requests/channels';
 import PostList from '../../PostList';
 import Loader from '../../Loader';
@@ -19,6 +19,7 @@ export class UnapprovedPosts extends React.Component{
         page: 1,
         loading: this.props.channelsLoading,
         action: this.defaultAction,
+        publishChannels: publishableChannels(this.props.channel),
         forbidden: false,
         error: false
     }
@@ -143,22 +144,22 @@ export class UnapprovedPosts extends React.Component{
                     page: 1
                 }));
             }).catch((error) => {
+console.log(error)
+                // if(typeof error.response.data.message != 'undefined'){
+                //     this.setState(() => ({
+                //         error: error.response.data.message
+                //     }));
+                // }
 
-                if(typeof error.response.data.message != 'undefined'){
-                    this.setState(() => ({
-                        error: error.response.data.message
-                    }));
-                }
+                // if(typeof error.response.data.error != 'undefined'){
+                //     this.setState(() => ({
+                //         error: error.response.data.error
+                //     }));
+                // }    
 
-                if(typeof error.response.data.error != 'undefined'){
-                    this.setState(() => ({
-                        error: error.response.data.error
-                    }));
-                }    
-
-                if(error.response.status === 403){
-                    this.setForbidden(true);
-                }
+                // if(error.response.status === 403){
+                //     this.setForbidden(true);
+                // }
 
                 this.setLoading(false);
             });
@@ -198,6 +199,7 @@ export class UnapprovedPosts extends React.Component{
                     destroyPost={this.destroy}
                     approvePost={this.approve}
                     publishPost={this.publishPost}
+                    publishChannels={this.state.publishChannels}
                     error={this.state.error}
                     setError={this.setError}
                     posts={this.state.posts}

@@ -9,13 +9,15 @@ let toastContainer;
 const VerticalMenu = ({ menuItems, channels, selectedChannel, selectChannel, trialEnded }) => {
     return (
         <aside className="vertical-menu scrollbar">
-            <ProfileInfo
-                selectedChannel={selectedChannel}
-                channels={channels}
-                trialEnded={trialEnded}
-                selectChannel={selectChannel} />
+            <div>
+                <ProfileInfo
+                    selectedChannel={selectedChannel}
+                    channels={channels}
+                    trialEnded={trialEnded}
+                    selectChannel={selectChannel} />
 
-            <MenuItems menuItems={menuItems} />
+                <MenuItems menuItems={menuItems} />
+            </div>
             <SupportSection />
         </aside>
     );
@@ -58,13 +60,17 @@ class ProfileInfo extends React.Component {
         return (
 
             <div>
-                <div className="profile-info" onClick={this.toggleDropdown}>
+                <div className="profile-info selected-profile" onClick={this.toggleDropdown}>
                     <span className="pull-left profile-img-container">
                         <img onError={(e) => e.target.src = '/images/dummy_profile.png'} src={selectedChannel.avatar} />
                         <i className={`fab fa-${selectedChannel.type} ${selectedChannel.type}_bg smallIcon`}></i>
                     </span>
                     <div>
-                        <p className="profile-username">{!!selectedChannel.username && `@${selectedChannel.username}`}</p>
+                        {
+                            !!selectedChannel.username ?
+                                <p className="profile-username">{`@${selectedChannel.username}`}</p> :
+                                <p className="profile-name" title={selectedChannel.name}>{selectedChannel.name}</p>
+                        }
                     </div>
                 </div>
 
@@ -87,6 +93,12 @@ const ProfileSelectionDropDown = ({ channels, selectChannel, isOpen }) => (
                     <ProfileSelectionItem key={channel.id} channel={channel} selectChannel={selectChannel} />
                 ))
             }
+            <div className="add-profile channel-container">
+                <div className="circle">
+                    <i className="fa fa-plus" />
+                </div>
+                <p>Add new account</p>
+            </div>
         </div>
     </div>
 );
@@ -100,8 +112,11 @@ const ProfileSelectionItem = ({ channel, selectChannel }) => (
                     <i className={`fab fa-${channel.type} ${channel.type}_bg smallIcon`}></i>
                 </span>
                 <div>
-                    <p className="profile-name" title={channel.name}>{channel.name}</p>
-                    <p className="profile-username">{!!channel.username && `@${channel.username}`}</p>
+                    {
+                        !!channel.username ?
+                            <p className="profile-username">{`@${channel.username}`}</p> :
+                            <p className="profile-name" title={channel.name}>{channel.name}</p>
+                    }
                 </div>
             </div>
         </a>
@@ -174,9 +189,12 @@ class SupportSection extends React.Component {
                     ref={ref => toastContainer = ref}
                     className="toast-top-right"
                 />
-                <button className="button" onClick={this.openModal}>
-                    <i className="fa fa-comment"></i> Support
-                </button>
+                <div className="support-section" role="button" onClick={this.openModal}>
+                    <div className="button">
+                        <i className="fa fa-comment"></i>
+                        Support
+                    </div>
+                </div>
                 <Popup
                     open={this.state.open}
                     closeOnDocumentClick

@@ -1,25 +1,23 @@
 import React from 'react';
-import { Route, Redirect, Switch } from 'react-router-dom';
-import Dashboard from '../components/TwitterBooster/Sections/Dashboard';
+import { Route, Switch } from 'react-router-dom';
 import MonitorActivity from '../components/TwitterBooster/Sections/MonitorActivity';
 import AccountTargets from '../components/TwitterBooster/Sections/AccountTargets';
 import KeywordTargets from '../components/TwitterBooster/Sections/KeywordTargets';
 import Fans from '../components/TwitterBooster/Sections/Fans';
 import NonFollowers from '../components/TwitterBooster/Sections/NonFollowers';
-import RecentUnfollowers from '../components/TwitterBooster/Sections/RecentUnfollowers';
 import RecentFollowers from '../components/TwitterBooster/Sections/RecentFollowers';
 import InactiveFollowing from '../components/TwitterBooster/Sections/InactiveFollowing';
 import Following from '../components/TwitterBooster/Sections/Following';
 import WhiteList from '../components/TwitterBooster/Sections/WhiteList';
 import BlackList from '../components/TwitterBooster/Sections/BlackList';
 import Checkout from '../components/Accounts/Checkout';
-
+import AnalyticsRouter from '../routes/AnalyticsRouter';
 
 const ManageRouter = () => (
     <div>
         <Switch>
-            <Route exact path={`/twitter-booster`} render={() => <Redirect to="/twitter-booster/dashboard"/>} />
-            <Route path={`/twitter-booster/dashboard`} component={Dashboard} />
+            <Route path={`/analytics`} component={AnalyticsRouter} />
+            {/*Obsolete routes*/}
             <Route path={`/twitter-booster/monitor-activity`} component={MonitorActivity} />
             <Route path={`/twitter-booster/account-targets`} component={AccountTargets} />
             <Route path={`/twitter-booster/checkout`} component={Checkout} />

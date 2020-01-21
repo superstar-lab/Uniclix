@@ -31,6 +31,7 @@ export class ScheduledPosts extends React.Component {
         viewType: "week",
         currentDate: new Date(),
         Navigate: 'week',
+        timeZoneVal: "",
         calendarDate: new Date(),
         viewTypes: [
             {
@@ -45,46 +46,6 @@ export class ScheduledPosts extends React.Component {
                 id: 'day',
                 label: 'Day'
             }
-        ],
-        timeZones: [
-            "−12:00",
-            "−11:00",
-            "−10:00",
-            "−09:30",
-            "−09:00",
-            "−08:00",
-            "−07:00",
-            "−06:00",
-            "−05:00",
-            "−04:00",
-            "−03:30",
-            "−03:00",
-            "−02:00",
-            "−01:00",
-            "±00:00",
-            "+01:00",
-            "+02:00",
-            "+03:00",
-            "+03:30",
-            "+04:00",
-            "+04:30",
-            "+05:00",
-            "+05:30",
-            "+05:45",
-            "+06:00",
-            "+06:30",
-            "+07:00",
-            "+08:00",
-            "+08:45",
-            "+09:00",
-            "+09:30",
-            "+10:00",
-            "+10:30",
-            "+11:00",
-            "+12:00",
-            "+12:45",
-            "+13:00",
-            "+14:00",
         ]
     }
 
@@ -205,7 +166,7 @@ export class ScheduledPosts extends React.Component {
                     this.setState({
                         titleDate: document.getElementsByClassName('rbc-toolbar-label')[0].innerHTML
                     })
-                }, 10)
+                }, 20)
             }).catch((error) => {
 
                 if (typeof error.response.data.message != 'undefined') {
@@ -345,7 +306,12 @@ export class ScheduledPosts extends React.Component {
             })
         }, 1)
     }
-
+    changeTimeZone = (val) => {
+        console.log(val)
+        this.setState({
+            timeZoneVal: val
+        })
+    }
     render() {
         return (
             <div className="main-section">
@@ -353,7 +319,7 @@ export class ScheduledPosts extends React.Component {
                 <div className="section-header no-border mb-40">
                     <div className="section-header__first-row row">
                         <div className="col-xs-12 col-md-8 ">
-                            <h2>POSTS</h2>
+                            <h2>Posts</h2>
                         </div>
                         <div className="col-xs-12 col-md-4">
                             <button className="magento-btn pull-right" onClick={() => { this.props.setComposerModal(true) }}>New Post</button>
@@ -361,7 +327,7 @@ export class ScheduledPosts extends React.Component {
                     </div>
                 </div>
                 <Tabs>
-                    <div label="Schedule">
+                    <div label="Scheduled">
                         <PostListCalendar
                             action={this.state.action}
                             setAction={this.setAction}
@@ -370,8 +336,9 @@ export class ScheduledPosts extends React.Component {
                             error={this.state.error}
                             setError={this.setError}
                             posts={this.state.posts}
+                            changeTimeZone={this.changeTimeZone}
+                            timeZoneVal={this.state.timeZoneVal}
                             title=""
-                            timeZones={this.state.timeZones}
                             calendarDate={this.state.calendarDate}
                             viewTypes={this.state.viewTypes}
                             viewType={this.state.viewType}
@@ -388,7 +355,7 @@ export class ScheduledPosts extends React.Component {
                     <div label="Awaiting Approval">
                         <UnapprovedPosts />
                     </div>
-                    <div label="Past Posts">
+                    <div label="Previous Posts">
                         <PastScheduled />
                     </div>
                 </Tabs>

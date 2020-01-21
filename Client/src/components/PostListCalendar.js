@@ -5,7 +5,7 @@ import SweetAlert from 'sweetalert2-react';
 import { setPost } from '../actions/posts';
 import Loader from './Loader';
 import { setComposerModal } from "../actions/composer";
-import SocialAccountsPrompt from "./SocialAccountsPrompt";
+import TimezoneSelectOptions from './Settings/Fixtures/TimezoneOptions';
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 // import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
@@ -19,7 +19,8 @@ export const PostListCalendar = ({
     setAction,
     destroyPost,
     publishPost,
-    approvePost,
+    timeZoneVal,
+    changeTimeZone,
     error,
     setError,
     posts,
@@ -35,7 +36,6 @@ export const PostListCalendar = ({
     viewTypes,
     viewType,
     Navigate,
-    timeZones,
     calendarDate
 }) => {
     return (
@@ -84,13 +84,13 @@ export const PostListCalendar = ({
                     <div className="pull-right">
                         <label htmlFor="name">Set Timezone (UTC)</label>
                         <select type="text"
-                            value={viewType}
-                            // onChange={(e) => changeView(e)}
+                            value={timeZoneVal}
+                            onChange={(e) => changeTimeZone(e.target.value)}
                             name="type"
-                            className="form-control whiteBg" id="type">
+                            className="form-control whiteBg small-input" id="type">
                             <option disabled>Choose type</option>
-                            {timeZones.map(timeZone => (
-                                <option value={timeZone}>{timeZone}</option>
+                            {TimezoneSelectOptions.map((timezone, index) => (
+                                <option key={index} value={timezone.value}>{timezone.name}</option>
                             ))}
                         </select>
                     </div>
@@ -140,7 +140,7 @@ export const PostListCalendar = ({
                                 eventPropGetter={
                                     (event) => {
                                         let newStyle = {
-                                            borderColor: '#0073B1',
+                                            borderColor: event.category ? event.category.color : '#0073B1',
                                             padding: 8
                                         };
                                         return {
@@ -157,7 +157,12 @@ export const PostListCalendar = ({
                                                 <h2>{(event.content).substring(0, 40) + "..."}</h2>
                                                 <div className="open-event">
                                                     <div className="event-header">
-                                                        <label>Bussines</label>
+                                                        {event.category &&
+                                                            <label style={{ backgroundColor: event.category.color }}
+                                                                className="category-post">
+                                                                {event.category.category_name}
+                                                            </label>
+                                                        }
                                                         <div className="event-action">
                                                             <a onClick={() => {
                                                                 setComposerModal(true);
@@ -208,20 +213,15 @@ export const PostListCalendar = ({
                     {posts.map((postGroup, index) => (
                         <div key={index} className="item-list shadow-box item-list-row">
                             <div className="item-header schedule-header">
-                                <h4>{
-                                    moment(postGroup[0].scheduled_at_original).calendar(null, {
-                                        sameDay: '[Today]',
-                                        nextDay: '[Tomorrow]',
-                                        nextWeek: 'dddd',
-                                        lastDay: '[Yesterday]',
-                                        lastWeek: '[Last] dddd',
-                                        sameElse: 'DD/MM/YYYY'
-                                    })
-                                }</h4>
+                                <h4>
+                                    Today’s agenda, {moment(postGroup[0].scheduled_at_original).format('MMMM D.')}</h4>
                             </div>
 
                             {postGroup.map((post) => (
-                                <div key={post.id} className={`item-row schedule-row ${type}`}>
+                                <div key={post.id}
+                                    className={`item-row schedule-row ${type}`}
+                                    style={{ borderColor: post.category ? post.category.color : '' }}
+                                >
                                     <div className="profile-info profile-info-row">
 
                                         <h4>{moment(post.scheduled_at_original).format("h:mm A")}<small className="red-txt">{post.status < 0 ? ' (failed)' : ''}</small></h4>
@@ -229,7 +229,12 @@ export const PostListCalendar = ({
                                         {!!(typeof (post.payload.images) !== "undefined") && post.payload.images.map((image, index) => (
                                             <img key={index} src={image.absolutePath} />
                                         ))}
-                                        <label>Bussines</label>
+                                        {post.category &&
+                                            <label style={{ backgroundColor: post.category.color }}
+                                                className="category-post">
+                                                {post.category.category_name}
+                                            </label>
+                                        }
                                     </div>
                                     <div className="profile-info profile-info-row">
                                         <span>{post.content}</span>

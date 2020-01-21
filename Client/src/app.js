@@ -10,6 +10,7 @@ import setAuthorizationHeader from "./utils/setAuthorizationHeader";
 import { setProfile, startSetProfile } from "./actions/profile";
 import { setChannels, startSetChannels } from "./actions/channels";
 import { setMiddleware } from "./actions/middleware";
+import 'antd/dist/antd.css';
 
 const store = configStore();
 

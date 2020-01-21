@@ -57,18 +57,18 @@ class Compose extends React.Component {
         filtredCategories: [],
         showCalendar: false,
         calendarFocused: false,
-        postDate: moment(),
+        postDate: moment(new Date()).format("MMM. DD, YYYY"),
         category: "",
         countries: [],
         openCategory: false,
-        calendarDataDate: moment().format("MMM. DD, YYYY"),
-        calendarDataTime: moment().add(1, "hours").format('hh:mm'),
+        calendarDataDate: moment(new Date()).format("MMM. DD, YYYY"),
+        calendarDataTime: moment(new Date()).add(1, "hours").format('hh:mm'),
         calendarDataPeriod: 'AM',
         calendarData: {
             time: {
-                hour: moment().add(1, "hours").format("hh"),
+                hour: moment(new Date()).add(1, "hours").format("hh"),
                 minutes: minutes[Math.floor(Math.random() * minutes.length)],
-                time: moment().format("A")
+                time: moment(new Date()).format("A")
             }
         },
         publishState: {
@@ -135,18 +135,20 @@ class Compose extends React.Component {
         if (this.props.startAt !== prevProps.startAt) {
             this.setState({
                 canSchedule: true,
-                calendarDataDate: moment(this.props.startAt).format("MMM. DD, YYYY"),
+                calendarDataDate: moment(this.props.startAt ? this.props.startAt : new Date()).format("MMM. DD, YYYY"),
+                calendarDataTime: moment(this.props.startAt ? this.props.startAt : new Date()).format('hh:mm'),
+                calendarDataPeriod: moment(this.props.startAt ? this.props.startAt : new Date()).format('A'),
                 publishState: {
                     name: "Custom Time",
                     value: "date"
                 },
-                publishDateTime: this.props.startAt,
-                postDate: moment(this.props.startAt),
+                publishDateTime: this.props.startAt ? this.props.startAt : new Date(),
+                postDate: moment(this.props.startAt ? this.props.startAt : new Date()),
                 calendarData: {
                     time: {
-                        hour: moment(this.props.startAt).format("hh"),
-                        minutes: moment(this.props.startAt).format("mm"),
-                        time: moment(this.props.startAt).format("A"),
+                        hour: moment(this.props.startAt ? this.props.startAt : new Date()).format("hh"),
+                        minutes: moment(this.props.startAt ? this.props.startAt : new Date()).format("mm"),
+                        time: moment(this.props.startAt ? this.props.startAt : new Date()).format("A"),
                     }
                 },
             })
@@ -395,6 +397,7 @@ class Compose extends React.Component {
     setPublishTimestamp = () => {
         this.setState({
             calendarDataDate: moment(this.state.postDate).format("MMM. DD, YYYY"),
+            calendarDataTime: moment(this.state.postDate).add(1, "hours").format('hh:mm'),
             publishDateTime: moment(this.state.postDate).format("YYYY-MM-DDTHH:mmZ"),
         })
     };
@@ -428,7 +431,6 @@ class Compose extends React.Component {
                     text={`You exceeded the post limit for this month.`}
                     setForbidden={this.setForbidden}
                     toggle={this.toggleModal} />
-
                 <div>
                     {(this.state.stored && this.state.refresh) && <Redirect to={location.pathname} />}
                     {this.state.loading && <LoaderWithOverlay />}
@@ -502,9 +504,10 @@ class Compose extends React.Component {
                                                 id="location"
                                                 onFocus={() => this.setState({ openCategory: true })}
                                                 onBlur={() => { setTimeout(() => { this.setState({ openCategory: false }) }, 600) }}
-                                                autoComplete="false"
                                                 value={categoryName}
                                                 autoComplete="new-password"
+                                                autoComplete="false"
+                                                autoComplete="off"
                                                 onChange={(e) => this.filterCategory(e)}
                                                 placeholder="Select or create your category" />
                                             {openCategory &&
@@ -590,7 +593,7 @@ class Compose extends React.Component {
                                     <div className="modal-footer" style={{ position: "relative" }}>
                                         <div className="pull-right">
                                             <button onClick={() => {
-                                                if (!this.props.restricted && (this.state.canSchedule || this.state.publishState.value !== 'date')) {
+                                                if (!this.state.letterCount < 1) {
                                                     this.publish({
                                                         publishState: this.state.publishState,
                                                         publishTimestamp: this.state.publishTimestamp,
@@ -600,16 +603,9 @@ class Compose extends React.Component {
                                                     }, this.state.publishState.value);
                                                 }
                                             }} className={`publish-btn default-button ${
-                                                !this.props.restricted && (this.state.canSchedule || this.state.publishState.value !== 'date') ?
+                                                !this.state.letterCount < 1 ?
                                                     '' : 'disabled-btn'}`}>
-                                                {this.state.publishState.name}</button>
-                                            {/* <PublishButton
-                                                action={this.publish}
-                                                onChange={this.updateScheduledLabel}
-                                                startAt={this.props.startAt}
-                                                restricted={this.state.restricted || this.state.twitterRestricted || this.state.pinterestRestricted}
-                                            /> */}
-                                            {/* <p className={`letter-count ${this.state.twitterRestricted && this.state.letterCount > 280 ? 'red-txt' : ''}`}>{this.state.letterCount}</p> */}
+                                                Post</button>
                                         </div>
                                     </div>
                                     {!!this.state.error && <div className='alert alert-danger'>{this.state.error}</div>}

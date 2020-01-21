@@ -12,7 +12,7 @@ html {
 body {
   font-family: Lato, sans-serif, Arial, Helvetica;
   background: $body_bg;
-  font-size: $base_size;
+  font-size: $base_size !important;
   size: 1;
 }
 
@@ -746,15 +746,6 @@ a:link {
   width: 100px !important;
 }
 
-.support {
-  position: absolute;
-  bottom: 0px;
-  width: 100%;
-  // background: linear-gradient(to right, #48BBB8, #438AF1);
-  background: white;
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
-}
-
 .nav-buttons {
   float: right;
   margin-top: 20px;
@@ -906,8 +897,8 @@ a:link {
 }
 
 .smallIcon {
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   border-radius: 100%;
   position: absolute;
   right: -5px;
@@ -2119,6 +2110,15 @@ button.streammaker-btn:hover {
       .content-event {
         padding: 0 10px;
       }
+    }
+
+    h4 {
+      font-family: Lato;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 22px;
+      letter-spacing: 0.130517px;
+      color: #363636;
     }
   }
 }
@@ -3546,13 +3546,11 @@ button.doneBtn {
   max-height: 210px;
   display: flex;
   align-items: center;
-  margin: 20px 0;
   width: 100%;
-  border: 1px dashed #909090;
-  padding: 15px 30px;
   background: white;
-  border-radius: 6px;
+  padding: 20px 0 20px 30px;
   overflow-y: auto;
+  border-bottom: 0.5px solid #DBDBDB;
 }
 
 .channel-selection-menu {
@@ -3561,7 +3559,6 @@ button.doneBtn {
 
 .channel-selection-menu.is-open {
   display: block;
-  max-height: 157px;
   overflow: auto;
 }
 
@@ -3569,16 +3566,11 @@ button.doneBtn {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  padding: 15px;
 }
 
 .channel-selection-menu .profile-name {
   font-weight: bold;
   text-transform: capitalize;
-}
-
-.channel-selection-menu .profile-username {
-  color: #909090;
 }
 
 .streams-default-container .account-selection {
