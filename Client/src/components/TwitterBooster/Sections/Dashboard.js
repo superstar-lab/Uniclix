@@ -8,17 +8,28 @@ import TweetsTable from '../../Analytics/Twitter/Cards/TweetsTable';
 import TwitterOverviewCard from '../../Analytics/Twitter/TwitterOverviewCard';
 import ChartsSection from '../../Analytics/Sections/ChartsSection';
 import AccountSelector from '../../../components/AccountSelector';
+import SocialMediaSelector from '../../../components/SocialMediaSelector';
 
 class Dashboard extends React.Component {
 
+    socialMediasSelectorOptions = [];
+
     constructor(props) {
         super(props);
+
+        props.allChannels.forEach(({ type }) => {
+            if (this.socialMediasSelectorOptions.indexOf(type) === -1) {
+                this.socialMediasSelectorOptions.push(type);
+            }
+        });
+
         this.state = {
             data: false,
             forbidden: false,
             calendarChange: false,
             loading: props.channelsLoading,
-            selectedAccount: props.selectedChannel.id
+            selectedAccount: props.selectedChannel.id,
+            selectedSocialMedia: props.selectedChannel.type
         }
     }
 
@@ -38,8 +49,13 @@ class Dashboard extends React.Component {
 
     onAccountChange = (value) => this.setState({selectedAccount: value});
 
+    onSocialMediaChange = (value) => {
+        this.setState({selectedSocialMedia: value});
+        this.props.history.push(`/analytics/${value}`);
+    };
+
     render() {
-        const { selectedAccount } = this.state;
+        const { selectedAccount, selectedSocialMedia } = this.state;
 
         const propData = {
             calendarChange: this.state.calendarChange,
@@ -54,11 +70,18 @@ class Dashboard extends React.Component {
                     <h1 className="page-title">Analytics</h1>
                     <div className="section-header__first-row">
                         <h3>Twitter Overview</h3>
-                        <AccountSelector
-                            socialMedia="twitter"
-                            onChange={this.onAccountChange}
-                            value={selectedAccount}
-                        />
+                        <div className="dropdown-selectors">
+                            <SocialMediaSelector
+                                socialMedias={this.socialMediasSelectorOptions}
+                                value={selectedSocialMedia}
+                                onChange={this.onSocialMediaChange}
+                            />
+                            <AccountSelector
+                                socialMedia="twitter"
+                                onChange={this.onAccountChange}
+                                value={selectedAccount}
+                            />
+                        </div>
                     </div>
                 </div>
                 <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
@@ -120,7 +143,8 @@ const mapStateToProps = (state) => {
 
     return {
         channelsLoading: state.channels.loading,
-        selectedChannel: selectedChannel.length ? selectedChannel[0] : {}
+        selectedChannel: selectedChannel.length ? selectedChannel[0] : {},
+        allChannels: state.channels.list
     };
 };
 

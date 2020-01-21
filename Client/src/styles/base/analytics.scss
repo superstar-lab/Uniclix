@@ -38,6 +38,13 @@
     .chart-container {
         height: 350px;
     }
+
+    .dropdown-selectors {
+        display: flex;
+        flex-direction: column;
+        height: 85px;
+        justify-content: space-between;
+    }
 }
 
 .page-title {
@@ -555,9 +562,28 @@
 }
 
 .account-selector-option {
+    font-family: Rubik;
+
     img {
         height: 30px;
         border-radius: 20px;
         margin-right: 10px;
+    }
+}
+
+.social-media-selector-option {
+    font-family: Rubik;
+    margin-left: 5px;
+
+    .twitter {
+        color: #45ADFA;
+    }
+
+    .facebook {
+        color: #4267B2;
+    }
+
+    i {
+        margin-right: 20px;
     }
 }
