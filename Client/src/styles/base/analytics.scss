@@ -1,3 +1,45 @@
+.analytics-page {
+
+    .section-header {
+        padding-bottom: 20px;
+    }
+
+    .section-header__first-row h3 {
+        font-family: Rubik;
+        font-weight: 500;
+    }
+
+    .tab-list-item.tab-list-active {
+        border-bottom: 3px solid #D83E7F;
+    }
+
+    text.recharts-text.recharts-cartesian-axis-tick-value {
+        font-family: Rubik;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 14px;
+    }
+
+    line.recharts-yAxis.yAxis,
+    line.recharts-xAxis.xAxis {
+        display: none;
+    }
+
+    .recharts-curve.recharts-area-curve {
+        stroke-width: 2;
+    }
+
+    .chart-container {
+        margin-top: 20px;
+    }
+
+    .recharts-surface,
+    .chart-container {
+        height: 350px;
+    }
+}
+
 .page-title {
     font-family: Rubik;
     font-weight: 500;
@@ -85,12 +127,6 @@
     text-align: center;
 }
 
-.card-header {
-}
-
-.card-header i {
-}
-
 .mb20 {
     margin-bottom: 20px;
 }
@@ -136,6 +172,167 @@
         font-size: 1.1em;
         font-weight: 500;
         font-family: Rubik;
+    }
+}
+
+.selection-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 35px;
+
+    .left-info {
+        min-width: 282px;
+    }
+
+    .date-range-picker {
+        font-family: Rubik;
+        font-weight: 500;
+        font-size: 0.9em;   
+        min-width: 225px;
+
+        .date-range-container {
+            min-width: inherit;
+            justify-content: center;
+            display: flex;
+
+            .text {
+                margin: 0 10px;
+                min-width: 125px;
+                text-align: center;
+            }
+    
+            .arrow img {
+                height: 0.9em;
+                cursor: pointer;
+            }
+    
+            .arrow.right img {
+                transform: rotate(180deg);
+            }
+        }
+        
+    }
+
+    .period-buttons {
+        display: flex;
+        justify-content: space-between;
+        width: 250px;
+
+        .btn {
+            background-color: #FFF;
+            color: #000;
+            border: 0.1px solid #909090;
+            box-sizing: border-box;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.03);
+            border-radius: 3px;
+            padding-top: 2px;
+            height: 25px;
+        }
+
+        .selected {
+            background-color: #2D86DA;
+            color: #FFF;
+        }
+    }
+
+    .engagement-balls {
+        display: flex;
+
+        .ball-text {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.9em;
+            margin-right: 20px;
+
+            .ball {
+                width: 15px;
+                height: 15px;
+                border-radius: 15px;
+                margin-right: 5px;
+            }
+
+            .ball.reactions {
+                background-color: #D83E7F;
+            }
+
+            .ball.comments {
+                background-color: #2D86DA;
+            }
+
+            .ball.shares {
+                background-color: #EB8666;
+            }
+        }
+    }
+}
+
+.engagements-cards-section {
+    display: flex;
+    justify-content: space-around;
+    font-family: Rubik;
+    width: 950px;
+    margin: 50px auto 0;
+
+    .engagements-card {
+        background-color: #FFF;
+        padding: 20px;
+
+        .graphics {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+
+            .left-side {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                margin-right: 30px;
+                width: 120px;
+
+                .total {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 10px;
+                    
+                    img {
+                        height: 19px;
+                        width: 25px;
+                        margin-right: 5px;
+                    }
+
+                    span.number {
+                        font-size: 1.5em;
+                        font-weight: 500;
+                    }
+                }
+
+
+                .engagement-label {
+                    color: #909090;
+                    font-size: 0.9em;
+                }
+            }
+
+            .right-side {
+                img {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+
+        span.amount {
+            color: #D83E7F;
+            font-weight: 500;
+            margin-right: 3px;
+        }
+
+        .total-period {
+            font-size: 0.9em;
+            font-weight: 500;
+            display: flex;
+            justify-content: center;
+        }
     }
 }
 
@@ -268,4 +465,99 @@
 .anl-tooltip {
     padding:10px;
     font-size:13px;
+}
+
+.table-title {
+    border-bottom: 1px solid #dbdbdb;
+    margin: 50px 0 30px;
+    font-size: 1.2em;
+    font-weight: 500;
+    font-family: Rubik;
+}
+
+.tweet-card {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-family: Rubik;
+    background-color: #FFF;
+    margin-bottom: 10px;
+    padding: 20px;
+    max-width: 100%;
+    box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.04);
+    border-radius: 6px;
+
+    .user-info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 15%;
+        font-size: 0.8em;
+        margin-right: 35px;
+        font-family: Lato;
+
+        img {
+            border-radius: 25px;
+            margin-right: 10px;
+        }
+
+        .user-names {
+            .username {
+                font-weight: bold;
+            }
+
+            .screen-name {
+                color: #747474;
+            }
+        }
+    }
+
+    .text {
+        width: 50%;
+        font-size: 0.9em;
+        font-family: Lato;
+        color: #363636;
+        margin-right: 35px;
+    }
+    
+    .date {
+        width: 15%;
+        font-size: 0.9em;
+        font-family: Rubik;
+        margin-right: 35px;
+    }
+
+    .tweet-info {
+        width: 20%;
+        display: flex;
+
+        .data {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        
+            .amount {
+                font-size: 1em;
+                font-weight: 500;
+            }
+
+            .label {
+                font-size: 0.7em;
+                color: #909090;
+            }
+        }
+    }
+}
+
+.ant-select {
+    width: 160px;
+}
+
+.account-selector-option {
+    img {
+        height: 30px;
+        border-radius: 20px;
+        margin-right: 10px;
+    }
 }

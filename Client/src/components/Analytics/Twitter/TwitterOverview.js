@@ -138,7 +138,7 @@ class TwitterOverview extends React.Component {
                             description="Uniclix"
                             tooltipDesc='Number of your posts on your Twitter account'
                             {...propData}/>
-                    </div>
+                    </div>}
                     <div className="col-md-9 col-xs-12">
                         <TweetsChart 
                             name="Tweets" 

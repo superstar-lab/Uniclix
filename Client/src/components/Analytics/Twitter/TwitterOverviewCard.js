@@ -30,6 +30,12 @@ class TwitterOverviewCard extends React.Component {
         this.getAnalyticsData();
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.selectedAccount !== prevProps.selectedAccount) {
+            this.getAnalyticsData();
+        }
+    }
+
     render() {
         const {title, icon} = this.props;
         const {analyticsData, isLoading} = this.state;
