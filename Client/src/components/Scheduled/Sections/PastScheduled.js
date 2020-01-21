@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import BottomScrollListener from 'react-bottom-scroll-listener';
 import UpgradeAlert from '../../UpgradeAlert';
-import channelSelector from '../../../selectors/channels';
+import channelSelector, { publishChannels as publishableChannels } from '../../../selectors/channels';
 import { pastScheduled, destroyPost, postNow } from '../../../requests/channels';
 import PostList from '../../PostList';
 import Loader from '../../Loader';
@@ -19,6 +19,7 @@ export class PastScheduled extends React.Component {
         page: 1,
         loading: this.props.channelsLoading,
         forbidden: false,
+        publishChannels: publishableChannels(this.props.channel),
         action: this.defaultAction,
         error: false
     }
@@ -166,6 +167,7 @@ export class PastScheduled extends React.Component {
                     action={this.state.action}
                     setAction={this.setAction}
                     destroyPost={this.destroy}
+                    publishChannels={this.state.publishChannels}
                     publishPost={this.publishPost}
                     error={this.state.error}
                     setError={this.setError}
