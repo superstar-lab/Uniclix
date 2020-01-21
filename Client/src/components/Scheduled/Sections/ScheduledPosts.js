@@ -31,7 +31,7 @@ export class ScheduledPosts extends React.Component {
         viewType: "week",
         currentDate: new Date(),
         Navigate: 'week',
-        timeZoneVal: "",
+        timeZoneVal: this.props.profile.user.timezone,
         calendarDate: new Date(),
         viewTypes: [
             {
@@ -307,7 +307,6 @@ export class ScheduledPosts extends React.Component {
         }, 1)
     }
     changeTimeZone = (val) => {
-        console.log(val)
         this.setState({
             timeZoneVal: val
         })
@@ -374,7 +373,8 @@ const mapStateToProps = (state) => {
 
     return {
         channelsLoading: state.channels.loading,
-        selectedChannel: selectedChannel.length ? selectedChannel[0] : {}
+        selectedChannel: selectedChannel.length ? selectedChannel[0] : {},
+        profile: state.profile
     };
 };
 
