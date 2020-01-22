@@ -31,7 +31,7 @@ export class ScheduledPosts extends React.Component {
         viewType: "week",
         currentDate: new Date(),
         Navigate: 'week',
-        timeZoneVal: this.props.profile.user.timezone,
+        timeZoneVal: '',
         calendarDate: new Date(),
         viewTypes: [
             {
@@ -59,6 +59,9 @@ export class ScheduledPosts extends React.Component {
     componentDidUpdate(prevProps) {
         if ((this.props.selectedChannel !== prevProps.selectedChannel)) {
             this.fetchPosts();
+            this.setState({
+                timeZoneVal: this.props.profile ? this.props.profile.user.timezone : ''
+            })
         }
     }
 
