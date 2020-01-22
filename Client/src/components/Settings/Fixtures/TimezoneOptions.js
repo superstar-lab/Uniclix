@@ -29,7 +29,7 @@ const TimezoneSelectOptions = [
     {value: "Atlantic/Azores", name: "(GMT-01:00) Azores"},
     {value: "Africa/Casablanca", name: "(GMT+00:00) Casablanca, Monrovia, Reykjavik"},
     {value: "Etc/Greenwich", name: "(GMT+00:00) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London"},
-    {value: "Europe/Amsterdam", name: "(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna"},
+    {value: "Europe/Berlin", name: "(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna"},
     {value: "Europe/Belgrade", name: "(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague"},
     {value: "Europe/Brussels", name: "(GMT+01:00) Brussels, Copenhagen, Madrid, Paris"},
     {value: "Europe/Sarajevo", name: "(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb"},
