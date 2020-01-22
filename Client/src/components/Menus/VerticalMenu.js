@@ -86,7 +86,13 @@ class ProfileInfo extends React.Component {
 }
 
 const ProfileSelectionDropDown = ({ channels, selectChannel, isOpen }) => (
-    <div className={`channel-selection-menu select-channel ${isOpen ? 'is-open' : ''}`}>
+    <div
+        className={`channel-selection-menu select-channel ${isOpen ? 'is-open' : ''}`}
+        // We need to calculate the height this way in order to have a nice animation when
+        // showing the accounts since height will change depending on the amount of
+        // channels and using an 'auto' value don't work with animations
+        style={isOpen && channels.length ? { height: 85.5 * (channels.length + 1) } : {}}
+    >
         <div>
             {!!channels.length &&
                 channels.map((channel) => (

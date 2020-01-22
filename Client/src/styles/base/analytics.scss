@@ -564,8 +564,12 @@
 .account-selector-option {
     font-family: Rubik;
 
+    span {
+        font-size: 0.9em;
+    }
+
     img {
-        height: 30px;
+        height: 25px;
         border-radius: 20px;
         margin-right: 10px;
     }
@@ -573,7 +577,9 @@
 
 .social-media-selector-option {
     font-family: Rubik;
-    margin-left: 5px;
+    display: flex;
+    align-items: center;
+
 
     .twitter {
         color: #45ADFA;
@@ -583,7 +589,12 @@
         color: #4267B2;
     }
 
+    span {
+        font-size: 0.9em;
+    }
+
     i {
-        margin-right: 20px;
+        margin-right: 10px;
+        font-size: 25px;
     }
 }

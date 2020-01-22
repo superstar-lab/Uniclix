@@ -11,13 +11,13 @@ import Following from '../components/TwitterBooster/Sections/Following';
 import WhiteList from '../components/TwitterBooster/Sections/WhiteList';
 import BlackList from '../components/TwitterBooster/Sections/BlackList';
 import Checkout from '../components/Accounts/Checkout';
-import AnalyticsRouter from '../routes/AnalyticsRouter';
+import AnalyticsLanding from '../components/Analytics/AnalyticsLanding';
 
 const ManageRouter = () => (
     <div>
         <Switch>
-            <Route path={`/analytics`} component={AnalyticsRouter} />
-            {/*Obsolete routes*/}
+            <Route path={`/analytics`} component={AnalyticsLanding} />
+            {/*Obsolete routes. Still there to avoid breaking things but will be changed in the future*/}
             <Route path={`/twitter-booster/monitor-activity`} component={MonitorActivity} />
             <Route path={`/twitter-booster/account-targets`} component={AccountTargets} />
             <Route path={`/twitter-booster/checkout`} component={Checkout} />
