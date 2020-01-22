@@ -2236,7 +2236,6 @@ button.streammaker-btn:hover {
   }
 
   .profile-name {
-    font-weight: bold;
     text-transform: capitalize;
     font-size: 1.6rem;
     color: #363636;
@@ -3554,12 +3553,19 @@ button.doneBtn {
 }
 
 .channel-selection-menu {
-  display: none;
+  height: 0;
+  overflow: hidden;
+  -webkit-transition: all 200ms ease-in-out;
+  -moz-transition: all 200ms ease-in-out;
+  -o-transition: all 200ms ease-in-out;
+  transition: all 200ms ease-in-out;
 }
 
 .channel-selection-menu.is-open {
-  display: block;
-  overflow: auto;
+  transition: all 200ms ease-in-out;
+  -webkit-transition: all 200ms ease-in-out;
+  -moz-transition: all 200ms ease-in-out;
+  -o-transition: all 200ms ease-in-out;
 }
 
 .channel-selection-menu .profile-info {
@@ -3569,7 +3575,6 @@ button.doneBtn {
 }
 
 .channel-selection-menu .profile-name {
-  font-weight: bold;
   text-transform: capitalize;
 }
 

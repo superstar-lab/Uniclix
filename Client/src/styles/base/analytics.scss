@@ -38,6 +38,13 @@
     .chart-container {
         height: 350px;
     }
+
+    .dropdown-selectors {
+        display: flex;
+        flex-direction: column;
+        height: 85px;
+        justify-content: space-between;
+    }
 }
 
 .page-title {
@@ -555,9 +562,39 @@
 }
 
 .account-selector-option {
+    font-family: Rubik;
+
+    span {
+        font-size: 0.9em;
+    }
+
     img {
-        height: 30px;
+        height: 25px;
         border-radius: 20px;
         margin-right: 10px;
+    }
+}
+
+.social-media-selector-option {
+    font-family: Rubik;
+    display: flex;
+    align-items: center;
+
+
+    .twitter {
+        color: #45ADFA;
+    }
+
+    .facebook {
+        color: #4267B2;
+    }
+
+    span {
+        font-size: 0.9em;
+    }
+
+    i {
+        margin-right: 10px;
+        font-size: 25px;
     }
 }

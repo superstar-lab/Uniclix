@@ -21,15 +21,16 @@ class AccountSelector extends React.Component {
         value={value}
         size="large"
         onChange={onChange}
+        style={{ width: 210 }}
       >
         {
           accounts && accounts
             .filter((account => account.type === socialMedia))
-            .map(({ username, avatar, id }) => (
+            .map(({ username, name, avatar, id, type }) => (
               <Option key={username} value={id}>
                 <span className="account-selector-option">
                   <img src={avatar} />
-                  <span>{username}</span>
+                  <span>{ type !== 'twitter' ? name : `@${username}` }</span>
                 </span>
               </Option>
           ))

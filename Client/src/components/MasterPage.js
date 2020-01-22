@@ -41,11 +41,11 @@ const MasterPage = ({channels, selectedChannel, selectChannel}) => {
 };
 
 const mapStateToProps = (state) => {
-  const unselectedTwitterChannels = {selected: 0, provider: 'twitter'};
-  const selectedTwitterChannel = {selected: 1, provider: 'twitter'};
+  const unselectedGlobalChannels = { selected: 0, provider: undefined };
+  const selectedGlobalChannel = { selected: 1, provider: undefined };
 
-  const channels = channelSelector(state.channels.list, unselectedTwitterChannels);
-  const selectedChannel = channelSelector(state.channels.list, selectedTwitterChannel);
+  const channels = channelSelector(state.channels.list, unselectedGlobalChannels);
+  const selectedChannel = channelSelector(state.channels.list, selectedGlobalChannel);
 
   return {
     channels,
