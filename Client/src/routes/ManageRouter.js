@@ -12,16 +12,18 @@ import WhiteList from '../components/TwitterBooster/Sections/WhiteList';
 import BlackList from '../components/TwitterBooster/Sections/BlackList';
 import Checkout from '../components/Accounts/Checkout';
 import AnalyticsLanding from '../components/Analytics/AnalyticsLanding';
+import ScheduledRouter from '../routes/ScheduledRouter';
 
 const ManageRouter = () => (
     <div>
         <Switch>
             <Route path={`/analytics`} component={AnalyticsLanding} />
+            <Route path={`/monitor-activity`} component={MonitorActivity} />
+            <Route path={`/content-finder`} component={KeywordTargets} />
+            <Route path={'/scheduled/'} component={ScheduledRouter} />
             {/*Obsolete routes. Still there to avoid breaking things but will be changed in the future*/}
-            <Route path={`/twitter-booster/monitor-activity`} component={MonitorActivity} />
             <Route path={`/twitter-booster/account-targets`} component={AccountTargets} />
             <Route path={`/twitter-booster/checkout`} component={Checkout} />
-            <Route path={`/twitter-booster/keyword-targets`} component={KeywordTargets} />
             <Route path={`/twitter-booster/fans`} component={Fans} />
             <Route path={`/twitter-booster/non-followers`} component={NonFollowers} />
             <Route path={`/twitter-booster/recent-followers`} component={RecentFollowers} />

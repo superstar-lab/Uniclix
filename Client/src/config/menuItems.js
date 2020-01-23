@@ -8,13 +8,13 @@ const getMenuItems = (socialMedia) => ([
   {
       id: 'twitter-booster_monitor_activity',
       displayName: 'Monitor Activity',
-      uri: '/twitter-booster/monitor-activity',
+      uri: '/monitor-activity',
       icon: 'desktop'
   },
   {
       id: 'twitter-booster_search',
       displayName: 'Content Finder',
-      uri: '/twitter-booster/keyword-targets',
+      uri: '/content-finder',
       icon: 'search'
   },
   {
