@@ -1,9 +1,9 @@
 import React from 'react';
-import VerticalSettingsMenu from "../Menus/VerticalSettingsMenu";
 import SettingsRouter from '../../routes/SettingsRouter';
 import channelSelector from "../../selectors/channels";
 import { setGlobalChannel } from '../../actions/channels';
 import { connect } from "react-redux";
+import VerticalMenu from '../Menus/VerticalMenu';
 
 const menuItems = [
     {
@@ -35,7 +35,7 @@ const menuItems = [
 const Settings = ({ channels, selectedChannel, selectChannel }) => (
     <div className="body-wrap">
         <div>
-            <VerticalSettingsMenu
+            <VerticalMenu
                 menuItems={menuItems}
                 channels={channels}
                 selectedChannel={selectedChannel}

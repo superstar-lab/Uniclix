@@ -193,7 +193,7 @@
                 }
             }
 
-            &:hover {
+            &.open {
                 background: $primary_blue;
 
                 .current-profile {
