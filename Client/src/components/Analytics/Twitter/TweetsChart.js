@@ -35,76 +35,93 @@ class TweetsChart extends React.Component {
     data: []
   };
 
-  generateWeekData = (response, startDate) => {
-    const mappedData = {};
+  mapDataForWeek = (data) => {
+    const mappedData = [];
 
-    // We initialize the object that will contain the amount of
-    // tweets that we have per day
-    for (let i = 0; i <= 7; i++) {
-      const nextDay = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + i);
-      mappedData[nextDay.getDate()] = {
-        name: `${nextDay.getDate()} ${UTC_MONTHS[nextDay.getUTCMonth()]}`,
-        Tweets: 0
-      };
-    }
-    
-    response.map(record => {
-      const recordDate = new Date(record[0]);
-      mappedData[recordDate.getDate()].Tweets += record[1];
+    data.map((row) => {
+      const date = new Date(row[0]);
+      mappedData.push({
+        name: `${date.getDate()} ${UTC_MONTHS[date.getMonth()]}`,
+        Tweets: row[1]
+      });
     });
 
-    console.log(mappedData.values());
-    this.setState({data: mappedData.values()})
+    this.setState({ data: mappedData });
+  };
+
+  mapDataForMonth = (data) => {
+    const mappedData = [];
+
+    data.map((row) => {
+      const date = new Date(row[0]);
+      mappedData.push({
+        name: date.getDate(),
+        Tweets: row[1]
+      });
+    });
+
+    this.setState({ data: mappedData });
   }
 
-  fetchAnalyticsData = (accountId, startDate, endDate, cb) => {
+  mapDataForYear = (data) => {
+    const mappedData = [];
+
+    data.map((row) => {
+      const date = new Date(row[0]);
+      mappedData.push({
+        name: UTC_MONTHS[date.getUTCMonth()],
+        Tweets: row[1]
+      });
+    });
+
+    this.setState({ data: mappedData });
+  }
+
+  fetchAnalyticsData = () => {
+    const { accountId, startDate, endDate, selectedPeriod } = this.props;
     this.setState(() => ({isLoading: true}));
-    pageInsightsByType(accountId, startDate.getTime(), endDate.getTime(), 'tweetsChartData')
+    pageInsightsByType(
+      accountId,
+      startDate,
+      endDate,
+      'tweetsChartData',
+      selectedPeriod.toLowerCase()
+    )
       .then((response) => {
-        cb(response, startDate);
+        switch (selectedPeriod) {
+          case 'Week':
+            this.mapDataForWeek(response);
+            break;
+          case 'Month':
+            this.mapDataForMonth(response);
+            break;
+          case 'Year':
+            this.mapDataForYear(response);
+            break;
+        }
       })
       .catch(() => {
         this.setState(() => ({isLoading: false}));
       });
   }
 
-  getAnalyticsData() {
-    const {accountId, period} = this.props;
-    let startDate, endDate;
-
-    switch(period) {
-      case 'Week':
-        endDate = new Date();
-        startDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate() - 7);
-        const response = this.fetchAnalyticsData(accountId, startDate, endDate, this.generateWeekData);
-        break;
-      case 'Month':
-        endDate = new Date();
-        startDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate() - 31);
-        break;
-      case 'Year':
-        endDate = new Date();
-        startDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate() - 365);
-        break;
-      case 'Day':
-        startDate = new Date();
-        endDate = new Date();
-        break;
-    }    
+  componentDidMount() {
+    this.fetchAnalyticsData();
   }
 
-  // componentDidMount() {
-  //   this.getAnalyticsData();
-  // }
-
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.period !== prevProps.period) {
-  //     this.getAnalyticsData();
-  //   }
-  // }
+  componentDidUpdate(prevProps) {
+    const { selectedPeriod, accountId, startDate } = this.props;
+    if (
+      selectedPeriod !== prevProps.selectedPeriod ||
+      accountId !== prevProps.accountId ||
+      startDate !== prevProps.startDate
+    ) {
+      this.fetchAnalyticsData();
+    }
+  }
 
   render() {
-    return <SimpleAreaChart data={data} dataKey="Tweets" />;
+    return <SimpleAreaChart data={this.state.data} dataKey="Tweets" />;
   }
 }
 

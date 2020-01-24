@@ -36,8 +36,8 @@ class ChartsSection extends React.Component {
           <ChartsSectionTab
             accountId={selectedAccount}
             renderChart={
-            (accountId, selectedPeriod) =>
-              (<TweetsChart accountId={accountId} period={selectedPeriod} />)
+            (props) =>
+              (<TweetsChart {...props} />)
             }
           />
         </div>
@@ -45,8 +45,8 @@ class ChartsSection extends React.Component {
           <ChartsSectionTab
             accountId={selectedAccount}
             renderChart={
-            (accountId, selectedPeriod) =>
-              (<FollowersChart accountId={accountId} period={selectedPeriod} />)
+            (props) =>
+              (<FollowersChart {...props} />)
             }
           />
         </div>
@@ -55,8 +55,8 @@ class ChartsSection extends React.Component {
               leftInfo={this.engagementsInfo}
               accountId={selectedAccount}
               renderChart={
-              (accountId, selectedPeriod) =>
-                (<TwitterEngagementsChart accountId={accountId} period={selectedPeriod} />)
+              (props) =>
+                (<TwitterEngagementsChart {...props} />)
               }
             />
           <div className="engagements-cards-section">
@@ -87,8 +87,8 @@ class ChartsSection extends React.Component {
           <ChartsSectionTab
               accountId={selectedAccount}
               renderChart={
-              (accountId, selectedPeriod) =>
-                (<TwitterImpressionsChart accountId={accountId} period={selectedPeriod} />)
+              (props) =>
+                (<TwitterImpressionsChart {...props} />)
               }
             />
         </div>
