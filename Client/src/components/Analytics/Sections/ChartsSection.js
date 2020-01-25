@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 
 import Tabs from '../../../components/Tabs';
 import ChartsSectionTab from './ChartsSectionTab';
-import TweetsChart from '../Twitter/TweetsChart';
-import FollowersChart from '../Twitter/FollowersChart';
+import TwitterSimpleChart from '../Twitter/TwitterSimpleChart';
 import TwitterEngagementsChart from '../Twitter/TwitterEngagementsChart';
 import EngagementsCard from '../EngagementsCard';
 import TwitterImpressionsChart from '../Twitter/TwitterImpressionsChart';
@@ -44,7 +43,7 @@ class ChartsSection extends React.Component {
             pastTimeLimit={90}
             renderChart={
             (props) =>
-              (<TweetsChart {...props} />)
+              (<TwitterSimpleChart {...props} endPointType="tweetsChartData" chartDataKey="Tweets" />)
             }
           />
         </div>
@@ -55,7 +54,7 @@ class ChartsSection extends React.Component {
             pastTimeLimit={90}
             renderChart={
             (props) =>
-              (<FollowersChart {...props} />)
+              (<TwitterSimpleChart {...props} endPointType="followersChartData" chartDataKey="Followers" />)
             }
           />
         </div>

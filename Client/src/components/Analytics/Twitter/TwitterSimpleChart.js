@@ -1,5 +1,6 @@
 import React from 'react';
-import moment from "moment";
+import moment from 'moment';
+import PropTypes from 'prop-types';
 import Loader from 'react-loader-spinner';
 
 import { UTC_MONTHS } from '../../../utils/constants';
@@ -7,13 +8,23 @@ import { UTC_MONTHS } from '../../../utils/constants';
 import { pageInsightsByType } from '../../../requests/twitter/channels';
 import SimpleAreaChart from '../SimpleAreaChart';
 
-class TweetsChart extends React.Component {
+class TwitterSimpleChart extends React.Component {
+  static propTypes = {
+    accountId: PropTypes.string.isRequired,
+    startDate: PropTypes.string.isRequired,
+    endDate: PropTypes.string.isRequired,
+    selectedPeriod: PropTypes.string.isRequired,
+    endPointType: PropTypes.string.isRequired,
+    chartDataKey: PropTypes.string.isRequired
+  }
+
   state = {
     isLoading: false,
     data: []
   };
 
   mapDataForDay = (data) => {
+    const { chartDataKey } = this.props;
     const mappedData = [];
 
     data.map((row) => {
@@ -24,7 +35,7 @@ class TweetsChart extends React.Component {
       const hour = date.hour();
       mappedData.push({
         name: `${hour < 10 ? '0' + hour.toString() : hour}:00`,
-        Tweets: row[1]
+        [chartDataKey]: row[1]
       });
     });
 
@@ -43,13 +54,14 @@ class TweetsChart extends React.Component {
   }
 
   mapDataForWeek = (data) => {
+    const { chartDataKey } = this.props;
     const mappedData = [];
 
     data.map((row) => {
       const date = new Date(row[0]);
       mappedData.push({
         name: `${date.getDate()} ${UTC_MONTHS[date.getMonth()]}`,
-        Tweets: row[1]
+        [chartDataKey]: row[1]
       });
     });
 
@@ -57,13 +69,14 @@ class TweetsChart extends React.Component {
   };
 
   mapDataForMonth = (data) => {
+    const { chartDataKey } = this.props;
     const mappedData = [];
 
     data.map((row) => {
       const date = new Date(row[0]);
       mappedData.push({
         name: date.getDate(),
-        Tweets: row[1]
+        [chartDataKey]: row[1]
       });
     });
 
@@ -71,13 +84,14 @@ class TweetsChart extends React.Component {
   }
 
   mapDataForYear = (data) => {
+    const { chartDataKey } = this.props;
     const mappedData = [];
 
     data.map((row) => {
       const date = new Date(row[0]);
       mappedData.push({
         name: UTC_MONTHS[date.getMonth()],
-        Tweets: row[1]
+        [chartDataKey]: row[1]
       });
     });
 
@@ -85,13 +99,13 @@ class TweetsChart extends React.Component {
   }
 
   fetchAnalyticsData = () => {
-    const { accountId, startDate, endDate, selectedPeriod } = this.props;
+    const { accountId, startDate, endDate, selectedPeriod, endPointType } = this.props;
     this.setState(() => ({isLoading: true}));
     pageInsightsByType(
       accountId,
       startDate,
       endDate,
-      'tweetsChartData',
+      endPointType,
       selectedPeriod.toLowerCase()
     )
       .then((response) => {
@@ -131,11 +145,12 @@ class TweetsChart extends React.Component {
   }
 
   render() {
-    const { isLoading } = this.state;
+    const { chartDataKey } = this.props;
+    const { isLoading, data } = this.state;
 
     return (
       <div>
-        <SimpleAreaChart data={this.state.data} dataKey="Tweets" />
+        <SimpleAreaChart data={data} dataKey={chartDataKey} />
         {isLoading && (
           <div className="loading-layer">
             <Loader type="Bars" color="#46a5d1" height={60} width={60} />
@@ -146,4 +161,4 @@ class TweetsChart extends React.Component {
   }
 }
 
-export default TweetsChart;
+export default TwitterSimpleChart;
