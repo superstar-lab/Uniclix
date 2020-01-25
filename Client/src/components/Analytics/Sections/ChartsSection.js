@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Tabs from '../../../components/Tabs';
 import ChartsSectionTab from './ChartsSectionTab';
@@ -9,6 +10,10 @@ import EngagementsCard from '../EngagementsCard';
 import TwitterImpressionsChart from '../Twitter/TwitterImpressionsChart';
 
 class ChartsSection extends React.Component {
+  static propTypes = {
+    selectedAccount: PropTypes.string.isRequired,
+    socialMedia: PropTypes.string.isRequired
+  };
 
   engagementsInfo = (
     <div className="engagement-balls">
@@ -28,13 +33,15 @@ class ChartsSection extends React.Component {
   );
 
   render() {
-    const { selectedAccount } = this.props;
+    const { selectedAccount, socialMedia } = this.props;
 
     return (
       <Tabs>
         <div label="Tweets">
           <ChartsSectionTab
             accountId={selectedAccount}
+            socialMedia={socialMedia}
+            pastTimeLimit={90}
             renderChart={
             (props) =>
               (<TweetsChart {...props} />)
@@ -44,6 +51,8 @@ class ChartsSection extends React.Component {
         <div label="Fans">
           <ChartsSectionTab
             accountId={selectedAccount}
+            socialMedia={socialMedia}
+            pastTimeLimit={90}
             renderChart={
             (props) =>
               (<FollowersChart {...props} />)
@@ -54,6 +63,8 @@ class ChartsSection extends React.Component {
           <ChartsSectionTab
               leftInfo={this.engagementsInfo}
               accountId={selectedAccount}
+              socialMedia={socialMedia}
+              pastTimeLimit={90}
               renderChart={
               (props) =>
                 (<TwitterEngagementsChart {...props} />)
@@ -86,6 +97,8 @@ class ChartsSection extends React.Component {
         <div label="Impressions">
           <ChartsSectionTab
               accountId={selectedAccount}
+              socialMedia={socialMedia}
+              pastTimeLimit={90}
               renderChart={
               (props) =>
                 (<TwitterImpressionsChart {...props} />)

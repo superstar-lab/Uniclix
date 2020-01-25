@@ -70,7 +70,7 @@ class TwitterAnalyticsBoard extends React.Component {
                         />
                     </div>
                 </div>
-                <ChartsSection {...propData} />
+                <ChartsSection {...propData} socialMedia="twitter" />
                 <div className="row mb20">
                     <div className="col-xs-12">
                         <TweetsTable
