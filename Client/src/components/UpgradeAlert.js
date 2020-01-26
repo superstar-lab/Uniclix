@@ -32,13 +32,13 @@ class UpgradeAlert extends React.Component {
                 confirmButtonText={confirmBtn}
                 cancelButtonText="No thanks"
                 onConfirm={() => {
-                    setForbidden(false);
-                    if(toggle) toggle();
+                    if (setForbidden) setForbidden(false);
+                    if (toggle) toggle();
                     return this.redirectTo(redirectUri);
                 }}
                 onCancel={() => {
-                    setForbidden(false);
-                    if(goBack) return this.redirectBack();
+                    if (setForbidden) setForbidden(false);
+                    if (goBack) return this.redirectBack();
                     return;
                 }}
             />   

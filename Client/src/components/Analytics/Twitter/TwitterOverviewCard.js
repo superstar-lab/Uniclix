@@ -27,8 +27,12 @@ class TwitterOverviewCard extends React.Component {
                     analyticsData: response
                 }));
             })
-            .catch(() => {
-                this.setState(() => ({isLoading: false}));
+            .catch((error) => {
+                if (error.response.status === 403) {
+                    this.props.setForbidden(true);
+                } else {
+                    this.setState(() => ({isLoading: false}));
+                }
             });
     }
 
