@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import Loader from 'react-loader-spinner';
 
 import { UTC_MONTHS } from '../../../utils/constants';
@@ -8,6 +9,13 @@ import { pageInsightsByType } from '../../../requests/twitter/channels';
 import EngagementsChart from '../EngagementsChart';
 
 class TwitterEngagementsChart extends React.Component {
+  static propTypes = {
+    accountId: PropTypes.number.isRequired,
+    startDate: PropTypes.number.isRequired,
+    endDate: PropTypes.number.isRequired,
+    selectedPeriod: PropTypes.string.isRequired
+  };
+
   state = {
     isLoading: false,
     data: []

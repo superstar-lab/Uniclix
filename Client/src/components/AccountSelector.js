@@ -10,7 +10,7 @@ class AccountSelector extends React.Component {
     socialMedia: PropTypes.string,
     accounts: PropTypes.array.isRequired,
     onChange: PropTypes.func.isRequired,
-    value: PropTypes.string.isRequired
+    value: PropTypes.number.isRequired
   };
 
   render() {

@@ -1,11 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Loader from 'react-loader-spinner';
+
 import { pageInsightsByType } from "../../../../requests/twitter/channels";
-import AnalyticsTooltip from '../../AnalyticsTooltip';
-import ReadMore from '../../../ReadMore';
 import TweetCard from './TweetCard';
 
-class TweetsTable extends React.Component{
+class TweetsTable extends React.Component {
+    static propTypes = {
+        name: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired,
+        selectedAccount: PropTypes.number.isRequired
+    };
+
     state = {
         tweets: null,
         loading: false

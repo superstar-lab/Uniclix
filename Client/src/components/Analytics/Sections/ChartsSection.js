@@ -10,7 +10,7 @@ import TwitterImpressionsChart from '../Twitter/TwitterImpressionsChart';
 
 class ChartsSection extends React.Component {
   static propTypes = {
-    selectedAccount: PropTypes.string.isRequired,
+    selectedAccount: PropTypes.number.isRequired,
     socialMedia: PropTypes.string.isRequired
   };
 

@@ -5,16 +5,22 @@ import OverviewCard from '../OverviewCard';
 import { pageInsightsByType } from "../../../requests/twitter/channels";
 
 class TwitterOverviewCard extends React.Component {
+    static propTypes = {
+        title: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired,
+        icon: PropTypes.string.isRequired,
+    };
+
     state = {
         isLoading: false,
         analyticsData: "null"
     }
 
     getAnalyticsData = () => {
-        const {selectedAccount, startDate, endDate, type} = this.props;
+        const {selectedAccount, type} = this.props;
 
         this.setState(() => ({isLoading: true}));
-        pageInsightsByType(selectedAccount, startDate, endDate, type)
+        pageInsightsByType(selectedAccount, undefined, undefined, type)
             .then((response) => {
                 this.setState(() => ({
                     isLoading: false,
@@ -42,10 +48,6 @@ class TwitterOverviewCard extends React.Component {
 
         return <OverviewCard isLoading={isLoading} title={title} ammount={analyticsData} icon={icon} />;
     }
-};
-
-TwitterOverviewCard.props = {
-    title: PropTypes.string.isRequired
 };
 
 export default TwitterOverviewCard;

@@ -10,9 +10,9 @@ import SimpleAreaChart from '../SimpleAreaChart';
 
 class TwitterSimpleChart extends React.Component {
   static propTypes = {
-    accountId: PropTypes.string.isRequired,
-    startDate: PropTypes.string.isRequired,
-    endDate: PropTypes.string.isRequired,
+    accountId: PropTypes.number.isRequired,
+    startDate: PropTypes.number.isRequired,
+    endDate: PropTypes.number.isRequired,
     selectedPeriod: PropTypes.string.isRequired,
     endPointType: PropTypes.string.isRequired,
     chartDataKey: PropTypes.string.isRequired

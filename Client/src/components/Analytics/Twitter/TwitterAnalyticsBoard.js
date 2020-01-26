@@ -1,38 +1,20 @@
 import React from 'react';
-import { connect } from "react-redux";
 import 'react-dates/initialize';
-
-import channelSelector from "../../../selectors/channels";
-import { startSetChannels } from "../../../actions/channels";
+import PropTypes from 'prop-types';
 
 import TweetsTable from './Cards/TweetsTable';
 import TwitterOverviewCard from './TwitterOverviewCard';
 import ChartsSection from '../Sections/ChartsSection';
 
 class TwitterAnalyticsBoard extends React.Component {
+    static propTypes = {
+        selectedAccount: PropTypes.number.isRequired
+    };
 
     socialMediasSelectorOptions = [];
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            data: false,
-            forbidden: false,
-            calendarChange: false,
-            loading: props.channelsLoading
-        }
-    }
-
     render() {
         const { selectedAccount } = this.props;
-
-        const propData = {
-            calendarChange: this.state.calendarChange,
-            setForbidden: this.setForbidden,
-            selectedAccount,
-            selectedChannel: this.props.selectedChannel
-        }
 
         return (
             <div>
@@ -42,7 +24,7 @@ class TwitterAnalyticsBoard extends React.Component {
                             title="Tweets"
                             type="tweetsCount"
                             icon="edit"
-                            {...propData}
+                            selectedAccount={selectedAccount}
                         />
                     </div>
                     <div className="col-md-3 col-xs-12">
@@ -50,7 +32,7 @@ class TwitterAnalyticsBoard extends React.Component {
                             title="Followers"
                             type="followersCount"
                             icon="followers"
-                            {...propData}
+                            selectedAccount={selectedAccount}
                         />
                     </div>
                     <div className="col-md-3 col-xs-12">
@@ -58,7 +40,7 @@ class TwitterAnalyticsBoard extends React.Component {
                             title="Engagements"
                             type="followingCount"
                             icon="chart"
-                            {...propData}
+                            selectedAccount={selectedAccount}
                         />
                     </div>
                     <div className="col-md-3 col-xs-12">
@@ -66,18 +48,17 @@ class TwitterAnalyticsBoard extends React.Component {
                             title="Impressions"
                             type="totalLikesCount"
                             icon="eye"
-                            {...propData}
+                            selectedAccount={selectedAccount}
                         />
                     </div>
                 </div>
-                <ChartsSection {...propData} socialMedia="twitter" />
+                <ChartsSection selectedAccount={selectedAccount} socialMedia="twitter" />
                 <div className="row mb20">
                     <div className="col-xs-12">
                         <TweetsTable
                             name="Tweets Table"
                             type='tweetsTableData'
-                            tooltipDesc='The list of tweets published by your Twitter account, with their engagement stats: retweets, replies and likes'
-                            {...propData} />
+                            selectedAccount={selectedAccount} />
                     </div>
                 </div>
             </div>
@@ -85,19 +66,4 @@ class TwitterAnalyticsBoard extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    const selectedTwitterChannel = { selected: 1, provider: "twitter" };
-    const selectedChannel = channelSelector(state.channels.list, selectedTwitterChannel);
-
-    return {
-        channelsLoading: state.channels.loading,
-        selectedChannel: selectedChannel.length ? selectedChannel[0] : {},
-        allChannels: state.channels.list
-    };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-    startSetChannels: () => dispatch(startSetChannels())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TwitterAnalyticsBoard);
+export default TwitterAnalyticsBoard;
