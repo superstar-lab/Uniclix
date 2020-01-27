@@ -42,6 +42,7 @@
 @import "./modal";
 @import "./layout";
 @import "./tab";
+@import "./monitor";
 
 /*Nav top bar ============*/
 .navbar-wrap {
@@ -193,7 +194,7 @@
                 }
             }
 
-            &.open {
+            &:hover {
                 background: $primary_blue;
 
                 .current-profile {
@@ -889,16 +890,6 @@
                     }
                 }
             }
-
-            .add-new-channel {
-                background: #2D86DA;
-                border: none;
-
-                i {
-                    color: #fff;
-                    font-size: 12px;
-                }
-            }
         }
 
         .draft_editor_container {
@@ -929,7 +920,4 @@
         align-items: center;
         display: flex;
     }
-}
-.small-input{
-    max-width: 132px;
 }
