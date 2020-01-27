@@ -66,10 +66,8 @@ const tooltip = {
     fontStyle: 'normal',
     fontWeight: 'normal',
     fontSize: 14,
-    lineHeight: 14,
     textAlign: 'right',
     letterSpacing: 0.130517,
-    /* UI/Primary/white */
     color: '#FFFFFF'
 }
 

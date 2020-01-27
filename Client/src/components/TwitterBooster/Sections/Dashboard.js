@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 const containers = {
     textAlign: 'center',
-    //marginTop: 15,
 }
 
 const cards = {
