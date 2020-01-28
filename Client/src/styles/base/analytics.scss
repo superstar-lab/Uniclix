@@ -31,7 +31,19 @@
     }
 
     .chart-container {
-        margin-top: 20px;
+        padding-top: 20px;
+        position: relative;
+
+        .loading-layer {
+            position: absolute;
+            height: 400px;
+            width: 100%;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(201, 200, 197, 0.5);
+        }
     }
 
     .recharts-surface,
@@ -117,8 +129,6 @@
 .card-img {
     width: 20px;
     height: 20px;
-}
-.card-analytics-body {
 }
 
 .card-number {
@@ -224,6 +234,11 @@
         display: flex;
         justify-content: space-between;
         width: 250px;
+
+        &.twitter {
+            width: 185px;
+            margin-left: 65px;
+        }
 
         .btn {
             background-color: #FFF;

@@ -2,6 +2,7 @@ import React from 'react';
 import 'react-dates/initialize';
 import { connect } from "react-redux";
 
+import AnalyticsContext from './AnalyticsContext';
 import { startSetChannels } from "../../actions/channels";
 import channelSelector from "../../selectors/channels";
 
@@ -71,26 +72,34 @@ class AnalyticsLanding extends React.Component {
 
         return (
             <div className="analytics-page">
-                <div className="section-header mb-20">
-                    <h1 className="page-title">Analytics</h1>
-                    <div className="section-header__first-row">
-                        <h3>Twitter Overview</h3>
-                        <div className="dropdown-selectors">
-                            <SocialMediaSelector
-                                socialMedias={this.socialMediasSelectorOptions}
-                                value={selectedSocialMedia}
-                                onChange={this.onSocialMediaChange}
-                            />
-                            <AccountSelector
-                                socialMedia={selectedSocialMedia}
-                                onChange={this.onAccountChange}
-                                value={selectedAccount}
-                            />
-                        </div>
-                    </div>
-                </div>
-                <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
-                {!this.state.forbidden && <AnalyticsRouter selectedAccount={selectedAccount} /> }
+                <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} />
+                {
+                    !this.state.forbidden && (
+                        <React.Fragment>
+                            <div className="section-header mb-20">
+                                <h1 className="page-title">Analytics</h1>
+                                <div className="section-header__first-row">
+                                    <h3>Twitter Overview</h3>
+                                    <div className="dropdown-selectors">
+                                        <SocialMediaSelector
+                                            socialMedias={this.socialMediasSelectorOptions}
+                                            value={selectedSocialMedia}
+                                            onChange={this.onSocialMediaChange}
+                                        />
+                                        <AccountSelector
+                                            socialMedia={selectedSocialMedia}
+                                            onChange={this.onAccountChange}
+                                            value={selectedAccount}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <AnalyticsContext.Provider value={{ setForbidden: this.setForbidden }}>
+                                <AnalyticsRouter selectedAccount={selectedAccount} />
+                            </AnalyticsContext.Provider>
+                        </React.Fragment>
+                    )
+                }
             </div>
         );
     }
