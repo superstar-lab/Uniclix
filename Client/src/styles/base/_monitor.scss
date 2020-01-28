@@ -2,8 +2,7 @@
     margin-top: 27px;
 }
 
-
-.smalltitle {
+.monitor-smalltitle {
     font-family: Rubik;
     font-style: normal;
     font-weight: normal;
@@ -15,15 +14,108 @@
     /* Text/Primary/Black */
 
     color: #363636;
+    width: 110px;
 }
 
-.socialtitle {
-    font-family: 'Rubik';
-    font-style: 'normal';
-    font-weight: 'normal';
+.monitor-socialtitle {
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: normal;
     font-size: 18px;
 
-    text-align: 'center';
-    letter-spacing: 0.130517;
-    margin-top: 25;
+    text-align: center;
+    letter-spacing: 0.130517px;
+    margin-top: 25px;
+}
+
+.tooltipTheme {
+    background-color: #2D86DA !important;
+    border-radius: 2px !important;
+    margin-right: -10px;
+}
+
+.monitor-label {
+    margin-top: 30px
+}
+
+.monitor-spacing {
+    margin-right: 20px;
+}
+
+.monitor-rightspacing {
+    margin-top: -360px;
+}
+
+.monitor-refresh-btn {
+    margin-right: 20px;
+}
+
+.cardlist-rightbar {
+    margin-right: -30px;
+    background: white;
+    border-radius: 20px 0px 0px 0px;
+    margin-left: 96%;
+    width: fit-content !important;
+    min-height: 637px;
+}
+
+.cardlist-firstbtn {
+    margin-top: 15px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    border-radius: 0px 50px 50px 0px !important;
+}
+
+.cardlist-secondbtn {
+    margin-top: 10px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    border-radius: 0px 50px 50px 0px !important,
+}
+
+.cardlist-tooltiplabel {
+    font-family: Rubik !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-size: 14px !important;
+    text-align: right !important;
+    letter-spacing: 0.130517px !important;
+    color: #FFFFFF !important;
+}
+
+.cardlist-gridtopspacing {
+    margin-top: 15px;
+}
+
+.dashboard-containers {
+    text-align: center;
+}
+
+.dashboard-cards {
+    margin-top: 30px;
+    width: 85%;
+    cursor: pointer;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05) !important;
+    border-radius: 6px !important;
+    height: 135px;
+}
+
+.dashboard-spacing {
+    padding-top: 31px !important;
+}
+
+.dashboard-title {
+    font-family: Rubik !important;    
+    font-weight: normal !important;
+    font-size: 18px !important;
+    text-align: center;
+    letter-spacing: 0.130517px;
+    margin-top: 12px !important;
+    margin-bottom: 20px !important;
+    white-space: nowrap;
+}
+
+.socialmedia-box {
+    background: #EAF3FB;
+    border-radius: 5px 50px 50px 5px;
 }

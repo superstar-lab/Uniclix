@@ -2,35 +2,7 @@ import React from 'react';
 import { Typography, Grid, Card, CardContent, Button} from '@material-ui/core';
 import PropTypes from 'prop-types';
 
-const containers = {
-    textAlign: 'center',
-}
-
-const cards = {
-    marginTop: 30,
-    width: '85%',
-    cursor: 'pointer',
-    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.05)',
-    borderRadius: 6,
-    height: 135
-}
-
-const spacing = {
-    paddingTop: 31,
-}
-
-const title = {
-    fontFamily: 'Rubik',
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    fontSize: 18,
-    textAlign: 'center',
-    letterSpacing: 0.130517,
-    marginTop: 12,
-    marginBottom: 20,
-    whiteSpace: 'nowrap'
-}
-class Dashboard extends React.Component {
+class StreamCreators extends React.Component {
     state = {
         
     }
@@ -41,10 +13,11 @@ class Dashboard extends React.Component {
               type,
             },
           } = this;
+          
         return(
             <Grid
+				className="dashboard-containers"
                 container
-                style={containers}
             >
                 {type.map((kind, key) => (
                 <Grid
@@ -56,10 +29,10 @@ class Dashboard extends React.Component {
                     sm={12}
                     xs={12}
                 >
-                    <Card style={cards}>
-                        <CardContent style={spacing}>
+                    <Card className="dashboard-cards">
+                        <CardContent className="dashboard-spacing">
                             <img src={kind.icon}/>
-                            <Typography style={title}>
+                            <Typography className="dashboard-title">
                                 {kind.title}
                             </Typography>
                         </CardContent>
@@ -71,12 +44,12 @@ class Dashboard extends React.Component {
     }
 }
 
-Dashboard.defaultProps = {
+StreamCreators.defaultProps = {
     type: [],
 }
 
-Dashboard.propTypes = {
+StreamCreators.propTypes = {
     type: PropTypes.array.isRequired
 }
 
-export default Dashboard;
+export default StreamCreators;

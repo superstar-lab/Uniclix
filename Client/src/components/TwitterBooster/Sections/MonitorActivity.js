@@ -6,83 +6,11 @@ import 'react-dates/initialize';
 import Tabs from '../../Tabs';
 import { Container, Typography, Grid } from '@material-ui/core';
 import { Select } from 'antd';
-import Dashboard from './Dashboard';
-import RightSidebar from './RightSidebar'
+import StreamCreators from './StreamCreators'
+import MonitorRightbar from './MonitorRightbar'
+import getSocialMediaCards from '../../../config/socialmediacards';
 
 const { Option } = Select;
-
-const label = {
-    marginTop: 30,
-}
-
-const spacing = {
-    marginRight: 20
-}
-
-const smalltitle = {
-    fontFamily: 'Rubik',
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    fontSize: 14,
-    letterSpacing: 0.130517,
-    color: '#363636',
-    width: 110
-}
-
-const rightspacing = {
-    marginTop: -360,
-}
-
-const TwitterData = [
-    {
-        title: "Home", icon: "/images/monitor-icons/Feed.svg"
-    },
-    {
-        title: "Mentions", icon: "/images/monitor-icons/Mentions.svg"
-    },
-    {
-        title: "Retweets", icon: "/images/monitor-icons/Retweets.svg"
-    },
-    {
-        title: "Followers", icon: "/images/monitor-icons/Followers.svg"
-    },
-    {
-        title: "Following", icon: "/images/monitor-icons/Following.svg"
-    },
-    {
-        title: "Liked", icon: "/images/monitor-icons/Liked.svg"
-    },
-    {
-        title: "My posts", icon: "/images/monitor-icons/Myposts.svg"
-    },
-    {
-        title: "Search topics", icon: "/images/monitor-icons/Searchtopics.svg"
-    },
-]
-
-const FacebookData = [
-    {
-        title: "Time line", icon: "/images/monitor-icons/Feed.svg"
-    },
-    {
-        title: "Mentions", icon: "/images/monitor-icons/Mentions.svg"
-    },
-    {
-        title: "Unpublished", icon: "/images/monitor-icons/Retweets.svg"
-    },
-    {
-        title: "Pages", icon: "/images/monitor-icons/Followers.svg"
-    },
-    {
-        title: "Scheduled", icon: "/images/monitor-icons/Following.svg"
-    },
-    {
-        title: "My posts", icon: "/images/monitor-icons/Liked.svg"
-    },
-    {
-        title: "Messages", icon: "/images/monitor-icons/Myposts.svg"
-    },
-]
 
 class MonitorActivity extends React.Component {
     state = {
@@ -118,11 +46,12 @@ class MonitorActivity extends React.Component {
    
         let socialmedias = this.state.socialmedias;
         let hours = this.state.hours;   
-        let Data;
+        let data;
+        let cardlists = getSocialMediaCards();
         if (this.state.selectedSocialMedia == "Twitter") {
-            Data = TwitterData;
+            data = cardlists.twitterBigIcons;
         } else {
-            Data = FacebookData;
+            data = cardlists.facebookBigIcons;
         }
         return (
             <div>
@@ -136,11 +65,11 @@ class MonitorActivity extends React.Component {
                         <Grid container item lg={9} md={7}>
                             <h2>Monitor Activity</h2>
                         </Grid>
-                        <div style={{marginRight: 20}}>
+                        <div className="monitor-refresh-btn">
                             <span>Refresh every</span>
                         </div>
                         <div >
-                            <Select size="normal" value={this.state.selectedHour} onChange={this.onChangeHour} style={smalltitle} >
+                            <Select className="monitor-smalltitle" size="normal" value={this.state.selectedHour} onChange={this.onChangeHour}>
                                 {hours.map((hour, key) => (
                                     <Option value={hour} key={key} onClick={this.onRefresh}>
                                         <span className="social-media-selector-option">{hour}</span>
@@ -153,9 +82,9 @@ class MonitorActivity extends React.Component {
                 
                 <Tabs>
                     <div label="New Tab">
-                        <div style={label}>
-                            <span style={spacing}>Social Network</span>
-                            <Select size="normal" value={this.state.selectedSocialMedia} onChange={this.onChangeSocialMedias} style={smalltitle}>
+                        <div className="monitor-label">
+                            <span className="monitor-spacing">Social Network</span>
+                            <Select className="monitor-smalltitle" size="normal" value={this.state.selectedSocialMedia} onChange={this.onChangeSocialMedias}>
                                 {socialmedias.map((socialmedia) => (
                                     <Option value={socialmedia} >
                                         <span className="social-media-selector-option">{socialmedia}</span>
@@ -165,7 +94,7 @@ class MonitorActivity extends React.Component {
                         </div>
                         <Grid container>
                             <Grid item md={9}>
-                                <Dashboard type={Data}/>
+                                <StreamCreators type={data}/>
                             </Grid>
                         </Grid>
                     </div>
@@ -174,9 +103,9 @@ class MonitorActivity extends React.Component {
                     </div>
                 </Tabs>
 
-                <div style={rightspacing}>
-                    <RightSidebar />
-                </div>
+                <Grid className="monitor-rightspacing" container>
+                    <MonitorRightbar />
+                </Grid>
             </div>
         );
     }
