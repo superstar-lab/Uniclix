@@ -22,3 +22,13 @@ export const startSetProfile = () => {
             });
     };
 };
+
+export const addTopic = (topic) => ({
+    type: 'ADD_TOPIC',
+    topic
+});
+
+export const removeTopic = (topic) => ({
+    type: 'REMOVE_TOPIC',
+    topic
+});

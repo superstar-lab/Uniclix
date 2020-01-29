@@ -3097,12 +3097,86 @@ button.doneBtn {
   outline: none;
 }
 
+.content-finder {
+  font-family: Rubik;
+  color: #363636;
+
+  .description {
+    font-size: 1em;
+    margin: 30px 0 50px 0;
+  }
+
+  .sub-title {
+    font-size: 1.2em;
+    font-weight: 500;
+  }
+
+  .seperator {
+    margin: 50px 0;
+  }
+
+  .btn-blue {
+    width: 400px;
+  }
+
+  .topics-added-by-you {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 50px;
+
+    .topics {
+      width: 100%;
+      margin-top: 30px;
+    }
+
+    .message-container {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .title {
+        font-size: 1.6em;
+        font-weight: 500;
+        margin-bottom: 20px;
+      }
+
+      .description {
+        margin: 0;
+        width: 490px;
+        text-align: center;
+        font-size: 1.1em;
+      }
+    }
+
+
+    .keyword-item {
+      i {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .topics-added-by-you,
+  .added-by-user {
+    .keyword-item {
+      font-size: 0.8em;
+      background-color:rgba(216, 62, 126, 0.15);
+      padding: 6px 6px;
+    }
+  }
+}
+
 .keyword-item {
   display: inline-block;
   color: #d83e7f;
   font-size: 1.4rem;
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: 500;
   border-radius: 6px;
   background: #fff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
@@ -3933,6 +4007,16 @@ aside .btn-group {
   top: 50%;
   transform: translateY(-50%);
   z-index: 9999;
+}
+
+.fullscreen {
+  background-color: rgba(0, 0, 0, 0.30);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 99999;
+  height: 100%;
 }
 
 .lds-ripple {
