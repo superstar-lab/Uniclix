@@ -3,22 +3,15 @@ import { connect } from "react-redux";
 import channelSelector from "../../../selectors/channels";
 import { startSetChannels } from "../../../actions/channels";
 import 'react-dates/initialize';
-import Tabs from '../../Tabs';
-import { Container, Typography, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { Select } from 'antd';
-import StreamCreators from './StreamCreators'
-import MonitorRightbar from './MonitorRightbar'
-import getSocialMediaCards from '../../../config/socialmediacards';
+import Activities from './Activities';
 
 const { Option } = Select;
 
 class MonitorActivity extends React.Component {
     state = {
-        socialmedias : [
-            "Twitter",
-            "Facebook"
-        ],
-        hours : [
+        hours: [
             "2 minutes",
             "5 minutes",
             "10 minutes",
@@ -26,33 +19,39 @@ class MonitorActivity extends React.Component {
             "2 hours"
         ],
         selectedHour: '',
-        selectedSocialMedia: '',
     }
 
     componentWillMount() {
-        this.setState({selectedHour: this.state.hours[0]});
-        this.setState({selectedSocialMedia: this.state.socialmedias[0]});
+        this.setState({ selectedHour: this.state.hours[0] });
     }
 
     onChangeHour = (val) => {
-        this.setState({selectedHour: val});
+        this.setState({ selectedHour: val });
     }
 
-    onChangeSocialMedias = (val) => {
-        this.setState({selectedSocialMedia: val});
+    getRefreshRate = () => {
+        switch (this.state.selectedHour) {
+            case "2 minutes":
+                return 2;
+            case "5 minutes":
+                return 5;
+            case "10 minutes":
+                return 10;
+            case "1 hour":
+                return 60;
+            case "2 hours":
+                return 120;
+        }
     }
 
     render() {
-   
-        let socialmedias = this.state.socialmedias;
-        let hours = this.state.hours;   
-        let data;
-        let cardlists = getSocialMediaCards();
-        if (this.state.selectedSocialMedia == "Twitter") {
-            data = cardlists.twitterBigIcons;
-        } else {
-            data = cardlists.facebookBigIcons;
-        }
+        const {
+            state: {
+                hours
+            },
+            getRefreshRate
+        } = this;
+
         return (
             <div>
                 <div className="section-header no-border mb-40">
@@ -69,9 +68,9 @@ class MonitorActivity extends React.Component {
                             <span>Refresh every</span>
                         </div>
                         <div >
-                            <Select className="monitor-smalltitle" size="normal" value={this.state.selectedHour} onChange={this.onChangeHour}>
+                            <Select className="monitor-smalltitle" size="default" value={this.state.selectedHour} onChange={(val) => this.onChangeHour(val)}>
                                 {hours.map((hour, key) => (
-                                    <Option value={hour} key={key} onClick={this.onRefresh}>
+                                    <Option value={hour} key={key}>
                                         <span className="social-media-selector-option">{hour}</span>
                                     </Option>
                                 ))}
@@ -79,33 +78,10 @@ class MonitorActivity extends React.Component {
                         </div>
                     </Grid>
                 </div>
-                
-                <Tabs>
-                    <div label="New Tab">
-                        <div className="monitor-label">
-                            <span className="monitor-spacing">Social Network</span>
-                            <Select className="monitor-smalltitle" size="normal" value={this.state.selectedSocialMedia} onChange={this.onChangeSocialMedias}>
-                                {socialmedias.map((socialmedia) => (
-                                    <Option value={socialmedia} >
-                                        <span className="social-media-selector-option">{socialmedia}</span>
-                                    </Option>
-                                ))}
-                            </Select>
-                        </div>
-                        <Grid container>
-                            <Grid item md={9}>
-                                <StreamCreators type={data}/>
-                            </Grid>
-                        </Grid>
-                    </div>
-                    <div label="+">
-                        add new account( show tweets from another account )
-                    </div>
-                </Tabs>
+                <div>
 
-                <Grid className="monitor-rightspacing" container>
-                    <MonitorRightbar />
-                </Grid>
+                    <Activities refreshRate={getRefreshRate()} />
+                </div>
             </div>
         );
     }

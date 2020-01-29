@@ -2,77 +2,104 @@ import React from 'react';
 import { connect } from "react-redux";
 import channelSelector from "../../../selectors/channels";
 import { startSetChannels } from "../../../actions/channels";
-import { Container, Typography, Grid, Card, CardActions, CardContent, Button, Icon, Tooltip, withStyles} from '@material-ui/core';
+import { Typography, Button, withStyles } from '@material-ui/core';
 import ReactTooltip from 'react-tooltip';
-import getSocialMediaCards from '../../../config/socialmediacards';
 
 class MonitorRightbar extends React.Component {
-    
+
     state = {
-        socialmedias : [
-            "Twitter",
-            "Facebook"
-        ],
-        selectedSocialMedia: 'Twitter',
-        twitterIcon: "/images/monitor-icons/twitter-small.svg",
-        facebookIcon: "/images/monitor-icons/facebook-small.svg",
         isSelected: false,
-        isEntered: false
+        className: 'cardlist-firstbtn',
+        selectedCards: [],
     }
 
     handleMedia = () => {
-        this.setState({isSelected: !this.state.isSelected});
-        console.log(this.state.isSelected);
+
+        let isSelected = !this.state.isSelected;
+        console.log(isSelected);
+        if (isSelected) {
+            this.setState({ className: 'cardlist-firstbtn active' });
+        } else {
+            this.setState({ className: 'cardlist-firstbtn' });
+        }
+
+        this.setState({ isSelected: isSelected });
     }
-    
-    handleClick = (e) => {
-        console.log(e.target.value);
+
+    handleItemCard = () => {
+
+        this.setState({ className: 'cardlist-firstbtn' });
+        this.setState({ isSelected: false });
+    }
+
+    handleMainCard = (e) => {
+        console.log("maincard");
     }
 
     render() {
-        
-        let socialMediaIcon;
+        const {
+            state: {
+                selectedCards
+            },
+            props: {
+                creators,
+                socialCards,
+                socialValue,
+                onClickCreator
+            },
+            onChangeSocial,
+            handleMedia,
+            handleMainCard,
+            handleItemCard,
+        } = this;
 
-        let data = getSocialMediaCards();
-        
-        if(this.state.selectedSocialMedia == "Twitter"){
-            socialMediaIcon = this.state.twitterIcon;
+        let socialMediaIcon;
+        let isSelected = this.state.isSelected;
+
+        if (socialValue == "Twitter") {
+            socialMediaIcon = socialCards[0].icon;
         }
         else {
-            socialMediaIcon = this.state.facebookIcon;
+            socialMediaIcon = socialCards[1].icon;
         }
-        
-        return(
-            <Grid
-                className="cardlist-rightbar"
-                container
-                direction="column"
-                justify="flex-start"
-                alignItems="flex-start"
-            >
-                <Grid item className="cardlist-gridtopspacing">
-                    <StylesButton className="cardlist-firstbtn" onClick={this.handleMedia}>
-                        <img src={socialMediaIcon}/>
-                    </StylesButton>
-                </Grid>
-                {data.twitterSmallIcons.map((item) => (
-                    <Grid item>
-                        <StylesButton className="cardlist-secondbtn" onClick={this.handleClick} data-for={item.id} data-tip>
-                            <img src={item.icon}/>
-                        </StylesButton>
-                        <ReactTooltip className="tooltipTheme" place="left" type="info" effect="solid" id={item.id} delayShow={100}>
-                            <Typography className="cardlist-tooltiplabel">{item.label}</Typography>
-                        </ReactTooltip>
-                    </Grid>
-                ))}
-            </Grid>
+
+        return (
+            <div className="monitor-right-bar">
+                {isSelected &&
+                    <div className="socialmedia-box">
+                        {
+                            socialCards.map((content, key) => (
+                                <Button id={content.id} value={content.label} onClick={(e) => handleMainCard(e)}><img src={content.icon} /></Button>
+                            ))
+                        }
+                    </div>
+                }
+                <StylesButton className={this.state.className} onClick={() => handleMedia()}>
+                    <img src={socialMediaIcon} />
+                </StylesButton>
+                {
+                    creators.map((item, key) => (
+                        <div key={key} onClick={() => { handleItemCard(); onClickCreator(item.label) }}>
+                            <StylesButton className="cardlist-secondbtn" onClick={this.handleClick} data-for={item.id} data-tip data-event-off='scroll mousewheel blur' data-iscapture='true'>
+                                <img src={item.icon} />
+                            </StylesButton>
+                            <ReactTooltip className="tooltipTheme" place="left" type="info" effect="solid" id={item.id} delayShow={100}>
+                                <Typography className="cardlist-tooltiplabel">{item.label}</Typography>
+                            </ReactTooltip>
+                        </div>
+                    ))
+                }
+            </div>
         );
     }
-}    
+}
 
 const StylesButton = withStyles(theme => ({
-    root:{
-        '&:hover':{
+    root: {
+        '&:hover': {
+            background: "#EAF3FB"
+        },
+        '&.active': {
             background: "#EAF3FB"
         }
     }

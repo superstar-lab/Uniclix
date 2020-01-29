@@ -99,6 +99,15 @@ const getSocialMediaCards = () => ({
         {
             title: "Messages", icon: "/images/monitor-icons/Myposts.svg"
         },
+    ],
+
+    socialNetworkIcons: [
+        {
+           id: 0, label: "Twitter", icon: "/images/monitor-icons/twitter-small.svg"
+        }, 
+        {
+            id: 1, label: "Facebook", icon:"/images/monitor-icons/facebook-small.svg"
+        }
     ]
 });
 
