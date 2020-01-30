@@ -121,7 +121,7 @@ class Activities extends Component {
         this.setState({ socialValue: val });
     };
 
-    onClickCreator = (idx, creator) => {
+    handleClickCreator = (idx, creator) => {
         let tabs = this.state.tabs;
 
         // Create new stream card
@@ -155,7 +155,7 @@ class Activities extends Component {
             onCloseModal,
             onRenameSuccess,
             onChangeSocialMedias,
-            onClickCreator
+            handleClickCreator
         } = this;
 
         return (
@@ -194,7 +194,7 @@ class Activities extends Component {
                                             <Grid item md={9}>
                                                 <StreamCreators
                                                     creators={tab.selectedSocial == 'Twitter' ? socialMediaCards.twitterBigIcons : socialMediaCards.facebookBigIcons}
-                                                    onClickCreator={(val) => onClickCreator(index, val)}
+                                                    onClickCreator={(val) => handleClickCreator(index, val)}
                                                 />
                                             </Grid>
                                         </Grid>
@@ -214,7 +214,7 @@ class Activities extends Component {
                                                 socialValue={socialValue}
                                                 creators={tab.selectedSocial == 'Twitter' ? socialMediaCards.twitterSmallIcons : socialMediaCards.facebookSmallIcons}
                                                 onChangeSocial={(val) => onChangeSocialMedias(index, val)}
-                                                onClickCreator={(val) => onClickCreator(index, val)}
+                                                onClickCreator={(val) => handleClickCreator(index, val)}
                                             />
                                             <StreamItems
                                                 streams={tab.streamList}

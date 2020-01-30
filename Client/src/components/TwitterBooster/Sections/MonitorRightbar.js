@@ -14,9 +14,8 @@ class MonitorRightbar extends React.Component {
     }
 
     handleMedia = () => {
-
         let isSelected = !this.state.isSelected;
-        console.log(isSelected);
+
         if (isSelected) {
             this.setState({ className: 'cardlist-firstbtn active' });
         } else {
@@ -32,24 +31,19 @@ class MonitorRightbar extends React.Component {
         this.setState({ isSelected: false });
     }
 
-    handleMainCard = (e) => {
-        console.log("maincard");
-    }
-
     render() {
         const {
             state: {
-                selectedCards
+
             },
             props: {
                 creators,
                 socialCards,
                 socialValue,
-                onClickCreator
+                onClickCreator,
+                onChangeSocial
             },
-            onChangeSocial,
             handleMedia,
-            handleMainCard,
             handleItemCard,
         } = this;
 
@@ -69,22 +63,24 @@ class MonitorRightbar extends React.Component {
                     <div className="socialmedia-box">
                         {
                             socialCards.map((content, key) => (
-                                <Button id={content.id} value={content.label} onClick={(e) => handleMainCard(e)}><img src={content.icon} /></Button>
+                                content.title == socialValue ? null : <Button key={key} id={content.id} value={content.title} onClick={() => { onChangeSocial(content.title); handleItemCard(); }}><img src={content.icon} /></Button>
                             ))
                         }
                     </div>
                 }
-                <StylesButton className={this.state.className} onClick={() => handleMedia()}>
-                    <img src={socialMediaIcon} />
-                </StylesButton>
+                <div>
+                    <StylesButton className={this.state.className} onClick={() => handleMedia()}>
+                        <img src={socialMediaIcon} />
+                    </StylesButton>
+                </div>
                 {
                     creators.map((item, key) => (
-                        <div key={key} onClick={() => { handleItemCard(); onClickCreator(item.label) }}>
+                        <div key={key} onClick={() => { handleItemCard(); onClickCreator(item.title) }}>
                             <StylesButton className="cardlist-secondbtn" onClick={this.handleClick} data-for={item.id} data-tip data-event-off='scroll mousewheel blur' data-iscapture='true'>
                                 <img src={item.icon} />
                             </StylesButton>
                             <ReactTooltip className="tooltipTheme" place="left" type="info" effect="solid" id={item.id} delayShow={100}>
-                                <Typography className="cardlist-tooltiplabel">{item.label}</Typography>
+                                <Typography className="cardlist-tooltiplabel">{item.title}</Typography>
                             </ReactTooltip>
                         </div>
                     ))
