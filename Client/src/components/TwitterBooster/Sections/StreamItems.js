@@ -26,10 +26,12 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     margin: `0 ${grid}px 0 0`,
 
     // change background colour if dragging
-    background: isDragging ? 'lightgreen' : 'grey',
-    height: '700px',
-    width: '500px',
-    minWidth: '320px',
+    background: isDragging ? 'lightgreen' : '#EAF3FB',
+    minHeight: '630px',
+    width: '300px',
+    minWidth: '220px',
+    borderRadius: 6,
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.02)',
 
     // styles we need to apply on draggables
     ...draggableStyle,
@@ -51,7 +53,7 @@ export default class StreamItems extends Component {
         this.onDragEnd = this.onDragEnd.bind(this);
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {        
+    static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.streams !== prevState.streams) {
             let items = getItems(nextProps.streams.length);
             return ({ items: items });
