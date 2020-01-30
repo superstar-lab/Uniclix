@@ -1,52 +1,52 @@
 const getSocialMediaCards = () => ({
     twitterSmallIcons: [
         {
-            id: "Tooltip1", label: "Home", icon: "/images/monitor-icons/home-small.svg"
+            id: "Tooltip1", title: "Home", icon: "/images/monitor-icons/home-small.svg"
         },
         {
-            id: "Tooltip2", label: "Mentions", icon: "/images/monitor-icons/mentions-small.svg"
+            id: "Tooltip2", title: "Mentions", icon: "/images/monitor-icons/mentions-small.svg"
         },
         {
-            id: "Tooltip3", label: "Retweets", icon: "/images/monitor-icons/retweets-small.svg"
+            id: "Tooltip3", title: "Retweets", icon: "/images/monitor-icons/retweets-small.svg"
         },
         {
-            id: "Tooltip4", label: "Followers", icon: "/images/monitor-icons/followers-small.svg"
+            id: "Tooltip4", title: "Followers", icon: "/images/monitor-icons/followers-small.svg"
         },
         {
-            id: "Tooltip5", label: "Likes", icon: "/images/monitor-icons/liked-small.svg"
+            id: "Tooltip5", title: "Likes", icon: "/images/monitor-icons/liked-small.svg"
         },
         {
-            id: "Tooltip6", label: "Pages", icon: "/images/monitor-icons/flag-small.svg"
+            id: "Tooltip6", title: "Pages", icon: "/images/monitor-icons/flag-small.svg"
         },
         {
-            id: "Tooltip7", label: "Following", icon: "/images/monitor-icons/following-small.svg"
+            id: "Tooltip7", title: "Following", icon: "/images/monitor-icons/following-small.svg"
         },
         {
-            id: "Tooltip8", label: "Messages", icon: "/images/monitor-icons/message-small.svg"
+            id: "Tooltip8", title: "Messages", icon: "/images/monitor-icons/message-small.svg"
         },
         {
-            id: "Tooltip9", label: "My posts", icon: "/images/monitor-icons/myposts-small.svg"
+            id: "Tooltip9", title: "My posts", icon: "/images/monitor-icons/myposts-small.svg"
         },
         {
-            id: "Tooltip10", label: "Search", icon: "/images/monitor-icons/searchtopics-small.svg"
+            id: "Tooltip10", title: "Search", icon: "/images/monitor-icons/searchtopics-small.svg"
         },
     ],
 
     facebookSmallIcons: [
         {
-            label: "Home", icon: "/images/monitor-icons/home-small.svg"
+            id: "Tooltip1", title: "Home", icon: "/images/monitor-icons/home-small.svg"
         },
         {
-            label: "Mentions", icon: "/images/monitor-icons/mentions-small.svg"
+            id: "Tooltip2", title: "Mentions", icon: "/images/monitor-icons/mentions-small.svg"
         },
         {
-            label: "Pages", icon: "/images/monitor-icons/flag-small.svg"
+            id: "Tooltip3", title: "Pages", icon: "/images/monitor-icons/flag-small.svg"
         },
         {
-            label: "Messages", icon: "/images/monitor-icons/message-small.svg"
+            id: "Tooltip4", title: "Messages", icon: "/images/monitor-icons/message-small.svg"
         },
         {
-            label: "Search", icon: "/images/monitor-icons/searchtopics-small.svg"
+            id: "Tooltip5", title: "Search", icon: "/images/monitor-icons/searchtopics-small.svg"
         },
     ],
     
@@ -103,10 +103,10 @@ const getSocialMediaCards = () => ({
 
     socialNetworkIcons: [
         {
-           id: 0, label: "Twitter", icon: "/images/monitor-icons/twitter-small.svg"
+           id: 0, title: "Twitter", icon: "/images/monitor-icons/twitter-small.svg"
         }, 
         {
-            id: 1, label: "Facebook", icon:"/images/monitor-icons/facebook-small.svg"
+            id: 1, title: "Facebook", icon:"/images/monitor-icons/facebook-small.svg"
         }
     ]
 });
