@@ -21,10 +21,13 @@ class ChartsSectionTab extends React.Component {
     super(props);
 
     const endDate = new Date();
-    const rangeMovementLimit = this.calculateRangeMovementLimit('Week');
+
+    // If there is a limit we calculate it, if not we set a limit impossible to reach
+    const rangeMovementLimit = props.pastTimeLimit ?
+      this.calculateRangeMovementLimit('Week') :
+      -99999999;
 
     this.state = {
-      accountId: 'account',
       selectedPeriod: 'Week',
       rangeMovement: 0, // Will determine the dates that the user is seeing
       startDate: new Date(
@@ -146,21 +149,21 @@ class ChartsSectionTab extends React.Component {
 
     switch (selectedPeriod) {
       case 'Day':
-        rangeMovementLimit = -pastTimeLimit;
+        rangeMovementLimit = - pastTimeLimit;
         break;
       case 'Week':
-        rangeMovementLimit = -pastTimeLimit / 7;
+        rangeMovementLimit = - pastTimeLimit / 7;
         break;
       case 'Month':
-        rangeMovementLimit = -pastTimeLimit / 30;
+        rangeMovementLimit = - pastTimeLimit / 30;
         break;
       case 'Year':
-        rangeMovementLimit = -pastTimeLimit / 365;
+        rangeMovementLimit = - pastTimeLimit / 365;
         break;
     }
 
     // We substract 1 because the rangeMovement starts in 0
-    return rangeMovementLimit - 1;
+    return pastTimeLimit ? rangeMovementLimit - 1 : -99999999;
   };
 
   renderDateRangePicker = () => {

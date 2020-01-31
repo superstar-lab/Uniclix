@@ -2,12 +2,21 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import TwitterAnalyticsBoard from '../components/Analytics/Twitter/TwitterAnalyticsBoard';
-import FacebookOverview from '../components/Analytics/Facebook/FacebookOverview';
+import FacebookAnalyticsBoard from '../components/Analytics/Facebook/FacebookAnalyticsBoard';
 
 const AnalyticsRouter = ({ selectedAccount }) => (
     <div>
         <Switch>
-            <Route path={`/analytics/facebook`} component={FacebookOverview} />
+            <Route
+                path={`/analytics/facebook`}
+                render={
+                    (props) =>
+                        <FacebookAnalyticsBoard
+                            {...props}
+                            selectedAccount={selectedAccount}
+                        />
+                }
+            />
             <Route
                 path={`/analytics/twitter`}
                 render={(props) => <TwitterAnalyticsBoard {...props} selectedAccount={selectedAccount} />}

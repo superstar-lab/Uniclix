@@ -51,8 +51,8 @@ export const pageInsights = (id, startDate, endDate) => {
         });
 };
 
-export const pageInsightsByType = (id, startDate, endDate, type) => {
-    return axios.get(`${apiUrl}/facebook/insights/page/${type}?id=${id}&startDate=${startDate}&endDate=${endDate}`)
+export const pageInsightsByType = (id, startDate, endDate, type, period) => {
+    return axios.get(`${apiUrl}/facebook/insights/page/${type}?id=${id}&startDate=${startDate}&endDate=${endDate}&period=${period}`)
         .then((response) => {
             return response.data;
         });

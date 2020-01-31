@@ -7,6 +7,7 @@
     .section-header__first-row h3 {
         font-family: Rubik;
         font-weight: 500;
+        text-transform: capitalize;
     }
 
     .tab-list-item.tab-list-active {
@@ -119,6 +120,10 @@
 .overview-cards-container {
     margin-top:20px;
     padding: 0 25px;
+
+    .analytics-overview-card {
+        height: 165px;
+    }
 }
 .overview-card {
     padding: 10px;
@@ -497,7 +502,7 @@
     font-family: Rubik;
 }
 
-.tweet-card {
+.post-card {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -549,7 +554,7 @@
         margin-right: 35px;
     }
 
-    .tweet-info {
+    .post-info {
         width: 20%;
         display: flex;
 

@@ -7,14 +7,13 @@ const { Option } = Select;
 
 class AccountSelector extends React.Component {
   static propTypes = {
-    socialMedia: PropTypes.string,
     accounts: PropTypes.array.isRequired,
     onChange: PropTypes.func.isRequired,
     value: PropTypes.number.isRequired
   };
 
   render() {
-    const { accounts, socialMedia, onChange, value } = this.props;
+    const { accounts, onChange, value } = this.props;
 
     return (
       <Select
@@ -25,7 +24,6 @@ class AccountSelector extends React.Component {
       >
         {
           accounts && accounts
-            .filter((account => account.type === socialMedia))
             .map(({ username, name, avatar, id, type }) => (
               <Option key={username} value={id}>
                 <span className="account-selector-option">
@@ -40,10 +38,4 @@ class AccountSelector extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    accounts: state.channels.list
-  };
-};
-
-export default connect(mapStateToProps, null)(AccountSelector);
+export default AccountSelector;

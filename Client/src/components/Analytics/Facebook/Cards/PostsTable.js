@@ -1,8 +1,8 @@
 import React from 'react';
 import Loader from 'react-loader-spinner';
-import { pageInsightsByType } from "../../../../requests/facebook/channels";
-import ReadMore from "../../../ReadMore";
-import AnalyticsTooltip from '../../AnalyticsTooltip'
+
+import { pageInsightsByType } from '../../../../requests/facebook/channels';
+import PostsTableRow from '../../PostsTableRow';
 
 class PostsTable extends React.Component{
     state = {
@@ -10,13 +10,15 @@ class PostsTable extends React.Component{
         loading: false
     };
 
-    componentDidMount(){
+    componentDidMount() {
         this.fetchAnalytics();
     };
 
-    componentDidUpdate(prevProps){
-        if(prevProps.selectedAccount != this.props.selectedAccount || prevProps.calendarChange != this.props.calendarChange)
-        {
+    componentDidUpdate(prevProps) {
+        if (
+            prevProps.selectedAccount != this.props.selectedAccount ||
+            prevProps.calendarChange != this.props.calendarChange
+        ) {
             this.fetchAnalytics();
         }  
     }
@@ -25,14 +27,21 @@ class PostsTable extends React.Component{
         this.setState(() => ({
             loading: true
         }));
+
         try {
-            pageInsightsByType(this.props.selectedAccount, this.props.startDate, this.props.endDate, this.props.type)            
+            pageInsightsByType(
+                this.props.selectedAccount,
+                this.props.startDate,
+                this.props.endDate,
+                this.props.type
+            )
             .then((response) => {
                 this.setState(() => ({
                     posts: response,
                     loading: false
                 }));
-            }).catch(error => {
+            })
+            .catch(error => {
                 this.setState(() => ({
                     loading: false
                 }));
@@ -44,51 +53,50 @@ class PostsTable extends React.Component{
         
     };
 
-    render(){
-        const {name} = this.props;
+    render() {
+        const { posts, loading } = this.state;
+
         return (
-        <div className="overview-card">
-            <div className="card-header">
-                <img className="card-img" src="/images/facebook.png"></img> {name}
-                <AnalyticsTooltip tooltipDesc={this.props.tooltipDesc} />
+            <div>
+                <div className="table-title">
+                    Posts Table
+                </div>
+                <div className="card-table">
+                    {
+                        posts != null && !loading ?
+                        <div>
+                            {
+                                posts.map((post, index) => (
+                                    <div key={index}>
+                                        <PostsTableRow
+                                            avatar={post.from.picture.data.url}
+                                            username={post.from.name}
+                                            date={post.date}
+                                            text={post.message}
+                                            shares={post.shares}
+                                            sharesLabel="Shares"
+                                            comments={post.comments}
+                                            likes={post.reactions}
+                                            likesLabel="Reactions"
+                                        />
+                                    </div>
+                                ))
+                            }
+                        </div> :
+                        <div className="table-loader-style">
+                            {
+                                this.state.loading &&
+                                    <Loader
+                                        type="Bars"
+                                        color="#46a5d1"
+                                        height={70}
+                                        width={70}
+                                    />
+                            }
+                        </div>
+                    }
+                </div>
             </div>
-            <div className="card-table">
-                {this.state.posts !=null && !this.state.loading ?
-                <div className="table-wrapper-scroll-y table-scrollbar scrollable">
-                        <table className="table table-striped mb-0">
-                        <thead>
-                            <tr>
-                                <th scope="col" className="anl-posts-table-th-first">Date</th>
-                                <th scope="col" className="anl-posts-table-th-second">Message</th>
-                                <th scope="col">Reactions</th>
-                                <th scope="col">Comments</th>
-                                <th scope="col">Shares</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.posts.map((post, index)=> (
-                                <tr key={index} scope="row">
-                                    <td className="anl-posts-table-th-first" scope="row">
-                                        <div className="post-table-images">
-                                            <img className="pt-page-img" src={this.props.selectedChannel.avatar} />
-                                            <img className="pt-page-facebook" src="/images/facebook.png"></img>
-                                        </div>
-                                        <div className="post-table-page-date">
-                                            <p className="pt-page-name">{this.props.selectedChannel.name}</p>
-                                            <p className="pt-post-date">{post.date}</p>
-                                        </div>
-                                    </td>
-                                    <td className="anl-posts-table-th-second"><ReadMore characters={400}>{post.message ? post.message : ''}</ReadMore></td>
-                                    <td>{post.reactions}</td>
-                                    <td>{post.comments}</td>
-                                    <td>{post.shares}</td>                            
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div> : <div className="table-loader-style">{this.state.loading && <Loader type="Bars" color="#46a5d1" height={70} width={70} />}</div>}
-            </div>
-        </div>
         );
     }
 }
