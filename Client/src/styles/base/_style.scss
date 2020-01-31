@@ -3101,9 +3101,33 @@ button.doneBtn {
   font-family: Rubik;
   color: #363636;
 
-  .description {
-    font-size: 1em;
-    margin: 30px 0 50px 0;
+  .header {
+    margin-bottom: 50px;
+
+    &.articles {
+      margin-bottom: 15px;
+    }
+
+    .description-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 30px;
+
+      .description {
+        font-size: 1em;
+      }
+
+      .toggle-keywords {
+        color: #2D86DA;
+        font-size: 0.9em;
+        cursor: pointer;
+      }
+    }
+
+    .seperator {
+      margin: 10px 0 20px;
+    }
   }
 
   .sub-title {
@@ -3167,6 +3191,19 @@ button.doneBtn {
       font-size: 0.8em;
       background-color:rgba(216, 62, 126, 0.15);
       padding: 6px 6px;
+    }
+  }
+
+  .options-container {
+    display: flex;
+    justify-content: flex-end;
+
+    .icons {
+      display: flex;
+
+      div {
+        margin: 0 15px;
+      }
     }
   }
 }

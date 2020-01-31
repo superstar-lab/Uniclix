@@ -17,7 +17,7 @@ class SaveTopicsButton extends React.Component {
     updateProfile({
         topics: selectedTopics
     }).then((response) => {
-        setLoading(false);
+        setLoading(false, false);
     }).catch((error) => {
         console.log(error);
         setLoading(false);

@@ -4,50 +4,79 @@ import PropTypes from 'prop-types';
 
 import { TRENDING_TOPICS } from './config';
 
+import HeaderSection from './Sections/HeaderSection';
+import DisplayOptions from './Sections/DisplayOptions';
 import AddedByYouSection from './Sections/AddedByYouSection';
 import TopicButton from './Sections/TopicButton';
 import SaveTopicsButton from './Sections/SaveTopicsButton';
 import Loader from '../../components/Loader';
+import Articles from './Sections/Articles';
 
 class ContentFinderLanding extends React.Component {
   static propTypes = {
     selectedTopics: PropTypes.array
   };
 
-  state = {
-    isLoading: false
-  };
+  constructor(props) {
+    super(props);
 
-  setLoadingState = (value) => this.setState({ isLoading: value });
+    this.state = {
+      isLoading: false,
+      showTopics: !props.selectedTopics.length,
+      articlesView: 'grid'
+    };
+  }
+
+  toggleKeywords = () => this.setState({ showTopics: !this.state.showTopics });
+
+  setLoadingState = (isLoading, showTopics = true) => this.setState({
+    isLoading,
+    showTopics
+  });
+
+  setArticlesView = (value) => this.setState({ articlesView: value });
 
   render() {
     const { selectedTopics } = this.props;
-    const { isLoading } = this.state;
+    const { isLoading, showTopics } = this.state;
 
     const topicsAddedBYou = selectedTopics.filter(topic => TRENDING_TOPICS.indexOf(topic) === -1);
 
     return (
       <div className="content-finder">
-        <h2>Content Finder</h2>
-        <div className="description">Articles based on your choise of keywords</div>
-        <AddedByYouSection topicsAddedByYou={topicsAddedBYou} />
-        <div className="seperator mt20 mb20"></div>
-        <span className="sub-title">Trending Topics</span>
-        <div className="topics">
-          {
-            TRENDING_TOPICS.map((topic, index) => (
-              <TopicButton
-                key={`${index}-${topic}`}
-                topic={topic}
-                isSelected={selectedTopics.indexOf(topic) !== -1}
+        <HeaderSection showTopics={showTopics} toggleKeywords={this.toggleKeywords} />
+        {
+          showTopics && (
+            <React.Fragment>
+              <AddedByYouSection topicsAddedByYou={topicsAddedBYou} />
+                <div className="seperator mt20 mb20"></div>
+                <span className="sub-title">Trending Topics</span>
+                <div className="topics">
+                  {
+                    TRENDING_TOPICS.map((topic, index) => (
+                      <TopicButton
+                        key={`${index}-${topic}`}
+                        topic={topic}
+                        isSelected={selectedTopics.indexOf(topic) !== -1}
+                      />
+                    ))
+                  }
+                </div>
+              <SaveTopicsButton
+                setLoading={this.setLoadingState}
+                selectedTopics={selectedTopics}
               />
-            ))
-          }
-        </div>
-        <SaveTopicsButton
-          setLoading={this.setLoadingState}
-          selectedTopics={selectedTopics}
-        />
+            </React.Fragment>
+          )
+        }
+        {
+          !showTopics && (
+            <React.Fragment>
+              <DisplayOptions setView={this.setArticlesView} />
+              <Articles />
+            </React.Fragment>
+          )
+        }
         { isLoading && <Loader fullscreen /> }
       </div>
     );

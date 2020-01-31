@@ -1,7 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import Modal from "react-modal";
-import UpgradeAlert from '../../UpgradeAlert';
 import BottomScrollListener from 'react-bottom-scroll-listener';
 import Article from './Article';
 import {updateProfile} from "../../../requests/profile";
@@ -10,7 +8,6 @@ import {startSetProfile} from '../../../actions/profile';
 import {setPost} from '../../../actions/posts';
 import {ArticleLoader} from '../../Loader';
 import TailoredPostModal from '../../TailoredPostModal';
-import SocialAccountsPrompt from '../../SocialAccountsPrompt';
 
 class Articles extends React.Component {
 
@@ -20,7 +17,6 @@ class Articles extends React.Component {
         forbidden: false,
         topics: [],
         topic: "",
-        isTopicsModalOpen: false,
         isTailoredPostOpen: false,
         openedTitle: "",
         openedImage: "",
@@ -76,12 +72,6 @@ class Articles extends React.Component {
         });
     };
 
-    toggleTopicsModal = () => {
-        this.setState(() => ({
-            isTopicsModalOpen: !this.state.isTopicsModalOpen
-        }));
-    };
-
     toggleTailoredPostModal = ({title = "", image = "", source = "", description = "", postId = ""}) => {
         this.setState(() => ({
             isTailoredPostOpen: !this.state.isTailoredPostOpen,
@@ -102,7 +92,6 @@ class Articles extends React.Component {
     onTopicsSave = () => {
 
         this.setState(() => ({
-            isTopicsModalOpen: false,
             loading: true
         }));
 
@@ -155,7 +144,6 @@ class Articles extends React.Component {
     render(){   
         return(
             <div>
-            <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden}/>
                 <TailoredPostModal 
                     isOpen={this.state.isTailoredPostOpen}
                     postId={this.state.openedPostId}
@@ -165,36 +153,6 @@ class Articles extends React.Component {
                     description={this.state.openedDescription}
                     toggleTailoredPostModal={this.toggleTailoredPostModal}
                 />
-
-                <Modal
-                    isOpen={this.state.isTopicsModalOpen}
-                    ariaHideApp={false}
-                    closeTimeoutMS={300}
-                    className="topicsModal"
-                    >       
-                    <form onSubmit={(e) => this.addTopic(e)}> 
-                        <h3>Add Topics</h3>
-                        <div className="form-group flex_container-center">
-                            <div>
-                                {this.state.topics.length >= 15 ?
-                                    <input disabled type="text" className="form-control" onChange={(e) => this.onTopicsFieldChange(e.target.value)} value={this.state.topic} placeholder="food, pets, fashion..." /> 
-                                :
-                                    <input type="text" className="form-control" onChange={(e) => this.onTopicsFieldChange(e.target.value)} value={this.state.topic} placeholder="food, pets, fashion..." /> 
-                                }
-                                
-                            </div>
-                        </div>
-                    </form>
-
-                        
-                        {!!this.state.topics.length && this.state.topics.map((topic, index) => (
-                        <div key={index} className="addedItemLabels">{topic} <span className="fa fa-times link-cursor" onClick={() => this.removeTopic(index)}></span></div>  
-                        ))}
-                        
-                        <div className="right-inline top-border p10 m10-top">
-                            <button className="magento-btn small-btn" onClick={this.onTopicsSave}>Add</button>
-                        </div>
-                </Modal>
                 
                 {!(!!this.state.articles.length) && this.state.loading && 
                     <div>
@@ -205,8 +163,6 @@ class Articles extends React.Component {
                 }
                 { !!this.state.articles.length ?                 
                     <div>
-
-                        <h4 className="center-inline">Articles based on your choice of <a onClick={this.toggleTopicsModal} className="link-cursor">topics</a></h4>
                         {this.state.loading &&  <div>
                             <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
                             <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
@@ -239,16 +195,6 @@ class Articles extends React.Component {
                         <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
                         <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
                     </div>}
-                        {!this.state.loading &&
-                            <SocialAccountsPrompt 
-                                image = "/images/hello_bubble_smiley.svg"
-                                title = "Be the first to know your industry’s trending news"
-                                description = "Curate articles from thousands of sources that can base shared on the fly."
-                                buttonTitle = "Lest start  by selecting relevant keywords"
-                                action = {this.toggleTopicsModal}
-                            />
-                        }
-
                     </div>
                 }
             </div>
