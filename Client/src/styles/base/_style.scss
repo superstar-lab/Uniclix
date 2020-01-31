@@ -839,6 +839,9 @@ a:link {
 .stream-feed,
 .stream-maker.stream-size .stream-feed {
   height: 73.7vh;
+  background: #EAF3FB;
+  padding: 14px;
+  padding-top: 0;
   overflow: auto;
   overflow-x: hidden;
 }
@@ -916,10 +919,12 @@ a:link {
 }
 
 .stream-feed-container {
-  width: 100%;
-  background: white;
+  width: 100%;  
   padding: 16px;
-  margin-bottom: 2px;
+  margin-bottom: 14px;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
+  border-radius: 6px;
 }
 
 .stream-feed-container .username {
@@ -975,8 +980,6 @@ a:link {
 
 .stream-title {
   background: white;
-  border-top: 3px solid #4267b2;
-  border-bottom: 2px solid #f1f1f1;
   margin: 0;
   font-size: 1.6rem;
   color: #485576;
@@ -4001,7 +4004,7 @@ aside .btn-group {
 }
 
 .easygrey-bg {
-  background: #f8f8f8;
+  background-color: #F5F7FB !important;
   overflow: hidden;
 }
 
@@ -5166,4 +5169,8 @@ section.pricing {
       border-bottom: 1px solid $gray;
     }
   }
+}
+
+.action-btn:hover {
+  cursor: pointer;
 }

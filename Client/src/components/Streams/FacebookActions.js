@@ -233,7 +233,7 @@ class FacebookActions extends React.Component{
                         <span className={`status-counter ${commentPost}`}> {commentsCount}</span>
                     </span>
                 
-                    <i onClick={this.togglePostBox} className="fa fa-share"></i>
+                    <img onClick={this.togglePostBox} src="images/monitor-icons/back-small.svg"></img>
 
                     <Popup
                     trigger={<i className="fa fa-ellipsis-v" aria-hidden="true"></i>}

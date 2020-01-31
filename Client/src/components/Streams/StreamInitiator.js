@@ -28,6 +28,7 @@ class StreamInitiator extends React.Component {
             "Facebook"
         ],
         socialMediaCards: {},
+        selectedSocialCard: 'Twitter'
     }
 
 
@@ -128,7 +129,7 @@ class StreamInitiator extends React.Component {
     };
 
     onChangeSocialMedias = (idx, val) => {
-        console.log("aaa");
+        this.setState({selectedSocialCard: val});
     };
 
     render() {
@@ -186,7 +187,7 @@ class StreamInitiator extends React.Component {
 
                 <div className="monitor-label">
                     <span className="monitor-spacing">Social Network</span>
-                    <Select className="monitor-smalltitle" size="default" onChange={(val) => this.onChangeSocialMedias(index, val)}>
+                    <Select className="monitor-smalltitle" size="default" value={this.state.selectedSocialCard} onChange={(val) => this.onChangeSocialMedias(index, val)}>
                         {this.state.socialMedias.map((socialMedia, idx) => (
                             <Option value={socialMedia} key={idx}>
                                 <span className="social-media-selector-option">{socialMedia}</span>

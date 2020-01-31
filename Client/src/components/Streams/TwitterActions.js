@@ -176,17 +176,17 @@ class TwitterActions extends React.Component{
                 }
 
                 <div className="stream-action-icons">
-                    <i onClick={this.toggleReplyBox} className="fa fa-mail-forward"></i>
+                    <img onClick={this.toggleReplyBox} src="images/monitor-icons/back-small.svg"></img>
                     <span>
-                        <i onClick={() => this.retweetPost()} className={`fa fa-retweet ${retweetedPost}`}></i>
+                        <img onClick={() => this.retweetPost()} src="images/monitor-icons/retweets-contact.svg"></img>
                         <span className={`status-counter ${retweetedPost} `}> {retweetCount}</span>
                     </span>
                     <span>
-                        <i onClick={() => this.toggleLike()} className={`fa fa-heart ${likedPost}`}></i>
+                        <img onClick={() => this.toggleLike()} src="images/monitor-icons/heart-small.svg"></img>
                         <span className={`status-counter ${likedPost} `}> {likesCount}</span>
                     </span>
                     <Popup
-                    trigger={<i className="fa fa-ellipsis-v" aria-hidden="true"></i>}
+                    trigger={<img onClick={() => this.toggleLike()} src="images/monitor-icons/menu.svg"></img>}
                     on="click"
                     position="top center"
                     arrow={true}
