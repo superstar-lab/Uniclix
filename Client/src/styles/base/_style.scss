@@ -1416,7 +1416,6 @@ button.streammaker-btn:hover {
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  overflow: auto;
   background: rgba(0, 0, 0, 0.5) !important;
 }
 
@@ -2023,103 +2022,17 @@ button.streammaker-btn:hover {
   }
 }
 
-.item-list {
-  overflow: visible;
+.schedule-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 10px solid #0073B1;
+  border-radius: 6px 0px 0px 6px;
 
-  .schedule-row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    border-left: 10px solid #0073B1;
-    border-radius: 6px 0px 0px 6px;
-    cursor: pointer;
-
-    .item-actions {
-      padding-left: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: auto;
-      position: relative;
-      overflow: visible;
-
-      div {
-        float: right;
-        width: 30px;
-        height: 24px;
-        display: block;
-
-        ul {
-          position: absolute;
-          right: 0;
-          z-index: 999;
-          width: 190px;
-          display: none;
-          background: #FFFFFF;
-          box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.05);
-          border-radius: 8px;
-          top: 88%;
-          padding: 10px 0;
-
-          li {
-            padding: 12px 25px;
-
-            a {
-              font-family: Rubik;
-              font-style: normal;
-              font-weight: 500;
-              font-size: 16px;
-              line-height: 16px;
-              letter-spacing: 0.436364px;
-              color: #363636;
-            }
-          }
-        }
-
-        i {
-          color: #2D86DA;
-          font-size: 20px;
-          padding: 5px 0;
-          display: block;
-        }
-
-        &:hover {
-          ul {
-            display: block;
-          }
-        }
-      }
-
-      li {
-        margin-top: 0 !important;
-      }
-    }
-
-    .post-info {
-      display: flex;
-      align-items: center;
-
-      img {
-        max-width: 120px !important;
-        height: auto;
-        margin: 0;
-      }
-
-      .content-event {
-        padding: 0 10px;
-      }
-    }
-
-    h4 {
-      font-family: Lato;
-      font-weight: normal;
-      font-size: 14px;
-      line-height: 22px;
-      letter-spacing: 0.130517px;
-      color: #363636;
-    }
+  .item-actions li {
+    margin-top: 0 !important;
   }
 }
 
@@ -2161,19 +2074,6 @@ button.streammaker-btn:hover {
       }
     }
   }
-}
-
-.category-post {
-  padding: 5px;
-  background-color: #0073B1;
-  border-radius: 4px;
-  color: #fff;
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 16px;
-
 }
 
 .item-row {
@@ -2525,7 +2425,7 @@ button.streammaker-btn:hover {
 }
 
 .DraftEditor-root {
-  height: 100px;
+  height: 200px;
   overflow-y: auto;
 }
 
@@ -2690,20 +2590,16 @@ button.streammaker-btn:hover {
   opacity: 0;
 }
 
-.ReactModalPortal {
-  overflow: auto;
+.ReactModalPortal .ReactModal__Overlay {
+  transition: opacity 300ms ease-in-out;
+  background: rgba(0, 0, 0, 0.15);
 
-  .ReactModal__Overlay {
-    transition: opacity 300ms ease-in-out;
-    background: rgba(0, 0, 0, 0.15);
+  &--after-open {
+    opacity: 1;
+  }
 
-    &--after-open {
-      opacity: 1;
-    }
-
-    &--before-close {
-      opacity: 0;
-    }
+  &--before-close {
+    opacity: 0;
   }
 }
 
@@ -2737,7 +2633,7 @@ button.streammaker-btn:hover {
 }
 
 .compose-dialog {
-  max-width: 100%;
+  max-width: 520px;
 }
 
 .item-row .bottom-info {
@@ -5250,10 +5146,6 @@ section.pricing {
   position: relative;
   z-index: 9;
 
-  &.open-country {
-    z-index: 99;
-  }
-
   .country-list {
     background: $white;
     width: 100%;
@@ -5268,81 +5160,5 @@ section.pricing {
       padding: 1rem 1.4rem;
       border-bottom: 1px solid $gray;
     }
-  }
-}
-
-.compose-body {
-  .group-field {
-    margin: 10px 0px 20px 0;
-
-    label {
-      margin-bottom: 10px;
-      font-family: Rubik;
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 14px;
-      letter-spacing: 0.130517px;
-      color: #363636;
-    }
-
-    input,
-    select {
-      border: none;
-      background: #FFFFFF;
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
-      border-radius: 8px;
-    }
-
-    .row {
-      margin: 0 -8px;
-      align-items: flex-end;
-      display: flex;
-
-      >div {
-        padding: 0 8px;
-      }
-    }
-
-    .checkbox-inline {
-      margin-bottom: 8px;
-      font-family: Rubik;
-      font-size: 14px;
-      line-height: 14px;
-      letter-spacing: 0.130517px;
-      color: #363636;
-
-      input {
-        width: 18px;
-        height: 18px;
-        top: -1px;
-        margin: 0;
-        left: 0;
-      }
-    }
-  }
-
-  .uc-calendar {
-    position: relative;
-    height: 0;
-
-    .SingleDatePicker {
-      float: left;
-    }
-
-    .SingleDatePicker_picker {
-      top: 6px !important;
-    }
-  }
-
-  .default-button {
-    background: #2D86DA;
-    border-radius: 30px;
-    font-family: Rubik;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 16px;
-    letter-spacing: 0.436364px;
-    color: #FFFFFF;
-    padding: 12px 30px;
   }
 }
