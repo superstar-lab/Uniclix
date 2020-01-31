@@ -5,6 +5,10 @@ import StreamFeed from "./StreamFeed";
 import channelSelector, {channelById} from '../../selectors/channels';
 import {deleteStream, positionStream, updateStream} from '../../requests/streams';
 import {StreamMaker} from "./StreamInitiator";
+// Need to be updated
+import MonitorRightbar from "../TwitterBooster/Sections/MonitorRightbar";
+import getSocialMediaCards from '../../config/socialmediacards';
+// Need to be updated
 
 // fake data generator
 // const getItems = streams =>
@@ -65,7 +69,12 @@ class StreamItems extends Component {
       currentItemId: "",
       titleText: "",
       refresh: false,
-      loading: false
+      loading: false,
+      // Need to be updated
+      socialValue: 'Twitter',
+      socialMediaCards: getSocialMediaCards(),
+      socialCards: getSocialMediaCards().socialNetworkIcons
+      // Need to be updated
     };
 
     this.onDragEnd = this.onDragEnd.bind(this);
@@ -235,7 +244,7 @@ class StreamItems extends Component {
                 </Draggable>
               )})}
               {provided.placeholder}
-              {isStreamMakerOpen && <StreamMaker 
+              {/* {isStreamMakerOpen && <StreamMaker 
                 title="Add Stream" 
                 streamCreator={true} 
                 item={{value: "browse"}} 
@@ -244,7 +253,16 @@ class StreamItems extends Component {
                 streamSize={true}
                 minimize={true}
                 toggle={toggleStreamMaker}
-              />}
+              />} */}
+              {
+                isStreamMakerOpen && <MonitorRightbar
+                  socialCards={this.state.socialCards}
+                  socialValue={this.state.selectedSocial}
+                  creators={this.state.selectedSocial == 'Twitter' ? this.state.socialMediaCards.twitterSmallIcons : this.state.socialMediaCards.facebookSmallIcons}
+                  onChangeSocial={(val) => this.setState({selectedSocial: val})}
+                  onClickCreator={(val) => console.log('onClickCreator')}
+                />
+              }
             </div>
           )}
         </Droppable>

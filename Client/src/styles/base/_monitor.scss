@@ -481,3 +481,25 @@ $blue: lighten(rgb(4,159,217), 5%);
 		transform: rotateZ(390deg);
 	}
 }
+
+
+.card {
+    max-width: 345px;
+}
+
+.media {
+    height: 0px;
+    padding-top: 56.25%; // 16:9
+}
+
+.expand  {
+    transform: rotate(0deg);
+    margin-left: auto;
+}
+
+.expandOpen  {
+    transform: rotate(180deg);
+}
+.avatar  {
+    background-color: red;
+}

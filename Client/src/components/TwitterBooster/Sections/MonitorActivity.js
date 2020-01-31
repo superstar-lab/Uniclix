@@ -5,7 +5,7 @@ import { startSetChannels } from "../../../actions/channels";
 import 'react-dates/initialize';
 import { Grid } from '@material-ui/core';
 import { Select } from 'antd';
-import Activities from './Activities';
+import StreamTabs from '../../Streams/StreamTabs';
 
 const { Option } = Select;
 
@@ -61,25 +61,27 @@ class MonitorActivity extends React.Component {
                         justify="flex-start"
                         alignItems="center"
                     >
-                        <Grid container item lg={9} md={7}>
+                        <Grid container item lg={10} md={10}>
                             <h2>Monitor Activity</h2>
                         </Grid>
-                        <div className="monitor-refresh-btn">
-                            <span>Refresh every</span>
-                        </div>
-                        <div >
-                            <Select className="monitor-smalltitle" size="default" value={this.state.selectedHour} onChange={(val) => this.onChangeHour(val)}>
-                                {hours.map((hour, key) => (
-                                    <Option value={hour} key={key}>
-                                        <span className="social-media-selector-option">{hour}</span>
-                                    </Option>
-                                ))}
-                            </Select>
-                        </div>
+                        <Grid container item lg={2} md={2}>
+                            <div className="monitor-refresh-btn">
+                                <span>Refresh every</span>
+                            </div>
+                            <div >
+                                <Select className="monitor-smalltitle" size="default" value={this.state.selectedHour} onChange={(val) => this.onChangeHour(val)}>
+                                    {hours.map((hour, key) => (
+                                        <Option value={hour} key={key}>
+                                            <span className="social-media-selector-option">{hour}</span>
+                                        </Option>
+                                    ))}
+                                </Select>
+                            </div>
+                        </Grid>
                     </Grid>
                 </div>
                 <div>
-                    <Activities refreshRate={getRefreshRate()} />
+                    <StreamTabs />
                 </div>
             </div>
         );

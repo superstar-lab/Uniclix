@@ -592,12 +592,12 @@ a:link {
 
 .dndTabBarAfter {
   display: none;
-  background-color: #485576 !important;
+  background-color: #F5F7FB !important;
   border-bottom: 1px solid #485576 !important;
 }
 
 .dndTab {
-  background: #485576 !important;
+  background: #F5F7FB !important;
   border: none !important;
   border-bottom: none !important;
   display: flex;
@@ -606,7 +606,7 @@ a:link {
 
 .dndTabBefore,
 .dndTabAfter {
-  background: #485576 !important;
+  background: #F5F7FB !important;
   border: none !important;
   box-shadow: none !important;
   border-top: none !important;
@@ -615,44 +615,49 @@ a:link {
 .rdTabActive,
 .rdTabActive .dndTabAfter,
 .rdTabActive .dndTabBefore {
-  background: #5b6684 !important;
-  border: none !important;
+  background: #F5F7FB !important;
+  border-bottom: 3px #2D86DA solid !important;
 }
 
 .dndTabTitle,
 .rdTabCloseIcon {
-  color: #858ea4 !important;
+  color: #363636 !important;
   height: auto !important;
   margin-top: 0px !important;
   margin-bottom: 0px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.129174px;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  
 }
 
 .rdTabCloseIcon {
   text-shadow: none !important;
   opacity: 1 !important;
   color: #485576 !important;
-  background: #858ea4 !important;
-  font-size: 1rem !important;
+  font-size: 1.5rem !important;
   font-weight: bold;
-  width: 10px !important;
-  right: 10px !important;
+  width: 15px !important;
+  right: 15px !important;
+  border-radius: 100%;
 }
 
 .rdTabActive .dndTabTitle {
-  color: #ffffff !important;
+  color: #363636 !important;
+  font-weight: bold;
 }
 
 .rdTabActive .rdTabCloseIcon {
-  background: white !important;
+  background: #F5F7FB !important;
 }
 
 .rdTabCloseIcon.hover {
-  background: white !important;
+  background: darkgrey !important;
 }
 
 .dndTabBefore {
@@ -671,17 +676,17 @@ a:link {
 .rdTabAddButton {
   text-shadow: none !important;
   font-weight: light;
-  color: white !important;
-  border: 1px solid #858ea4 !important;
-  border-radius: 100%;
+  color: #363636 !important;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 6px;
 }
 
 .rdTabAddButton:hover {
-  color: white !important;
-  border: 1px solid white !important;
+  color: #363636 !important;
+  background-color: darkgrey;
+  border-radius: 100%;
 }
 
 .trash-btn {

@@ -25,7 +25,7 @@ const tabsClassNames = {
   
   const tabsStyles = {
     tabWrapper: {},
-    tabBar: {backgroundColor: '#485576', maxWidth: '100%', height: '50px'},
+    tabBar: {backgroundColor: '#F5F7FB', maxWidth: '100%', height: '50px', borderBottom: '1px #DBDBDB solid'},
     tab:{marginLeft: '0px', paddingLeft: '0px', paddingRight: '0px', height: '100%'},
     tabTitle: {},
     tabCloseIcon: {},
@@ -228,7 +228,7 @@ class StreamTabs extends Component {
                             {tab.streams.length ? 
                             <div className="easygrey-bg">
                                 <div className="stream-handles">
-                                    <button className="new-theme-btn" onClick={this.handleAddStream}>
+                                    {/* <button className="new-theme-btn" onClick={this.handleAddStream}>
                                         <span>+</span>
                                         Add Stream
                                     </button>
@@ -241,7 +241,7 @@ class StreamTabs extends Component {
                                             <option value={60}>Refresh every hour</option>
                                             <option value={120}>Refresh every 2 hours</option>
                                         </select>
-                                    </div>
+                                    </div> */}
                                 </div>
                                 <StreamItems 
                                     streams={tab.streams} 
