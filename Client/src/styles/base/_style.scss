@@ -838,7 +838,7 @@ a:link {
 
 .stream-feed,
 .stream-maker.stream-size .stream-feed {
-  height: 73.7vh;
+  height: 75vh;
   background: #EAF3FB;
   padding: 14px;
   padding-top: 0;
@@ -847,7 +847,9 @@ a:link {
 }
 
 .stream-action-icons .status-counter {
-  margin-left: 5px;
+  margin-left: 10px;
+  font-size: 14px;
+  line-height: 22px;
 }
 
 .stream-action-icons>span {
@@ -873,6 +875,7 @@ a:link {
   justify-content: space-between;
   align-items: center;
   margin-top: 15px;
+  margin-right: 20%;
   color: #485576;
   font-size: 1.4rem;
   cursor: pointer;
@@ -884,10 +887,6 @@ a:link {
 
 .stream-action-icons .fa.acted {
   border: 1px solid #25a2f0 !important;
-}
-
-.stream-action-icons .status-counter {
-  font-size: 12px;
 }
 
 .stream-action-icons .acted:hover {
@@ -925,6 +924,7 @@ a:link {
   background: #FFFFFF;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
   border-radius: 6px;
+  position: relative;
 }
 
 .stream-feed-container .username {
@@ -5173,4 +5173,10 @@ section.pricing {
 
 .action-btn:hover {
   cursor: pointer;
+}
+
+.stream-action-menu {
+  position: absolute;
+  top: 25px;
+  right: 7%;  
 }

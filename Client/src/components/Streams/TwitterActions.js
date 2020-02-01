@@ -186,9 +186,9 @@ class TwitterActions extends React.Component{
                         <span className={`status-counter ${likedPost} `}> {likesCount}</span>
                     </span>
                     <Popup
-                    trigger={<img onClick={() => this.toggleLike()} src="images/monitor-icons/menu.svg"></img>}
+                    trigger={<img className="stream-action-menu" src="images/monitor-icons/menu.svg"></img>}
                     on="click"
-                    position="top center"
+                    position="bottom left"
                     arrow={true}
                     closeOnDocumentClick={true}
                     >

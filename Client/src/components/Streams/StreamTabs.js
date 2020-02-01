@@ -227,8 +227,8 @@ class StreamTabs extends Component {
                          <div>
                             {tab.streams.length ? 
                             <div className="easygrey-bg">
-                                <div className="stream-handles">
-                                    {/* <button className="new-theme-btn" onClick={this.handleAddStream}>
+                                {/* <div className="stream-handles">
+                                    <button className="new-theme-btn" onClick={this.handleAddStream}>
                                         <span>+</span>
                                         Add Stream
                                     </button>
@@ -241,8 +241,8 @@ class StreamTabs extends Component {
                                             <option value={60}>Refresh every hour</option>
                                             <option value={120}>Refresh every 2 hours</option>
                                         </select>
-                                    </div> */}
-                                </div>
+                                    </div>
+                                </div> */}
                                 <StreamItems 
                                     streams={tab.streams} 
                                     refreshRate={parseInt(tab.refresh_rate)} 

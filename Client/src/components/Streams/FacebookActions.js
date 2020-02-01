@@ -236,9 +236,9 @@ class FacebookActions extends React.Component{
                     <img onClick={this.togglePostBox} src="images/monitor-icons/back-small.svg"></img>
 
                     <Popup
-                    trigger={<i className="fa fa-ellipsis-v" aria-hidden="true"></i>}
+                    trigger={<img className="stream-action-menu" src="images/monitor-icons/menu.svg"></img>}
                     on="click"
-                    position="top center"
+                    position="bottom left"
                     arrow={true}
                     closeOnDocumentClick={true}
                     >
