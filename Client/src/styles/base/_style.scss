@@ -3198,11 +3198,125 @@ button.doneBtn {
     display: flex;
     justify-content: flex-end;
 
+    .search-bar {
+      width: 100%;
+
+      // Overriding some ANTD styles
+      .ant-select-selection--multiple .ant-select-selection__choice {
+        background-color: rgba(216,62,127, 0.15);
+        color: #D83E7F;
+        font-weight: 500;
+        font-family: Rubik;
+      }
+    }
+
     .icons {
       display: flex;
 
       div {
         margin: 0 15px;
+      }
+    }
+  }
+
+  .articles-container {
+    margin-top: 50px;
+  }
+
+  .card-display {
+    .card-content {
+      .card-body {
+        background-color: #FFF;
+        padding: 20px;
+        height: 185px;
+        border-radius: 0 0 25px 25px;
+        position: relative;
+
+        .page {
+          position: absolute;
+          bottom: 20px;
+        }
+      }
+    }
+
+    .image-container {
+      position: relative;
+
+      &:hover > .img-overlay {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .topic-label {
+        position: absolute;
+        color: #D83E7F;
+        z-index: 2;
+        bottom: 20px;
+        right: 20px;
+        padding: 1px 15px;
+        background-color: #FFF;
+        font-weight: 500;
+        border-radius: 5px;
+      }
+
+      &:hover > .topic-label {
+        display: none;
+      }
+
+      .img-overlay {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        display: none;
+        background-color: rgba(255, 255, 255, 0.8);
+        top: 0;
+        left: 0;
+        border-radius: 25px 25px 0 0;
+
+        .icons {
+          display: flex;
+          width: 250px;
+          justify-content: space-around;
+
+          div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            height: 200px;
+            width: 100px;
+            cursor: pointer;
+
+            .svg-container {
+              height: 100px;
+              border-radius: 50px;
+
+              img {
+                height: 35px;
+              }
+            }
+
+            .action-label {
+              display: none;
+              position: absolute;
+              bottom: 0;
+              height: 40px;
+              text-align: center;
+              background-color: #0E4F8C;
+              color: #FFF;
+              border-radius: 10px;
+            }
+          }
+
+          div:hover > .svg-container {
+            background-color: rgba(45, 134, 218, 0.12);
+          }
+
+          div:hover > .action-label {
+            display: flex;
+          }
+        }
       }
     }
   }
@@ -3422,6 +3536,7 @@ button.doneBtn {
   height: 300px;
   object-fit: cover;
   border: 1px solid #dfdfdf;
+  border-radius: 25px 25px 0 0;
 }
 
 .article-share {

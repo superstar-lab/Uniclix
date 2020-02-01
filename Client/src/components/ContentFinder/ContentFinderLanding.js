@@ -23,7 +23,8 @@ class ContentFinderLanding extends React.Component {
     this.state = {
       isLoading: false,
       showTopics: !props.selectedTopics.length,
-      articlesView: 'grid'
+      articlesView: 'grid',
+      filterTopics: []
     };
   }
 
@@ -36,9 +37,21 @@ class ContentFinderLanding extends React.Component {
 
   setArticlesView = (value) => this.setState({ articlesView: value });
 
+  setFilterTopic = (topic) => {
+    this.setState({ filterTopics: [ ...this.state.filterTopics, topic ] });
+  }
+
+  deleteFilterTopic = (topic) => {
+    const { filterTopics } = this.state;
+    const topicIndex = filterTopics.indexOf(topic);
+
+    filterTopics.splice(topicIndex, 1);
+    this.setState({ filterTopics: [ ...filterTopics ] })
+  };
+
   render() {
     const { selectedTopics } = this.props;
-    const { isLoading, showTopics } = this.state;
+    const { isLoading, showTopics, filterTopics } = this.state;
 
     const topicsAddedBYou = selectedTopics.filter(topic => TRENDING_TOPICS.indexOf(topic) === -1);
 
@@ -72,8 +85,13 @@ class ContentFinderLanding extends React.Component {
         {
           !showTopics && (
             <React.Fragment>
-              <DisplayOptions setView={this.setArticlesView} />
-              <Articles />
+              <DisplayOptions
+                setView={this.setArticlesView}
+                selectedTopics={this.props.selectedTopics}
+                setFilterTopic={this.setFilterTopic}
+                deleteFilterTopic={this.deleteFilterTopic}
+              />
+              <Articles filterTopics={filterTopics} />
             </React.Fragment>
           )
         }

@@ -15,7 +15,7 @@ class AddedByYouSection extends React.Component {
   }
 
   onAddTopic = () => {
-    this.props.addTopic(this.state.inputValue);
+    this.props.addTopic(this.state.inputValue.toUpperCase());
     this.setState({ inputValue: '' })
   }
 
@@ -49,18 +49,20 @@ class AddedByYouSection extends React.Component {
           }
           {
             !!topicsAddedByYou.length && (
-              topicsAddedByYou.map(topic => (
-                <div className="topics">
+              <div className="topics">
                   <div className="sub-title">Added by you</div>
-                  <div
-                    className="keyword-item"
-                    onClick={topic => removeTopic(topic)}
-                  >
-                    #{topic}
-                    <i className="fa fa-close"></i>
-                  </div>
-                </div>
-              ))
+                  {
+                    topicsAddedByYou.map(topic => (
+                      <div
+                        className="keyword-item"
+                        onClick={() => removeTopic(topic)}
+                      >
+                        #{topic}
+                        <i className="fa fa-close"></i>
+                      </div>
+                    ))
+                  }
+              </div>
             )
           }
       </div>

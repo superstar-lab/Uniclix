@@ -1,15 +1,20 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 import BottomScrollListener from 'react-bottom-scroll-listener';
 import Article from './Article';
-import {updateProfile} from "../../../requests/profile";
-import {getArticles} from '../../../requests/articles';
-import {startSetProfile} from '../../../actions/profile';
-import {setPost} from '../../../actions/posts';
-import {ArticleLoader} from '../../Loader';
+import { updateProfile } from "../../../requests/profile";
+import { getArticles } from '../../../requests/articles';
+import { startSetProfile } from '../../../actions/profile';
+import { setPost } from '../../../actions/posts';
+import { ArticleLoader } from '../../Loader';
 import TailoredPostModal from '../../TailoredPostModal';
 
 class Articles extends React.Component {
+    static propTypes = {
+        filterTopics: PropTypes.array.isRequired
+    };
 
     state = {
         articles: [],
@@ -141,9 +146,12 @@ class Articles extends React.Component {
         }));
     };
 
-    render(){   
+    render() {
+        const { articles, loading } = this.state;
+        const { filterTopics } = this.props;
+
         return(
-            <div>
+            <div className="articles-container">
                 <TailoredPostModal 
                     isOpen={this.state.isTailoredPostOpen}
                     postId={this.state.openedPostId}
@@ -153,49 +161,40 @@ class Articles extends React.Component {
                     description={this.state.openedDescription}
                     toggleTailoredPostModal={this.toggleTailoredPostModal}
                 />
-                
-                {!(!!this.state.articles.length) && this.state.loading && 
-                    <div>
-                        <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
-                        <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
-                        <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
-                    </div>
+                {
+                    !!articles.length && !filterTopics.length && articles.map((article, index) => (
+                            <div key={index}>
+                            <Article
+                                key={index}
+                                article={article}
+                                setPost={this.props.setPost}
+                                toggleTailoredPostModal={this.toggleTailoredPostModal}
+                            />
+                            </div>
+                    ))
                 }
-                { !!this.state.articles.length ?                 
-                    <div>
-                        {this.state.loading &&  <div>
+                {
+                    !!articles.length && !!filterTopics.length && articles
+                        .filter(({ topic }) => filterTopics.indexOf(topic) !== -1)
+                        .map((article, index) => (
+                            <div key={index}>
+                            <Article
+                                key={index}
+                                article={article}
+                                setPost={this.props.setPost}
+                                toggleTailoredPostModal={this.toggleTailoredPostModal}
+                            />
+                            </div>
+                        ))
+                }
+                {
+                    loading && (
+                        <div>
                             <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
                             <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
                             <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
-                        </div>}
-                        <br/>
-
-                        {!!this.state.articles.length &&
-                            this.state.articles.map( (article, index) => {
-
-                                return (
-                                    <div key={index}>
-                                    <Article key={index} article={article} setPost={this.props.setPost} toggleTailoredPostModal={this.toggleTailoredPostModal}/>
-                                    </div>
-                                );
-                            })
-                        }
-                        {this.state.loading &&  <div>
-                            <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
-                            <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
-                            <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
-                        </div>}
-                        <BottomScrollListener onBottom={this.loadArticles} /> 
-                    </div>
-                :   
-                    
-                    <div className="initial-topics">
-                    {this.state.loading &&  <div>
-                        <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
-                        <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
-                        <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
-                    </div>}
-                    </div>
+                        </div>
+                    )
                 }
             </div>
         );
