@@ -9,9 +9,14 @@ import AutoCompleteSearch from '../AutoCompleteSearch';
 import getSocialMediaCards from '../../config/socialmediacards';
 import { Select } from 'antd';
 import { Grid } from '@material-ui/core';
+import AccountSelector from '../../components/AccountSelector';
+import SocialMediaSelector from '../../components/SocialMediaSelector';
 
 const { Option } = Select;
 
+const ACCOUNT_SELECTOR_FILTERS = {
+    'facebook': (account) => account.details.account_type !== 'profile'
+};
 class StreamInitiator extends React.Component {
 
     state = {
@@ -19,6 +24,7 @@ class StreamInitiator extends React.Component {
             { label: <ProfileChannel channel={this.props.selectedChannel} />, value: this.props.selectedChannel.name, type: this.props.selectedChannel.type, id: this.props.selectedChannel.id } :
             (this.props.channels.length ?
                 { label: <ProfileChannel channel={this.props.channels[0]} />, value: this.props.channels[0].name, type: this.props.channels[0].type, id: this.props.channels[0].id } : {}),
+        selectedAccountId: '',
         loading: false,
         searchModal: false,
         autoCompleteSearchModal: false,
@@ -28,13 +34,29 @@ class StreamInitiator extends React.Component {
             "Facebook"
         ],
         socialMediaCards: {},
-        selectedSocialCard: 'Twitter'
+        selectedSocialMedia: 'twitter',
+        socialMediasSelectorOptions: [],
+        selectedChannelBackup: null,
     }
 
 
     componentWillMount() {
         let socialMediaCards = getSocialMediaCards();
         this.setState({ socialMediaCards: socialMediaCards });
+
+        const accountSelectorOptions = this.getAccountSelectorOptions(this.state.selectedSocialMedia);
+        this.setState({ selectedAccountId: accountSelectorOptions[0].id });
+
+        this.props.channels.forEach(({ type, id }) => {
+            // Getting the options for the socialMedia dropdown
+            if (this.state.socialMediasSelectorOptions.indexOf(type) === -1) {
+                this.state.socialMediasSelectorOptions.push(type);
+            }
+            // The first channel to match the social media gets saved
+            if (this.state.selectedSocialMedia === type && !this.state.selectedChannelBackup) {
+                this.setState({ selectedChannelBackup: id });
+            }
+        });
     }
 
     handleAccountChange = (selectedAccount) => {
@@ -128,12 +150,29 @@ class StreamInitiator extends React.Component {
         }));
     };
 
-    onChangeSocialMedias = (idx, val) => {
-        this.setState({selectedSocialCard: val});
+    onSocialMediaChange = (value) => {
+        this.setState({ selectedSocialMedia: value });
+    };
+
+    onAccountChange = (value) => {
+        this.setState({ selectedAccountId: value });
+    };
+
+    getAccountSelectorOptions = (selectedSocialMedia) => {
+        const { channels } = this.props;
+        const socialMediaFilter = ACCOUNT_SELECTOR_FILTERS[selectedSocialMedia];
+        let options = channels.filter((account => account.type === selectedSocialMedia));
+
+        if (socialMediaFilter) {
+            options = options.filter(socialMediaFilter);
+        }
+
+        return options;
     };
 
     render() {
         const { selectedTab, reload, channels } = this.props;
+        const { selectedSocialMedia, selectedAccountId, selectedAccount, socialMediasSelectorOptions } = this.state;
         return (
             <div className="">
 
@@ -146,7 +185,7 @@ class StreamInitiator extends React.Component {
 
                 <Modal isOpen={!!this.state.autoCompleteSearchModal} ariaHideApp={false} className="stream-type-modal search-modal">
                     <div>
-                        <AutoCompleteSearch placeholder="Type a page name..." channelId={this.state.selectedAccount.id} setSelected={this.setAutoCompleteSelected} />
+                        <AutoCompleteSearch placeholder="Type a page name..." channelId={selectedAccount.id} setSelected={this.setAutoCompleteSelected} />
                         <button onClick={this.toggleAutoCompleteSearchModal} className="publish-btn-group autocomplete-done gradient-background-teal-blue link-cursor">Done</button>
                     </div>
                 </Modal>
@@ -161,7 +200,7 @@ class StreamInitiator extends React.Component {
                     reload={reload}
                     channels={channels}
                     /> 
-
+                
                 <StreamMaker 
                     title="Search Keywords"
                     description="Hear what people are saying about your industry, competition and your brand."
@@ -187,14 +226,24 @@ class StreamInitiator extends React.Component {
 
                 <div className="monitor-label">
                     <span className="monitor-spacing">Social Network</span>
-                    <Select className="monitor-smalltitle" size="default" value={this.state.selectedSocialCard} onChange={(val) => this.onChangeSocialMedias(index, val)}>
-                        {this.state.socialMedias.map((socialMedia, idx) => (
-                            <Option value={socialMedia} key={idx}>
-                                <span className="social-media-selector-option">{socialMedia}</span>
-                            </Option>
-                        ))}
-                    </Select>
+                    <div className="monitor-right-spacing">
+                        <SocialMediaSelector
+                            socialMedias={socialMediasSelectorOptions}
+                            value={selectedSocialMedia}
+                            onChange={this.onSocialMediaChange}
+                        />
+                    </div>
+                    <span className="monitor-spacing">Users</span>
+                    <div className="monitor-right-spacing">
+                        <AccountSelector
+                            socialMedia={selectedSocialMedia}
+                            onChange={this.onAccountChange}
+                            value={selectedAccountId}
+                            accounts={this.getAccountSelectorOptions(selectedSocialMedia)}
+                        />
+                    </div>
                 </div>
+
                 <Grid container>
                     <Grid item md={9}>
                         <StreamCreators creators={this.state.socialMediaCards.twitterBigIcons} />
@@ -339,7 +388,7 @@ const mapStateToProps = (state) => {
 
     return {
         channels,
-        selectedChannel: selectedChannel.length ? selectedChannel[0] : {}
+        selectedChannel: selectedChannel.length ? selectedChannel[0] : {},
     }
 }
 

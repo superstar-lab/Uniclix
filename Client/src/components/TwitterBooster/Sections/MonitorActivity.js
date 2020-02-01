@@ -62,22 +62,24 @@ class MonitorActivity extends React.Component {
                         justify="flex-start"
                         alignItems="center"
                     >
-                        <Grid container item lg={10} md={10}>
+                        <Grid item lg={10} md={9}>
                             <h2>Monitor Activity</h2>
                         </Grid>
-                        <Grid container item lg={2} md={2}>
-                            <div className="monitor-refresh-btn">
-                                <span>Refresh every</span>
-                            </div>
-                            <div >
-                                <Select className="monitor-smalltitle" size="default" value={this.state.selectedHour} onChange={(val) => this.onChangeHour(val)}>
-                                    {hours.map((hour, key) => (
-                                        <Option value={hour} key={key}>
-                                            <span className="social-media-selector-option">{hour}</span>
-                                        </Option>
-                                    ))}
-                                </Select>
-                            </div>
+                        <Grid item lg={2} md={3} sm={12}>
+                            <Grid item container>
+                                <Grid item containter item md={6}>
+                                    <span>Refresh every</span>
+                                </Grid>
+                                <Grid item container item md={6}>
+                                    <Select className="monitor-smalltitle" size="default" value={this.state.selectedHour} onChange={(val) => this.onChangeHour(val)}>
+                                        {hours.map((hour, key) => (
+                                            <Option value={hour} key={key}>
+                                                <span className="social-media-selector-option">{hour}</span>
+                                            </Option>
+                                        ))}
+                                    </Select>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </div>
