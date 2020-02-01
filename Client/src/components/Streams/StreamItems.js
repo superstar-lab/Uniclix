@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import StreamFeed from "./StreamFeed";
-import channelSelector, {channelById} from '../../selectors/channels';
-import {deleteStream, positionStream, updateStream} from '../../requests/streams';
-import {StreamMaker} from "./StreamInitiator";
+import channelSelector, { channelById } from '../../selectors/channels';
+import { deleteStream, positionStream, updateStream } from '../../requests/streams';
+import { StreamMaker } from "./StreamInitiator";
+// Need to be updated
+import MonitorRightbar from "../TwitterBooster/Sections/MonitorRightbar";
+import getSocialMediaCards from '../../config/socialmediacards';
+import { Button, Grid } from '@material-ui/core';
+// Need to be updated
 
 // fake data generator
 // const getItems = streams =>
@@ -32,6 +37,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   minWidth: `320px`,
   height: `auto`,
   outline: `none`,
+  borderRadius: '6px',
 
   // change background colour if dragging
   background: isDragging ? '#f1f1f1' : '#f1f1f1',
@@ -42,16 +48,18 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 });
 
 const getTitleStyle = (isDragging, draggableStyle) => ({
-    // some basic styles to make the items look a bit nicer
-    userSelect: 'none',
-    background: isDragging ? 'lightgreen' : 'white',
-  
-    // styles we need to apply on draggables
-    //...draggableStyle,
-  });
+  // some basic styles to make the items look a bit nicer
+  userSelect: 'none',
+  background: isDragging ? 'lightgreen' : '#EAF3FB',
+  paddingLeft: '30px',
+  paddingRight: '30px',
+
+  // styles we need to apply on draggables
+  //...draggableStyle,
+});
 
 const getListStyle = isDraggingOver => ({
-  background: isDraggingOver ? 'lightblue' : '#f8f8f8',
+  background: isDraggingOver ? 'lightblue' : '#F5F7FB',
   display: 'flex',
   padding: grid,
   overflow: 'auto'
@@ -65,14 +73,19 @@ class StreamItems extends Component {
       currentItemId: "",
       titleText: "",
       refresh: false,
-      loading: false
+      loading: false,
+      // Need to be updated
+      socialValue: 'Twitter',
+      socialMediaCards: getSocialMediaCards(),
+      socialCards: getSocialMediaCards().socialNetworkIcons
+      // Need to be updated
     };
 
     this.onDragEnd = this.onDragEnd.bind(this);
   }
-  
-  componentDidUpdate(prevProps){
-    if(this.props.streams !== prevProps.streams){
+
+  componentDidUpdate(prevProps) {
+    if (this.props.streams !== prevProps.streams) {
       this.setState(() => ({
         items: this.props.streams.length ? this.props.streams : []
       }));
@@ -128,20 +141,20 @@ class StreamItems extends Component {
     const currentItemId = this.state.currentItemId;
     const titleText = this.state.titleText;
     this.setState(() => ({
-        items: this.state.items.map(item => {
-            if(item.id === currentItemId){
-              item.title = titleText;
-            }
-            return item;
-        }),
-        currentItemId: "",
-        titleText: ""
+      items: this.state.items.map(item => {
+        if (item.id === currentItemId) {
+          item.title = titleText;
+        }
+        return item;
+      }),
+      currentItemId: "",
+      titleText: ""
     }), () => updateStream(currentItemId, titleText));
   }
-  
+
   handleTitleClick = (e) => {
     document.addEventListener('click', this.handleOutsideClick, false);
-    let item = {id: "", title: ""};
+    let item = { id: "", title: "" };
 
     if (item = e.target.getAttribute('data-editable-item')) {
       item = JSON.parse(item);
@@ -155,11 +168,11 @@ class StreamItems extends Component {
 
   handleOutsideClick = (e) => {
     // ignore clicks on the component itself
-    if(typeof e === "undefined") return;
+    if (typeof e === "undefined") return;
 
-    if(e.target.getAttribute('data-editable')) return;
+    if (e.target.getAttribute('data-editable')) return;
 
-    let item = {id: "", title: ""};
+    let item = { id: "", title: "" };
 
     if (item = e.target.getAttribute('data-editable-item')) {
       item = JSON.parse(item);
@@ -175,13 +188,13 @@ class StreamItems extends Component {
 
   handleKeyDown = (e) => {
 
-    if(e.key === "Enter") {
+    if (e.key === "Enter") {
       this.handleTitleChangeSubmit();
     }
   }
 
   render() {
-    const {channels, refreshRate, selectedTab, reload, toggleStreamMaker, isStreamMakerOpen} = this.props;
+    const { channels, refreshRate, selectedTab, reload, toggleStreamMaker, isStreamMakerOpen } = this.props;
 
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
@@ -193,49 +206,60 @@ class StreamItems extends Component {
               {...provided.droppableProps}
             >
               {this.state.items.map((item, index) => {
-                const channel = channelById(channels, {id: item.channel_id});
+                const channel = channelById(channels, { id: item.channel_id });
                 return (
-                channel && <Draggable key={item.id} draggableId={item.id} index={index}>
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                      )}
-                    >
-                    
-                      <h3 style={getTitleStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                      )} className={`stream-title ${item.network}_bt`}>
-                        <i className={`fa fa-${item.network} ${item.network}_bg social-icon`}></i> 
-                          { this.state.currentItemId == item.id ? 
-                            <input type="text" className="text-cursor" maxLength="14" data-editable={true} onKeyDown={this.handleKeyDown} onChange={this.handleTitleChange} value={this.state.titleText} /> : 
-                            <span className="text-cursor" onClick={this.handleTitleClick} data-editable-item={JSON.stringify(item)}> {item.title} </span> } 
-            
-                            <span className="stream-user">{item.network == "twitter" ? channel.username : channel.name}</span>
-                        <i className={'fa fa-close pull-right'} onClick={() => this.handleStreamClose(item)}></i>
-                        <i className={`fa fa-refresh ${this.state.loading === item.id ? 'fa-spin' : ''} link-cursor pull-right `} onClick={() => this.refresh(item.id)}></i>
+                  channel && <Draggable key={item.id} draggableId={item.id} index={index}>
+                    {(provided, snapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={getItemStyle(
+                          snapshot.isDragging,
+                          provided.draggableProps.style
+                        )}
+                      >
+
+                        <h3 style={getTitleStyle(
+                          snapshot.isDragging,
+                          provided.draggableProps.style
+                        )} className={`stream-title`}>
+                          <Grid container>
+                            <Grid item md={1}>
+                              <img src={`/images/monitor-icons/${item.network}-small.svg`} />
+                            </Grid>
+                            <Grid item md={8}>
+                              {this.state.currentItemId == item.id ?
+                                <input type="text" className="text-cursor" maxLength="14" data-editable={true} onKeyDown={this.handleKeyDown} onChange={this.handleTitleChange} value={this.state.titleText} /> :
+                                <span className="text-cursor" onClick={this.handleTitleClick} data-editable-item={JSON.stringify(item)}> {item.title} </span>}
+                              <span className="stream-user">{item.network == "twitter" ? channel.username : channel.name}</span>
+                            </Grid>
+                            <Grid item md={2}>
+                              <img className="action-btn" src="/images/monitor-icons/refresh.svg" onClick={() => this.refresh(item.id)} />
+                            </Grid>
+                            <Grid item md={1}>
+                              <img className="action-btn" src="/images/monitor-icons/close.svg" onClick={() => this.handleStreamClose(item)} />
+                            </Grid>
+
+                          </Grid>
                         </h3>
 
-                       <StreamFeed 
-                        streamItem = {item} 
-                        channel={channel} 
-                        reload={reload}
-                        selectedTab={selectedTab} 
-                        refreshId={this.state.refresh} 
-                        resetRefresh={this.refresh}
-                        refreshRate={refreshRate} 
-                        resetLoading={this.loading}/>
-                    </div>
-                  )}
-                </Draggable>
-              )})}
+                        <StreamFeed
+                          streamItem={item}
+                          channel={channel}
+                          reload={reload}
+                          selectedTab={selectedTab}
+                          refreshId={this.state.refresh}
+                          resetRefresh={this.refresh}
+                          refreshRate={refreshRate}
+                          resetLoading={this.loading} />
+                      </div>
+                    )}
+                  </Draggable>
+                )
+              })}
               {provided.placeholder}
-              {isStreamMakerOpen && <StreamMaker 
+              {/* {isStreamMakerOpen && <StreamMaker 
                 title="Add Stream" 
                 streamCreator={true} 
                 item={{value: "browse"}} 
@@ -244,7 +268,16 @@ class StreamItems extends Component {
                 streamSize={true}
                 minimize={true}
                 toggle={toggleStreamMaker}
-              />}
+              />} */}
+              {
+                isStreamMakerOpen && <MonitorRightbar
+                  socialCards={this.state.socialCards}
+                  socialValue={this.state.selectedSocial}
+                  creators={this.state.selectedSocial == 'Twitter' ? this.state.socialMediaCards.twitterSmallIcons : this.state.socialMediaCards.facebookSmallIcons}
+                  onChangeSocial={(val) => this.setState({ selectedSocial: val })}
+                  onClickCreator={(val) => console.log('onClickCreator')}
+                />
+              }
             </div>
           )}
         </Droppable>
@@ -254,10 +287,10 @@ class StreamItems extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const channels = channelSelector(state.channels.list, {selected: undefined, provider: undefined, publishable: true});
+  const channels = channelSelector(state.channels.list, { selected: undefined, provider: undefined, publishable: true });
 
   return {
-      channels
+    channels
   }
 }
 

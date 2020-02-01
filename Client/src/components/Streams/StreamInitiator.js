@@ -1,22 +1,40 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Modal from 'react-modal';
-import channelSelector, {streamChannels} from '../../selectors/channels';
-import {addStream} from '../../requests/streams';
+import channelSelector, { streamChannels } from '../../selectors/channels';
+import { addStream } from '../../requests/streams';
 import StreamCreator from './StreamCreator';
+import StreamCreators from "../TwitterBooster/Sections/StreamCreators";
 import AutoCompleteSearch from '../AutoCompleteSearch';
+import getSocialMediaCards from '../../config/socialmediacards';
+import { Select } from 'antd';
+import { Grid } from '@material-ui/core';
 
-class StreamInitiator extends React.Component{
+const { Option } = Select;
+
+class StreamInitiator extends React.Component {
 
     state = {
-        selectedAccount:  Object.entries(this.props.selectedChannel).length ? 
-        {label: <ProfileChannel channel={this.props.selectedChannel} />, value: this.props.selectedChannel.name, type: this.props.selectedChannel.type, id: this.props.selectedChannel.id} : 
-        (this.props.channels.length ? 
-          {label: <ProfileChannel channel={this.props.channels[0]} />, value: this.props.channels[0].name, type: this.props.channels[0].type, id: this.props.channels[0].id} : {}),
+        selectedAccount: Object.entries(this.props.selectedChannel).length ?
+            { label: <ProfileChannel channel={this.props.selectedChannel} />, value: this.props.selectedChannel.name, type: this.props.selectedChannel.type, id: this.props.selectedChannel.id } :
+            (this.props.channels.length ?
+                { label: <ProfileChannel channel={this.props.channels[0]} />, value: this.props.channels[0].name, type: this.props.channels[0].type, id: this.props.channels[0].id } : {}),
         loading: false,
         searchModal: false,
         autoCompleteSearchModal: false,
-        searchTerm: ""
+        searchTerm: "",
+        socialMedias: [
+            "Twitter",
+            "Facebook"
+        ],
+        socialMediaCards: {},
+        selectedSocialCard: 'Twitter'
+    }
+
+
+    componentWillMount() {
+        let socialMediaCards = getSocialMediaCards();
+        this.setState({ socialMediaCards: socialMediaCards });
     }
 
     handleAccountChange = (selectedAccount) => {
@@ -37,59 +55,59 @@ class StreamInitiator extends React.Component{
         const searchTerm = this.state.searchTerm;
 
         return addStream(item, channelId, selectedTab, network, searchTerm).then(() => this.props.reload()).then(() => {
-           if(typeof this.props.close !== "undefined") this.props.close();
+            if (typeof this.props.close !== "undefined") this.props.close();
         });
     };
 
     handleTypeClick = (item) => {
-        const {selectedAccount} = this.state;
+        const { selectedAccount } = this.state;
         let input = item;
-        if(item.value == "myPostsMentions"){
-            if(selectedAccount.type == "facebook"){
-                input =  {label: "My Posts", value: "myPosts"} 
-            }else if(selectedAccount.type == "twitter"){
-                input = {label: "My Tweets", value: "tweets"};
+        if (item.value == "myPostsMentions") {
+            if (selectedAccount.type == "facebook") {
+                input = { label: "My Posts", value: "myPosts" }
+            } else if (selectedAccount.type == "twitter") {
+                input = { label: "My Tweets", value: "tweets" };
             }
 
             this.submitStream(input).then(response => {
-                input = {label: "Mentions", value: "mentions"};
+                input = { label: "Mentions", value: "mentions" };
                 this.submitStream(input);
             });
 
             return;
         }
-        else if(item.value === "keywords"){
-            if(selectedAccount.type == "facebook"){
+        else if (item.value === "keywords") {
+            if (selectedAccount.type == "facebook") {
                 this.toggleAutoCompleteSearchModal();
                 return;
-            }else if(selectedAccount.type == "twitter"){
+            } else if (selectedAccount.type == "twitter") {
                 this.toggleSearchModal();
                 return;
             }
-        }else if(item.value === "browse"){
+        } else if (item.value === "browse") {
             this.toggleStreamCreator();
             return;
-        }    
+        }
 
         this.submitStream(input);
     }
 
     handleSearchInputChange = (event) => {
 
-        try{
+        try {
             const value = event.target.value;
             this.setState(() => (
-                {searchTerm: value}
+                { searchTerm: value }
             ));
-        }catch(e){}
-    } 
+        } catch (e) { }
+    }
 
     toggleSearchModal = () => {
         this.setState(() => ({
             searchModal: !this.state.searchModal
         }), () => {
-            if(!this.state.searchModal && this.state.searchTerm !== ""){
-                this.submitStream({label: "Search", value: "search", icon: "search"});
+            if (!this.state.searchModal && this.state.searchTerm !== "") {
+                this.submitStream({ label: "Search", value: "search", icon: "search" });
             }
         });
     };
@@ -98,8 +116,8 @@ class StreamInitiator extends React.Component{
         this.setState(() => ({
             autoCompleteSearchModal: !this.state.autoCompleteSearchModal
         }), () => {
-            if(!this.state.autoCompleteSearchModal && this.state.searchTerm !== ""){
-                this.submitStream({label: "Pages", value: "pages", icon: "flag"});
+            if (!this.state.autoCompleteSearchModal && this.state.searchTerm !== "") {
+                this.submitStream({ label: "Pages", value: "pages", icon: "flag" });
             }
         });
     };
@@ -110,26 +128,30 @@ class StreamInitiator extends React.Component{
         }));
     };
 
-    render(){
-        const {selectedTab, reload, channels} = this.props;
+    onChangeSocialMedias = (idx, val) => {
+        this.setState({selectedSocialCard: val});
+    };
+
+    render() {
+        const { selectedTab, reload, channels } = this.props;
         return (
-            <div className="stream-initiator easygrey-bg">
+            <div className="">
 
                 <Modal isOpen={!!this.state.searchModal} ariaHideApp={false} className="stream-type-modal search-modal">
                     <div>
-                        <input type="text" onChange={e => this.handleSearchInputChange(e)} value={this.state.searchTerm} placeholder="Example: coca cola or #fashion"/>
+                        <input type="text" onChange={e => this.handleSearchInputChange(e)} value={this.state.searchTerm} placeholder="Example: coca cola or #fashion" />
                         <button onClick={this.toggleSearchModal} className="publish-btn-group gradient-background-teal-blue link-cursor">Done</button>
                     </div>
                 </Modal>
 
                 <Modal isOpen={!!this.state.autoCompleteSearchModal} ariaHideApp={false} className="stream-type-modal search-modal">
                     <div>
-                        <AutoCompleteSearch placeholder="Type a page name..." channelId={this.state.selectedAccount.id} setSelected={this.setAutoCompleteSelected}/>
+                        <AutoCompleteSearch placeholder="Type a page name..." channelId={this.state.selectedAccount.id} setSelected={this.setAutoCompleteSelected} />
                         <button onClick={this.toggleAutoCompleteSearchModal} className="publish-btn-group autocomplete-done gradient-background-teal-blue link-cursor">Done</button>
                     </div>
                 </Modal>
 
-                <StreamMaker 
+                {/* <StreamMaker 
                     title="My Posts & Mentions"
                     description="Keep track of our own activity and monitor your mentions and post engagement."
                     icon = "at"
@@ -161,9 +183,25 @@ class StreamInitiator extends React.Component{
                     selectedTab={selectedTab}
                     reload={reload}
                     channels={channels}
-                    /> 
+                    />  */}
+
+                <div className="monitor-label">
+                    <span className="monitor-spacing">Social Network</span>
+                    <Select className="monitor-smalltitle" size="default" value={this.state.selectedSocialCard} onChange={(val) => this.onChangeSocialMedias(index, val)}>
+                        {this.state.socialMedias.map((socialMedia, idx) => (
+                            <Option value={socialMedia} key={idx}>
+                                <span className="social-media-selector-option">{socialMedia}</span>
+                            </Option>
+                        ))}
+                    </Select>
+                </div>
+                <Grid container>
+                    <Grid item md={9}>
+                        <StreamCreators creators={this.state.socialMediaCards.twitterBigIcons} />
+                    </Grid>
+                </Grid>
             </div>
-            
+
         )
     }
 }
@@ -192,7 +230,7 @@ export const StreamFeedItemPlaceholder = () => (
     </div>
 );
 
-export class StreamMaker extends React.Component{
+export class StreamMaker extends React.Component {
     state = {
         streamCreator: this.props.streamCreator ? this.props.streamCreator : false
     }
@@ -203,93 +241,93 @@ export class StreamMaker extends React.Component{
         }));
     };
 
-    render(){
+    render() {
 
         const {
-            title, 
-            description, 
-            icon, 
-            intro=false, 
-            onItemClick, 
-            item, 
-            selectedTab, 
-            reload, 
-            channels, 
-            streamSize=false,
+            title,
+            description,
+            icon,
+            intro = false,
+            onItemClick,
+            item,
+            selectedTab,
+            reload,
+            channels,
+            streamSize = false,
             toggle,
             minimize
         } = this.props;
 
-        const {streamCreator} = this.state;
+        const { streamCreator } = this.state;
         return (
             <div className={`stream-maker ${streamSize && 'stream-size'}`}>
-            <h3 className={`stream-title`}>
-            
-                <span className="text-cursor">{!!icon && <img src={`/images/${icon}.svg`} />} {title} </span> 
-                {!!minimize && <i className="fa fa-minus pull-right link-cursor" onClick={toggle}></i>}
+                <h3 className={`stream-title`}>
 
-            </h3>
+                    <span className="text-cursor">{!!icon && <img src={`/images/${icon}.svg`} />} {title} </span>
+                    {!!minimize && <i className="fa fa-minus pull-right link-cursor" onClick={toggle}></i>}
 
-            {!streamCreator ? 
-            <div className="stream-feed">
-                <div className="stream-feed-container">
-                    <div className="stream-feed-container-text">
-                        {description}
+                </h3>
+
+                {!streamCreator ?
+                    <div className="stream-feed">
+                        <div className="stream-feed-container">
+                            <div className="stream-feed-container-text">
+                                {description}
+                            </div>
+                            <div className="txt-center">
+                                {item.value === "browse" || channels.length > 1 ?
+                                    <button className="magento-btn mb25" onClick={() => this.toggleStreamCreator()}>Get Started</button> :
+                                    <button className="magento-btn mb25" onClick={() => onItemClick(item)}>Get Started</button>
+                                }
+                            </div>
+                        </div>
+
+                        <div className={`stream-feed-container ${intro && 'blur'}`}>
+                            <StreamFeedItemPlaceholder />
+                        </div>
+
+                        <div className={`stream-feed-container ${intro && 'blur'}`}>
+                            <StreamFeedItemPlaceholder />
+                        </div>
+
+                        <div className={`stream-feed-container ${intro && 'blur'}`}>
+                            <StreamFeedItemPlaceholder />
+                        </div>
+
+                        <div className={`stream-feed-container ${intro && 'blur'}`}>
+                            <StreamFeedItemPlaceholder />
+                        </div>
+
+                        {!!intro && <div className="stream-intro">
+                            <img src="/images/hello_bubble_smiley.svg" />
+                            <h3>Welcome to Streams: </h3>
+                            <h5>People are talking, make sure your listening.</h5>
+                            <p>A great way to manage mentions and monitor keywords and hashtags.</p>
+                        </div>}
                     </div>
-                    <div className="txt-center">
-                        { item.value === "browse" || channels.length > 1 ?
-                            <button className="magento-btn mb25" onClick={() => this.toggleStreamCreator()}>Get Started</button> :
-                            <button className="magento-btn mb25" onClick={() => onItemClick(item)}>Get Started</button>
+                    :
+                    <div className="stream-feed stream-creator-feed scrollbar">
+                        {item.value === "browse" ?
+                            <StreamCreator selectedTab={selectedTab} reload={reload} verticalDisplay={true} />
+                            :
+                            <StreamCreator selectedTab={selectedTab} reload={reload} verticalDisplay={true} defaultItem={item} />
                         }
                     </div>
-                </div>
-
-                <div className={`stream-feed-container ${intro && 'blur'}`}>
-                    <StreamFeedItemPlaceholder />
-                </div>  
-
-                <div className={`stream-feed-container ${intro && 'blur'}`}>
-                    <StreamFeedItemPlaceholder />
-                </div>  
-
-                <div className={`stream-feed-container ${intro && 'blur'}`}>
-                    <StreamFeedItemPlaceholder />
-                </div>  
-
-                <div className={`stream-feed-container ${intro && 'blur'}`}>
-                    <StreamFeedItemPlaceholder />
-                </div>  
-
-                {!!intro && <div className="stream-intro">
-                    <img src="/images/hello_bubble_smiley.svg" />
-                    <h3>Welcome to Streams: </h3>
-                    <h5>People are talking, make sure your listening.</h5>
-                    <p>A great way to manage mentions and monitor keywords and hashtags.</p>
-                </div>}
+                }
             </div>
-            :
-                <div className="stream-feed stream-creator-feed scrollbar">
-                    {item.value === "browse" ?
-                        <StreamCreator selectedTab={selectedTab} reload={reload} verticalDisplay={true}/>
-                        :
-                        <StreamCreator selectedTab={selectedTab} reload={reload} verticalDisplay={true} defaultItem={item}/>
-                    }
-                </div>
-            }
-        </div>
         );
     }
 }
 
-const ProfileChannel = ({channel}) => (
+const ProfileChannel = ({ channel }) => (
     <div className="channel-container">
         <div className="profile-info pull-right">
             <span className="pull-left profile-img-container">
-                <img src={channel.avatar}/>
+                <img src={channel.avatar} />
                 <i className={`fa fa-${channel.type} ${channel.type}_bg smallIcon`}></i>
             </span>
             <div className="pull-left"><p className="profile-name" title={channel.name}>{channel.name}</p>
-            <p className="profile-username">{channel.username !== null ? "@"+channel.username : ""}</p>
+                <p className="profile-username">{channel.username !== null ? "@" + channel.username : ""}</p>
             </div>
         </div>
     </div>
@@ -297,8 +335,8 @@ const ProfileChannel = ({channel}) => (
 
 const mapStateToProps = (state) => {
     const channels = streamChannels(state.channels.list);
-    const selectedChannel = channelSelector(channels, {selected: 1});
-    
+    const selectedChannel = channelSelector(channels, { selected: 1 });
+
     return {
         channels,
         selectedChannel: selectedChannel.length ? selectedChannel[0] : {}
