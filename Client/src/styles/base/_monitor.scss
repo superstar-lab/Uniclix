@@ -40,13 +40,19 @@
 }
 
 .monitor-label {
-    margin-top: 30px
+	margin-top: 30px;
+	justify-content: flex-start;
+    display: flex;
 }
 
 .monitor-spacing {
-    margin-right: 20px;
+	margin-right: 7px;
+	margin-top: 7px;
 }
 
+.monitor-right-spacing{
+	margin-right: 20px;
+}
 .monitor-rightspacing {
     float: right;
     margin-right: -30px;
