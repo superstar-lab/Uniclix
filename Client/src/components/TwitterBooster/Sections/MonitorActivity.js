@@ -7,6 +7,7 @@ import { Grid } from '@material-ui/core';
 import { Select } from 'antd';
 import StreamTabs from '../../Streams/StreamTabs';
 
+
 const { Option } = Select;
 
 class MonitorActivity extends React.Component {
@@ -82,6 +83,7 @@ class MonitorActivity extends React.Component {
                 </div>
                 <div>
                     <StreamTabs />
+                       
                 </div>
             </div>
         );
