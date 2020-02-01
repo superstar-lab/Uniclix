@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { UTC_MONTHS } from '../../../utils/constants';
+import { UTC_MONTHS, MONTHS_FINISH_DATE } from '../../../utils/constants';
 
 const PERIODS = [
   'Year',
@@ -9,66 +9,185 @@ const PERIODS = [
   'Day'
 ]
 
-class ChartsSectionTab extends React.Component {
-  state = {
-    accountId: 'account',
-    selectedPeriod: 'Week',
-    rangeMovement: 0 // Will determine the dates that the user is seeing
-  };
+const TWITTER_PERIODS = [
+  'Month',
+  'Week',
+  'Day'
+];
 
-  componentDidUpdate(prevProps, prevState) {
-      if (this.state.selectedPeriod !== prevState.selectedPeriod) {
-        this.setState({ rangeMovement: 0 });
-      }
-    }
+class ChartsSectionTab extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    const endDate = new Date();
+
+    // If there is a limit we calculate it, if not we set a limit impossible to reach
+    const rangeMovementLimit = props.pastTimeLimit ?
+      this.calculateRangeMovementLimit('Week') :
+      -99999999;
+
+    this.state = {
+      selectedPeriod: 'Week',
+      rangeMovement: 0, // Will determine the dates that the user is seeing
+      startDate: new Date(
+        endDate.getFullYear(),
+        endDate.getMonth(),
+        endDate.getDate() - 6
+      ).getTime(),
+      endDate: endDate.getTime(),
+      rangeMovementLimit
+    };
+  }
+
+  onPeriodChange = (selectedPeriod) => {
+    const { startDate, endDate } = this.getStateDates(0, selectedPeriod);
+    const rangeMovementLimit = this.calculateRangeMovementLimit(selectedPeriod);
+
+    // We want to reset the values when the period is changed
+    this.setState({
+      rangeMovement: 0,
+      startDate: startDate.getTime(),
+      endDate: endDate.getTime(),
+      selectedPeriod,
+      rangeMovementLimit
+    });
+  }
 
   renderButtons = () => {
-    const { selectedPeriod } = this.state;
+    const { selectedPeriod } = this.state,
+      periodsToMap = this.props.socialMedia === 'twitter' ? TWITTER_PERIODS : PERIODS;
 
-    return PERIODS.map(period => (
+    return periodsToMap.map(period => (
       <button
         key={period}
         className={period === selectedPeriod ? 'btn selected' : 'btn'}
-        onClick={() => this.setState({selectedPeriod: period})}
+        onClick={() => this.onPeriodChange(period)}
       >
         {period}
       </button>
     ))
   }
 
-  moveDates = (toAdd) => {
-    const { rangeMovement } = this.state;
-
-    this.setState({ rangeMovement: rangeMovement + toAdd });
-  };
-
-  renderDateRangePicker = () => {
-    const { selectedPeriod, rangeMovement } = this.state;
-    let dateStructure = '',
-      date = new Date(),
+  getDate = (rangeMovement, period) => {
+    const date = new Date(),
       baseYear = date.getFullYear(),
       baseMonth = date.getMonth(),
       baseDate = date.getDate();
-      
-    
+    let resultingDate = null;
+
+    switch (period) {
+      case 'Day':
+        resultingDate = new Date(baseYear, baseMonth, baseDate + rangeMovement);
+        break;
+      case 'Week':
+        resultingDate = new Date(baseYear, baseMonth, baseDate + 6 * (rangeMovement));
+        break;
+      case 'Month':
+        resultingDate = new Date(baseYear, baseMonth + rangeMovement, baseDate);
+        break;
+      case 'Year':
+        resultingDate = new Date(baseYear + rangeMovement, baseMonth, baseDate);
+        break;
+    }
+
+    return resultingDate;
+  };
+
+  getStateDates = (rangeMovement, period) => {
+    let startDate = null,
+      endDate = null,
+      baseDate = null;
+
+    switch (period) {
+      case 'Day':
+        startDate = this.getDate(rangeMovement, period);
+        // End date will same date but at 23:59:59
+        endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 23, 59, 59);
+        break;
+      case 'Week':
+        baseDate = this.getDate(rangeMovement, period);
+        startDate = this.getDate(rangeMovement - 1, period);
+        endDate = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate(), 23, 59, 59);
+        break;
+      case 'Month':
+        baseDate = this.getDate(rangeMovement, period);
+        const year = baseDate.getFullYear(),
+          month = baseDate.getMonth();
+
+        startDate = new Date(year, month, 1);
+        endDate = new Date(year, month, MONTHS_FINISH_DATE[month], 23, 59, 59);
+        break;
+      case 'Year':
+        baseDate = this.getDate(rangeMovement, period);
+        startDate = new Date(baseDate.getFullYear(), 0, 1);
+        endDate = new Date(baseDate.getFullYear(), 11, 31, 23, 59, 59);
+        break;
+    }
+
+    return { startDate, endDate };
+  }
+
+  // We need to change the dates here in order to trigger the API call
+  // with the correct data.
+  moveDates = (toAdd, selectedPeriod) => {
+    const { rangeMovement } = this.state;
+    const { startDate, endDate } = this.getStateDates(rangeMovement + toAdd, selectedPeriod);
+
+    this.setState({
+      rangeMovement: rangeMovement + toAdd,
+      startDate: startDate.getTime(),
+      endDate: endDate.getTime()
+    });
+  };
+
+  // This function calculates how further can the user go to the past
+  // returning the limit of the rangeMovement
+  calculateRangeMovementLimit = (selectedPeriod) => {
+    const { pastTimeLimit } = this.props;
+    let rangeMovementLimit = null;
+
+    switch (selectedPeriod) {
+      case 'Day':
+        rangeMovementLimit = - pastTimeLimit;
+        break;
+      case 'Week':
+        rangeMovementLimit = - pastTimeLimit / 7;
+        break;
+      case 'Month':
+        rangeMovementLimit = - pastTimeLimit / 30;
+        break;
+      case 'Year':
+        rangeMovementLimit = - pastTimeLimit / 365;
+        break;
+    }
+
+    // We substract 1 because the rangeMovement starts in 0
+    return pastTimeLimit ? rangeMovementLimit - 1 : -99999999;
+  };
+
+  renderDateRangePicker = () => {
+    const { selectedPeriod, rangeMovement, rangeMovementLimit } = this.state;
+    let dateStructure = '';
+
     switch (selectedPeriod) {
       case 'Day':
         // I'm adding since the value of rangeMovement will be a negative number
-        const day = new Date(baseYear, baseMonth, baseDate + rangeMovement);
-        dateStructure = <span>{`${day.getDate()} ${UTC_MONTHS[date.getMonth()]}`}</span>
+        const date = this.getDate(rangeMovement, selectedPeriod);
+        dateStructure = <span>{`${date.getDate()} ${UTC_MONTHS[date.getMonth()]}`}</span>;
         break;
       case 'Week':
         // Multiplying by 6 because of the edge day + the rest of the days in the week
-        const startDate = new Date(baseYear, baseMonth, baseDate + 6 * (rangeMovement - 1)),
-          endDate = new Date(baseYear, baseMonth, baseDate + 6 * (rangeMovement));
+        const startWeek = this.getDate(rangeMovement - 1, selectedPeriod),
+          endWeek = this.getDate(rangeMovement, selectedPeriod);
         
         dateStructure = <span>
-          {`${startDate.getDate()} ${UTC_MONTHS[startDate.getMonth()]} - ${endDate.getDate()} ${UTC_MONTHS[endDate.getMonth()]}`}
+          {`${startWeek.getDate()} ${UTC_MONTHS[startWeek.getMonth()]} - ${endWeek.getDate()} ${UTC_MONTHS[endWeek.getMonth()]}`}
         </span>;
         break;
       case 'Month':
-        const month = new Date(baseYear, baseMonth + rangeMovement, baseDate),
-          showYear = baseYear !== month.getFullYear();
+        const month = this.getDate(rangeMovement, selectedPeriod),
+          showYear = new Date().getFullYear() !== month.getFullYear();
         dateStructure = <span>
           {
             showYear ?
@@ -78,20 +197,22 @@ class ChartsSectionTab extends React.Component {
         </span>;
         break;
       case 'Year':
-        const year = new Date(baseYear + rangeMovement, baseMonth, baseDate);
-        dateStructure = <span>{`${year.getFullYear()}`}</span>
+        const year = this.getDate(rangeMovement, selectedPeriod);
+        dateStructure = <span>{`${year.getFullYear()}`}</span>;
         break;          
     }
 
     return <div className="date-range-container">
-      <span className="arrow left" onClick={() => this.moveDates(-1)}>
-        <img src="/images/icons/blue-arrow.svg" />
-      </span>
+      {
+        rangeMovement > rangeMovementLimit && <span className="arrow left" onClick={() => this.moveDates(-1, selectedPeriod)}>
+          <img src="/images/icons/blue-arrow.svg" />
+        </span>
+      }
       <span className="text">
         {dateStructure}
       </span>
       {
-        !!rangeMovement && <span className="arrow right" onClick={() => this.moveDates(1)}>
+        !!rangeMovement && <span className="arrow right" onClick={() => this.moveDates(1, selectedPeriod)}>
           <img src="/images/icons/blue-arrow.svg" />
         </span>
       }
@@ -99,8 +220,8 @@ class ChartsSectionTab extends React.Component {
   };
 
   render() {
-    const {renderChart, accountId, leftInfo} = this.props;
-    const {selectedPeriod} = this.state;
+    const { renderChart, accountId, leftInfo, socialMedia } = this.props;
+    const { selectedPeriod, startDate, endDate } = this.state;
 
     return (
       <div className="chart-container">
@@ -109,11 +230,11 @@ class ChartsSectionTab extends React.Component {
           <div className="date-range-picker">
             {this.renderDateRangePicker()}
           </div>
-          <div className="period-buttons">
+          <div className={`period-buttons ${socialMedia}`}>
             {this.renderButtons()}
           </div>
         </div>
-        {renderChart(accountId, selectedPeriod)}
+        {renderChart({ accountId, selectedPeriod, startDate, endDate })}
       </div>
     );
   };

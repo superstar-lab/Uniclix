@@ -1,23 +1,31 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Loader from 'react-loader-spinner';
-import { pageInsightsByType } from "../../../../requests/twitter/channels";
-import AnalyticsTooltip from '../../AnalyticsTooltip';
-import ReadMore from '../../../ReadMore';
-import TweetCard from './TweetCard';
 
-class TweetsTable extends React.Component{
+import { pageInsightsByType } from "../../../../requests/twitter/channels";
+import PostsTableRow from '../../PostsTableRow';
+
+class TweetsTable extends React.Component {
+    static propTypes = {
+        name: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired,
+        selectedAccount: PropTypes.number.isRequired
+    };
+
     state = {
         tweets: null,
         loading: false
     };
 
-    componentDidMount(){
+    componentDidMount() {
         this.fetchAnalytics();
     };
 
-    componentDidUpdate(prevProps){
-        if(prevProps.selectedAccount != this.props.selectedAccount || prevProps.calendarChange != this.props.calendarChange)
-        {
+    componentDidUpdate(prevProps) {
+        if (
+            prevProps.selectedAccount != this.props.selectedAccount ||
+            prevProps.calendarChange != this.props.calendarChange
+        ) {
             this.fetchAnalytics();
         }  
     }
@@ -26,19 +34,26 @@ class TweetsTable extends React.Component{
         this.setState(() => ({
             loading: true
         }));
+
         try {
-            pageInsightsByType(this.props.selectedAccount, this.props.startDate, this.props.endDate, this.props.type)            
-            .then((response) => {
-                this.setState(() => ({
-                    tweets: response,
-                    loading: false
-                }));
-            }).catch(error => {
-                this.setState(() => ({
-                    loading: false
-                }));
-                return Promise.reject(error);
-            }); 
+            pageInsightsByType(
+                this.props.selectedAccount,
+                this.props.startDate,
+                this.props.endDate,
+                this.props.type
+            )
+                .then((response) => {
+                    this.setState(() => ({
+                        tweets: response,
+                        loading: false
+                    }));
+                })
+                .catch(error => {
+                    this.setState(() => ({
+                        loading: false
+                    }));
+                    return Promise.reject(error);
+                });
         } catch (error) {
             
         }
@@ -60,15 +75,17 @@ class TweetsTable extends React.Component{
                             {
                                 tweets.map((tweet, index) => (
                                     <div key={index}>
-                                        <TweetCard
+                                        <PostsTableRow
                                             avatar={tweet.user.profile_image_url_https}
                                             username={tweet.user.name}
                                             screenName={tweet.user.screen_name}
                                             date={tweet.date}
                                             text={tweet.text}
-                                            retweets={tweet.retweet_count}
+                                            shares={tweet.retweet_count}
+                                            sharesLabel="Retweets"
                                             comments={0}
                                             likes={tweet.favorite_count}
+                                            likesLabel="Likes"
                                         />
                                     </div>
                                 ))

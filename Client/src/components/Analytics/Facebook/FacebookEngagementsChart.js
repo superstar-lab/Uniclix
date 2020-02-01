@@ -5,7 +5,7 @@ import Loader from 'react-loader-spinner';
 
 import { UTC_MONTHS } from '../../../utils/constants';
 
-import { pageInsightsByType } from '../../../requests/twitter/channels';
+import { pageInsightsByType } from '../../../requests/facebook/channels';
 import EngagementsChart from '../EngagementsChart';
 
 class TwitterEngagementsChart extends React.Component {

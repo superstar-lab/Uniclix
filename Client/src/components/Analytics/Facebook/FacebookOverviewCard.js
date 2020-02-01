@@ -2,26 +2,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import OverviewCard from '../OverviewCard';
-import { pageInsightsByType } from "../../../requests/twitter/channels";
+import { pageInsightsByType } from "../../../requests/facebook/channels";
 
-class TwitterOverviewCard extends React.Component {
+class FacebookOverviewCard extends React.Component {
     static propTypes = {
         title: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired,
         icon: PropTypes.string.isRequired,
+        startTime: PropTypes.number.isRequired,
+        endTime: PropTypes.number.isRequired,
         setForbidden: PropTypes.func.isRequired
     };
 
     state = {
         isLoading: false,
-        analyticsData: "null"
+        analyticsData: 'null'
     }
 
     getAnalyticsData = () => {
-        const {selectedAccount, type} = this.props;
+        const {selectedAccount, type, startDate, endDate} = this.props;
 
         this.setState(() => ({isLoading: true}));
-        pageInsightsByType(selectedAccount, undefined, undefined, type)
+        // The API asks for dates
+        pageInsightsByType(selectedAccount, startDate, endDate, type)
             .then((response) => {
                 this.setState(() => ({
                     isLoading: false,
@@ -55,4 +58,4 @@ class TwitterOverviewCard extends React.Component {
     }
 };
 
-export default TwitterOverviewCard;
+export default FacebookOverviewCard;

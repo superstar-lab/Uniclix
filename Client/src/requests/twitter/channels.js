@@ -177,8 +177,8 @@ export const dm = (content, userId) => {
     });
 };
 
-export const pageInsightsByType = (id, startDate, endDate, type) => {
-    return axios.get(`${apiUrl}/twitter/insights/${type}?id=${id}&startDate=${startDate}&endDate=${endDate}`)
+export const pageInsightsByType = (id, startDate, endDate, type, period) => {
+    return axios.get(`${apiUrl}/twitter/insights/${type}?id=${id}&startDate=${startDate}&endDate=${endDate}&period=${period}`)
         .then((response) => {
             return response.data;
         });

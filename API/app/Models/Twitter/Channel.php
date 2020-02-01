@@ -9,6 +9,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class Channel extends Model
 {
@@ -170,23 +171,25 @@ class Channel extends Model
         }
     }
 
-    public function pageInsightsByType($type, $startDate=null, $endDate=null)
+    public function pageInsightsByType($type, $startDate=null, $endDate=null, $period)
     {
-        $sDate = is_integer($startDate) ? intval($startDate/1000) : null;
-        $eDate = is_integer($endDate) ? intval($endDate/1000) : null;
+        $sDate = $startDate != "undefined" ? intval($startDate/1000) : null;
+        $eDate = $endDate != "undefined" ? intval($endDate/1000) : null;
 
         try {
             $key = $this->id . "-$type-$startDate-$endDate";
             $minutes = 15;
             $startDate = Carbon::now();
 
-            return Cache::remember($key, $minutes, function () use ($sDate, $eDate, $type) {
+            return Cache::remember($key, $minutes, function () use ($sDate, $eDate, $type, $period) {
                 $startDate = Carbon::now();
 
                 $data = [];
                 $startDate = Carbon::now();
-
-                $data = $this->{$type}($sDate, $eDate);
+                if (!isset($sDate) || $sDate == "undefined" || $sDate == null)
+                    $data = $this->{$type}($sDate, $eDate, $period);
+                else
+                    $data = $this->getChartData($type, $sDate, $eDate, $period);
 
                 return $data;
 
@@ -224,40 +227,90 @@ class Channel extends Model
         return $data->favourites_count;
     }
 
-    public function tweetsChartData($sDate, $eDate)
+    public function getChartData($type, $sDate, $eDate, $period)
     {
-        $tweets = $this->getTweets();
-
-        $groupedTweets = collect($tweets)->groupBy(function($tweets) {
-            return Carbon::parse($tweets->created_at)->format('Y-m-d');
-        });
-
-        $data = [];
-
-        foreach($groupedTweets as $date => $tweets)
+        $result = [];
+        switch ($type)
         {
-            $data[] = [Carbon::parse($date)->timestamp*1000, count($tweets)];
+            case 'tweetsChartData':
+                $result = $this->getChartDataByType("getTweets", $sDate, $eDate, $period);
+                break;
+            case 'followersChartData':
+                $result = $this->getChartDataByType("getFollowers", $sDate, $eDate, $period);
+                break;
+            case 'engagementsChartData':
+                $result[0] = $this->getChartDataByType("getLikes", $sDate, $eDate, $period);
+                $result[1] = $this->getChartDataByType("getMentions", $sDate, $eDate, $period);
+                $result[2] = $this->getChartDataByType("getRetweets", $sDate, $eDate, $period);
+                break;
+            case 'impressionsChartData':
+                $result = $this->getChartDataByType("getHome", $sDate, $eDate, $period);
+                break;
         }
 
-        return $data;
+        return $result;
     }
 
-    public function followersChartData($sDate, $eDate)
+    public function getChartDataByType($type, $sDate, $eDate, $period)
     {
-        $followers = $this->getFollowers();
+        $wholeData = [];
+        $matchData = [];
+        $maxId = 0;
+        $groupedData = [];
+        $result = [];
 
-        $groupedFollowers = collect($followers)->groupBy(function($followers) {
-            return Carbon::parse($followers->created_at)->format('Y-m-d');
-        })->sortKeysDesc();
-
-        $data = [];
-
-        foreach($groupedFollowers as $date => $followers)
+        while (true)
         {
-            $data[] = [Carbon::parse($date)->timestamp*1000, count($followers)];
+            if ($maxId == 0)
+                $data = $this->{$type}();
+            else
+                $data = $this->{$type}(["max_id" => $maxId]);
+
+            if (count($data) <= 1)
+                break;
+
+            foreach($data as $item){
+                $wholeData[] = $item;
+            }
+
+            $lastData = $data[count($data) - 1];
+            $maxId = $lastData->{'id'};
+
+            if ($sDate >= strtotime($lastData->{'created_at'}))
+                break;
         }
 
-        return $data;
+        foreach($wholeData as $item)
+        {
+            if ($sDate <= strtotime($item->{'created_at'}) && $eDate >= strtotime($item->{"created_at"})) {
+                $matchData[] = $item;
+            }
+        }
+
+        switch ($period){
+            case "year":
+                $groupedData = collect($matchData)->groupBy(function($data) {
+                    return Carbon::parse($data->created_at)->format('Y-m');
+                });
+                break;
+            case "day":
+                $groupedData = collect($matchData)->groupBy(function($data) {
+                    return Carbon::parse($data->created_at)->format('Y-m-d-H');
+                });
+                break;
+            default:
+                $groupedData = collect($matchData)->groupBy(function($data) {
+                    return Carbon::parse($data->created_at)->format('Y-m-d');
+                });
+                break;
+        }
+
+        foreach($groupedData as $date => $item)
+        {
+            $result[] = [Carbon::parse($date)->timestamp*1000, count($item)];
+        }
+
+        return $result;
     }
 
     public function tweetsTableData($sDate, $eDate)

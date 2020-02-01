@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 
 import AnalyticsContext from '../AnalyticsContext';
 
-import TweetsTable from './Cards/TweetsTable';
-import TwitterOverviewCard from './TwitterOverviewCard';
-import TwitterChartsSection from './TwitterChartsSection';
+import FacebookOverviewCard from './FacebookOverviewCard';
+import FacebookChartsSection from './FacebookChartsSection';
+import PostsTable from './Cards/PostsTable';
 
-class TwitterAnalyticsBoard extends React.Component {
+class FacebookAnalyticsBoard extends React.Component {
     static propTypes = {
         selectedAccount: PropTypes.number.isRequired
     };
@@ -21,53 +21,64 @@ class TwitterAnalyticsBoard extends React.Component {
         return (
             <AnalyticsContext.Consumer>
                 {
-                    ({ setForbidden })  => (
+                    ({ setForbidden }) => (
                         <div>
                             <div className="row overview-cards-container mb20">
                                 <div className="col-md-3 col-xs-12">
-                                    <TwitterOverviewCard
-                                        title="Tweets"
-                                        type="tweetsCount"
+                                    <FacebookOverviewCard
+                                        title="Posts"
+                                        type="postsCount"
                                         icon="edit"
+                                        startDate={new Date('1/1/2008').getTime()}
+                                        endDate={new Date().getTime()}
                                         selectedAccount={selectedAccount}
                                         setForbidden={setForbidden}
                                     />
                                 </div>
                                 <div className="col-md-3 col-xs-12">
-                                    <TwitterOverviewCard
-                                        title="Followers"
-                                        type="followersCount"
+                                    <FacebookOverviewCard
+                                        title="Fans"
+                                        type="fansCount"
                                         icon="followers"
+                                        startDate={new Date().getTime()}
+                                        endDate={new Date().getTime()}
                                         selectedAccount={selectedAccount}
                                         setForbidden={setForbidden}
                                     />
                                 </div>
                                 <div className="col-md-3 col-xs-12">
-                                    <TwitterOverviewCard
-                                        title="Engagements"
-                                        type="followingCount"
+                                    <FacebookOverviewCard
+                                        title="Engagement"
+                                        type="engagementsCount"
                                         icon="chart"
+                                        startDate={new Date('1/1/2008').getTime()}
+                                        endDate={new Date().getTime()}
                                         selectedAccount={selectedAccount}
                                         setForbidden={setForbidden}
                                     />
                                 </div>
                                 <div className="col-md-3 col-xs-12">
-                                    <TwitterOverviewCard
+                                    <FacebookOverviewCard
                                         title="Impressions"
-                                        type="totalLikesCount"
+                                        type="impressionsCount"
                                         icon="eye"
+                                        startDate={new Date('1/1/2008').getTime()}
+                                        endDate={new Date().getTime()}
                                         selectedAccount={selectedAccount}
                                         setForbidden={setForbidden}
                                     />
                                 </div>
                             </div>
-                            <TwitterChartsSection selectedAccount={selectedAccount} socialMedia="twitter" />
+                            <FacebookChartsSection selectedAccount={selectedAccount} socialMedia="facebook" />
                             <div className="row mb20">
                                 <div className="col-xs-12">
-                                    <TweetsTable
-                                        name="Tweets Table"
-                                        type='tweetsTableData'
-                                        selectedAccount={selectedAccount} />
+                                    <PostsTable
+                                        name="Posts Table"
+                                        type='postsData'
+                                        startDate={new Date('1/1/2008').getTime()}
+                                        endDate={new Date().getTime()}
+                                        selectedAccount={selectedAccount}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -78,4 +89,4 @@ class TwitterAnalyticsBoard extends React.Component {
     }
 }
 
-export default TwitterAnalyticsBoard;
+export default FacebookAnalyticsBoard;
