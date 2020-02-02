@@ -84,8 +84,7 @@ class MonitorActivity extends React.Component {
                     </Grid>
                 </div>
                 <div>
-                    <StreamTabs />
-                       
+                    <StreamTabs refreshRate={getRefreshRate()} />
                 </div>
             </div>
         );
