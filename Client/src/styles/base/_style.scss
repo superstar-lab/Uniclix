@@ -5171,7 +5171,15 @@ section.pricing {
   }
 }
 
-.action-btn:hover {
+.whole-refresh-btn {
+  z-index: 999;
+  position: relative;
+  right: 25px;
+  top: 15px;
+  cursor: pointer;
+}
+
+.action-btn {
   cursor: pointer;
 }
 
@@ -5179,4 +5187,8 @@ section.pricing {
   position: absolute;
   top: 25px;
   right: 7%;  
+}
+
+.margin-left-5 {
+  margin-left: 5px;
 }
