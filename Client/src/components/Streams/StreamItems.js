@@ -51,7 +51,7 @@ const getTitleStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: 'none',
   background: isDragging ? 'lightgreen' : '#EAF3FB',
-  paddingLeft: '30px',
+  paddingLeft: '25px',
   paddingRight: '30px',
 
   // styles we need to apply on draggables
@@ -225,22 +225,20 @@ class StreamItems extends Component {
                           provided.draggableProps.style
                         )} className={`stream-title`}>
                           <Grid container>
-                            <Grid item md={1}>
-                              <img src={`/images/monitor-icons/${item.network}-small.svg`} />
-                            </Grid>
-                            <Grid item md={8}>
+                            <Grid item md={9}>
+                              <img src={`/images/monitor-icons/${item.network}-small.svg`}/>
                               {this.state.currentItemId == item.id ?
-                                <input type="text" className="text-cursor" maxLength="14" data-editable={true} onKeyDown={this.handleKeyDown} onChange={this.handleTitleChange} value={this.state.titleText} /> :
-                                <span className="text-cursor" onClick={this.handleTitleClick} data-editable-item={JSON.stringify(item)}> {item.title} </span>}
+                                <input type="text" className="text-cursor margin-left-5" maxLength="14" data-editable={true} onKeyDown={this.handleKeyDown} onChange={this.handleTitleChange} value={this.state.titleText} /> :
+                                <span className="text-cursor margin-left-5" onClick={this.handleTitleClick} data-editable-item={JSON.stringify(item)}> {item.title} </span>}
                               <span className="stream-user">{item.network == "twitter" ? channel.username : channel.name}</span>
                             </Grid>
-                            <Grid item md={2}>
-                              <img className="action-btn" src="/images/monitor-icons/refresh.svg" onClick={() => this.refresh(item.id)} />
+                            <Grid item md={1}>
+                              <img className={`action-btn ${this.state.loading === item.id ? 'fa-spin' : ''} pull-right`} src="/images/monitor-icons/refresh.svg" onClick={() => this.refresh(item.id)} />
                             </Grid>
+                            <Grid item md={1} />
                             <Grid item md={1}>
                               <img className="action-btn" src="/images/monitor-icons/close.svg" onClick={() => this.handleStreamClose(item)} />
                             </Grid>
-
                           </Grid>
                         </h3>
 
