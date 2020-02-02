@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import channelSelector from "../../../selectors/channels";
+import channelSelector, { streamChannels } from "../../../selectors/channels";
 import { startSetChannels } from "../../../actions/channels";
 import { Typography, Button, withStyles } from '@material-ui/core';
 import ReactTooltip from 'react-tooltip';
@@ -9,17 +9,19 @@ class MonitorRightbar extends React.Component {
 
     state = {
         isSelected: false,
-        className: 'cardlist-firstbtn',
-        selectedCards: [],
+        isAccountSelected: false,
+        networkClassName: 'cardlist-firstbtn',
+        accountClassName: 'cardlist-account',
+        socialAccountAvatar: '',
     }
 
     handleMedia = () => {
         let isSelected = !this.state.isSelected;
 
         if (isSelected) {
-            this.setState({ className: 'cardlist-firstbtn active' });
+            this.setState({ networkClassName: 'cardlist-firstbtn active' });
         } else {
-            this.setState({ className: 'cardlist-firstbtn' });
+            this.setState({ networkClassName: 'cardlist-firstbtn' });
         }
 
         this.setState({ isSelected: isSelected });
@@ -27,60 +29,53 @@ class MonitorRightbar extends React.Component {
 
     handleItemCard = () => {
 
-        this.setState({ className: 'cardlist-firstbtn' });
+        this.setState({ networkClassName: 'cardlist-firstbtn' });
+        this.setState({ accountClassName: 'cardlist-account' });
         this.setState({ isSelected: false });
+        this.setState({ isAccountSelected: false });
     }
 
     render() {
         const {
             state: {
-
+                isSelected
             },
             props: {
+                socialNetWorks,
+                selectedSocial,
                 creators,
-                socialCards,
-                socialValue,
-                onClickCreator,
-                onChangeSocial
+                onChangeSocial,
+                onClickCreator
             },
             handleMedia,
             handleItemCard,
         } = this;
-
-        let socialMediaIcon;
-        let isSelected = this.state.isSelected;
-
-        if (socialValue == "Twitter") {
-            socialMediaIcon = socialCards[0].icon;
-        }
-        else {
-            socialMediaIcon = socialCards[1].icon;
-        }
-
+        
         return (
             <div className="monitor-right-bar">
                 {isSelected &&
                     <div className="socialmedia-box">
                         {
-                            socialCards.map((content, key) => (
-                                content.title == socialValue ? null : <Button key={key} id={content.id} value={content.title} onClick={() => { onChangeSocial(content.title); handleItemCard(); }}><img src={content.icon} /></Button>
+                            socialNetWorks.map((content, key) => (
+                                content == selectedSocial ? null : <Button key={key} onClick={() => { onChangeSocial(content); handleItemCard(); }}><img src={`/images/monitor-icons/${content}-small.svg`} /></Button>
                             ))
                         }
                     </div>
                 }
                 <div>
-                    <StylesButton className={this.state.className} onClick={() => handleMedia()}>
-                        <img src={socialMediaIcon} />
+                    <StylesButton className={this.state.networkClassName} onClick={() => handleMedia()}>
+                        <img src={`/images/monitor-icons/${selectedSocial}-small.svg`} />
                     </StylesButton>
                 </div>
+
                 {
                     creators.map((item, key) => (
-                        <div key={key} onClick={() => { handleItemCard(); onClickCreator(item.title) }}>
-                            <StylesButton className="cardlist-secondbtn" onClick={this.handleClick} data-for={item.id} data-tip data-event-off='scroll mousewheel blur' data-iscapture='true'>
-                                <img src={item.icon} />
+                        <div key={key} onClick={() => { handleItemCard(); onClickCreator(item) }}>
+                            <StylesButton className="cardlist-secondbtn" onClick={this.handleClick} data-for={item.value} data-tip data-event-off='scroll mousewheel blur' data-iscapture='true'>
+                                <img src={`/images/monitor-icons/${item.icon}-small.svg`} />
                             </StylesButton>
-                            <ReactTooltip className="tooltipTheme" place="left" type="info" effect="solid" id={item.id} delayShow={100}>
-                                <Typography className="cardlist-tooltiplabel">{item.title}</Typography>
+                            <ReactTooltip className="tooltipTheme" place="left" type="info" effect="solid" id={item.value}>
+                                <Typography className="cardlist-tooltiplabel">{item.label}</Typography>
                             </ReactTooltip>
                         </div>
                     ))

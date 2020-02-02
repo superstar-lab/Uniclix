@@ -4,12 +4,11 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import StreamFeed from "./StreamFeed";
 import channelSelector, { channelById } from '../../selectors/channels';
 import { deleteStream, positionStream, updateStream } from '../../requests/streams';
-import { StreamMaker } from "./StreamInitiator";
-// Need to be updated
 import MonitorRightbar from "../TwitterBooster/Sections/MonitorRightbar";
 import getSocialMediaCards from '../../config/socialmediacards';
 import { Button, Grid } from '@material-ui/core';
-// Need to be updated
+import { addStream } from '../../requests/streams';
+
 
 // fake data generator
 // const getItems = streams =>
@@ -74,14 +73,36 @@ class StreamItems extends Component {
       titleText: "",
       refresh: false,
       loading: false,
-      // Need to be updated
-      socialValue: 'Twitter',
+
       socialMediaCards: getSocialMediaCards(),
-      socialCards: getSocialMediaCards().socialNetworkIcons
-      // Need to be updated
+
+      socialMediaIcons: getSocialMediaCards().socialNetworkIcons,
+
+      selectedAccount: Object.entries(this.props.selectedChannel).length ?
+        { label: <ProfileChannel channel={this.props.selectedChannel} />, value: this.props.selectedChannel.name, type: this.props.selectedChannel.type, id: this.props.selectedChannel.id } :
+        (this.props.channels.length ?
+          { label: <ProfileChannel channel={this.props.channels[0]} />, value: this.props.channels[0].name, type: this.props.channels[0].type, id: this.props.channels[0].id } : {}),
+
+      selectedSocial: 'twitter',
+      socialMediasSelectorOptions: [],
+      streamIcons: [],
+      
     };
 
     this.onDragEnd = this.onDragEnd.bind(this);
+  }
+
+  componentWillMount() {
+    let socialMediaCards = getSocialMediaCards();
+
+    this.setState({ streamIcons: socialMediaCards.twitterIcons });
+
+    this.props.channels.forEach(({ type, id }) => {
+      // Getting the options for the socialMedia dropdown
+      if (this.state.socialMediasSelectorOptions.indexOf(type) === -1) {
+        this.state.socialMediasSelectorOptions.push(type);
+      }
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -193,9 +214,49 @@ class StreamItems extends Component {
     }
   }
 
-  render() {
-    const { channels, refreshRate, selectedTab, reload, toggleStreamMaker, isStreamMakerOpen } = this.props;
+  submitStream = (item) => {
 
+    this.setState(() => ({
+      loading: true
+    }));
+
+    const channelId = this.state.selectedAccount.id;
+    const network = this.state.selectedAccount.type;
+    const selectedTab = this.props.selectedTab;
+    const searchTerm = this.state.searchTerm;
+
+    return addStream(item, channelId, selectedTab, network, searchTerm).then(() => this.props.reload()).then(() => {
+      if (typeof this.props.close !== "undefined") this.props.close();
+    });
+  };
+
+  onChangeSocial = (value) => {
+    this.setState({ selectedSocial: value });
+    let socialMediaCards = this.state.socialMediaCards;
+
+    switch (value) {
+      case 'twitter':
+        this.setState({ streamIcons: socialMediaCards.twitterIcons });
+        break;
+      case 'facebook':
+        this.setState({ streamIcons: socialMediaCards.facebookIcons });
+        break;
+      case 'linkedin':
+        this.setState({ streamIcons: socialMediaCards.linkedinIcons });
+        break;
+      default:
+        break;
+    }
+  };
+
+  onClickCreator = (item) => {
+    
+    this.submitStream(item);
+  }
+
+  render() {
+    const { channels, refreshRate, selectedTab, reload, isStreamMakerOpen } = this.props;
+    const { socialMediasSelectorOptions, selectedSocial, streamIcons, } = this.state;
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Droppable droppableId="droppable" direction="horizontal">
@@ -271,11 +332,11 @@ class StreamItems extends Component {
               />} */}
               {
                 isStreamMakerOpen && <MonitorRightbar
-                  socialCards={this.state.socialCards}
-                  socialValue={this.state.selectedSocial}
-                  creators={this.state.selectedSocial == 'Twitter' ? this.state.socialMediaCards.twitterSmallIcons : this.state.socialMediaCards.facebookSmallIcons}
-                  onChangeSocial={(val) => this.setState({ selectedSocial: val })}
-                  onClickCreator={(val) => console.log('onClickCreator')}
+                  socialNetWorks={socialMediasSelectorOptions}
+                  selectedSocial={selectedSocial}
+                  creators={streamIcons}
+                  onChangeSocial={(val) => this.onChangeSocial(val)}
+                  onClickCreator={this.onClickCreator}
                 />
               }
             </div>
@@ -285,12 +346,27 @@ class StreamItems extends Component {
     );
   }
 }
+const ProfileChannel = ({ channel }) => (
+  <div className="channel-container">
+    <div className="profile-info pull-right">
+      <span className="pull-left profile-img-container">
+        <img src={channel.avatar} />
+        <i className={`fa fa-${channel.type} ${channel.type}_bg smallIcon`}></i>
+      </span>
+      <div className="pull-left"><p className="profile-name" title={channel.name}>{channel.name}</p>
+        <p className="profile-username">{channel.username !== null ? "@" + channel.username : ""}</p>
+      </div>
+    </div>
+  </div>
+);
 
 const mapStateToProps = (state) => {
   const channels = channelSelector(state.channels.list, { selected: undefined, provider: undefined, publishable: true });
+  const selectedChannel = channelSelector(channels, { selected: 1 });
 
   return {
-    channels
+    channels,
+    selectedChannel: selectedChannel.length ? selectedChannel[0] : {},
   }
 }
 

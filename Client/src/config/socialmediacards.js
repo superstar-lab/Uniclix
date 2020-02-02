@@ -1,112 +1,109 @@
 const getSocialMediaCards = () => ({
-    twitterSmallIcons: [
+    twitterIcons: [
         {
-            id: "Tooltip1", title: "Home", icon: "/images/monitor-icons/home-small.svg"
+            label: "Home",
+            value: "home",
+            icon: "home"
         },
         {
-            id: "Tooltip2", title: "Mentions", icon: "/images/monitor-icons/mentions-small.svg"
+            label: "Mentions",
+            value: "mentions",
+            icon: "at"
         },
         {
-            id: "Tooltip3", title: "Retweets", icon: "/images/monitor-icons/retweets-small.svg"
+            label: "Retweets",
+            value: "retweets",
+            icon: "retweet"
         },
         {
-            id: "Tooltip4", title: "Followers", icon: "/images/monitor-icons/followers-small.svg"
+            label: "Followers",
+            value: "followers",
+            icon: "user-plus"
         },
         {
-            id: "Tooltip5", title: "Likes", icon: "/images/monitor-icons/liked-small.svg"
+            label: "Likes",
+            value: "likes",
+            icon: "heart"
         },
         {
-            id: "Tooltip6", title: "Pages", icon: "/images/monitor-icons/flag-small.svg"
+            label: "My Tweets",
+            value: "tweets",
+            icon: "mail-forward"
         },
         {
-            id: "Tooltip7", title: "Following", icon: "/images/monitor-icons/following-small.svg"
+            label: "Search",
+            value: "search",
+            icon: "search"
         },
         {
-            id: "Tooltip8", title: "Messages", icon: "/images/monitor-icons/message-small.svg"
-        },
-        {
-            id: "Tooltip9", title: "My posts", icon: "/images/monitor-icons/myposts-small.svg"
-        },
-        {
-            id: "Tooltip10", title: "Search", icon: "/images/monitor-icons/searchtopics-small.svg"
-        },
+            label: "Scheduled",
+            value: "scheduled",
+            icon: "clock-o"
+        }
     ],
 
-    facebookSmallIcons: [
+    facebookIcons: [
         {
-            id: "Tooltip1", title: "Home", icon: "/images/monitor-icons/home-small.svg"
+            label: "Timeline",
+            value: "timeline",
+            icon: "history"
         },
         {
-            id: "Tooltip2", title: "Mentions", icon: "/images/monitor-icons/mentions-small.svg"
+            label: "My Posts",
+            value: "myPosts",
+            icon: "bullhorn"
         },
         {
-            id: "Tooltip3", title: "Pages", icon: "/images/monitor-icons/flag-small.svg"
+            label: "Mentions",
+            value: "mentions",
+            icon: "at"
         },
         {
-            id: "Tooltip4", title: "Messages", icon: "/images/monitor-icons/message-small.svg"
+            label: "Messages",
+            value: "conversations",
+            icon: "envelope"
         },
         {
-            id: "Tooltip5", title: "Search", icon: "/images/monitor-icons/searchtopics-small.svg"
-        },
-    ],
-    
-    twitterBigIcons: [
-        {
-            title: "Home", icon: "/images/monitor-icons/Feed.svg"
+            label: "Unpublished",
+            value: "unpublished",
+            icon: "calendar"
         },
         {
-            title: "Mentions", icon: "/images/monitor-icons/Mentions.svg"
+            label: "Pages",
+            value: "pages",
+            icon: "flag"
         },
         {
-            title: "Retweets", icon: "/images/monitor-icons/Retweets.svg"
-        },
-        {
-            title: "Followers", icon: "/images/monitor-icons/Followers.svg"
-        },
-        {
-            title: "Following", icon: "/images/monitor-icons/Following.svg"
-        },
-        {
-            title: "Likes", icon: "/images/monitor-icons/Liked.svg"
-        },
-        {
-            title: "My posts", icon: "/images/monitor-icons/Myposts.svg"
-        },
-        {
-            title: "Search topics", icon: "/images/monitor-icons/Searchtopics.svg"
-        },
+            label: "Scheduled",
+            value: "scheduled",
+            icon: "clock-o"
+        }
     ],
 
-    facebookBigIcons: [
+    linkedinIcons: [
         {
-            title: "Time line", icon: "/images/monitor-icons/Feed.svg"
+            label: "Home",
+            value: "home",
+            icon: "home"
         },
         {
-            title: "Mentions", icon: "/images/monitor-icons/Mentions.svg"
+            label: "My Update",
+            value: "my_updates",
+            icon: "mail-forward"
         },
         {
-            title: "Unpublished", icon: "/images/monitor-icons/Retweets.svg"
-        },
-        {
-            title: "Pages", icon: "/images/monitor-icons/Followers.svg"
-        },
-        {
-            title: "Scheduled", icon: "/images/monitor-icons/Following.svg"
-        },
-        {
-            title: "My posts", icon: "/images/monitor-icons/Liked.svg"
-        },
-        {
-            title: "Messages", icon: "/images/monitor-icons/Myposts.svg"
-        },
+            label: "Scheduled",
+            value: "scheduled",
+            icon: "clock-o"
+        }
     ],
 
     socialNetworkIcons: [
         {
-           id: 0, title: "Twitter", icon: "/images/monitor-icons/twitter-small.svg"
-        }, 
+            id: 0, label: "Twitter", icon: "/images/monitor-icons/twitter-small.svg"
+        },
         {
-            id: 1, title: "Facebook", icon:"/images/monitor-icons/facebook-small.svg"
+            id: 1, label: "Facebook", icon: "/images/monitor-icons/facebook-small.svg"
         }
     ]
 });
