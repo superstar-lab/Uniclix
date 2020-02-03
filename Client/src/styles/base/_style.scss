@@ -924,7 +924,6 @@ a:link {
   background: #FFFFFF;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
   border-radius: 6px;
-  position: relative;
 }
 
 .stream-feed-container .username {
@@ -2437,10 +2436,6 @@ button.streammaker-btn:hover {
   overflow-y: auto;
 }
 
-.popup-content {
-  width: auto !important;
-  padding: 0 !important;
-}
 
 .popup-content .SingleDatePicker_picker {
   position: static;
@@ -2826,14 +2821,17 @@ button.streammaker-btn:hover {
   width: 100%;
   outline: none;
   background: white;
-  color: #485576;
-  font-family: open-sansBold, Arial;
+  color: #515151;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
 }
 
 .t-action-menu>button:hover,
 .t-action-menu>a:hover {
-  background: #485576;
-  color: white;
+  background: #EAF3FB;
+  color: #515151;
 }
 
 .menu-with-icons>button,
@@ -5169,14 +5167,4 @@ section.pricing {
       border-bottom: 1px solid $gray;
     }
   }
-}
-
-.action-btn:hover {
-  cursor: pointer;
-}
-
-.stream-action-menu {
-  position: absolute;
-  top: 25px;
-  right: 7%;  
 }

@@ -1,22 +1,24 @@
 import React from 'react';
-import { Typography, Grid, Card, CardContent, Button } from '@material-ui/core';
-import PropTypes from 'prop-types';
+import { Typography, Grid, Card, CardContent } from '@material-ui/core';
+
+
 
 class StreamCreators extends React.Component {
     state = {
-
+        
     }
 
-    render() {
-        const { creators, onClickCreator } = this.props;
 
+    render() {
+        const { creators, onClickCreator} = this.props;
+        
         return (
             <Grid
                 className="dashboard-containers"
                 container
             >
                 {
-                    creators.map((kind, key) => (
+                    creators.map((item, key) => (
                         <Grid
                             container
                             item
@@ -25,13 +27,13 @@ class StreamCreators extends React.Component {
                             md={4}
                             sm={12}
                             xs={12}
-                            onClick={() => onClickCreator(kind.title)}
+                            onClick={() => onClickCreator(item)}
                         >
                             <Card className="dashboard-cards">
                                 <CardContent className="dashboard-spacing">
-                                    <img src={kind.icon} />
+                                    <img src={`/images/monitor-icons/${item.icon}.svg`} />
                                     <Typography className="dashboard-title">
-                                        {kind.title}
+                                        {item.label}
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -43,12 +45,5 @@ class StreamCreators extends React.Component {
     }
 }
 
-StreamCreators.defaultProps = {
-    creators: [],
-}
-
-StreamCreators.propTypes = {
-    creators: PropTypes.array.isRequired
-}
 
 export default StreamCreators;
