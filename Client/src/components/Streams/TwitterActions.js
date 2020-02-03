@@ -182,7 +182,7 @@ class TwitterActions extends React.Component{
                         <span className={`status-counter ${retweetedPost} `}> {retweetCount}</span>
                     </span>
                     <span>
-                        <img onClick={() => this.toggleLike()} src="images/monitor-icons/heart-small.svg"></img>
+                        <img onClick={() => this.toggleLike()} src="images/monitor-icons/heart-contact-small.svg"></img>
                         <span className={`status-counter ${likedPost} `}> {likesCount}</span>
                     </span>
                     <Popup
