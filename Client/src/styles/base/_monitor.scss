@@ -67,7 +67,7 @@
     border-radius: 20px 0px 0px 0px;
     position: absolute;
 	right: -30px;
-	min-height: 700px;
+	min-height: 86vh;
 }
 
 .cardlist-rightbar {
@@ -516,4 +516,43 @@ $blue: lighten(rgb(4,159,217), 5%);
 .avatar  {
     background-color: red;
 
+}
+
+.whole-refresh-btn {
+	z-index: 999;
+	position: relative;
+	right: 25px;
+	top: 15px;
+	cursor: pointer;
+}
+  
+.action-btn {
+	cursor: pointer;
+}
+  
+.stream-close-btn {
+	margin-right: 8px;
+}
+  
+.stream-refresh-btn {
+	margin-right: 20px;
+}
+  
+.stream-action-menu {
+	height: 22px;
+	width: 10px !important;
+	float: right !important;
+	margin-top: 10px;
+	cursor: pointer;
+}
+  
+.margin-left-5 {
+	margin-left: 5px;
+}
+
+.popup-content {
+	width: 145px !important;
+	border: 0px !important;
+	border-radius: 8px !important;
+	box-shadow: (0, 0, 0, 0.2) 0px 1px 3px !important;
 }

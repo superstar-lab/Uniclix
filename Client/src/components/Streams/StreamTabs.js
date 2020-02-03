@@ -229,7 +229,7 @@ class StreamTabs extends Component {
                                 <div className="easygrey-bg">
                                     <StreamItems
                                         streams={tab.streams}
-                                        refreshRate={parseInt(this.props.refresh_rate)}
+                                        refreshRate={parseInt(this.props.refreshRate)}
                                         selectedTab={selectedTab}
                                         reload={this.fetchStreamTabs}
                                         toggleStreamMaker={this.toggleStreamMaker}
@@ -255,7 +255,6 @@ class StreamTabs extends Component {
     };
 
     fetchStreamTabs = () => {
-        console.log('onRefresh');
         this.setState(() => ({
             loading: true
         }));
@@ -269,11 +268,13 @@ class StreamTabs extends Component {
 
             this.setState(() => ({
                 loading: false,
-                forbidden: false
+                forbidden: false,
+                manualLoad: false
             }));
         }).catch(error => {
             this.setState(() => ({
-                loading: false
+                loading: false,
+                manualLoad: false
             }));
             if (error.response.status === 403) {
                 this.setForbidden(true);
@@ -315,7 +316,7 @@ class StreamTabs extends Component {
 
                 {this.state.tabs.length > 0 ?
                     <div>
-                        <img className={`whole-refresh-btn ${this.state.loading ? 'fa-spin' : ''} pull-right`} src="/images/monitor-icons/refresh.svg" onClick={() => this.fetchStreamTabs()} />
+                        <img className={`whole-refresh-btn ${this.state.loading && this.state.manualLoad ? 'fa-spin' : ''} pull-right`} src="/images/monitor-icons/refresh.svg" onClick={() => {this.setState({manualLoad: true}); this.fetchStreamTabs()}} />
                         <Tabs
                             tabsClassNames={tabsClassNames}
                             tabsStyles={tabsStyles}
