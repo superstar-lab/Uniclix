@@ -37,7 +37,7 @@ class StreamInitiator extends React.Component {
         streamCreator: this.props.streamCreator ? this.props.streamCreator : false
     }
 
-
+    //Set the default state value
     componentWillMount() {
         let socialMediaCards = getSocialMediaCards();
 
@@ -59,7 +59,8 @@ class StreamInitiator extends React.Component {
             }
         });
     }
-
+    
+    //Function to add stream
     submitStream = (item) => {
         this.setState(() => ({
             loading: true
@@ -111,6 +112,7 @@ class StreamInitiator extends React.Component {
         }));
     };
 
+    //Function to get social network type by value
     onSocialMediaChange = (value) => {
         this.setState({ selctedSocial: value });
         let socialMediaCards = this.state.socialMediaCards;
@@ -130,6 +132,7 @@ class StreamInitiator extends React.Component {
         }
     };
 
+    //Function to set account by value
     onAccountChange = (value) => {        
         this.setState({ selectedAccountId: value });
         let selectedAccount = this.props.channels.find((item) => item.id === value);
@@ -137,6 +140,7 @@ class StreamInitiator extends React.Component {
             this.setState({selectedAccount: selectedAccount});
     };
 
+    //Function to get account option object
     getAccountSelectorOptions = (selectedSocial) => {
         const { channels } = this.props;
         const socialMediaFilter = ACCOUNT_SELECTOR_FILTERS[selectedSocial];
@@ -147,6 +151,7 @@ class StreamInitiator extends React.Component {
         return options;
     };
 
+    //Function to send add stream request when button click event occurs
     onClickCreator = (item) => {        
         let input = item;
         this.toggleStreamCreator();

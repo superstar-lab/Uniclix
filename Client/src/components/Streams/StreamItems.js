@@ -95,7 +95,8 @@ class StreamItems extends Component {
 
     this.onDragEnd = this.onDragEnd.bind(this);
   }
-
+  
+  //Function to set initial state values
   componentWillMount() {
     let socialMediaCards = getSocialMediaCards();
 
@@ -243,6 +244,7 @@ class StreamItems extends Component {
     });
   };
 
+  //Function to change social icons by social type
   onChangeSocial = (value) => {
     this.setState({ selectedSocial: value });
     const accountSelectorOptions = this.getAccountSelectorOptions(value);
@@ -327,22 +329,17 @@ class StreamItems extends Component {
                           snapshot.isDragging,
                           provided.draggableProps.style
                         )} className={`stream-title`}>
-                          <Grid containter>
-                            <Grid item md={9}>
-                              <img src={`/images/monitor-icons/${item.network}-small.svg`} />
-                              {this.state.currentItemId == item.id ?
-                                <input type="text" className="text-cursor margin-left-5" maxLength="14" data-editable={true} onKeyDown={this.handleKeyDown} onChange={this.handleTitleChange} value={this.state.titleText} /> :
-                                <span className="text-cursor margin-left-5" onClick={this.handleTitleClick} data-editable-item={JSON.stringify(item)}> {item.title} </span>}
-                              <span className="stream-user">{item.network == "twitter" ? channel.username : channel.name}</span>
-                            </Grid>
-                            <Grid item md={1}>
-                              <img className={`action-btn ${this.state.loading === item.id ? 'fa-spin' : ''} pull-right`} src="/images/monitor-icons/refresh.svg" onClick={() => this.refresh(item.id)} />
-                            </Grid>
-                            <Grid item md={1} />
-                            <Grid item md={1}>
-                              <img className="action-btn" src="/images/monitor-icons/close.svg" onClick={() => this.handleStreamClose(item)} />
-                            </Grid>
-                          </Grid>
+                          <img src={`/images/monitor-icons/${item.network}-small.svg`} />
+                          {
+                            this.state.currentItemId == item.id ?
+                              <input type="text" className="text-cursor margin-left-5" maxLength="14" data-editable={true} onKeyDown={this.handleKeyDown} onChange={this.handleTitleChange} value={this.state.titleText} /> :
+                              <span className="text-cursor margin-left-5" onClick={this.handleTitleClick} data-editable-item={JSON.stringify(item)}> {item.title} </span>
+                          }
+                          <span className="stream-user">{item.network == "twitter" ? channel.username : channel.name}</span>
+                          <div className="pull-right">
+                            <img className={`action-btn stream-refresh-btn ${this.state.loading === item.id ? 'fa-spin' : ''}`} src="/images/monitor-icons/refresh.svg" onClick={() => this.refresh(item.id)} />
+                            <img className="action-btn stream-close-btn" src="/images/monitor-icons/close.svg" onClick={() => this.handleStreamClose(item)} />
+                          </div>
                         </h3>
 
                         <StreamFeed
@@ -360,16 +357,6 @@ class StreamItems extends Component {
                 )
               })}
               {provided.placeholder}
-              {/* {isStreamMakerOpen && <StreamMaker 
-                title="Add Stream" 
-                streamCreator={true} 
-                item={{value: "browse"}} 
-                selectedTab={selectedTab} 
-                reload={reload} 
-                streamSize={true}
-                minimize={true}
-                toggle={toggleStreamMaker}
-              />} */}
               {
                 isStreamMakerOpen && <MonitorRightbar
                   socialNetWorks={socialMediasSelectorOptions}
