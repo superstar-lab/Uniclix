@@ -551,7 +551,7 @@ $blue: lighten(rgb(4,159,217), 5%);
 }
 
 .popup-content {
-	width: 145px !important;
+	width: auto !important;
 	border: 0px !important;
 	border-radius: 8px !important;
 	box-shadow: (0, 0, 0, 0.2) 0px 1px 3px !important;
@@ -559,6 +559,9 @@ $blue: lighten(rgb(4,159,217), 5%);
 
 .account-modal {
 	width: 385px;
+ 	border: 0px;
+ 	border-radius: 8px;
+ 	box-shadow: (0, 0, 0, 0.2) 0px 1px 3px;
 
 	.label {
 		margin-top: 40px;

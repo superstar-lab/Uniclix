@@ -6,7 +6,6 @@ import { Typography, Button, withStyles } from '@material-ui/core';
 import ReactTooltip from 'react-tooltip';
 import Popup from "reactjs-popup";
 import AccountSelector from '../../AccountSelector';
-import OverlayTrigger from 'react-overlay-trigger'
 
 const ACCOUNT_SELECTOR_FILTERS = {
     'facebook': (account) => account.details.account_type !== 'profile'
@@ -25,12 +24,12 @@ class MonitorRightbar extends React.Component {
     }
 
     componentWillMount() {
-        this.setState({creators: this.props.creators});
+        this.setState({ creators: this.props.creators });
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.creators != this.props.creators && this.props.creators != null) {
-            this.setState({creators: this.props.creators});
+            this.setState({ creators: this.props.creators });
         }
     }
 
@@ -85,7 +84,7 @@ class MonitorRightbar extends React.Component {
             handleMedia,
             handleItemCard,
         } = this;
-        
+
         return (
             <div className="monitor-right-bar">
                 {
@@ -93,7 +92,7 @@ class MonitorRightbar extends React.Component {
                     <div className="socialmedia-box">
                         {
                             socialNetWorks.map((content, key) => (
-                                content == selectedSocial ? null : <Button key={key} onClick={() => { this.setState({creators: []}); onChangeSocial(content); this.handleClick(); }}><img src={`/images/monitor-icons/${content}-small.svg`} /></Button>
+                                content == selectedSocial ? null : <Button key={key} onClick={() => { this.setState({ creators: [] }); onChangeSocial(content); this.handleClick(); }}><img src={`/images/monitor-icons/${content}-small.svg`} /></Button>
                             ))
                         }
                     </div>
@@ -105,7 +104,7 @@ class MonitorRightbar extends React.Component {
                     <Popup modal
                         trigger={
                             <div>
-                                <StylesButton className="cardlist-secondbtn" data-for="account" data-tip data-event-off='scroll mousewheel blur' data-iscapture='true' onClick={() => handleMedia()}>
+                                <StylesButton className="cardlist-secondbtn" data-for="account" data-tip data-event-off='scroll mousewheel blur' data-iscapture='true' onClick={() => handleClick()}>
                                     <img className="account-icon" src={`${selectedAvatar}`} />
                                 </StylesButton>
                             </div>

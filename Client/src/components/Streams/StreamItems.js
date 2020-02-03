@@ -103,11 +103,11 @@ class StreamItems extends Component {
 
     const accountSelectorOptions = this.getAccountSelectorOptions(this.state.selectedSocial);
     let selectedAccountId = accountSelectorOptions[0].id;
-    this.setState({selectedAccountId: selectedAccountId});    
+    this.setState({ selectedAccountId: selectedAccountId });
 
     let selectedAccount = accountSelectorOptions.find((item) => item.id === selectedAccountId);
-    this.setState({selectedAccount: selectedAccount});
-    this.setState({selectedAvatar: selectedAccount.avatar});
+    this.setState({ selectedAccount: selectedAccount });
+    this.setState({ selectedAvatar: selectedAccount.avatar });
 
 
     this.props.channels.forEach(({ type, id }) => {
@@ -247,13 +247,13 @@ class StreamItems extends Component {
     this.setState({ selectedSocial: value });
     const accountSelectorOptions = this.getAccountSelectorOptions(value);
     let selectedAccountId = accountSelectorOptions[0].id;
-    
-    this.setState({selectedAccountId: selectedAccountId});    
+
+    this.setState({ selectedAccountId: selectedAccountId });
 
     let selectedAccount = accountSelectorOptions.find((item) => item.id === selectedAccountId);
-    
-    this.setState({selectedAccount: selectedAccount});
-    this.setState({selectedAvatar: selectedAccount.avatar});
+
+    this.setState({ selectedAccount: selectedAccount });
+    this.setState({ selectedAvatar: selectedAccount.avatar });
     let socialMediaCards = this.state.socialMediaCards;
 
     switch (value) {

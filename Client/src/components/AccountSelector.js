@@ -28,10 +28,10 @@ class AccountSelector extends React.Component {
               <Option key={username} value={id}>
                 <span className="account-selector-option">
                   <img src={avatar} />
-                  <span>{ type !== 'twitter' ? name : `@${username}` }</span>
+                  <span>{type !== 'twitter' ? name : `@${username}`}</span>
                 </span>
               </Option>
-          ))
+            ))
         }
       </Select>
     );
