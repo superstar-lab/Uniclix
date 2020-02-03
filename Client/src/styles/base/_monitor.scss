@@ -556,3 +556,40 @@ $blue: lighten(rgb(4,159,217), 5%);
 	border-radius: 8px !important;
 	box-shadow: (0, 0, 0, 0.2) 0px 1px 3px !important;
 }
+
+.account-modal {
+	width: 385px;
+
+	.label {
+		margin-top: 40px;
+	};
+
+	.title {
+		width: 126px;
+		color: black;
+		font-family: Rubik;
+		font-style: normal;
+		font-weight: normal;
+		font-size: 14px;
+		margin-top: -3px;
+	}
+
+	.button {
+		margin-top: 40px;
+		margin-bottom: 20px;
+		text-align: center;
+
+		.title {
+			color: white;
+			font-family: Rubik;
+			font-style: normal;
+			font-weight: normal;
+			font-size: 14px;
+			background-color: #2D86DA;
+		}
+	}
+}
+.account-icon {
+    width: 25px;
+	border-radius: 10px;
+}

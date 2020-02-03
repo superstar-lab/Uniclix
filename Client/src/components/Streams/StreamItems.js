@@ -64,6 +64,10 @@ const getListStyle = isDraggingOver => ({
   overflow: 'auto'
 });
 
+const ACCOUNT_SELECTOR_FILTERS = {
+  'facebook': (account) => account.details.account_type !== 'profile'
+};
+
 class StreamItems extends Component {
   constructor(props) {
     super(props);
@@ -76,8 +80,6 @@ class StreamItems extends Component {
 
       socialMediaCards: getSocialMediaCards(),
 
-      socialMediaIcons: getSocialMediaCards().socialNetworkIcons,
-
       selectedAccount: Object.entries(this.props.selectedChannel).length ?
         { label: <ProfileChannel channel={this.props.selectedChannel} />, value: this.props.selectedChannel.name, type: this.props.selectedChannel.type, id: this.props.selectedChannel.id } :
         (this.props.channels.length ?
@@ -86,6 +88,8 @@ class StreamItems extends Component {
       selectedSocial: 'twitter',
       socialMediasSelectorOptions: [],
       streamIcons: [],
+      selectedAvatar: '',
+      selectedAccountId: '',
 
     };
 
@@ -96,6 +100,15 @@ class StreamItems extends Component {
     let socialMediaCards = getSocialMediaCards();
 
     this.setState({ streamIcons: socialMediaCards.twitterIcons });
+
+    const accountSelectorOptions = this.getAccountSelectorOptions(this.state.selectedSocial);
+    let selectedAccountId = accountSelectorOptions[0].id;
+    this.setState({selectedAccountId: selectedAccountId});    
+
+    let selectedAccount = accountSelectorOptions.find((item) => item.id === selectedAccountId);
+    this.setState({selectedAccount: selectedAccount});
+    this.setState({selectedAvatar: selectedAccount.avatar});
+
 
     this.props.channels.forEach(({ type, id }) => {
       // Getting the options for the socialMedia dropdown
@@ -232,6 +245,15 @@ class StreamItems extends Component {
 
   onChangeSocial = (value) => {
     this.setState({ selectedSocial: value });
+    const accountSelectorOptions = this.getAccountSelectorOptions(value);
+    let selectedAccountId = accountSelectorOptions[0].id;
+    
+    this.setState({selectedAccountId: selectedAccountId});    
+
+    let selectedAccount = accountSelectorOptions.find((item) => item.id === selectedAccountId);
+    
+    this.setState({selectedAccount: selectedAccount});
+    this.setState({selectedAvatar: selectedAccount.avatar});
     let socialMediaCards = this.state.socialMediaCards;
 
     switch (value) {
@@ -254,9 +276,29 @@ class StreamItems extends Component {
     this.submitStream(item);
   }
 
+  onAccountChange = (value) => {
+    this.setState({ selectedAccountId: value });
+
+    let selectedAccount = this.props.channels.find((item) => item.id === value);
+    if (selectedAccount) {
+      this.setState({ selectedAccount: selectedAccount });
+      this.setState({ selectedAvatar: selectedAccount.avatar });
+    }
+  };
+
+  getAccountSelectorOptions = (selectedSocial) => {
+    const { channels } = this.props;
+    const socialMediaFilter = ACCOUNT_SELECTOR_FILTERS[selectedSocial];
+    let options = channels.filter((account => account.type === selectedSocial));
+    if (socialMediaFilter) {
+      options = options.filter(socialMediaFilter);
+    }
+    return options;
+  };
+
   render() {
     const { channels, refreshRate, selectedTab, reload, isStreamMakerOpen } = this.props;
-    const { socialMediasSelectorOptions, selectedSocial, streamIcons, } = this.state;
+    const { socialMediasSelectorOptions, selectedSocial, streamIcons, selectedAvatar, selectedAccountId } = this.state;
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Droppable droppableId="droppable" direction="horizontal">
@@ -285,15 +327,22 @@ class StreamItems extends Component {
                           snapshot.isDragging,
                           provided.draggableProps.style
                         )} className={`stream-title`}>
-                          <img src={`/images/monitor-icons/${item.network}-small.svg`} />
-                          {this.state.currentItemId == item.id ?
-                            <input type="text" className="text-cursor margin-left-5" maxLength="14" data-editable={true} onKeyDown={this.handleKeyDown} onChange={this.handleTitleChange} value={this.state.titleText} /> :
-                            <span className="text-cursor margin-left-5" onClick={this.handleTitleClick} data-editable-item={JSON.stringify(item)}> {item.title} </span>}
-                          <span className="stream-user">{item.network == "twitter" ? channel.username : channel.name}</span>
-                          <div className="pull-right">
-                            <img className={`action-btn stream-refresh-btn ${this.state.loading === item.id ? 'fa-spin' : ''}`} src="/images/monitor-icons/refresh.svg" onClick={() => this.refresh(item.id)} />
-                            <img className="action-btn stream-close-btn" src="/images/monitor-icons/close.svg" onClick={() => this.handleStreamClose(item)} />
-                          </div>
+                          <Grid container>
+                            <Grid item md={9}>
+                              <img src={`/images/monitor-icons/${item.network}-small.svg`} />
+                              {this.state.currentItemId == item.id ?
+                                <input type="text" className="text-cursor margin-left-5" maxLength="14" data-editable={true} onKeyDown={this.handleKeyDown} onChange={this.handleTitleChange} value={this.state.titleText} /> :
+                                <span className="text-cursor margin-left-5" onClick={this.handleTitleClick} data-editable-item={JSON.stringify(item)}> {item.title} </span>}
+                              <span className="stream-user">{item.network == "twitter" ? channel.username : channel.name}</span>
+                            </Grid>
+                            <Grid item md={1}>
+                              <img className={`action-btn ${this.state.loading === item.id ? 'fa-spin' : ''} pull-right`} src="/images/monitor-icons/refresh.svg" onClick={() => this.refresh(item.id)} />
+                            </Grid>
+                            <Grid item md={1} />
+                            <Grid item md={1}>
+                              <img className="action-btn" src="/images/monitor-icons/close.svg" onClick={() => this.handleStreamClose(item)} />
+                            </Grid>
+                          </Grid>
                         </h3>
 
                         <StreamFeed
@@ -328,6 +377,11 @@ class StreamItems extends Component {
                   creators={streamIcons}
                   onChangeSocial={(val) => this.onChangeSocial(val)}
                   onClickCreator={this.onClickCreator}
+                  selectedAvatar={selectedAvatar}
+                  selectedAccountId={selectedAccountId}
+                  onAccountChange={(value) => this.onAccountChange(value)}
+                  accounts={this.getAccountSelectorOptions(selectedSocial)}
+
                 />
               }
             </div>
