@@ -11,6 +11,13 @@ const ACCOUNT_SELECTOR_FILTERS = {
     'facebook': (account) => account.details.account_type !== 'profile'
 };
 
+const popupStyle = {
+    width: 385,
+    border: 0,
+    borderRadius: 8,
+    boxShadow: '(0, 0, 0, 0.2) 0px 1px 3px',
+}
+
 class MonitorRightbar extends React.Component {
 
     state = {
@@ -101,10 +108,12 @@ class MonitorRightbar extends React.Component {
                     <StylesButton className={this.state.className} onClick={() => handleMedia()}>
                         <img src={`/images/monitor-icons/${selectedSocial}-small.svg`} />
                     </StylesButton>
-                    <Popup modal
+                    <Popup
+                        modal
+                        contentStyle={popupStyle}
                         trigger={
                             <div>
-                                <StylesButton className="cardlist-secondbtn" data-for="account" data-tip data-event-off='scroll mousewheel blur' data-iscapture='true' onClick={() => handleClick()}>
+                                <StylesButton className="cardlist-secondbtn" data-for="account" data-tip data-event-off='scroll mousewheel blur' data-iscapture='true' onClick={() => this.handleClick()}>
                                     <img className="account-icon" src={`${selectedAvatar}`} />
                                 </StylesButton>
                             </div>

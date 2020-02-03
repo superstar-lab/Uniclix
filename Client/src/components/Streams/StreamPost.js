@@ -15,6 +15,14 @@ import channelSelector from '../../selectors/channels';
 import { setComposerModal } from "../../actions/composer";
 import { setPost } from '../../actions/posts';
 
+
+const popupStyle = {
+    width: 145,
+    border: 0,
+    borderRadius: 8,
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.05)'
+}
+
 class StreamPost extends React.Component {
 
     state = {
@@ -143,6 +151,7 @@ class StreamPost extends React.Component {
                         <Popup
                             trigger={<img className="stream-action-menu" src="images/monitor-icons/menu.svg"></img>}
                             on="click"
+                            contentStyle={popupStyle}
                             position="bottom left"
                             arrow={false}
                             closeOnDocumentClick={true}

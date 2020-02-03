@@ -327,7 +327,7 @@ class StreamItems extends Component {
                           snapshot.isDragging,
                           provided.draggableProps.style
                         )} className={`stream-title`}>
-                          <Grid container>
+                          <Grid containter>
                             <Grid item md={9}>
                               <img src={`/images/monitor-icons/${item.network}-small.svg`} />
                               {this.state.currentItemId == item.id ?
