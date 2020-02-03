@@ -95,7 +95,8 @@ class StreamItems extends Component {
 
     this.onDragEnd = this.onDragEnd.bind(this);
   }
-
+  
+  //Function to set initial state values
   componentWillMount() {
     let socialMediaCards = getSocialMediaCards();
 
@@ -243,6 +244,7 @@ class StreamItems extends Component {
     });
   };
 
+  //Function to change social icons by social type
   onChangeSocial = (value) => {
     this.setState({ selectedSocial: value });
     const accountSelectorOptions = this.getAccountSelectorOptions(value);
