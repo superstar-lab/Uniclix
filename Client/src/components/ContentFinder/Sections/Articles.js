@@ -150,7 +150,7 @@ class Articles extends React.Component {
         const { articles, loading } = this.state;
         const { filterTopics } = this.props;
 
-        return(
+        return (
             <div className="articles-container">
                 <TailoredPostModal 
                     isOpen={this.state.isTailoredPostOpen}
@@ -178,12 +178,12 @@ class Articles extends React.Component {
                         .filter(({ topic }) => filterTopics.indexOf(topic) !== -1)
                         .map((article, index) => (
                             <div key={index}>
-                            <Article
-                                key={index}
-                                article={article}
-                                setPost={this.props.setPost}
-                                toggleTailoredPostModal={this.toggleTailoredPostModal}
-                            />
+                                <Article
+                                    key={index}
+                                    article={article}
+                                    setPost={this.props.setPost}
+                                    toggleTailoredPostModal={this.toggleTailoredPostModal}
+                                />
                             </div>
                         ))
                 }
@@ -195,6 +195,9 @@ class Articles extends React.Component {
                             <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
                         </div>
                     )
+                }
+                {
+                    !!articles.length && <BottomScrollListener onBottom={this.loadArticles} />
                 }
             </div>
         );
