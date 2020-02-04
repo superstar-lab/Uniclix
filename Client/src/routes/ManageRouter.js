@@ -13,13 +13,15 @@ import BlackList from '../components/TwitterBooster/Sections/BlackList';
 import Checkout from '../components/Accounts/Checkout';
 import AnalyticsLanding from '../components/Analytics/AnalyticsLanding';
 import ScheduledRouter from '../routes/ScheduledRouter';
+import ContentFinder from '../components/ContentFinder/ContentFinder';
+import ContentFinderLanding from '../components/ContentFinder/ContentFinderLanding';
 
 const ManageRouter = () => (
     <div>
         <Switch>
             <Route path={`/analytics`} component={AnalyticsLanding} />
             <Route path={`/monitor-activity`} component={MonitorActivity} />
-            <Route path={`/content-finder`} component={KeywordTargets} />
+            <Route path={`/content-finder`} component={ContentFinderLanding} />
             <Route path={'/scheduled/'} component={ScheduledRouter} />
             {/*Obsolete routes. Still there to avoid breaking things but will be changed in the future*/}
             <Route path={`/twitter-booster/account-targets`} component={AccountTargets} />

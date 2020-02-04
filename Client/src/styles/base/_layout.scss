@@ -6,7 +6,7 @@
     display: flex;
     flex-direction: column;
     flex: 1;
-    height: 100vh;
+    min-height: 100%;
 
     .navbar-wrap {
         display: flex;
@@ -29,19 +29,24 @@
         }
 
         .vertical-menu {
-            min-height: 400px;
+            position: fixed;
+            top: 70px;
+            height: calc(100% - 70px);
         }
 
         .body-container {
-            padding: 0 30px 30px 60px;
-            flex: 1;
             overflow: auto;
-            max-height: 100%;
+            min-height: 100vh;
+            width: 100%;
+            padding-top: 70px;
+            padding-left: 295px;
+            padding-bottom: 30px;
+            padding-right: 30px;
 
             .main-section {
                 padding: 30px 0 60px 0;
                 width: 100%;
-                height: 100%;
+                height: auto;
                 .rbc-calendar{
                     width: 100%;
                     min-height: 600px;

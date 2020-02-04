@@ -1,8 +1,8 @@
 import React from 'react';
 import ContentLoader from "react-content-loader"
 
-const Loader = () => (
-	<div>
+const Loader = ({ fullscreen }) => (
+	<div className={`${fullscreen ? 'fullscreen' : ''}`}>
 		<img className="fixed-center" src="/images/uniclix_loader.svg" />
 	</div>
 );

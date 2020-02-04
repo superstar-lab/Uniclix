@@ -1492,6 +1492,66 @@ button.streammaker-btn:hover {
   overflow: hidden;
   width: 1000px;
   max-width: 1000px;
+
+  .compose-header {
+    width: 95%;
+    display: flex;
+    align-items: center;
+
+    .add-new-channel {
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #ccc;
+      border-radius: 100%;
+      width: 34px;
+      height: 34px;
+    }
+
+    .channel-item {
+      margin-left: 5px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      border: 1px solid #ccc;
+      border-radius: 100%;
+      width: 34px;
+      height: 34px;
+
+      img {
+        width: 100%;
+        border-radius: 100%;
+      }
+
+      .smallIcon {
+        left: -5px;
+        top: 0px;
+      }
+
+      .remove-overlay {
+        background: red;
+        width: 100%;
+        height: 100%;
+        opacity: 0.4;
+        display: none;
+        color: white;
+        text-align: center;
+        border-radius: 100%;
+        padding: 8px;
+      }
+
+      &:hover > .remove-overlay {
+        display: block;
+      }
+
+      &:hover > img {
+        display: none;
+      }
+    }
+  }
 }
 
 .modal-no-bg {
@@ -2999,12 +3059,245 @@ button.doneBtn {
   outline: none;
 }
 
+.content-finder {
+  font-family: Rubik;
+  color: #363636;
+
+  .header {
+    margin-bottom: 50px;
+
+    &.articles {
+      margin-bottom: 15px;
+    }
+
+    .description-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 30px;
+
+      .description {
+        font-size: 1em;
+      }
+
+      .toggle-keywords {
+        color: #2D86DA;
+        font-size: 0.9em;
+        cursor: pointer;
+      }
+    }
+
+    .seperator {
+      margin: 10px 0 20px;
+    }
+  }
+
+  .sub-title {
+    font-size: 1.2em;
+    font-weight: 500;
+  }
+
+  .seperator {
+    margin: 50px 0;
+  }
+
+  .btn-blue {
+    width: 400px;
+  }
+
+  .topics-added-by-you {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 50px;
+
+    .topics {
+      width: 100%;
+      margin-top: 30px;
+    }
+
+    .message-container {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .title {
+        font-size: 1.6em;
+        font-weight: 500;
+        margin-bottom: 20px;
+      }
+
+      .description {
+        margin: 0;
+        width: 490px;
+        text-align: center;
+        font-size: 1.1em;
+      }
+    }
+
+
+    .keyword-item {
+      i {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .topics-added-by-you,
+  .added-by-user {
+    .keyword-item {
+      font-size: 0.8em;
+      background-color:rgba(216, 62, 126, 0.15);
+      padding: 6px 6px;
+    }
+  }
+
+  .options-container {
+    display: flex;
+    justify-content: flex-end;
+
+    .search-bar {
+      width: 100%;
+
+      // Overriding some ANTD styles
+      .ant-select-selection--multiple .ant-select-selection__choice {
+        background-color: rgba(216,62,127, 0.15);
+        color: #D83E7F;
+        font-weight: 500;
+        font-family: Rubik;
+      }
+    }
+
+    .icons {
+      display: flex;
+
+      div {
+        margin: 0 15px;
+      }
+    }
+  }
+
+  .articles-container {
+    margin-top: 50px;
+  }
+
+  .card-display {
+    .card-content {
+      .card-body {
+        background-color: #FFF;
+        padding: 20px;
+        height: 185px;
+        border-radius: 0 0 25px 25px;
+        position: relative;
+
+        .card-title {
+          font-size: 1.1em;
+        }
+
+        .card-text {
+          font-size: 0.9em;
+        }
+
+        .page {
+          position: absolute;
+          bottom: 20px;
+        }
+      }
+    }
+
+    .image-container {
+      position: relative;
+
+      &:hover > .img-overlay {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .topic-label {
+        position: absolute;
+        color: #D83E7F;
+        z-index: 2;
+        bottom: 20px;
+        right: 20px;
+        padding: 1px 15px;
+        background-color: #FFF;
+        font-weight: 500;
+        border-radius: 5px;
+      }
+
+      &:hover > .topic-label {
+        display: none;
+      }
+
+      .img-overlay {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        display: none;
+        background-color: rgba(255, 255, 255, 0.8);
+        top: 0;
+        left: 0;
+        border-radius: 25px 25px 0 0;
+
+        .icons {
+          display: flex;
+          width: 250px;
+          justify-content: space-around;
+
+          div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            height: 200px;
+            width: 100px;
+            cursor: pointer;
+
+            .svg-container {
+              height: 100px;
+              border-radius: 50px;
+
+              img {
+                height: 35px;
+              }
+            }
+
+            .action-label {
+              display: none;
+              position: absolute;
+              bottom: 0;
+              height: 40px;
+              text-align: center;
+              background-color: #0E4F8C;
+              color: #FFF;
+              border-radius: 10px;
+            }
+          }
+
+          div:hover > .svg-container {
+            background-color: rgba(45, 134, 218, 0.12);
+          }
+
+          div:hover > .action-label {
+            display: flex;
+          }
+        }
+      }
+    }
+  }
+}
+
 .keyword-item {
   display: inline-block;
   color: #d83e7f;
   font-size: 1.4rem;
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: 500;
   border-radius: 6px;
   background: #fff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
@@ -3213,6 +3506,7 @@ button.doneBtn {
   height: 300px;
   object-fit: cover;
   border: 1px solid #dfdfdf;
+  border-radius: 25px 25px 0 0;
 }
 
 .article-share {
@@ -3835,6 +4129,16 @@ aside .btn-group {
   top: 50%;
   transform: translateY(-50%);
   z-index: 9999;
+}
+
+.fullscreen {
+  background-color: rgba(0, 0, 0, 0.30);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 99999;
+  height: 100%;
 }
 
 .lds-ripple {
