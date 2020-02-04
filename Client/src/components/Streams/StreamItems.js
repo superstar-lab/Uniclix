@@ -24,7 +24,7 @@ const grid = 10;
 const getItemStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: 'none',
-  margin: `0px ${grid}px 0px 10px`,
+  margin: `0px ${grid * 2}px 0px 0px`,
   width: `500px`,
   minWidth: `320px`,
   height: `auto`,
@@ -53,7 +53,7 @@ const getTitleStyle = (isDragging, draggableStyle) => ({
 const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? 'lightblue' : '#F5F7FB',
   display: 'flex',
-  padding: grid,
+  padding: `${grid}px 0px`,
   overflow: 'auto'
 });
 

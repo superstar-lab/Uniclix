@@ -67,7 +67,7 @@
     border-radius: 20px 0px 0px 0px;
     position: absolute;
 	right: -30px;
-	min-height: 86vh;
+    height: 100%;
 }
 
 .cardlist-rightbar {
@@ -588,4 +588,8 @@ $blue: lighten(rgb(4,159,217), 5%);
 .account-icon {
     width: 25px;
 	border-radius: 10px;
+}
+
+.stream-drag-drop {
+    padding-right: 40px;
 }
