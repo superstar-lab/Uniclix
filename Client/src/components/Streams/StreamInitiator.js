@@ -200,7 +200,7 @@ class StreamInitiator extends React.Component {
 
                 <Modal isOpen={!!this.state.autoCompleteSearchModal} ariaHideApp={false} className="stream-type-modal search-modal">
                     <div>
-                        <AutoCompleteSearch placeholder="Type a page name..." channelId={selectedAccount.id} setSelected={this.setAutoCompleteSelected} />
+                        <AutoCompleteSearch placeholder="Type a page name..." channelId={selectedAccountId} setSelected={this.setAutoCompleteSelected} />
                         <button onClick={this.toggleAutoCompleteSearchModal} className="publish-btn-group autocomplete-done gradient-background-teal-blue link-cursor">Done</button>
                     </div>
                 </Modal>

@@ -380,13 +380,8 @@ class StreamItems extends Component {
                           snapshot.isDragging,
                           provided.draggableProps.style
                         )} className={`stream-title`}>
-                          <img src={`/images/monitor-icons/${item.network}.svg`} />
-                          {
-                            this.state.currentItemId == item.id ?
-                              <input type="text" className="text-cursor margin-left-5" maxLength="14" data-editable={true} onKeyDown={this.handleKeyDown} onChange={this.handleTitleChange} value={this.state.titleText} /> :
-                              <span className="text-cursor margin-left-5" onClick={this.handleTitleClick} data-editable-item={JSON.stringify(item)}> {item.title} </span>
-                          }
-                          <span className="stream-user">{item.network == "twitter" ? channel.username : channel.name}</span>
+                          <img className="image-size" src={`/images/monitor-icons/${item.title.charAt(0).toLowerCase()}${item.title.slice(1)}.svg`}/>
+                          <span className="stream-user">{item.network == "twitter" ? "@" + channel.username : "@" + channel.name}</span>
                           <div className="pull-right">
                             <img className={`action-btn stream-refresh-btn ${this.state.loading === item.id ? 'fa-spin' : ''}`} src="/images/monitor-icons/refresh.svg" onClick={() => this.refresh(item.id)} />
                             <img className="action-btn stream-close-btn" src="/images/monitor-icons/close.svg" onClick={() => this.handleStreamClose(item)} />
