@@ -6,16 +6,9 @@ import channelSelector, { channelById } from '../../selectors/channels';
 import { deleteStream, positionStream, updateStream } from '../../requests/streams';
 import MonitorRightbar from "../TwitterBooster/Sections/MonitorRightbar";
 import getSocialMediaCards from '../../config/socialmediacards';
-import { Button, Grid } from '@material-ui/core';
 import { addStream } from '../../requests/streams';
-
-
-// fake data generator
-// const getItems = streams =>
-//   streams.map(k => ({
-//     id: k.id,
-//     content: k.title,
-//   }));
+import Modal from 'react-modal';
+import AutoCompleteSearch from '../AutoCompleteSearch';
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -77,7 +70,9 @@ class StreamItems extends Component {
       titleText: "",
       refresh: false,
       loading: false,
-
+      searchModal: false,
+      autoCompleteSearchModal: false,
+      searchTerm: "",
       socialMediaCards: getSocialMediaCards(),
 
       selectedAccount: Object.entries(this.props.selectedChannel).length ?
@@ -109,7 +104,6 @@ class StreamItems extends Component {
     let selectedAccount = accountSelectorOptions.find((item) => item.id === selectedAccountId);
     this.setState({ selectedAccount: selectedAccount });
     this.setState({ selectedAvatar: selectedAccount.avatar });
-
 
     this.props.channels.forEach(({ type, id }) => {
       // Getting the options for the socialMedia dropdown
@@ -274,9 +268,66 @@ class StreamItems extends Component {
   };
 
   onClickCreator = (item) => {
-
-    this.submitStream(item);
+    let input;
+    if(item.value == 'search' || item.value == 'pages'){
+      input = {label: 'Search Keywords', value: 'keywords'};
+      this.handleTypeClick(input);
+      return;
+    } else {
+      this.handleTypeClick(item);
+    }
   }
+
+  handleTypeClick = (item) => {
+    const {selectedAccount} = this.state;
+    let input = item;
+    if(item.value === "keywords"){
+      if(selectedAccount.type == "facebook"){
+        this.toggleAutoCompleteSearchModal();
+        return;
+      }else if(selectedAccount.type == "twitter"){
+        this.toggleSearchModal();
+        return;
+      }
+    }  
+
+    this.submitStream(input);
+  }
+
+  handleSearchInputChange = (event) => {
+    try {
+        const value = event.target.value;
+        this.setState(() => (
+            { searchTerm: value }
+        ));
+    } catch (e) { }
+  }
+
+  toggleSearchModal = () => {
+    this.setState(() => ({
+        searchModal: !this.state.searchModal
+    }), () => {
+        if (!this.state.searchModal && this.state.searchTerm !== "") {
+            this.submitStream({ label: "Search", value: "search", icon: "search" });
+        }
+    });
+  };
+
+  toggleAutoCompleteSearchModal = () => {
+    this.setState(() => ({
+        autoCompleteSearchModal: !this.state.autoCompleteSearchModal
+    }), () => {
+        if (!this.state.autoCompleteSearchModal && this.state.searchTerm !== "") {
+            this.submitStream({ label: "Pages", value: "pages", icon: "flag" });
+        }
+    });
+  };
+
+  setAutoCompleteSelected = (value) => {
+    this.setState(() => ({
+        searchTerm: value
+    }));
+  };
 
   onAccountChange = (value) => {
     this.setState({ selectedAccountId: value });
@@ -329,7 +380,7 @@ class StreamItems extends Component {
                           snapshot.isDragging,
                           provided.draggableProps.style
                         )} className={`stream-title`}>
-                          <img src={`/images/monitor-icons/${item.network}-small.svg`} />
+                          <img src={`/images/monitor-icons/${item.network}.svg`} />
                           {
                             this.state.currentItemId == item.id ?
                               <input type="text" className="text-cursor margin-left-5" maxLength="14" data-editable={true} onKeyDown={this.handleKeyDown} onChange={this.handleTitleChange} value={this.state.titleText} /> :
@@ -357,6 +408,19 @@ class StreamItems extends Component {
                 )
               })}
               {provided.placeholder}
+              <Modal isOpen={!!this.state.searchModal} ariaHideApp={false} className="stream-type-modal search-modal">
+                <div>
+                    <input type="text" onChange={e => this.handleSearchInputChange(e)} value={this.state.searchTerm} placeholder="Example: coca cola or #fashion" />
+                    <button onClick={this.toggleSearchModal} className="publish-btn-group gradient-background-teal-blue link-cursor">Done</button>
+                </div>
+              </Modal>
+
+              <Modal isOpen={!!this.state.autoCompleteSearchModal} ariaHideApp={false} className="stream-type-modal search-modal">
+                  <div>
+                      <AutoCompleteSearch placeholder="Type a page name..." channelId={selectedAccountId} setSelected={this.setAutoCompleteSelected} />
+                      <button onClick={this.toggleAutoCompleteSearchModal} className="publish-btn-group autocomplete-done gradient-background-teal-blue link-cursor">Done</button>
+                  </div>
+              </Modal>
               {
                 isStreamMakerOpen && <MonitorRightbar
                   socialNetWorks={socialMediasSelectorOptions}
