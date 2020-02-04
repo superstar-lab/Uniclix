@@ -380,7 +380,10 @@ class StreamItems extends Component {
                           snapshot.isDragging,
                           provided.draggableProps.style
                         )} className={`stream-title`}>
-                          <img className="image-size" src={`/images/monitor-icons/${item.title.charAt(0).toLowerCase()}${item.title.slice(1)}.svg`}/>
+                          <img className="image-size" 
+                            src={item.type == "search" || item.type == "pages" ? "/images/monitor-icons/searchresult.svg" 
+                            :
+                            `/images/monitor-icons/${item.type}.svg`}/>
                           <span className="stream-user">{item.network == "twitter" ? "@" + channel.username : "@" + channel.name}</span>
                           <div className="pull-right">
                             <img className={`action-btn stream-refresh-btn ${this.state.loading === item.id ? 'fa-spin' : ''}`} src="/images/monitor-icons/refresh.svg" onClick={() => this.refresh(item.id)} />
