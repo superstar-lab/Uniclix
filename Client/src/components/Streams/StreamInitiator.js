@@ -2,17 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
 import channelSelector, { streamChannels } from '../../selectors/channels';
+import { startSetChannels } from "../../actions/channels";
 import { addStream } from '../../requests/streams';
 import StreamCreator from './StreamCreator';
 import StreamCreators from "../TwitterBooster/Sections/StreamCreators";
 import AutoCompleteSearch from '../AutoCompleteSearch';
 import getSocialMediaCards from '../../config/socialmediacards';
-import { Select } from 'antd';
 import { Grid } from '@material-ui/core';
 import AccountSelector from '../../components/AccountSelector';
 import SocialMediaSelector from '../../components/SocialMediaSelector';
-
-const { Option } = Select;
 
 const ACCOUNT_SELECTOR_FILTERS = {
     'facebook': (account) => account.details.account_type !== 'profile'
@@ -48,10 +46,13 @@ class StreamInitiator extends React.Component {
         const accountSelectorOptions = this.getAccountSelectorOptions(this.state.selectedSocial);
 
         let selectedAccountId = accountSelectorOptions[0].id;
-        
+
+        let selectedAccount = accountSelectorOptions.find((item) => item.id === selectedAccountId);
+
+        this.setState({ selectedAccount: selectedAccount });
+
         this.setState({ selectedAccountId: selectedAccountId });
-
-
+        
         this.props.channels.forEach(({ type, id }) => {
             // Getting the options for the socialMedia dropdown
             if (this.state.socialMediasSelectorOptions.indexOf(type) === -1) {
@@ -75,6 +76,22 @@ class StreamInitiator extends React.Component {
             if (typeof this.props.close !== "undefined") this.props.close();
         });
     };
+
+    handleTypeClick = (item) => {
+        const {selectedAccount} = this.state;
+        let input = item;
+        if(item.value === "keywords"){
+            if(selectedAccount.type == "facebook"){
+                this.toggleAutoCompleteSearchModal();
+                return;
+            }else if(selectedAccount.type == "twitter"){
+                this.toggleSearchModal();
+                return;
+            }
+        }  
+        
+        this.submitStream(input);
+    }
 
     handleSearchInputChange = (event) => {
 
@@ -114,7 +131,7 @@ class StreamInitiator extends React.Component {
 
     //Function to get social network type by value
     onSocialMediaChange = (value) => {
-        this.setState({ selctedSocial: value });
+        this.setState({ selectedSocial: value });
         let socialMediaCards = this.state.socialMediaCards;
 
         switch (value) {
@@ -152,10 +169,15 @@ class StreamInitiator extends React.Component {
     };
 
     //Function to send add stream request when button click event occurs
-    onClickCreator = (item) => {        
-        let input = item;
-        this.toggleStreamCreator();
-        this.submitStream(input);
+    onClickCreator = (item) => {
+        let input;
+        if(item.value == 'search' || item.value == 'pages'){
+            input = {label: 'Search Keywords', value: 'keywords'};
+            this.handleTypeClick(input);
+            return;
+        } else {
+            this.handleTypeClick(item);
+        }
     }
 
     toggleStreamCreator = () => {
@@ -165,8 +187,7 @@ class StreamInitiator extends React.Component {
     };
 
     render() {
-        const { selectedTab, reload, channels } = this.props;
-        const { selectedSocial, selectedAccountId, selectedAccount, socialMediasSelectorOptions } = this.state;
+        const { selectedSocial, selectedAccountId, socialMediasSelectorOptions } = this.state;
         return (
             <div>
 
@@ -179,7 +200,7 @@ class StreamInitiator extends React.Component {
 
                 <Modal isOpen={!!this.state.autoCompleteSearchModal} ariaHideApp={false} className="stream-type-modal search-modal">
                     <div>
-                        <AutoCompleteSearch placeholder="Type a page name..." channelId={selectedAccount.id} setSelected={this.setAutoCompleteSelected} />
+                        <AutoCompleteSearch placeholder="Type a page name..." channelId={selectedAccountId} setSelected={this.setAutoCompleteSelected} />
                         <button onClick={this.toggleAutoCompleteSearchModal} className="publish-btn-group autocomplete-done gradient-background-teal-blue link-cursor">Done</button>
                     </div>
                 </Modal>
@@ -354,4 +375,8 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(StreamInitiator);
+const mapDispatchToProps = (dispatch) => ({
+    startSetChannels: () => dispatch(startSetChannels())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(StreamInitiator);
