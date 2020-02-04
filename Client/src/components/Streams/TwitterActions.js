@@ -128,13 +128,13 @@ class TwitterActions extends React.Component{
                 }
 
                 <div className="stream-action-icons">
-                    <img onClick={this.toggleReplyBox} src="images/monitor-icons/back-small.svg"></img>
+                    <img className="action-icon-button" onClick={this.toggleReplyBox} src="images/monitor-icons/back-small.svg" />
                     <span>
-                        <img onClick={() => this.retweetPost()} src="images/monitor-icons/retweets-contact.svg"></img>
+                        <img onClick={() => this.retweetPost()} src="images/monitor-icons/retweets-contact.svg" style={{width: 28}}/>
                         <span className={`status-counter ${retweetedPost} `}> {retweetCount}</span>
                     </span>
                     <span>
-                        <img onClick={() => this.toggleLike()} src="images/monitor-icons/heart-contact-small.svg"></img>
+                        <img className="action-icon-button" onClick={() => this.toggleLike()} src="images/monitor-icons/heart-contact-small.svg" />
                         <span className={`status-counter ${likedPost} `}> {likesCount}</span>
                     </span>
                 </div>
