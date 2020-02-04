@@ -234,7 +234,7 @@ class ChartsSectionTab extends React.Component {
             {this.renderButtons()}
           </div>
         </div>
-        {renderChart({ accountId, selectedPeriod, startDate, endDate })}
+        {renderChart({ accountId, selectedPeriod, startDate, endDate, socialMedia })}
       </div>
     );
   };

@@ -5,7 +5,6 @@ import Tabs from '../../Tabs';
 import ChartsSectionTab from '../Sections/ChartsSectionTab';
 import TwitterSimpleChart from './TwitterSimpleChart';
 import TwitterEngagementsChart from './TwitterEngagementsChart';
-import EngagementsCard from '../EngagementsCard';
 import TwitterImpressionsChart from './TwitterImpressionsChart';
 
 class TwitterChartsSection extends React.Component {
@@ -69,29 +68,6 @@ class TwitterChartsSection extends React.Component {
                 (<TwitterEngagementsChart {...props} />)
               }
             />
-          <div className="engagements-cards-section">
-            <EngagementsCard
-              engagementType="Reactions"
-              historicalEngagement={462}
-              totalEngagementInPeriod={41}
-              difference="+12"
-              period="week"
-            />
-            <EngagementsCard
-              engagementType="Comments"
-              historicalEngagement={195}
-              totalEngagementInPeriod={12}
-              difference="+3"
-              period="week"
-            />
-            <EngagementsCard
-              engagementType="Shares"
-              historicalEngagement={124}
-              totalEngagementInPeriod={5}
-              difference="-2"
-              period="week"
-            />
-          </div>
         </div>
         <div label="Impressions">
           <ChartsSectionTab

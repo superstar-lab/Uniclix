@@ -5,7 +5,6 @@ import Tabs from '../../Tabs';
 import ChartsSectionTab from '../Sections/ChartsSectionTab';
 import FacebookSimpleChart from './FacebookSimpleChart';
 import FacebookEngagementsChart from './FacebookEngagementsChart';
-import EngagementsCard from '../EngagementsCard';
 
 class FacebookChartsSection extends React.Component {
   static propTypes = {
@@ -65,29 +64,6 @@ class FacebookChartsSection extends React.Component {
                 (<FacebookEngagementsChart {...props} />)
               }
             />
-          <div className="engagements-cards-section">
-            <EngagementsCard
-              engagementType="Reactions"
-              historicalEngagement={462}
-              totalEngagementInPeriod={41}
-              difference="+12"
-              period="week"
-            />
-            <EngagementsCard
-              engagementType="Comments"
-              historicalEngagement={195}
-              totalEngagementInPeriod={12}
-              difference="+3"
-              period="week"
-            />
-            <EngagementsCard
-              engagementType="Shares"
-              historicalEngagement={124}
-              totalEngagementInPeriod={5}
-              difference="-2"
-              period="week"
-            />
-          </div>
         </div>
         <div label="Impressions">
           <ChartsSectionTab

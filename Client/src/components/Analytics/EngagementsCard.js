@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Loader from 'react-loader-spinner';
 
 const COLOR_LINE = {
   Reactions: 'pink',
