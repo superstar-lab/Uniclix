@@ -40,6 +40,7 @@ class DisplayOptions extends React.Component {
             }
           </Select>
         </div>
+        {/* Will be commented until we decide to add this feature
         <div className="icons">
           <div onClick={() => setView('grid')}>
             <img src="/images/icons/grid.svg" />
@@ -48,6 +49,7 @@ class DisplayOptions extends React.Component {
             <img src="/images/icons/list.svg" />
           </div>
         </div>
+        */}
       </div>
     );
   }

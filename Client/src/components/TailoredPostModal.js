@@ -355,7 +355,7 @@ class TailoredPostModal extends React.Component{
                                     onOverlayClick={this.toggleSelectChannelsModal}
                                     onEditClick={this.toggleDraftEditorModal}
                                 />
-
+                                {/*
                                 <TailoredPostCard 
                                     network="pinterest"
                                     body={pinterestBody}
@@ -368,25 +368,25 @@ class TailoredPostModal extends React.Component{
                                     selectedChannels={selectedChannels}
                                     onOverlayClick={this.toggleSelectChannelsModal}
                                     onEditClick={this.toggleDraftEditorModal}
-                                />
+                                /> */}
 
                             </div>
                             <div className="tailored-post-bottom flex-center">
                                 <div className="tailored-post-bottom-content flex-center-h">
 
-                                    <ul className="compose-header">
-                                        <li onClick={this.toggleSelectChannelsModal} className="add-new-channel"><i className="fa fa-plus"></i></li>
+                                    <div className="compose-header">
+                                        <div onClick={this.toggleSelectChannelsModal} className="add-new-channel"><i className="fa fa-plus"></i></div>
 
                                         {!!this.state.publishChannels.length && channelSelector(this.state.publishChannels, {selected: true, provider: undefined}).map((channel) => (
                                             
-                                            <li key={channel.id} className="channel-item">
+                                            <div key={channel.id} className="channel-item">
                                                 <div className="remove-overlay fa fa-close" onClick={() => this.onChannelSelectionChange(channel)}></div>
                                                 <img onError={(e) => e.target.src='/images/dummy_profile.png'} src={channel.avatar}/>
-                                                <i className={`fa fa-${channel.type} ${channel.type}_bg smallIcon`}></i>
-                                            </li>
+                                                <i className={`fab fa-${channel.type} ${channel.type}_bg smallIcon`}></i>
+                                            </div>
                                         ))}
 
-                                    </ul>
+                                    </div>
                                     <PublishButton 
                                         action={this.publish} 
                                         onChange={this.updateScheduledLabel}
@@ -452,7 +452,7 @@ const TailoredPostCard = ({network, title, body, content, description, pictures,
 
                     {network != "pinterest" &&
                         <div className="tailored-post-preview__header">
-                            <i className={ `socialIcon fa fa-${network} ${network}_bg`}></i>
+                            <i className={ `socialIcon fab fa-${network} ${network}_bg`}></i>
                             <div>
                                 <div className="social-preview-title">{network} preview</div>
                                 <div className="small-blurry-text">small text here</div>
@@ -484,7 +484,7 @@ const TailoredPostCard = ({network, title, body, content, description, pictures,
                             </div>) : 
                             <div className="social-body-text noSidePadding height-109">
                                 <div className="flex-center-h">
-                                    <div className="social-preview-title"><i className={ `socialIcon sideIcon-r fa fa-${network} ${network}_bg`}></i></div>
+                                    <div className="social-preview-title"><i className={ `socialIcon sideIcon-r fab fa-${network} ${network}_bg`}></i></div>
                                     <div className="giveMeEllipsis-5"> <strong>{network} preview </strong> {body ? body : (source ? `${title} ${description ? description : ""} ${source}` : "")}</div>
                                 </div>
                             </div>
@@ -498,7 +498,7 @@ const TailoredPostCard = ({network, title, body, content, description, pictures,
                     
                         <div>
                             <div className="flex-center-h">
-                                <i className={`overlaySocialIcon fa fa-${network} ${network}_color`}></i>
+                                <i className={`overlaySocialIcon fab fa-${network} ${network}_color`}></i>
                             </div>
                             <div className="flex-center-h center-inline p10">
                                 Let's reach more people by posting on {network}
