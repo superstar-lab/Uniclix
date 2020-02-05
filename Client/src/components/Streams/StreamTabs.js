@@ -4,11 +4,14 @@ import UpgradeAlert from '../UpgradeAlert';
 import PropTypes from 'prop-types';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { Dialog, FlatButton, Menu, MenuItem, TextField } from 'material-ui';
+import { Grid } from '@material-ui/core';
+import { Select } from 'antd';
 import { Tabs, Tab } from "react-draggable-tab";
 import { getStreams, setRefreshRate, selectTab, positionTab, addTab, deleteTab, renameTab } from "../../requests/streams";
 import StreamItems from "./StreamItems";
 import StreamInitiator from "./StreamInitiator";
 import Loader from "../Loader";
+const { Option } = Select;
 
 const tabsClassNames = {
     tabWrapper: 'dndWrapper',
@@ -126,8 +129,8 @@ class StreamTabs extends Component {
         });
     }
 
-    handleRefreshRateChange = (e) => {
-        const refreshRate = parseInt(e.target.value);
+    handleRefreshRateChange = (val) => {
+        const refreshRate = parseInt(val);
 
         setRefreshRate({ key: this.state.selectedTab }, refreshRate)
             .then(() => this.fetchStreamTabs());
@@ -240,9 +243,26 @@ class StreamTabs extends Component {
                         <div>
                             {tab.streams.length ?
                                 <div className="easygrey-bg stream-drag-drop">
+                                    <div className="refresh-section">
+                                        <Grid item container>
+                                            <Grid item containter item md={6}>
+                                                <span>Refresh every</span>
+                                            </Grid>
+                                            <Grid item container item md={6}>
+                                                <Select className="monitor-smalltitle" size="default" value={parseInt(tab.refresh_rate)} onChange={(val) => this.handleRefreshRateChange(val)}>
+                                                    <Option value={2}><span className="social-media-selector-option">2 minutes</span></Option>
+                                                    <Option value={5}><span className="social-media-selector-option">5 minutes</span></Option>
+                                                    <Option value={10}><span className="social-media-selector-option">10 minutes</span></Option>
+                                                    <Option value={30}><span className="social-media-selector-option">30 minutes</span></Option>
+                                                    <Option value={60}><span className="social-media-selector-option">1 hour</span></Option>
+                                                    <Option value={120}><span className="social-media-selector-option">2 hours</span></Option>
+                                                </Select>
+                                            </Grid>
+                                        </Grid>
+                                    </div>
                                     <StreamItems
                                         streams={tab.streams}
-                                        refreshRate={parseInt(this.props.refreshRate)}
+                                        refreshRate={parseInt(tab.refresh_rate)}
                                         selectedTab={selectedTab}
                                         reload={this.fetchStreamTabs}
                                         toggleStreamMaker={this.toggleStreamMaker}
