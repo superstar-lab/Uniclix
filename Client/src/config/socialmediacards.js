@@ -6,6 +6,11 @@ const getSocialMediaCards = () => ({
             icon: "home"
         },
         {
+            label: "Search",
+            value: "search",
+            icon: "search"
+        },
+        {
             label: "Mentions",
             value: "mentions",
             icon: "at"
@@ -29,11 +34,6 @@ const getSocialMediaCards = () => ({
             label: "My Tweets",
             value: "tweets",
             icon: "mail-forward"
-        },
-        {
-            label: "Search",
-            value: "search",
-            icon: "search"
         },
         {
             label: "Scheduled",

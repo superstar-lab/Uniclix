@@ -175,15 +175,15 @@ class FacebookActions extends React.Component{
 
                 <div className="stream-action-icons">
                     <span>
-                        <i onClick={() => this.toggleLike()} className={`fa fa-thumbs-up ${likedPost}`}></i>
+                        <img className="action-icon-button" onClick={() => this.toggleLike()} src="images/monitor-icons/heart-contact-small.svg"/>
                         <span className={`status-counter ${likedPost} `}> {likesCount}</span>
                     </span>
                     <span>
-                    <i onClick={() => this.toggleComment()} className={`fa fa fa-comment ${commentPost}`}></i>
+                        <img onClick={() => this.toggleComment()} src="images/monitor-icons/retweets-contact.svg" style={{width: 28}}/>
                         <span className={`status-counter ${commentPost}`}> {commentsCount}</span>
                     </span>
                 
-                    <img onClick={this.togglePostBox} src="images/monitor-icons/back-small.svg"></img>                    
+                    <img className="action-icon-button" onClick={this.togglePostBox} src="images/monitor-icons/back-small.svg"></img>                    
                 </div>
                 <div>
                     {   comment &&

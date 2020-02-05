@@ -226,7 +226,7 @@ class StreamTabs extends Component {
                     <Tab key={tab.key} title={tab.title} {...this.makeListeners(tab.key)}>
                         <div>
                             {tab.streams.length ?
-                                <div className="easygrey-bg">
+                                <div className="easygrey-bg stream-drag-drop">
                                     <StreamItems
                                         streams={tab.streams}
                                         refreshRate={parseInt(this.props.refreshRate)}

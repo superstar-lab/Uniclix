@@ -838,7 +838,7 @@ a:link {
 
 .stream-feed,
 .stream-maker.stream-size .stream-feed {
-  height: 75vh;
+  height: calc(100vh - 10px);
   background: #EAF3FB;
   padding: 14px;
   padding-top: 0;
@@ -860,14 +860,14 @@ a:link {
 
 .stream-action-icons>span>.fa,
 .stream-action-icons>.fa {
-  border: 1px solid #c5c5c5;
   border-radius: 100%;
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
   padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #2D86DA;
 }
 
 .stream-action-icons {
@@ -919,7 +919,7 @@ a:link {
 
 .stream-feed-container {
   width: 100%;  
-  padding: 16px;
+  padding: 23px;
   margin-bottom: 14px;
   background: #FFFFFF;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
@@ -927,9 +927,12 @@ a:link {
 }
 
 .stream-feed-container .username {
-  color: #485576;
-  font-weight: light;
-  letter-spacing: 0.5px;
+  color: #363636;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: 0.130517px;
 }
 
 .stream-feed-container .post-info img,
@@ -950,7 +953,12 @@ a:link {
 
 .stream-feed-container .post-info img,
 .stream-feed-container .post-info .profile-info .post-date {
-  color: #777;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  color: #909090;
+  letter-spacing: 0.130517px;
 }
 
 .stream-feed-container .post-info img {
@@ -960,10 +968,15 @@ a:link {
 
 .stream-feed-container .post-content {
   margin: 10px 0;
-  color: #666;
   word-break: break-word;
   white-space: pre-wrap;
   cursor: text;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  letter-spacing: 0.130517px;
+  color: #363636;
 }
 
 .stream-feed-container.fb-conversations:hover {
@@ -974,7 +987,13 @@ a:link {
 }
 
 .stream-user {
-  color: #c5c5c5;
+  color: #363636;
+  margin-left: 10px;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.130517px;
 }
 
 .stream-title {
@@ -1381,10 +1400,11 @@ button.streammaker-btn:hover {
 }
 
 .link-preview {
-  display: flex;
   background: #efefef;
   max-height: 220px;
+  display: contents;
   overflow: hidden;
+  text-align: center;
 }
 
 .link-preview .link-img img {
@@ -1409,7 +1429,6 @@ button.streammaker-btn:hover {
 
 .shared-status {
   padding: 10px;
-  border: 1px solid #ddd;
 }
 
 .shared-status .status-type {
@@ -5471,4 +5490,12 @@ section.pricing {
       border-bottom: 1px solid $gray;
     }
   }
+}
+
+.action-icon-button {
+  width: 22px;
+}
+
+.action-facebook-icon-button {
+
 }

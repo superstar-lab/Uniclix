@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux'
 import Modal from 'react-modal';
 import Popup from "reactjs-popup";
+import ReactTooltip from 'react-tooltip';
+import { Typography, Button, withStyles } from '@material-ui/core';
 import StreamFeedMedia from './StreamFeedMedia';
 import ReadMore from '../ReadMore';
 import { deleteTweet } from '../../requests/twitter/tweets';
@@ -140,7 +142,12 @@ class StreamPost extends React.Component {
             </Modal>
 
             <div className="post-info">
-                <img src={profileImg} />
+                <div className="profile-info selected-profile" >
+                    <span className="pull-left profile-img-container">
+                        <img src={profileImg} />
+                        <i className={`fab fa-${networkType} ${networkType}_bg smallIcon`}></i>
+                    </span>
+                </div>
                 <div className="post-info-item">
                     {networkType == "twitter" && <TwitterInfoCard username={username} channelId={channel.id} />}
                     {networkType == "facebook" && <FacebookInfoCard username={username} channelId={channel.id} accountId={accountId} />}
@@ -149,7 +156,16 @@ class StreamPost extends React.Component {
                 {
                     type == "facebook" || networkType == "twitter" ?
                         <Popup
-                            trigger={<img className="stream-action-menu" src="images/monitor-icons/menu.svg"></img>}
+                            trigger={
+                                <div className="stream-action-menu">
+                                    <StylesButton className="stream-action-menu-btn" data-for={feedItem.id + '-action-menu'} data-tip data-iscapture='true' data-event-off='click'>
+                                        <img className="stream-action-menu-icon" src="images/monitor-icons/menu.svg"></img>
+                                    </StylesButton>
+                                    <ReactTooltip className="stream-menu-tooltip" place="bottom" type="info" effect="solid" globalEventOff='click' id={feedItem.id + '-action-menu'}>
+                                        <Typography className="stream-menu-tooltip-label">More</Typography>
+                                    </ReactTooltip>
+                                </div>
+                            }
                             on="click"
                             contentStyle={popupStyle}
                             position="bottom left"
@@ -261,6 +277,16 @@ class StreamPost extends React.Component {
     }
 };
 
+const StylesButton = withStyles(theme => ({
+    root: {
+        '&:hover': {
+            background: "#EAF3FB"
+        },
+        '&.active': {
+            background: "#EAF3FB"
+        }
+    }
+}))(Button);
 
 const mapStateToProps = (state) => {
     const twitterChannels = channelSelector(state.channels.list, { selected: undefined, provider: "twitter" });
