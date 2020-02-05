@@ -81,7 +81,7 @@ class EngagementCardsSection extends React.Component {
         />
         <EngagementsCard
           engagementType="Shares"
-          data={data ? data.shares.historicalNumber : {}}
+          data={data ? data.shares : {}}
           period={selectedPeriod.toLowerCase()}
           isLoading={isLoading}
         />
