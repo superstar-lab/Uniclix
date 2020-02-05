@@ -390,6 +390,11 @@ class StreamItems extends Component {
                             src={item.type == "search" || item.type == "pages" ? "/images/monitor-icons/searchresult.svg" 
                             :
                             `/images/monitor-icons/${item.type}.svg`}/>
+                            {
+                              this.state.currentItemId == item.id ? 
+                                <input type="text" className="text-cursor" data-editable={true} onKeyDown={this.handleKeyDown} onChange={this.handleTitleChange} value={this.state.titleText} /> : 
+                                <span className="text-cursor" onClick={this.handleTitleClick} data-editable-item={JSON.stringify(item)}> {item.title} </span> 
+                            } 
                           <span className="stream-user">{item.network == "twitter" ? "@" + channel.username : "@" + channel.name}</span>
                           <div className="pull-right">
                             <img className={`action-btn stream-refresh-btn ${this.state.loading === item.id ? 'fa-spin' : ''}`} src="/images/monitor-icons/refresh.svg" onClick={() => this.refresh(item.id)} />
