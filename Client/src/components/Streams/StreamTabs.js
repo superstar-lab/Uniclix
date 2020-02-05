@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import _ from 'lodash';
-import Modal from 'react-modal';
 import UpgradeAlert from '../UpgradeAlert';
 import PropTypes from 'prop-types';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -8,7 +7,6 @@ import { Dialog, FlatButton, Menu, MenuItem, TextField } from 'material-ui';
 import { Tabs, Tab } from "react-draggable-tab";
 import { getStreams, setRefreshRate, selectTab, positionTab, addTab, deleteTab, renameTab } from "../../requests/streams";
 import StreamItems from "./StreamItems";
-import StreamCreator from "./StreamCreator";
 import StreamInitiator from "./StreamInitiator";
 import Loader from "../Loader";
 
@@ -46,7 +44,9 @@ class StreamTabs extends Component {
         loading: false,
         forbidden: false,
         addStream: false,
-        streamMaker: localStorage.getItem("streamMaker") === 'false' ? false : true
+        streamMaker: localStorage.getItem("streamMaker") === 'false' ? false : true,
+        selectedSocial: '',
+        selectedAccountId: '',
     };
 
     componentDidMount() {
@@ -102,7 +102,12 @@ class StreamTabs extends Component {
 
         let newTab = (<Tab key={key} title='untitled' {...this.makeListeners(key)}>
             <div>
-                <StreamInitiator selectedTab={key} reload={this.fetchStreamTabs} />
+                <StreamInitiator 
+                    selectedTab={key}
+                    reload={this.fetchStreamTabs}
+                    onChangeSocial={(val) => this.handleChangeSocial(val)}
+                    onChangeAccount={(val) => this.handleChangeAccount(val)}
+                />
             </div>
         </Tab>);
 
@@ -219,6 +224,14 @@ class StreamTabs extends Component {
         }));
     };
 
+    handleChangeSocial = (value) => {
+        this.setState({selectedSocial: value});
+    }
+
+    handleChangeAccount = (value) => {
+        this.setState({selectedAccountId: value});
+    }
+
     setTabs = (items, selectedTab = "tab0") => {
         this.setState(() => ({
             tabs: items.map(tab =>
@@ -234,10 +247,17 @@ class StreamTabs extends Component {
                                         reload={this.fetchStreamTabs}
                                         toggleStreamMaker={this.toggleStreamMaker}
                                         isStreamMakerOpen={this.state.streamMaker}
+                                        selectedSocial={this.state.selectedSocial}
+                                        selectedAccountId={this.state.selectedAccountId}
                                     />
                                 </div>
                                 :
-                                <StreamInitiator selectedTab={selectedTab} reload={this.fetchStreamTabs} />}
+                                <StreamInitiator 
+                                    selectedTab={selectedTab}
+                                    reload={this.fetchStreamTabs}
+                                    onChangeSocial={(val) => this.handleChangeSocial(val)}
+                                    onChangeAccount={(val) => this.handleChangeAccount(val)}
+                                />}
 
                         </div>
                     </Tab>
@@ -355,7 +375,15 @@ class StreamTabs extends Component {
                             <TextField
                                 ref='input' id="rename-input" style={{ width: '90%' }} />
                         </Dialog>
-                    </div> : !this.state.loading && <StreamInitiator selectedTab={this.state.selectedTab} reload={this.fetchStreamTabs} />
+                    </div>
+                    :
+                    !this.state.loading && 
+                        <StreamInitiator 
+                            selectedTab={this.state.selectedTab}
+                            reload={this.fetchStreamTabs}
+                            onChangeSocial={(val) => this.handleChangeSocial(val)}
+                            onChangeAccount={(val) => this.handleChangeAccount(val)}
+                        />
                 }
             </div>
         );

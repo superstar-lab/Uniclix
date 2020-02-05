@@ -1255,8 +1255,20 @@ a:link {
 }
 
 .stream-title .text-cursor {
+  
+  color: #363636;
+  width: 102px;
+  overflow: hidden;
+  display: inline-block;
+  margin: 0 0px 0 6px;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 17px;
+  line-height: 16px;
+  vertical-align: sub;
 }
 
 .text-cursor {

@@ -38,19 +38,16 @@ class StreamInitiator extends React.Component {
     //Set the default state value
     componentWillMount() {
         let socialMediaCards = getSocialMediaCards();
-
         this.setState({ socialMediaCards: socialMediaCards });
 
-        this.setState({ streamIcons: socialMediaCards.twitterIcons });
+        let streamIcons = this.getIcons(socialMediaCards, this.state.selectedSocial);
+        this.setState({ streamIcons: streamIcons});
 
         const accountSelectorOptions = this.getAccountSelectorOptions(this.state.selectedSocial);
-
         let selectedAccountId = accountSelectorOptions[0].id;
 
         let selectedAccount = accountSelectorOptions.find((item) => item.id === selectedAccountId);
-
         this.setState({ selectedAccount: selectedAccount });
-
         this.setState({ selectedAccountId: selectedAccountId });
         
         this.props.channels.forEach(({ type, id }) => {
@@ -59,6 +56,9 @@ class StreamInitiator extends React.Component {
                 this.state.socialMediasSelectorOptions.push(type);
             }
         });
+
+        this.props.onChangeSocial(this.state.selectedSocial);
+        this.props.onChangeAccount(selectedAccountId);
     }
     
     //Function to add stream
@@ -130,31 +130,44 @@ class StreamInitiator extends React.Component {
     };
 
     //Function to get social network type by value
-    onSocialMediaChange = (value) => {
-        this.setState({ selectedSocial: value });
+    onSocialMediaChange = (selectedSocial) => {
+        this.setState({ selectedSocial: selectedSocial});        
+        
         let socialMediaCards = this.state.socialMediaCards;
 
-        switch (value) {
-            case 'twitter':
-                this.setState({ streamIcons: socialMediaCards.twitterIcons });
-                break;
-            case 'facebook':
-                this.setState({ streamIcons: socialMediaCards.facebookIcons });
-                break;
-            case 'linkedin':
-                this.setState({ streamIcons: socialMediaCards.linkedinIcons });
-                break;
-            default:
-                break;
-        }
+        let streamIcons = this.getIcons(socialMediaCards, selectedSocial);
+        this.setState({streamIcons: streamIcons});
+
+        let accounts = this.getAccountSelectorOptions(selectedSocial);                
+        this.setState({selectedAccount: accounts[0]});
+        this.setState({selectedAccountId: accounts[0].id});
+        
+        this.props.onChangeSocial(selectedSocial);
+        this.props.onChangeAccount(accounts[0].id);
     };
 
-    //Function to set account by value
-    onAccountChange = (value) => {        
-        this.setState({ selectedAccountId: value });
-        let selectedAccount = this.props.channels.find((item) => item.id === value);
+    //Function to get Icons by socialNetwork
+    getIcons = (socialMediaCards, selectedSocial) => {
+        switch (selectedSocial) {
+          case 'twitter':
+            return socialMediaCards.twitterIcons;        
+          case 'facebook':        
+            return socialMediaCards.facebookIcons;
+          case 'linkedin':
+            return socialMediaCards.linkedinIcons;
+          default:
+            return [];
+        }
+      }
+    //Function to set account by selectedAccountId
+    onAccountChange = (selectedAccountId) => {        
+        this.props.onChangeAccount(selectedAccountId);
+        let selectedAccount = this.props.channels.find((item) => item.id === selectedAccountId);
         if (selectedAccount)
+        {
             this.setState({selectedAccount: selectedAccount});
+            this.setState({selectedAccountId: selectedAccountId});
+        }
     };
 
     //Function to get account option object
@@ -190,7 +203,6 @@ class StreamInitiator extends React.Component {
         const { selectedSocial, selectedAccountId, socialMediasSelectorOptions } = this.state;
         return (
             <div>
-
                 <Modal isOpen={!!this.state.searchModal} ariaHideApp={false} className="stream-type-modal search-modal">
                     <div>
                         <input type="text" onChange={e => this.handleSearchInputChange(e)} value={this.state.searchTerm} placeholder="Example: coca cola or #fashion" />
