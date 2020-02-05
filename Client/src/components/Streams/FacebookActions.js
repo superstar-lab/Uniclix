@@ -179,7 +179,7 @@ class FacebookActions extends React.Component{
                         <span className={`status-counter ${likedPost} `}> {likesCount}</span>
                     </span>
                     <span>
-                        <img onClick={() => this.toggleComment()} src="images/monitor-icons/retweets-contact.svg" style={{width: 28}}/>
+                        <img onClick={() => this.toggleComment()} src="images/monitor-icons/conversations.svg" style={{width: 22}}/>
                         <span className={`status-counter ${commentPost}`}> {commentsCount}</span>
                     </span>
                 
