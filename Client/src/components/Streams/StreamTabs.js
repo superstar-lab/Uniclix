@@ -244,11 +244,11 @@ class StreamTabs extends Component {
                             {tab.streams.length ?
                                 <div className="easygrey-bg stream-drag-drop">
                                     <div className="refresh-section">
-                                        <Grid item container>
-                                            <Grid item containter item md={6}>
+                                        <Grid container>
+                                            <Grid item md={6}>
                                                 <span>Refresh every</span>
                                             </Grid>
-                                            <Grid item container item md={6}>
+                                            <Grid item md={6}>
                                                 <Select className="monitor-smalltitle" size="default" value={parseInt(tab.refresh_rate)} onChange={(val) => this.handleRefreshRateChange(val)}>
                                                     <Option value={2}><span className="social-media-selector-option">2 minutes</span></Option>
                                                     <Option value={5}><span className="social-media-selector-option">5 minutes</span></Option>

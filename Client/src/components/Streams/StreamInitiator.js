@@ -29,7 +29,7 @@ class StreamInitiator extends React.Component {
         searchTerm: "",
         
         socialMediaCards: {},
-        selectedSocial: 'twitter',
+        selectedSocial: 'facebook',
         socialMediasSelectorOptions: [],
         streamIcons: [],
         streamCreator: this.props.streamCreator ? this.props.streamCreator : false
@@ -273,95 +273,6 @@ export const StreamFeedItemPlaceholder = () => (
         </div>
     </div>
 );
-
-export class StreamMaker extends React.Component {
-    state = {
-        streamCreator: this.props.streamCreator ? this.props.streamCreator : false
-    }
-
-    toggleStreamCreator = () => {
-        this.setState(() => ({
-            streamCreator: !this.state.streamCreator
-        }));
-    };
-
-    render() {
-
-        const {
-            title,
-            description,
-            icon,
-            intro = false,
-            onItemClick,
-            item,
-            selectedTab,
-            reload,
-            channels,
-            streamSize = false,
-            toggle,
-            minimize
-        } = this.props;
-
-        const { streamCreator } = this.state;
-        return (
-            <div className={`stream-maker ${streamSize && 'stream-size'}`}>
-                <h3 className={`stream-title`}>
-
-                    <span className="text-cursor">{!!icon && <img src={`/images/${icon}.svg`} />} {title} </span>
-                    {!!minimize && <i className="fa fa-minus pull-right link-cursor" onClick={toggle}></i>}
-
-                </h3>
-
-                {!streamCreator ?
-                    <div className="stream-feed">
-                        <div className="stream-feed-container">
-                            <div className="stream-feed-container-text">
-                                {description}
-                            </div>
-                            <div className="txt-center">
-                                {item.value === "browse" || channels.length > 1 ?
-                                    <button className="magento-btn mb25" onClick={() => this.toggleStreamCreator()}>Get Started</button> :
-                                    <button className="magento-btn mb25" onClick={() => onItemClick(item)}>Get Started</button>
-                                }
-                            </div>
-                        </div>
-
-                        <div className={`stream-feed-container ${intro && 'blur'}`}>
-                            <StreamFeedItemPlaceholder />
-                        </div>
-
-                        <div className={`stream-feed-container ${intro && 'blur'}`}>
-                            <StreamFeedItemPlaceholder />
-                        </div>
-
-                        <div className={`stream-feed-container ${intro && 'blur'}`}>
-                            <StreamFeedItemPlaceholder />
-                        </div>
-
-                        <div className={`stream-feed-container ${intro && 'blur'}`}>
-                            <StreamFeedItemPlaceholder />
-                        </div>
-
-                        {!!intro && <div className="stream-intro">
-                            <img src="/images/hello_bubble_smiley.svg" />
-                            <h3>Welcome to Streams: </h3>
-                            <h5>People are talking, make sure your listening.</h5>
-                            <p>A great way to manage mentions and monitor keywords and hashtags.</p>
-                        </div>}
-                    </div>
-                    :
-                    <div className="stream-feed stream-creator-feed scrollbar">
-                        {item.value === "browse" ?
-                            <StreamCreator selectedTab={selectedTab} reload={reload} verticalDisplay={true} />
-                            :
-                            <StreamCreator selectedTab={selectedTab} reload={reload} verticalDisplay={true} defaultItem={item} />
-                        }
-                    </div>
-                }
-            </div>
-        );
-    }
-}
 
 const ProfileChannel = ({ channel }) => (
     <div className="channel-container">

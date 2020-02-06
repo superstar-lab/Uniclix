@@ -71,9 +71,15 @@
     background-color: white;
     border-radius: 20px 0px 0px 0px;
     position: absolute;
-	right: -30px;
-    height: 100%;
+	right: -75px;
+	height: 100%;
+	transition: 0.3s;
+	transition-delay: 0.3s;
 }
+
+#monitor-right-bar:hover {
+	right: -30px;
+  }
 
 .cardlist-rightbar {
     background: white;
@@ -624,7 +630,7 @@ $blue: lighten(rgb(4,159,217), 5%);
 }
 
 .stream-drag-drop {
-    padding-right: 40px;
+    padding-right: 0px;
 }
 
 .image-size {
