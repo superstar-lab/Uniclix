@@ -146,7 +146,7 @@ class MonitorRightbar extends React.Component {
                             )
                         }
                     </Popup>
-                    <ReactTooltip className="tooltipTheme" place="left" type="info" effect="solid" id="account" delayShow="400">
+                    <ReactTooltip className="tooltipTheme" place="left" type="info" effect="solid" id="account" delayShow={400}>
                         <Typography className="cardlist-tooltiplabel">Select Account</Typography>
                     </ReactTooltip>
                 </div>
@@ -156,7 +156,7 @@ class MonitorRightbar extends React.Component {
                             <StylesButton className="cardlist-secondbtn" onClick={() => { handleItemCard(); onClickCreator(item) }} data-for={item.value} data-tip data-iscapture='true' data-event-off='scroll mousewheel blur'>
                                 <img src={`/images/monitor-icons/${item.icon}-small.svg`} />
                             </StylesButton>
-                            <ReactTooltip className="tooltipTheme" place="left" type="info" effect="solid" id={item.value} delayShow="400">
+                            <ReactTooltip className="tooltipTheme" place="left" type="info" effect="solid" id={item.value} delayShow={400}>
                                 <Typography className="cardlist-tooltiplabel">{item.label}</Typography>
                             </ReactTooltip>
                         </div>

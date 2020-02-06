@@ -5508,6 +5508,28 @@ section.pricing {
   width: 22px;
 }
 
-.action-facebook-icon-button {
+.action-icon-button:hover {
+  border-radius: 50px;
+  border: 1px solid darkgrey;
+  padding: 1px;
+}
 
+.action-facebook-icon-button {
+  width: 22px;
+}
+
+.action-facebook-icon-button:hover {
+  border-radius: 50px;
+  border: 1px solid darkgrey;
+  padding: 1px;
+}
+
+.action-twitter-icon-button {
+  width: 28px;
+}
+
+.action-twitter-icon-button:hover {
+  border-radius: 50px;
+  border: 1px solid darkgrey;
+  padding: 1px;
 }

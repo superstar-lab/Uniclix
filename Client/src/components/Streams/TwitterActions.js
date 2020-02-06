@@ -26,7 +26,8 @@ class TwitterActions extends React.Component{
 
         like(feedItem.id_str, channel.id).then((response) => {
             if(typeof response.id !== "undefined"){
-                updateItem(response, type);
+                updateItem(response, "twitterLike");
+                
             }
         }).catch(e => {this.setState(() => ({liked: false}))});
     }
@@ -40,7 +41,7 @@ class TwitterActions extends React.Component{
         
         unlike(feedItem.id_str, channel.id).then((response) => {
             if(typeof response.id !== "undefined"){
-                updateItem(response, type);
+                updateItem(response, "twitterUnlike");
             }
         }).catch(e => {this.setState(() => ({liked: true}))});
     }
@@ -54,7 +55,7 @@ class TwitterActions extends React.Component{
         
         retweet(feedItem.id_str, channel.id).then((response) => {
             if(typeof response.id !== "undefined"){
-                updateItem(response, type);
+                updateItem(response, "twitterRetweets");
             }
         }).catch(e => {this.setState(() => ({retweeted: false}))});
     }
@@ -101,7 +102,7 @@ class TwitterActions extends React.Component{
         const retweetedPost = retweeted ? 'acted' : '';
         const likesCount = feedItem.favorite_count > 0 ? abbrNum(feedItem.favorite_count) : '';
         const retweetCount = feedItem.retweet_count > 0 ? abbrNum(feedItem.retweet_count) : '';
-
+        
         return (
             <div>
                 <ToastContainer
@@ -130,7 +131,7 @@ class TwitterActions extends React.Component{
                 <div className="stream-action-icons">
                     <img className="action-icon-button" onClick={this.toggleReplyBox} src="images/monitor-icons/back-small.svg" />
                     <span>
-                        <img onClick={() => this.retweetPost()} src="images/monitor-icons/retweets-contact.svg" style={{width: 28}}/>
+                        <img className="action-twitter-icon-button" onClick={() => this.retweetPost()} src="images/monitor-icons/retweets-contact.svg"/>
                         <span className={`status-counter ${retweetedPost} `}> {retweetCount}</span>
                     </span>
                     <span>
