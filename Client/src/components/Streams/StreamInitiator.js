@@ -27,7 +27,6 @@ class StreamInitiator extends React.Component {
         searchModal: false,
         autoCompleteSearchModal: false,
         searchTerm: "",
-        
         socialMediaCards: {},
         selectedSocial: 'facebook',
         socialMediasSelectorOptions: [],
@@ -38,26 +37,22 @@ class StreamInitiator extends React.Component {
     //Set the default state value
     componentWillMount() {
         let socialMediaCards = getSocialMediaCards();
+        let selectedSocial = this.state.selectedSocial;
         this.setState({ socialMediaCards: socialMediaCards });
-
-        let streamIcons = this.getIcons(socialMediaCards, this.state.selectedSocial);
+        let streamIcons = socialMediaCards[selectedSocial];
         this.setState({ streamIcons: streamIcons});
-
-        const accountSelectorOptions = this.getAccountSelectorOptions(this.state.selectedSocial);
+        const accountSelectorOptions = this.getAccountSelectorOptions(selectedSocial);
         let selectedAccountId = accountSelectorOptions[0].id;
-
         let selectedAccount = accountSelectorOptions.find((item) => item.id === selectedAccountId);
         this.setState({ selectedAccount: selectedAccount });
         this.setState({ selectedAccountId: selectedAccountId });
-        
         this.props.channels.forEach(({ type, id }) => {
             // Getting the options for the socialMedia dropdown
             if (this.state.socialMediasSelectorOptions.indexOf(type) === -1) {
                 this.state.socialMediasSelectorOptions.push(type);
             }
         });
-
-        this.props.onChangeSocial(this.state.selectedSocial);
+        this.props.onChangeSocial(selectedSocial);
         this.props.onChangeAccount(selectedAccountId);
     }
     
@@ -132,39 +127,21 @@ class StreamInitiator extends React.Component {
     //Function to get social network type by value
     onSocialMediaChange = (selectedSocial) => {
         this.setState({ selectedSocial: selectedSocial});        
-        
         let socialMediaCards = this.state.socialMediaCards;
-
-        let streamIcons = this.getIcons(socialMediaCards, selectedSocial);
+        let streamIcons = socialMediaCards[selectedSocial];
         this.setState({streamIcons: streamIcons});
-
         let accounts = this.getAccountSelectorOptions(selectedSocial);                
         this.setState({selectedAccount: accounts[0]});
         this.setState({selectedAccountId: accounts[0].id});
-        
         this.props.onChangeSocial(selectedSocial);
         this.props.onChangeAccount(accounts[0].id);
     };
 
-    //Function to get Icons by socialNetwork
-    getIcons = (socialMediaCards, selectedSocial) => {
-        switch (selectedSocial) {
-          case 'twitter':
-            return socialMediaCards.twitterIcons;        
-          case 'facebook':        
-            return socialMediaCards.facebookIcons;
-          case 'linkedin':
-            return socialMediaCards.linkedinIcons;
-          default:
-            return [];
-        }
-      }
     //Function to set account by selectedAccountId
     onAccountChange = (selectedAccountId) => {        
         this.props.onChangeAccount(selectedAccountId);
         let selectedAccount = this.props.channels.find((item) => item.id === selectedAccountId);
-        if (selectedAccount)
-        {
+        if (selectedAccount) {
             this.setState({selectedAccount: selectedAccount});
             this.setState({selectedAccountId: selectedAccountId});
         }

@@ -102,7 +102,6 @@ class TwitterActions extends React.Component{
         const retweetedPost = retweeted ? 'acted' : '';
         const likesCount = feedItem.favorite_count > 0 ? abbrNum(feedItem.favorite_count) : '';
         const retweetCount = feedItem.retweet_count > 0 ? abbrNum(feedItem.retweet_count) : '';
-        
         return (
             <div>
                 <ToastContainer
@@ -132,7 +131,9 @@ class TwitterActions extends React.Component{
                     <img className="action-icon-button" onClick={this.toggleReplyBox} src="images/monitor-icons/back-small.svg" />
                     <span>
                         <img className="action-twitter-icon-button" onClick={() => this.retweetPost()} src="images/monitor-icons/retweets-contact.svg"/>
-                        <span className={`status-counter ${retweetedPost} `}> {retweetCount}</span>
+                        <span className={`status-counter ${retweetedPost} `}> 
+                            {retweetCount}
+                        </span>
                     </span>
                     <span>
                         <img className="action-icon-button" onClick={() => this.toggleLike()} src="images/monitor-icons/heart-contact-small.svg" />

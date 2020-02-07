@@ -85,48 +85,47 @@ class StreamFeed extends React.Component{
             items = this.state.items.filter(item => item.id !== currentItem.id);
         }else{
             items = this.state.items.map(item => {
-                
                 if(type == "twitterDefault" && item.id == currentItem.id){
                     return currentItem;
                 }
 
-                if(type == "twitterFollowers" && typeof item.status !== "undefined" && item.id == currentItem.id){
+                if(type == "twitterFollowers" && !!item.status && item.id == currentItem.id){
                     item.status = currentItem;
                     return item;
                 }
 
-                if(type == "twitterLike" && typeof item.id !== "undefined" && item.id == currentItem.user.id){
+                if(type == "twitterLike" && !!item.id && item.id == currentItem.user.id){
                     item.status.favorite_count += 1;
                     return item;
                 }
 
-                if(type == "twitterUnlike" && typeof item.id !== "undefined" && item.id == currentItem.user.id){
+                if(type == "twitterUnlike" && !!item.id && item.id == currentItem.user.id){
                     item.status.favorite_count -= 1;
                     return item;
                 }
 
-                if(type == "twitterRetweets" && typeof item.id !== "undefined"){
+                if(type == "twitterRetweets" && !!item.id){
                     item.status.retweet_count += 1;
                     return item;
                 }
 
-                if(type == "facebookLike" && typeof item.id !== "undefined" && item.id == currentItem.id){
+                if(type == "facebookLike" && !!item.id && item.id == currentItem.id){
                     item.likes.summary.has_liked = true;
                     item.likes.summary.total_count += 1;
                     return item;
                 }
 
-                if(type == "facebookUnlike" && typeof item.id !== "undefined" && item.id == currentItem.id){
+                if(type == "facebookUnlike" && !!item.id && item.id == currentItem.id){
                     item.likes.summary.has_liked = false;
                     item.likes.summary.total_count -= 1;
                     return item;
                 }
 
-                if(type == "facebookMessage" && typeof item.id !== "undefined" && item.id == currentItem.id){
+                if(type == "facebookMessage" && !!item.id && item.id == currentItem.id){
                     return currentItem;
                 }
 
-                if(type == "facebookComment" && typeof item.id !== "undefined" && item.id == currentItem.id){
+                if(type == "facebookComment" && !!item.id && item.id == currentItem.id){
                     item.comments.summary.total_count += 1;
                     return item;
                 }
