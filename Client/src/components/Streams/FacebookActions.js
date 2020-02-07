@@ -66,15 +66,15 @@ class FacebookActions extends React.Component{
             loading: true
         }));
 
-        const {feedItem, channel} = this.props;
+        const {feedItem, channel, updateItem} = this.props;
         const {content, pictures} = this.state;
 
         let image = pictures.length ? pictures[0] : "";
 
         comment(feedItem.id, channel.id, content, image).then((response) => {
             if(typeof(response.success) !== "undefined") {
-                
-                toastContainer.success("Message posted.", "Success", {closeButton: true});            
+                toastContainer.success("Message posted.", "Success", {closeButton: true});
+                updateItem(feedItem, "facebookComment");            
                 this.setState(() => ({
                     content: "",
                     pictures: [],
@@ -155,7 +155,7 @@ class FacebookActions extends React.Component{
         const commentPost = comment ? 'acted' : '';
         const likesCount = feedItem.likes.summary.total_count > 0 ? abbrNum(feedItem.likes.summary.total_count) : '';
         const commentsCount = feedItem.comments.summary.total_count > 0 ? abbrNum(feedItem.comments.summary.total_count) : '';
-
+        
         return (
             <div className="fb-actions-container">
                 <ToastContainer
@@ -179,7 +179,7 @@ class FacebookActions extends React.Component{
                         <span className={`status-counter ${likedPost} `}> {likesCount}</span>
                     </span>
                     <span>
-                        <img onClick={() => this.toggleComment()} src="images/monitor-icons/retweets-contact.svg" style={{width: 28}}/>
+                        <img className="action-facebook-icon-button" onClick={() => this.toggleComment()} src="images/monitor-icons/conversations.svg" />
                         <span className={`status-counter ${commentPost}`}> {commentsCount}</span>
                     </span>
                 

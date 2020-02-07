@@ -1,5 +1,5 @@
 const getSocialMediaCards = () => ({
-    twitterIcons: [
+    twitter: [
         {
             label: "Home",
             value: "home",
@@ -42,7 +42,7 @@ const getSocialMediaCards = () => ({
         }
     ],
 
-    facebookIcons: [
+    facebook: [
         {
             label: "Timeline",
             value: "timeline",
@@ -80,7 +80,7 @@ const getSocialMediaCards = () => ({
         }
     ],
 
-    linkedinIcons: [
+    linkedin: [
         {
             label: "Home",
             value: "home",

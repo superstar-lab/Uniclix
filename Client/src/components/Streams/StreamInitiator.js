@@ -27,9 +27,8 @@ class StreamInitiator extends React.Component {
         searchModal: false,
         autoCompleteSearchModal: false,
         searchTerm: "",
-        
         socialMediaCards: {},
-        selectedSocial: 'twitter',
+        selectedSocial: 'facebook',
         socialMediasSelectorOptions: [],
         streamIcons: [],
         streamCreator: this.props.streamCreator ? this.props.streamCreator : false
@@ -38,27 +37,23 @@ class StreamInitiator extends React.Component {
     //Set the default state value
     componentWillMount() {
         let socialMediaCards = getSocialMediaCards();
-
+        let selectedSocial = this.state.selectedSocial;
         this.setState({ socialMediaCards: socialMediaCards });
-
-        this.setState({ streamIcons: socialMediaCards.twitterIcons });
-
-        const accountSelectorOptions = this.getAccountSelectorOptions(this.state.selectedSocial);
-
+        let streamIcons = socialMediaCards[selectedSocial];
+        this.setState({ streamIcons: streamIcons});
+        const accountSelectorOptions = this.getAccountSelectorOptions(selectedSocial);
         let selectedAccountId = accountSelectorOptions[0].id;
-
         let selectedAccount = accountSelectorOptions.find((item) => item.id === selectedAccountId);
-
         this.setState({ selectedAccount: selectedAccount });
-
         this.setState({ selectedAccountId: selectedAccountId });
-        
         this.props.channels.forEach(({ type, id }) => {
             // Getting the options for the socialMedia dropdown
             if (this.state.socialMediasSelectorOptions.indexOf(type) === -1) {
                 this.state.socialMediasSelectorOptions.push(type);
             }
         });
+        this.props.onChangeSocial(selectedSocial);
+        this.props.onChangeAccount(selectedAccountId);
     }
     
     //Function to add stream
@@ -130,31 +125,26 @@ class StreamInitiator extends React.Component {
     };
 
     //Function to get social network type by value
-    onSocialMediaChange = (value) => {
-        this.setState({ selectedSocial: value });
+    onSocialMediaChange = (selectedSocial) => {
+        this.setState({ selectedSocial: selectedSocial});        
         let socialMediaCards = this.state.socialMediaCards;
-
-        switch (value) {
-            case 'twitter':
-                this.setState({ streamIcons: socialMediaCards.twitterIcons });
-                break;
-            case 'facebook':
-                this.setState({ streamIcons: socialMediaCards.facebookIcons });
-                break;
-            case 'linkedin':
-                this.setState({ streamIcons: socialMediaCards.linkedinIcons });
-                break;
-            default:
-                break;
-        }
+        let streamIcons = socialMediaCards[selectedSocial];
+        this.setState({streamIcons: streamIcons});
+        let accounts = this.getAccountSelectorOptions(selectedSocial);                
+        this.setState({selectedAccount: accounts[0]});
+        this.setState({selectedAccountId: accounts[0].id});
+        this.props.onChangeSocial(selectedSocial);
+        this.props.onChangeAccount(accounts[0].id);
     };
 
-    //Function to set account by value
-    onAccountChange = (value) => {        
-        this.setState({ selectedAccountId: value });
-        let selectedAccount = this.props.channels.find((item) => item.id === value);
-        if (selectedAccount)
+    //Function to set account by selectedAccountId
+    onAccountChange = (selectedAccountId) => {        
+        this.props.onChangeAccount(selectedAccountId);
+        let selectedAccount = this.props.channels.find((item) => item.id === selectedAccountId);
+        if (selectedAccount) {
             this.setState({selectedAccount: selectedAccount});
+            this.setState({selectedAccountId: selectedAccountId});
+        }
     };
 
     //Function to get account option object
@@ -190,7 +180,6 @@ class StreamInitiator extends React.Component {
         const { selectedSocial, selectedAccountId, socialMediasSelectorOptions } = this.state;
         return (
             <div>
-
                 <Modal isOpen={!!this.state.searchModal} ariaHideApp={false} className="stream-type-modal search-modal">
                     <div>
                         <input type="text" onChange={e => this.handleSearchInputChange(e)} value={this.state.searchTerm} placeholder="Example: coca cola or #fashion" />
@@ -261,95 +250,6 @@ export const StreamFeedItemPlaceholder = () => (
         </div>
     </div>
 );
-
-export class StreamMaker extends React.Component {
-    state = {
-        streamCreator: this.props.streamCreator ? this.props.streamCreator : false
-    }
-
-    toggleStreamCreator = () => {
-        this.setState(() => ({
-            streamCreator: !this.state.streamCreator
-        }));
-    };
-
-    render() {
-
-        const {
-            title,
-            description,
-            icon,
-            intro = false,
-            onItemClick,
-            item,
-            selectedTab,
-            reload,
-            channels,
-            streamSize = false,
-            toggle,
-            minimize
-        } = this.props;
-
-        const { streamCreator } = this.state;
-        return (
-            <div className={`stream-maker ${streamSize && 'stream-size'}`}>
-                <h3 className={`stream-title`}>
-
-                    <span className="text-cursor">{!!icon && <img src={`/images/${icon}.svg`} />} {title} </span>
-                    {!!minimize && <i className="fa fa-minus pull-right link-cursor" onClick={toggle}></i>}
-
-                </h3>
-
-                {!streamCreator ?
-                    <div className="stream-feed">
-                        <div className="stream-feed-container">
-                            <div className="stream-feed-container-text">
-                                {description}
-                            </div>
-                            <div className="txt-center">
-                                {item.value === "browse" || channels.length > 1 ?
-                                    <button className="magento-btn mb25" onClick={() => this.toggleStreamCreator()}>Get Started</button> :
-                                    <button className="magento-btn mb25" onClick={() => onItemClick(item)}>Get Started</button>
-                                }
-                            </div>
-                        </div>
-
-                        <div className={`stream-feed-container ${intro && 'blur'}`}>
-                            <StreamFeedItemPlaceholder />
-                        </div>
-
-                        <div className={`stream-feed-container ${intro && 'blur'}`}>
-                            <StreamFeedItemPlaceholder />
-                        </div>
-
-                        <div className={`stream-feed-container ${intro && 'blur'}`}>
-                            <StreamFeedItemPlaceholder />
-                        </div>
-
-                        <div className={`stream-feed-container ${intro && 'blur'}`}>
-                            <StreamFeedItemPlaceholder />
-                        </div>
-
-                        {!!intro && <div className="stream-intro">
-                            <img src="/images/hello_bubble_smiley.svg" />
-                            <h3>Welcome to Streams: </h3>
-                            <h5>People are talking, make sure your listening.</h5>
-                            <p>A great way to manage mentions and monitor keywords and hashtags.</p>
-                        </div>}
-                    </div>
-                    :
-                    <div className="stream-feed stream-creator-feed scrollbar">
-                        {item.value === "browse" ?
-                            <StreamCreator selectedTab={selectedTab} reload={reload} verticalDisplay={true} />
-                            :
-                            <StreamCreator selectedTab={selectedTab} reload={reload} verticalDisplay={true} defaultItem={item} />
-                        }
-                    </div>
-                }
-            </div>
-        );
-    }
-}
 
 const ProfileChannel = ({ channel }) => (
     <div className="channel-container">

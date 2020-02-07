@@ -2,6 +2,11 @@
     margin-top: 27px;
 }
 
+.refresh-section {
+	position: absolute;
+	top: -120px;
+    right: 23px;
+}
 .monitor-smalltitle {
     font-family: Rubik;
     font-style: normal;
@@ -66,9 +71,15 @@
     background-color: white;
     border-radius: 20px 0px 0px 0px;
     position: absolute;
-	right: -30px;
-    height: 100%;
+	right: -75px;
+	height: 100%;
+	transition: 0.3s;
+	transition-delay: 0.3s;
 }
+
+#monitor-right-bar:hover {
+	right: -30px;
+  }
 
 .cardlist-rightbar {
     background: white;
@@ -149,7 +160,7 @@
 }
 
 .socialmedia-box {
-	margin-left: -136px;
+	margin-left: -134px;
     margin-bottom: 0;
     position: absolute;
     margin-top: 15px;
@@ -619,7 +630,7 @@ $blue: lighten(rgb(4,159,217), 5%);
 }
 
 .stream-drag-drop {
-    padding-right: 40px;
+    padding-right: 0px;
 }
 
 .image-size {

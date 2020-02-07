@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import _ from 'lodash';
-import Modal from 'react-modal';
 import UpgradeAlert from '../UpgradeAlert';
 import PropTypes from 'prop-types';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { Dialog, FlatButton, Menu, MenuItem, TextField } from 'material-ui';
+import { Grid } from '@material-ui/core';
+import { Select } from 'antd';
 import { Tabs, Tab } from "react-draggable-tab";
 import { getStreams, setRefreshRate, selectTab, positionTab, addTab, deleteTab, renameTab } from "../../requests/streams";
 import StreamItems from "./StreamItems";
-import StreamCreator from "./StreamCreator";
 import StreamInitiator from "./StreamInitiator";
 import Loader from "../Loader";
+const { Option } = Select;
 
 const tabsClassNames = {
     tabWrapper: 'dndWrapper',
@@ -46,7 +47,9 @@ class StreamTabs extends Component {
         loading: false,
         forbidden: false,
         addStream: false,
-        streamMaker: localStorage.getItem("streamMaker") === 'false' ? false : true
+        streamMaker: localStorage.getItem("streamMaker") === 'false' ? false : true,
+        selectedSocial: '',
+        selectedAccountId: '',
     };
 
     componentDidMount() {
@@ -67,7 +70,7 @@ class StreamTabs extends Component {
     makeListeners(key) {
         return {
             //onClick: (e) => { console.log('onClick', key, e);}, // never called
-            onContextMenu: (e) => { console.log('onContextMeun', key, e); this.handleTabContextMenu(key, e) },
+            //onContextMenu: (e) => { console.log('onContextMeun', key, e); this.handleTabContextMenu(key, e) },
             onDoubleClick: (e) => { console.log('onDoubleClick', key, e); this.handleTabDoubleClick(key, e) },
         }
     }
@@ -102,7 +105,12 @@ class StreamTabs extends Component {
 
         let newTab = (<Tab key={key} title='untitled' {...this.makeListeners(key)}>
             <div>
-                <StreamInitiator selectedTab={key} reload={this.fetchStreamTabs} />
+                <StreamInitiator 
+                    selectedTab={key}
+                    reload={this.fetchStreamTabs}
+                    onChangeSocial={(val) => this.handleChangeSocial(val)}
+                    onChangeAccount={(val) => this.handleChangeAccount(val)}
+                />
             </div>
         </Tab>);
 
@@ -121,8 +129,8 @@ class StreamTabs extends Component {
         });
     }
 
-    handleRefreshRateChange = (e) => {
-        const refreshRate = parseInt(e.target.value);
+    handleRefreshRateChange = (val) => {
+        const refreshRate = parseInt(val);
 
         setRefreshRate({ key: this.state.selectedTab }, refreshRate)
             .then(() => this.fetchStreamTabs());
@@ -219,6 +227,14 @@ class StreamTabs extends Component {
         }));
     };
 
+    handleChangeSocial = (value) => {
+        this.setState({selectedSocial: value});
+    }
+
+    handleChangeAccount = (value) => {
+        this.setState({selectedAccountId: value});
+    }
+
     setTabs = (items, selectedTab = "tab0") => {
         this.setState(() => ({
             tabs: items.map(tab =>
@@ -227,17 +243,41 @@ class StreamTabs extends Component {
                         <div>
                             {tab.streams.length ?
                                 <div className="easygrey-bg stream-drag-drop">
+                                    <div className="refresh-section">
+                                        <Grid container>
+                                            <Grid item md={6}>
+                                                <span>Refresh every</span>
+                                            </Grid>
+                                            <Grid item md={6}>
+                                                <Select className="monitor-smalltitle" size="default" value={parseInt(tab.refresh_rate)} onChange={(val) => this.handleRefreshRateChange(val)}>
+                                                    <Option value={2}><span className="social-media-selector-option">2 minutes</span></Option>
+                                                    <Option value={5}><span className="social-media-selector-option">5 minutes</span></Option>
+                                                    <Option value={10}><span className="social-media-selector-option">10 minutes</span></Option>
+                                                    <Option value={30}><span className="social-media-selector-option">30 minutes</span></Option>
+                                                    <Option value={60}><span className="social-media-selector-option">1 hour</span></Option>
+                                                    <Option value={120}><span className="social-media-selector-option">2 hours</span></Option>
+                                                </Select>
+                                            </Grid>
+                                        </Grid>
+                                    </div>
                                     <StreamItems
                                         streams={tab.streams}
-                                        refreshRate={parseInt(this.props.refreshRate)}
+                                        refreshRate={parseInt(tab.refresh_rate)}
                                         selectedTab={selectedTab}
                                         reload={this.fetchStreamTabs}
                                         toggleStreamMaker={this.toggleStreamMaker}
                                         isStreamMakerOpen={this.state.streamMaker}
+                                        selectedSocial={this.state.selectedSocial}
+                                        selectedAccountId={this.state.selectedAccountId}
                                     />
                                 </div>
                                 :
-                                <StreamInitiator selectedTab={selectedTab} reload={this.fetchStreamTabs} />}
+                                <StreamInitiator 
+                                    selectedTab={selectedTab}
+                                    reload={this.fetchStreamTabs}
+                                    onChangeSocial={(val) => this.handleChangeSocial(val)}
+                                    onChangeAccount={(val) => this.handleChangeAccount(val)}
+                                />}
 
                         </div>
                     </Tab>
@@ -355,7 +395,15 @@ class StreamTabs extends Component {
                             <TextField
                                 ref='input' id="rename-input" style={{ width: '90%' }} />
                         </Dialog>
-                    </div> : !this.state.loading && <StreamInitiator selectedTab={this.state.selectedTab} reload={this.fetchStreamTabs} />
+                    </div>
+                    :
+                    !this.state.loading && 
+                        <StreamInitiator 
+                            selectedTab={this.state.selectedTab}
+                            reload={this.fetchStreamTabs}
+                            onChangeSocial={(val) => this.handleChangeSocial(val)}
+                            onChangeAccount={(val) => this.handleChangeAccount(val)}
+                        />
                 }
             </div>
         );

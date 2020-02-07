@@ -18,6 +18,10 @@ const popupStyle = {
     boxShadow: '(0, 0, 0, 0.2) 0px 1px 3px',
 }
 
+const rightMenuStyle = {
+    background: '#2D86DA',
+}
+
 class MonitorRightbar extends React.Component {
 
     state = {
@@ -93,7 +97,12 @@ class MonitorRightbar extends React.Component {
         } = this;
 
         return (
-            <div className="monitor-right-bar">
+            <div className="monitor-right-bar" id="monitor-right-bar">
+                <Button
+                    variant="contained"
+                    size="small"
+                    style={rightMenuStyle}
+                />
                 {
                     isSelected &&
                     <div className="socialmedia-box">
@@ -137,7 +146,7 @@ class MonitorRightbar extends React.Component {
                             )
                         }
                     </Popup>
-                    <ReactTooltip className="tooltipTheme" place="left" type="info" effect="solid" id="account">
+                    <ReactTooltip className="tooltipTheme" place="left" type="info" effect="solid" id="account" delayShow={400}>
                         <Typography className="cardlist-tooltiplabel">Select Account</Typography>
                     </ReactTooltip>
                 </div>
@@ -147,7 +156,7 @@ class MonitorRightbar extends React.Component {
                             <StylesButton className="cardlist-secondbtn" onClick={() => { handleItemCard(); onClickCreator(item) }} data-for={item.value} data-tip data-iscapture='true' data-event-off='scroll mousewheel blur'>
                                 <img src={`/images/monitor-icons/${item.icon}-small.svg`} />
                             </StylesButton>
-                            <ReactTooltip className="tooltipTheme" place="left" type="info" effect="solid" id={item.value}>
+                            <ReactTooltip className="tooltipTheme" place="left" type="info" effect="solid" id={item.value} delayShow={400}>
                                 <Typography className="cardlist-tooltiplabel">{item.label}</Typography>
                             </ReactTooltip>
                         </div>

@@ -75,17 +75,15 @@ class StreamItems extends Component {
       autoCompleteSearchModal: false,
       searchTerm: "",
       socialMediaCards: getSocialMediaCards(),
-
       selectedAccount: Object.entries(this.props.selectedChannel).length ?
         { label: <ProfileChannel channel={this.props.selectedChannel} />, value: this.props.selectedChannel.name, type: this.props.selectedChannel.type, id: this.props.selectedChannel.id } :
         (this.props.channels.length ?
           { label: <ProfileChannel channel={this.props.channels[0]} />, value: this.props.channels[0].name, type: this.props.channels[0].type, id: this.props.channels[0].id } : {}),
-
-      selectedSocial: 'twitter',
+      selectedSocial: '',
+      selectedAccountId: '',
       socialMediasSelectorOptions: [],
       streamIcons: [],
       selectedAvatar: '',
-      selectedAccountId: '',
 
     };
 
@@ -95,17 +93,15 @@ class StreamItems extends Component {
   //Function to set initial state values
   componentWillMount() {
     let socialMediaCards = getSocialMediaCards();
-
-    this.setState({ streamIcons: socialMediaCards.twitterIcons });
-
-    const accountSelectorOptions = this.getAccountSelectorOptions(this.state.selectedSocial);
-    let selectedAccountId = accountSelectorOptions[0].id;
+    let selectedSocial = this.props.selectedSocial;
+    let selectedAccountId = this.props.selectedAccountId;
+    this.setState({ selectedSocial: selectedSocial });
     this.setState({ selectedAccountId: selectedAccountId });
-
+    this.setState({ streamIcons: socialMediaCards[selectedSocial]});
+    const accountSelectorOptions = this.getAccountSelectorOptions(selectedSocial);    
     let selectedAccount = accountSelectorOptions.find((item) => item.id === selectedAccountId);
     this.setState({ selectedAccount: selectedAccount });
     this.setState({ selectedAvatar: selectedAccount.avatar });
-
     this.props.channels.forEach(({ type, id }) => {
       // Getting the options for the socialMedia dropdown
       if (this.state.socialMediasSelectorOptions.indexOf(type) === -1) {
@@ -241,34 +237,21 @@ class StreamItems extends Component {
 
   //Function to change social icons by social type
   onChangeSocial = (value) => {
+
     this.setState({ selectedSocial: value });
     const accountSelectorOptions = this.getAccountSelectorOptions(value);
     let selectedAccountId = accountSelectorOptions[0].id;
-
     this.setState({ selectedAccountId: selectedAccountId });
-
     let selectedAccount = accountSelectorOptions.find((item) => item.id === selectedAccountId);
-
     this.setState({ selectedAccount: selectedAccount });
     this.setState({ selectedAvatar: selectedAccount.avatar });
     let socialMediaCards = this.state.socialMediaCards;
-
-    switch (value) {
-      case 'twitter':
-        this.setState({ streamIcons: socialMediaCards.twitterIcons });
-        break;
-      case 'facebook':
-        this.setState({ streamIcons: socialMediaCards.facebookIcons });
-        break;
-      case 'linkedin':
-        this.setState({ streamIcons: socialMediaCards.linkedinIcons });
-        break;
-      default:
-        break;
-    }
+    let streamIcons = socialMediaCards[value];
+    this.setState({streamIcons: streamIcons});    
   };
 
   onClickCreator = (item) => {
+ 
     let input;
     if(item.value == 'search' || item.value == 'pages'){
       input = {label: 'Search Keywords', value: 'keywords'};
@@ -349,7 +332,7 @@ class StreamItems extends Component {
     }
     return options;
   };
-
+  
   render() {
     const { channels, refreshRate, selectedTab, reload, isStreamMakerOpen } = this.props;
     const { socialMediasSelectorOptions, selectedSocial, streamIcons, selectedAvatar, selectedAccountId } = this.state;
@@ -385,10 +368,37 @@ class StreamItems extends Component {
                             src={item.type == "search" || item.type == "pages" ? "/images/monitor-icons/searchresult.svg" 
                             :
                             `/images/monitor-icons/${item.type}.svg`}/>
+                            {
+                              this.state.currentItemId == item.id ? 
+                                <input 
+                                  type="text"
+                                  className="text-cursor"
+                                  data-editable={true} 
+                                  onKeyDown={this.handleKeyDown} 
+                                  onChange={this.handleTitleChange} 
+                                  value={this.state.titleText} 
+                                />
+                                : 
+                                <span 
+                                  className="text-cursor" 
+                                  onClick={this.handleTitleClick} 
+                                  data-editable-item={JSON.stringify(item)}
+                                >
+                                  {item.title} 
+                                </span> 
+                            } 
                           <span className="stream-user">{item.network == "twitter" ? "@" + channel.username : "@" + channel.name}</span>
                           <div className="pull-right">
-                            <img className={`action-btn stream-refresh-btn ${this.state.loading === item.id ? 'fa-spin' : ''}`} src="/images/monitor-icons/refresh.svg" onClick={() => this.refresh(item.id)} />
-                            <img className="action-btn stream-close-btn" src="/images/monitor-icons/close.svg" onClick={() => this.handleStreamClose(item)} />
+                            <img 
+                              className={`action-btn stream-refresh-btn ${this.state.loading === item.id ? 'fa-spin' : ''}`} 
+                              src="/images/monitor-icons/refresh.svg" 
+                              onClick={() => this.refresh(item.id)} 
+                            />
+                            <img 
+                              className="action-btn stream-close-btn" 
+                              src="/images/monitor-icons/close.svg" 
+                              onClick={() => this.handleStreamClose(item)} 
+                            />
                           </div>
                         </h3>
 

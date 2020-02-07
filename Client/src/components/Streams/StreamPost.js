@@ -106,6 +106,10 @@ class StreamPost extends React.Component {
             });
     };
 
+    handleEmail = (close) => {
+        close();
+    }
+
     render() {
         const { profileImg,
             username,
@@ -175,7 +179,10 @@ class StreamPost extends React.Component {
                             {
                                 close => (
                                     <div className="t-action-menu menu-with-icons">
-                                        <a href={`mailto:?Subject=I'd like to share this story with you&Body=${type == "facebook" ? text : feedItem.text}`}>
+                                        <a 
+                                            href={`mailto:?Subject=I'd like to share this story with you&Body=${type == "facebook" ? text : feedItem.text}`} 
+                                            onClick={() => this.handleEmail(close)}
+                                        >
                                             Email
                                         </a>
                                         <button onClick={() => this.handlePostSchedule(close)}>
@@ -190,7 +197,7 @@ class StreamPost extends React.Component {
                                                             Delete
                                                         </button>
                                                         :
-                                                        <button onClick={this.handlePostDelete}>
+                                                        <button onClick={() => this.handlePostDelete(close)}>
                                                             Delete
                                                         </button>
                                                 )
@@ -202,7 +209,7 @@ class StreamPost extends React.Component {
                                                             Delete
                                                         </button>
                                                         :
-                                                        <button onClick={this.handlePostDelete}>
+                                                        <button onClick={() => this.handlePostDelete(close)}>
                                                             Delete
                                                         </button>
                                                 )
