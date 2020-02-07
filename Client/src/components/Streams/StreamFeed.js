@@ -79,33 +79,38 @@ class StreamFeed extends React.Component{
         }));
     };
 
-    updateItem = (currentItem, type = "twitterDefault") => {
+    updateItem = (currentItem, type = "twitterDefault", kind = "") => {
         let items = [];
         if(type == "delete"){
             items = this.state.items.filter(item => item.id !== currentItem.id);
         }else{
+            
             items = this.state.items.map(item => {
-                if(type == "twitterDefault" && item.id == currentItem.id){
-                    return currentItem;
-                }
-
-                if(type == "twitterFollowers" && !!item.status && item.id == currentItem.id){
-                    item.status = currentItem;
+                
+                if(kind == "twitterLike" && !!item.id && item.id == currentItem.id){
+                    if(type == "twitterDefault"){
+                        item.favorite_count += 1;
+                    } else {
+                        item.status.favorite_count += 1;
+                    }
                     return item;
                 }
 
-                if(type == "twitterLike" && !!item.id && item.id == currentItem.user.id){
-                    item.status.favorite_count += 1;
+                if(kind == "twitterUnlike" && !!item.id && item.id == currentItem.id){
+                    if(type == "twitterDefault"){
+                        item.favorite_count -= 1;
+                    } else {
+                        item.status.favorite_count -= 1;
+                    }
                     return item;
                 }
 
-                if(type == "twitterUnlike" && !!item.id && item.id == currentItem.user.id){
-                    item.status.favorite_count -= 1;
-                    return item;
-                }
-
-                if(type == "twitterRetweets" && !!item.id){
-                    item.status.retweet_count += 1;
+                if(kind == "twitterRetweets" && !!item.id && item.id == currentItem.id){
+                    if(type == "twitterDefault"){
+                        item.retweet_count += 1;
+                    } else {
+                        item.status.retweet_count += 1;
+                    }
                     return item;
                 }
 

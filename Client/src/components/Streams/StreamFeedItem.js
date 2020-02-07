@@ -93,7 +93,7 @@ const TwitterFollowersFeed = ({feedItem, setImages, channel, updateItem, reload,
                     <TwitterActions 
                         updateItem={updateItem} 
                         channel={channel} 
-                        feedItem={feedItem.status}
+                        feedItem={feedItem}
                         type="twitterFollowers"
                         postData={postData}
                         />
