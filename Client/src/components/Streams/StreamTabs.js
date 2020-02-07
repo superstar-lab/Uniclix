@@ -70,7 +70,7 @@ class StreamTabs extends Component {
     makeListeners(key) {
         return {
             //onClick: (e) => { console.log('onClick', key, e);}, // never called
-            onContextMenu: (e) => { console.log('onContextMeun', key, e); this.handleTabContextMenu(key, e) },
+            //onContextMenu: (e) => { console.log('onContextMeun', key, e); this.handleTabContextMenu(key, e) },
             onDoubleClick: (e) => { console.log('onDoubleClick', key, e); this.handleTabDoubleClick(key, e) },
         }
     }
