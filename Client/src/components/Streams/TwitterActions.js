@@ -5,6 +5,7 @@ import {abbrNum} from '../../utils/numberFormatter';
 import TwitterReply from './TwitterReply';
 import TwitterReplies from './TwitterReplies';
 import { ToastContainer } from "react-toastr";
+import Loader from "../../components/Loader";
 
 let toastContainer;
 
@@ -16,12 +17,19 @@ class TwitterActions extends React.Component{
         retweeted: this.props.feedItem.retweeted,
         replyBox: false,
         repliesBox: false,
+        loading: true
+    }
+
+    componentDidMount() {
+        this.setState(() => ({
+            loading: false
+        }));
     }
 
     likePost = () => {
         const {feedItem, channel, type, updateItem} = this.props;
         const {liked} = this.state;
-        
+        this.setState(() => ({loading: true}));
         if(liked) return;
         this.setState(() => ({liked: true}));
         let feedCurrentItem;
@@ -33,6 +41,7 @@ class TwitterActions extends React.Component{
         }
         
         like(feedCurrentItem.id_str, channel.id).then((response) => {
+            this.setState(() => ({loading: false}));
             if(typeof response !== "undefined"){
                 updateItem(feedItem, type, "twitterLike");
             }
@@ -43,6 +52,7 @@ class TwitterActions extends React.Component{
         
         const {feedItem, channel, type, updateItem} = this.props;
         const {liked} = this.state;
+        this.setState(() => ({loading: true}));
         if(!liked) return;
         this.setState(() => ({liked: false}));
         let feedCurrentItem;
@@ -54,6 +64,7 @@ class TwitterActions extends React.Component{
         }
 
         unlike(feedCurrentItem.id_str, channel.id).then((response) => {
+            this.setState(() => ({loading: false}));
             if(typeof response !== "undefined"){
                 updateItem(feedItem, type, "twitterUnlike");
             }
@@ -64,6 +75,7 @@ class TwitterActions extends React.Component{
         
         const {feedItem, channel, type, updateItem} = this.props;
         const {retweeted} = this.state;
+        this.setState(() => ({loading: true}));
         if(retweeted) return;
         this.setState(() => ({retweeted: true}));
         let feedCurrentItem;
@@ -75,6 +87,7 @@ class TwitterActions extends React.Component{
         }
 
         retweet(feedCurrentItem.id_str, channel.id).then((response) => {
+            this.setState(() => ({loading: false}));
             if(typeof response !== "undefined"){
                 updateItem(feedItem, type, "twitterRetweets");
             }
@@ -156,6 +169,7 @@ class TwitterActions extends React.Component{
                 </Modal>
                 }
 
+                {this.state.loading && <Loader />}
                 <div className="stream-action-icons">
                     <img className="action-icon-button" onClick={this.toggleReplyBox} src="images/monitor-icons/back-small.svg" />
                     <span>
