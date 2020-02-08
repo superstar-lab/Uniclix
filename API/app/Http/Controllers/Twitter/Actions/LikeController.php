@@ -32,9 +32,10 @@ class LikeController extends Controller
 
         $channel = $channel->details;
 
+        $channel->likePost($postId);
         try{
 
-            return response()->json($channel->likePost($postId));
+            return response()->json(["success" => "Post like succeeded."], 200);
 
         }catch(\Exception $e){
 
@@ -50,9 +51,10 @@ class LikeController extends Controller
 
         $channel = $channel->details;
 
+        $channel->unlikePost($postId);
         try{
 
-            return response()->json($channel->unlikePost($postId));
+            return response()->json(["success" => "Post unlike succeeded."], 200);
 
         }catch(\Exception $e){
 

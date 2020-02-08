@@ -16,6 +16,7 @@ import FacebookInfoCard from './FacebookInfoCard';
 import channelSelector from '../../selectors/channels';
 import { setComposerModal } from "../../actions/composer";
 import { setPost } from '../../actions/posts';
+import Loader from "../../components/Loader";
 
 
 const popupStyle = {
@@ -29,7 +30,14 @@ class StreamPost extends React.Component {
 
     state = {
         hashStreamModal: false,
-        keyword: false
+        keyword: false,
+        loading: true,
+    }
+
+    componentDidMount() {
+        this.setState(() =>({
+            loading: false
+        }));
     }
 
     toggleHashStreamModal = (arg = false) => {
@@ -145,6 +153,7 @@ class StreamPost extends React.Component {
                     selectedTab={selectedTab} />
             </Modal>
 
+            {this.state.loading && <Loader />}
             <div className="post-info">
                 <div className="profile-info selected-profile" >
                     <span className="pull-left profile-img-container">

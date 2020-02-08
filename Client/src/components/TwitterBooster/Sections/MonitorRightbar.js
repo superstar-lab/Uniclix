@@ -45,19 +45,17 @@ class MonitorRightbar extends React.Component {
     }
 
     handleMedia = () => {
+        document.addEventListener('click', this.handleOutsideClick, false);
         let isSelected = !this.state.isSelected;
-
         if (isSelected) {
             this.setState({ className: 'cardlist-firstbtn active' });
         } else {
             this.setState({ className: 'cardlist-firstbtn' });
         }
-
         this.setState({ isSelected: isSelected });
     }
 
     handleItemCard = () => {
-
         this.setState({ className: 'cardlist-firstbtn' });
         this.setState({ isSelected: false });
     }
@@ -65,6 +63,17 @@ class MonitorRightbar extends React.Component {
     handleClick = () => {
         this.setState({ isSelected: false });
     }
+
+    handleOutsideClick = (e) => {
+        // ignore clicks on the component itself
+        if (typeof e === "undefined") return;
+    
+        if (e.target.getAttribute('mouse-focus')) return;
+        
+        this.setState({ className: 'cardlist-firstbtn' });
+        this.setState({ isSelected: false });
+        document.removeEventListener('click', this.handleOutsideClick, false);
+    };
 
     getAccountSelectorOptions = (selectedSocial) => {
         const { channels } = this.props;
@@ -108,13 +117,21 @@ class MonitorRightbar extends React.Component {
                     <div className="socialmedia-box">
                         {
                             socialNetWorks.map((content, key) => (
-                                content == selectedSocial ? null : <Button key={key} onClick={() => { this.setState({ creators: [] }); onChangeSocial(content); this.handleClick(); }}><img src={`/images/monitor-icons/${content}-small.svg`} /></Button>
+                                content == selectedSocial ? 
+                                    null 
+                                    :
+                                    <Button 
+                                        key={key} 
+                                        onClick={() => { this.setState({ creators: [] }); onChangeSocial(content); this.handleClick(); }}
+                                    >
+                                        <img src={`/images/monitor-icons/${content}-small.svg`} />
+                                    </Button>
                             ))
                         }
                     </div>
                 }
                 <div>
-                    <StylesButton className={this.state.className} onClick={() => handleMedia()}>
+                    <StylesButton className={this.state.className} onClick={() => handleMedia()} mouse-focus={true}>
                         <img src={`/images/monitor-icons/${selectedSocial}-small.svg`} />
                     </StylesButton>
                     <Popup

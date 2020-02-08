@@ -5,6 +5,7 @@ import {abbrNum} from '../../utils/numberFormatter';
 import TwitterReply from './TwitterReply';
 import TwitterReplies from './TwitterReplies';
 import { ToastContainer } from "react-toastr";
+import Loader from "../../components/Loader";
 
 let toastContainer;
 
@@ -15,19 +16,34 @@ class TwitterActions extends React.Component{
         liked: this.props.feedItem.favorited,
         retweeted: this.props.feedItem.retweeted,
         replyBox: false,
-        repliesBox: false
+        repliesBox: false,
+        loading: true
+    }
+
+    componentDidMount() {
+        this.setState(() => ({
+            loading: false
+        }));
     }
 
     likePost = () => {
         const {feedItem, channel, type, updateItem} = this.props;
         const {liked} = this.state;
+        this.setState(() => ({loading: true}));
         if(liked) return;
         this.setState(() => ({liked: true}));
+        let feedCurrentItem;
 
-        like(feedItem.id_str, channel.id).then((response) => {
-            if(typeof response.id !== "undefined"){
-                updateItem(response, "twitterLike");
-                
+        if(type == "twitterDefault"){
+            feedCurrentItem = feedItem;
+        } else {
+            feedCurrentItem = feedItem.status;
+        }
+        
+        like(feedCurrentItem.id_str, channel.id).then((response) => {
+            this.setState(() => ({loading: false}));
+            if(typeof response !== "undefined"){
+                updateItem(feedItem, type, "twitterLike");
             }
         }).catch(e => {this.setState(() => ({liked: false}))});
     }
@@ -36,12 +52,21 @@ class TwitterActions extends React.Component{
         
         const {feedItem, channel, type, updateItem} = this.props;
         const {liked} = this.state;
+        this.setState(() => ({loading: true}));
         if(!liked) return;
         this.setState(() => ({liked: false}));
+        let feedCurrentItem;
         
-        unlike(feedItem.id_str, channel.id).then((response) => {
-            if(typeof response.id !== "undefined"){
-                updateItem(response, "twitterUnlike");
+        if(type == "twitterDefault"){
+            feedCurrentItem = feedItem;
+        } else {
+            feedCurrentItem = feedItem.status;
+        }
+
+        unlike(feedCurrentItem.id_str, channel.id).then((response) => {
+            this.setState(() => ({loading: false}));
+            if(typeof response !== "undefined"){
+                updateItem(feedItem, type, "twitterUnlike");
             }
         }).catch(e => {this.setState(() => ({liked: true}))});
     }
@@ -50,12 +75,21 @@ class TwitterActions extends React.Component{
         
         const {feedItem, channel, type, updateItem} = this.props;
         const {retweeted} = this.state;
+        this.setState(() => ({loading: true}));
         if(retweeted) return;
         this.setState(() => ({retweeted: true}));
-        
-        retweet(feedItem.id_str, channel.id).then((response) => {
-            if(typeof response.id !== "undefined"){
-                updateItem(response, "twitterRetweets");
+        let feedCurrentItem;
+
+        if(type == "twitterDefault"){
+            feedCurrentItem = feedItem;
+        } else {
+            feedCurrentItem = feedItem.status;
+        }
+
+        retweet(feedCurrentItem.id_str, channel.id).then((response) => {
+            this.setState(() => ({loading: false}));
+            if(typeof response !== "undefined"){
+                updateItem(feedItem, type, "twitterRetweets");
             }
         }).catch(e => {this.setState(() => ({retweeted: false}))});
     }
@@ -96,12 +130,20 @@ class TwitterActions extends React.Component{
     };
 
     render(){
-        const {feedItem, postData, channel} = this.props;
+        const {feedItem, postData, channel, type} = this.props;
         const {liked, retweeted} = this.state;
         const likedPost = liked ? 'acted' : '';
         const retweetedPost = retweeted ? 'acted' : '';
-        const likesCount = feedItem.favorite_count > 0 ? abbrNum(feedItem.favorite_count) : '';
-        const retweetCount = feedItem.retweet_count > 0 ? abbrNum(feedItem.retweet_count) : '';
+        let feedCurrentItem;
+        
+        if(type == "twitterDefault"){
+            feedCurrentItem = feedItem;
+        } else {
+            feedCurrentItem = feedItem.status;
+        }
+
+        const likesCount = feedCurrentItem.favorite_count > 0 ? abbrNum(feedCurrentItem.favorite_count) : '';
+        const retweetCount = feedCurrentItem.retweet_count > 0 ? abbrNum(feedCurrentItem.retweet_count) : '';
         return (
             <div>
                 <ToastContainer
@@ -127,6 +169,7 @@ class TwitterActions extends React.Component{
                 </Modal>
                 }
 
+                {this.state.loading && <Loader />}
                 <div className="stream-action-icons">
                     <img className="action-icon-button" onClick={this.toggleReplyBox} src="images/monitor-icons/back-small.svg" />
                     <span>

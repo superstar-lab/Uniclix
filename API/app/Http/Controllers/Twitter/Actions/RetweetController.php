@@ -32,9 +32,10 @@ class RetweetController extends Controller
 
         $channel = $channel->details;
 
+        $channel->retweetPost($postId);
         try{
 
-            return response()->json($channel->retweetPost($postId));
+            return response()->json(["success" => "Post Retweet succeeded."], 200);
 
         }catch(\Exception $e){
 

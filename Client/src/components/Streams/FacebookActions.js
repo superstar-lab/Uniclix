@@ -6,6 +6,7 @@ import DraftEditor from '../DraftEditor';
 import {abbrNum} from '../../utils/numberFormatter';
 import {like, unlike, comment} from '../../requests/facebook/channels';
 import FacebookPost from './FacebookPost';
+import StreamLoader from "../../components/Loader";
 
 let toastContainer;
 
@@ -36,10 +37,12 @@ class FacebookActions extends React.Component{
     likePost = () => {
         const {feedItem, channel, updateItem} = this.props;
         const {liked} = this.state;
+        this.setState(() => ({loading: true}));
         if(liked) return;
         this.setState(() => ({liked: true}));
 
         like(feedItem.id, channel.id).then((response) => {
+            this.setState(() => ({loading: false}));
             if(typeof response !== "undefined"){
                 updateItem(feedItem, "facebookLike");
             }
@@ -49,10 +52,12 @@ class FacebookActions extends React.Component{
     unlikePost = () => {
         const {feedItem, channel, updateItem} = this.props;
         const {liked} = this.state;
+        this.setState(() => ({loading: true}));
         if(!liked) return;
         this.setState(() => ({liked: false}));
 
         unlike(feedItem.id, channel.id).then((response) => {
+            this.setState(() => ({loading: false}));
             if(typeof response !== "undefined"){
                 updateItem(feedItem, "facebookUnlike");
             }
@@ -173,6 +178,7 @@ class FacebookActions extends React.Component{
                     </Modal>
                 }
 
+                {this.state.loading && <StreamLoader />}
                 <div className="stream-action-icons">
                     <span>
                         <img className="action-icon-button" onClick={() => this.toggleLike()} src="images/monitor-icons/heart-contact-small.svg"/>
