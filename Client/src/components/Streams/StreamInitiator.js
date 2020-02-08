@@ -28,7 +28,7 @@ class StreamInitiator extends React.Component {
         autoCompleteSearchModal: false,
         searchTerm: "",
         socialMediaCards: {},
-        selectedSocial: 'facebook',
+        selectedSocial: '',
         socialMediasSelectorOptions: [],
         streamIcons: [],
         streamCreator: this.props.streamCreator ? this.props.streamCreator : false
@@ -37,7 +37,20 @@ class StreamInitiator extends React.Component {
     //Set the default state value
     componentWillMount() {
         let socialMediaCards = getSocialMediaCards();
-        let selectedSocial = this.state.selectedSocial;
+        let socialMediasSelectorOptions = [];
+        this.props.channels.forEach(({ type, id }) => {
+            // Getting the options for the socialMedia dropdown
+            if (socialMediasSelectorOptions.indexOf(type) === -1) {
+                socialMediasSelectorOptions.push(type);
+            }
+        });
+        this.setState({socialMediasSelectorOptions: socialMediasSelectorOptions});
+        // Check length of social network list
+        if (socialMediasSelectorOptions.length <= 0)
+            return ;
+
+        let selectedSocial = socialMediasSelectorOptions[0];
+        this.setState({selectedSocial: selectedSocial});
         this.setState({ socialMediaCards: socialMediaCards });
         let streamIcons = socialMediaCards[selectedSocial];
         this.setState({ streamIcons: streamIcons});
@@ -46,12 +59,7 @@ class StreamInitiator extends React.Component {
         let selectedAccount = accountSelectorOptions.find((item) => item.id === selectedAccountId);
         this.setState({ selectedAccount: selectedAccount });
         this.setState({ selectedAccountId: selectedAccountId });
-        this.props.channels.forEach(({ type, id }) => {
-            // Getting the options for the socialMedia dropdown
-            if (this.state.socialMediasSelectorOptions.indexOf(type) === -1) {
-                this.state.socialMediasSelectorOptions.push(type);
-            }
-        });
+        
         this.props.onChangeSocial(selectedSocial);
         this.props.onChangeAccount(selectedAccountId);
     }

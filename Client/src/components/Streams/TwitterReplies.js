@@ -83,7 +83,7 @@ class TwitterReplies extends React.Component{
                     </div>
                     <div className="t-reply-body-container">
                         <div className="t-reply-body">
-                            {!keyword && <StreamPost {...postData} reload={reload}/>}
+                            {!keyword && <StreamPost {...postData} reload={reload} type="twitterReplies"/>}
                             {keyword && items.map((item, index) => {
                                 return <TwitterStatusReply key={index} reply={item} parentPostData={postData} reload={reload}/>
                             })}

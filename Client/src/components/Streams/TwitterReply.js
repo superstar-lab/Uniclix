@@ -54,7 +54,7 @@ class TwitterReply extends React.Component{
                     <i onClick={close} className="fa fa-close link-cursor"></i>
                 </div>
                 <div className="t-reply-body">
-                    <StreamPost {...postData} />
+                    <StreamPost {...postData} type="twitterReply"/>
                 </div>
                 <div className="t-reply-footer">
                     <div className="t-reply-profile">

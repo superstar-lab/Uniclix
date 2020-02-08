@@ -137,6 +137,7 @@ class StreamPost extends React.Component {
             reload,
             selectedTab,
             twitterChannel } = this.props;
+            console.log("type: ", type);
         const postTime = date ? toHumanTime(date) : "";
         return (<div className="stream-feed-container">
 
@@ -150,7 +151,8 @@ class StreamPost extends React.Component {
                     keyword={this.state.keyword}
                     channel={networkType !== "twitter" && twitterChannel ? twitterChannel : channel}
                     reload={reload}
-                    selectedTab={selectedTab} />
+                    selectedTab={selectedTab}
+                    type="twitterReplies"/>
             </Modal>
 
             {this.state.loading && <Loader />}
@@ -167,7 +169,7 @@ class StreamPost extends React.Component {
                     <div className="post-date">{postTime}</div>
                 </div>
                 {
-                    type == "facebook" || networkType == "twitter" ?
+                    type !== "twitterReplies" && type !== "twitterReply" ?
                         <Popup
                             trigger={
                                 <div className="stream-action-menu">
