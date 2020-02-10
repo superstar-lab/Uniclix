@@ -317,9 +317,12 @@ class Channel extends Model
     {
         $tweets = collect($this->getTweets());
 
-        foreach($tweets as $tweet)
-        {
-            $tweet->date = Carbon::parse($tweet->created_at)->format('M d Y, H:i');
+        for($i = 0; $i < count($tweets); $i++){
+            $username = $tweets[$i]->user->name;
+            $tweetId = $tweets[$i]->in_reply_to_status_id;
+            $replies = count($this->getStatusReplies($username, $tweetId));
+            $tweets[$i]->replies = $replies;
+            $tweets[$i]->date = Carbon::parse($tweets[$i]->created_at)->format('M d Y, H:i');
         }
 
         return $tweets;

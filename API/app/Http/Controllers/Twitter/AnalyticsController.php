@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Twitter;
 
+use App\Traits\Selectable;
 use function GuzzleHttp\default_ca_bundle;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -14,7 +15,6 @@ define('MONTH', 2592000000);
 class AnalyticsController extends Controller
 {
     private $user;
-
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
@@ -59,7 +59,8 @@ class AnalyticsController extends Controller
             if($channel){
                 $channel = $channel->details;
                 if(!isset($period) || $period == "undefined"){
-                    return response()->json($channel->pageInsightsByType($type, $startDate, $endDate, $period));
+                    $data = $channel->pageInsightsByType($type, $startDate, $endDate, $period);
+                    return response()->json($data);
                 }
 
                 $data = $channel->pageInsightsByType($type, $startDate, $endDate, $period);
