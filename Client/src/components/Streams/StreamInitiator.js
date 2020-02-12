@@ -15,8 +15,24 @@ import SocialMediaSelector from '../../components/SocialMediaSelector';
 const ACCOUNT_SELECTOR_FILTERS = {
     'facebook': (account) => account.details.account_type !== 'profile'
 };
-class StreamInitiator extends React.Component {
 
+const autoCompleteStyle = {
+    background: '#FFFFFF',
+	borderRadius: '6px 0px 0px 6px',
+	verticalAlign: 'middle',
+	height: 40,
+	width: '46vh'
+}
+
+class StreamInitiator extends React.Component {
+    constructor(props) {
+        super(props)
+        
+        // Create the ref
+        this.textInput = React.createRef();
+        this.textSearch = React.createRef();
+       
+    }
     state = {
         selectedAccount: Object.entries(this.props.selectedChannel).length ?
             { label: <ProfileChannel channel={this.props.selectedChannel} />, value: this.props.selectedChannel.name, type: this.props.selectedChannel.type, id: this.props.selectedChannel.id } :
@@ -100,6 +116,11 @@ class StreamInitiator extends React.Component {
 
         try {
             const value = event.target.value;
+            if(!!value){
+                this.textInput.current.style.background = '#2D86DA';
+            } else {
+                this.textInput.current.style.background = '#909090';
+            }
             this.setState(() => (
                 { searchTerm: value }
             ));
@@ -127,6 +148,12 @@ class StreamInitiator extends React.Component {
     };
 
     setAutoCompleteSelected = (value) => {
+        
+        if(!!value){
+            this.textSearch.current.style.background = '#2D86DA';
+        } else {
+            this.textSearch.current.style.background = '#909090';
+        }
         this.setState(() => ({
             searchTerm: value
         }));
@@ -188,17 +215,29 @@ class StreamInitiator extends React.Component {
         const { selectedSocial, selectedAccountId, socialMediasSelectorOptions } = this.state;
         return (
             <div>
-                <Modal isOpen={!!this.state.searchModal} ariaHideApp={false} className="stream-type-modal search-modal">
-                    <div>
-                        <input type="text" onChange={e => this.handleSearchInputChange(e)} value={this.state.searchTerm} placeholder="Example: coca cola or #fashion" />
-                        <button onClick={this.toggleSearchModal} className="publish-btn-group gradient-background-teal-blue link-cursor">Done</button>
+                <Modal isOpen={!!this.state.searchModal} ariaHideApp={false} className="stream-search-modal">
+                    <div className="stream-search-container">
+                        <div className="stream-search-heading">
+                            <h3>Search Hashtags</h3>
+                            <i onClick={() => this.setState({searchModal: !this.state.searchModal})} className="fa fa-close link-cursor"></i>
+                        </div>
+                        <div className="stream-search-body">
+                            <input className="stream-search-input" type="text" onChange={e => this.handleSearchInputChange(e)} value={this.state.searchTerm} placeholder="Start typing a hashtag name" />
+                            <button onClick={this.toggleSearchModal} className="stream-search-button" ref={this.textInput}>Search</button>
+                        </div>
                     </div>
                 </Modal>
 
-                <Modal isOpen={!!this.state.autoCompleteSearchModal} ariaHideApp={false} className="stream-type-modal search-modal">
-                    <div>
-                        <AutoCompleteSearch placeholder="Type a page name..." channelId={selectedAccountId} setSelected={this.setAutoCompleteSelected} />
-                        <button onClick={this.toggleAutoCompleteSearchModal} className="publish-btn-group autocomplete-done gradient-background-teal-blue link-cursor">Done</button>
+                <Modal isOpen={!!this.state.autoCompleteSearchModal} ariaHideApp={false} className="stream-search-modal">
+                    <div className="stream-search-container">
+                        <div className="stream-search-heading">
+                            <h3>Search Pages</h3>
+                            <i onClick={() => this.setState({autoCompleteSearchModal: !this.state.autoCompleteSearchModal})} className="fa fa-close link-cursor"></i>
+                        </div>
+                        <div className="stream-search-body">
+                            <AutoCompleteSearch placeholder="Type a page name..." channelId={selectedAccountId} setSelected={this.setAutoCompleteSelected}/>
+                            <button onClick={this.toggleAutoCompleteSearchModal} className="stream-page-button" ref={this.textSearch}>Search</button>
+                        </div>
                     </div>
                 </Modal>
 

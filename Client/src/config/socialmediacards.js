@@ -6,7 +6,7 @@ const getSocialMediaCards = () => ({
             icon: "home"
         },
         {
-            label: "Search",
+            label: "Search topics",
             value: "search",
             icon: "search"
         },
