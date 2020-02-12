@@ -624,6 +624,7 @@ $blue: lighten(rgb(4,159,217), 5%);
 		}
 	}
 }
+
 .account-icon {
     width: 25px;
 	border-radius: 10px;
@@ -635,4 +636,132 @@ $blue: lighten(rgb(4,159,217), 5%);
 
 .image-size {
 	width: 23px;
+	height: 18px;
+}
+
+.stream-search-modal {
+	width: 600px !important;
+	margin: 10px;
+	background: #F5F7FB;
+	outline: none;
+	overflow: auto;
+	max-height: 95vh;
+	border-radius: 8px;
+}
+
+.stream-search-container {
+	background: #F5F7FB;
+}
+
+.stream-search-body {
+	min-height: 10vh;
+	overflow: auto;
+	background: #F5F7FB;
+	text-align: center;
+    padding-top: 2vh;
+}
+
+.stream-search-heading {
+	background: #F5F7FB;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 25px 0px 0px 0px;
+	margin: 0px 30px 0px 30px;
+	font-size: 20px;
+	color: #555;
+	border-bottom: 1px solid #e4e4e4;
+}
+
+.stream-search-input {
+	background: #FFFFFF;
+	border-radius: 6px 0px 0px 6px;
+	vertical-align: middle;
+	height: 40px;
+	width: 46vh;
+	
+}
+
+.stream-search-button {
+	text-align: center;
+  	width: 157px;
+  	padding: 7px;
+	color: white;
+	background: #909090;
+	border-radius: 0px 6px 6px 0px;
+	font-family: Rubik;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.stream-page-button {
+	text-align: center;
+  	width: 157px;
+  	padding: 7px;
+	color: white;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background: #909090;
+	border-radius: 8px;
+	font-family: Rubik;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.font-shape {
+	font-family: Lato;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 17px;
+	letter-spacing: 0.130517px;
+	color: #363636;
+}
+
+.toast-icon {
+	margin-right: 10px;
+	margin-left: 20px;
+}
+
+.toast-body {
+	font-family: Rubik;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 16px;
+	letter-spacing: 0.130517px;
+	color: #363636;
+	background: #EAF3FB;
+	border: 1px solid #2D86DA;
+	box-sizing: border-box;
+	border-radius: 8px;
+	width: 327px;
+	height: 90px;
+	right: 20px;
+}
+
+.toast-error {
+	font-family: Rubik;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 16px;
+	letter-spacing: 0.130517px;
+	color: white;
+	background: darkred;
+	border: 1px solid darkred;
+	box-sizing: border-box;
+	border-radius: 8px;
+	width: 327px;
+	height: 90px;
+	right: 20px;
+}
+
+.readMore-body {
+	border-radius: 8px;
+}
+
+.readMore-content {
+	padding: 10px;
 }
