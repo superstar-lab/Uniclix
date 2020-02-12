@@ -137,9 +137,9 @@ class StreamPost extends React.Component {
             reload,
             selectedTab,
             twitterChannel } = this.props;
-            console.log("type: ", type);
+            
         const postTime = date ? toHumanTime(date) : "";
-        return (<div className="stream-feed-container">
+        return (<div className="stream-feed-container" style={{background: '#F5F7FB'}}>
 
             <Modal
                 ariaHideApp={false}
@@ -169,66 +169,70 @@ class StreamPost extends React.Component {
                     <div className="post-date">{postTime}</div>
                 </div>
                 {
-                    type !== "twitterReplies" && type !== "twitterReply" ?
-                        <Popup
-                            trigger={
-                                <div className="stream-action-menu">
-                                    <StylesButton className="stream-action-menu-btn" data-for={feedItem.id + '-action-menu'} data-tip data-iscapture='true' data-event-off='click'>
-                                        <img className="stream-action-menu-icon" src="images/monitor-icons/menu.svg"></img>
-                                    </StylesButton>
-                                    <ReactTooltip className="stream-menu-tooltip" place="bottom" type="info" effect="solid" globalEventOff='click' id={feedItem.id + '-action-menu'}>
-                                        <Typography className="stream-menu-tooltip-label">More</Typography>
-                                    </ReactTooltip>
-                                </div>
-                            }
-                            on="click"
-                            contentStyle={popupStyle}
-                            position="bottom left"
-                            arrow={false}
-                            closeOnDocumentClick={true}
-                        >
-                            {
-                                close => (
-                                    <div className="t-action-menu menu-with-icons">
-                                        <a 
-                                            href={`mailto:?Subject=I'd like to share this story with you&Body=${type == "facebook" ? text : feedItem.text}`} 
-                                            onClick={() => this.handleEmail(close)}
-                                        >
-                                            Email
-                                        </a>
-                                        <button onClick={() => this.handlePostSchedule(close)}>
-                                            Schedule
-                                        </button>
-                                        {
-                                            type == "facebook" ?
-                                                feedItem.from.id === channel.details.payload.id &&
-                                                (
-                                                    this.state.loading ?
-                                                        <button className="disabled-btn">
-                                                            Delete
-                                                        </button>
-                                                        :
-                                                        <button onClick={() => this.handlePostDelete(close)}>
-                                                            Delete
-                                                        </button>
-                                                )
-                                                :
-                                                username === channel.details.username &&
-                                                (
-                                                    this.state.loading ?
-                                                        <button className="disabled-btn">
-                                                            Delete
-                                                        </button>
-                                                        :
-                                                        <button onClick={() => this.handlePostDelete(close)}>
-                                                            Delete
-                                                        </button>
-                                                )
-                                        }
+                    type == "twitterReplies" || type == "twitterReply" ?
+                        null
+                        : 
+                        type == "facebook" || networkType == "twitter" ?
+                            <Popup
+                                trigger={
+                                    <div className="stream-action-menu">
+                                        <StylesButton className="stream-action-menu-btn" data-for={feedItem.id + '-action-menu'} data-tip data-iscapture='true' data-event-off='click'>
+                                            <img className="stream-action-menu-icon" src="images/monitor-icons/menu.svg"></img>
+                                        </StylesButton>
+                                        <ReactTooltip className="stream-menu-tooltip" place="bottom" type="info" effect="solid" globalEventOff='click' id={feedItem.id + '-action-menu'}>
+                                            <Typography className="stream-menu-tooltip-label">More</Typography>
+                                        </ReactTooltip>
                                     </div>
-                                )}
-                        </Popup>
-                        : null
+                                }
+                                on="click"
+                                contentStyle={popupStyle}
+                                position="bottom left"
+                                arrow={false}
+                                closeOnDocumentClick={true}
+                            >
+                                {
+                                    close => (
+                                        <div className="t-action-menu menu-with-icons">
+                                            <a 
+                                                href={`mailto:?Subject=I'd like to share this story with you&Body=${type == "facebook" ? text : feedItem.text}`} 
+                                                onClick={() => this.handleEmail(close)}
+                                            >
+                                                Email
+                                            </a>
+                                            <button onClick={() => this.handlePostSchedule(close)}>
+                                                Schedule
+                                            </button>
+                                            {
+                                                type == "facebook" ?
+                                                    feedItem.from.id === channel.details.payload.id &&
+                                                    (
+                                                        this.state.loading ?
+                                                            <button className="disabled-btn">
+                                                                Delete
+                                                            </button>
+                                                            :
+                                                            <button onClick={() => this.handlePostDelete(close)}>
+                                                                Delete
+                                                            </button>
+                                                    )
+                                                    :
+                                                    username === channel.details.username &&
+                                                    (
+                                                        this.state.loading ?
+                                                            <button className="disabled-btn">
+                                                                Delete
+                                                            </button>
+                                                            :
+                                                            <button onClick={() => this.handlePostDelete(close)}>
+                                                                Delete
+                                                            </button>
+                                                    )
+                                            }
+                                        </div>
+                                    )}
+                            </Popup>
+                            :
+                            null
                 }
             </div>
             <div className="post-content">
@@ -236,9 +240,12 @@ class StreamPost extends React.Component {
                     typeof (sharedStatus) !== "undefined" ? (
 
                         <div className="shared-status">
-                            <span className="status-type"><i className="fa fa-retweet"></i> Retweeted </span>
-                            <div className="post-info">
-                                <img src={sharedStatus.user.profile_image_url_https} />
+                            <span className="status-type">In response to @{username} </span>
+                            <div className="post-info" style={{background: 'white', padding: '5px 0px 0px 5px'}}>
+                                <span className="pull-left profile-img-container">
+                                    <img src={sharedStatus.user.profile_image_url_https} />
+                                    <i className={`fab fa-${networkType} ${networkType}_bg smallIcon`}></i>
+                                </span>
                                 <div className="post-info-item">
                                     <TwitterInfoCard username={sharedStatus.user.screen_name} channelId={channel.id} />
                                     <div className="post-date">{sharedStatus.created_at ? toHumanTime(sharedStatus.created_at) : ""}</div>
@@ -246,7 +253,7 @@ class StreamPost extends React.Component {
                             </div>
 
                             {twitterChannel ?
-                                <ReadMore onTagClick={this.toggleHashStreamModal}>{sharedStatus.text}</ReadMore>
+                                <ReadMore onTagClick={this.toggleHashStreamModal} >{sharedStatus.text}</ReadMore>
                                 :
                                 <ReadMore>{sharedStatus.text}</ReadMore>
                             }

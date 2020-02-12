@@ -78,7 +78,7 @@ class TwitterReplies extends React.Component{
             <div className="body-wrap">            
                 <div className="t-reply-container">
                     <div className="t-reply-heading">
-                        <h3>Twitter {keyword ? keyword + ' results' : 'Replies'}</h3>
+                        <h3>Show {keyword ? keyword + ' results' : 'Conversations'}</h3>
                         <i onClick={close} className="fa fa-close link-cursor"></i>
                     </div>
                     <div className="t-reply-body-container">
