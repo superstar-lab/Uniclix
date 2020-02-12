@@ -245,7 +245,7 @@ class FacebookActions extends React.Component{
                 <div className="stream-action-icons">
                     <img className="action-icon-button" onClick={this.togglePostBox} src="images/monitor-icons/back-small.svg"></img>                    
                     <span>
-                        <img className="action-facebook-icon-button" onClick={() => this.toggleComment()} src="images/monitor-icons/envelope.svg" />
+                        <img className="action-facebook-icon-button" onClick={() => this.toggleComment()} src="images/monitor-icons/conversations.svg" />
                         <span className={`status-counter ${commentPost}`}> {commentsCount}</span>
                     </span>
                     <span>
