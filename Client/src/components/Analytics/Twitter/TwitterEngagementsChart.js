@@ -160,13 +160,13 @@ class TwitterEngagementsChart extends React.Component {
           <Loader type="Bars" color="#46a5d1" height={60} width={60} />
         </div>
       )}
-      <EngagementCardsSection
+      {/* <EngagementCardsSection
         socialMedia={socialMedia}
         accountId={accountId}
         startDate={startDate}
         endDate={endDate}
         selectedPeriod={selectedPeriod}
-      />
+      /> */}
     </div>
     );
   }
