@@ -921,9 +921,10 @@ a:link {
   width: 100%;  
   padding: 23px;
   margin-bottom: 14px;
-  background: #FFFFFF;
+  background: #F5F7FB;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
   border-radius: 6px;
+  margin-top: -14px;
 }
 
 .stream-feed-container .username {
@@ -1094,7 +1095,7 @@ a:link {
 
 .react-autosuggest__input {
   width: 280px;
-  height: 30px;
+  height: 40px;
   padding: 10px 20px !important;
   font-weight: 300;
   font-size: 16px;
@@ -1446,7 +1447,12 @@ button.streammaker-btn:hover {
 .shared-status .status-type {
   display: block;
   margin: 0 0 10px;
-  color: #777;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  letter-spacing: 0.130517px;
+  color: #363636;
 }
 
 .ReactModalPortal .ReactModal__Overlay {
@@ -2298,7 +2304,7 @@ button.streammaker-btn:hover {
 
 .item-row .draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu {
   background: transparent;
-  color: #2d86da;
+  color: #2D86DA;
 }
 
 .item-row .draftJsEmojiPlugin__emojiSelectButton__3sPol:hover,
@@ -2627,13 +2633,16 @@ button.streammaker-btn:hover {
 
 .letter-count {
   float: right;
-  font-size: 16px;
-  font-family: open-sansBold;
-  color: #ccc;
   vertical-align: middle;
   height: 100%;
   padding: 5px;
-  margin: 0;
+  margin-left: 15px;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  letter-spacing: 0.130517px;
+  color: #909090;
 }
 
 .DateInput__small {
@@ -3000,10 +3009,11 @@ button.streammaker-btn:hover {
 .t-reply-modal {
   width: 600px !important;
   margin: 10px;
-  background: #edfafe;
+  background: #F5F7FB;
   outline: none;
   overflow: auto;
   max-height: 95vh;
+  border-radius: 8px;
 }
 
 .t-reply-body-container {
@@ -3011,12 +3021,19 @@ button.streammaker-btn:hover {
   overflow: auto;
 }
 
+.t-reply-body {
+  background: #F5F7FB;
+  margin-top:14px;
+}
+
 .t-reply-heading {
-  background: white;
+  background: #F5F7FB;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
+  padding: 15px 0px 15px 0px;
+  margin-left: 25px;
+  margin-right: 25px;
   font-size: 20px;
   color: #555;
   border-bottom: 1px solid #e4e4e4;
@@ -3027,8 +3044,9 @@ button.streammaker-btn:hover {
 }
 
 .t-reply-footer {
-  background: #edfafe;
+  background: #F5F7FB;
   padding: 15px;
+  margin-top: -15px;
 }
 
 .t-reply-footer .DraftEditor-root {
@@ -3037,6 +3055,8 @@ button.streammaker-btn:hover {
 
 .t-reply-footer .draft_editor_container {
   background: white;
+  margin: 0px 15px 0px 15px;
+  border-radius: 0px 0px 8px 8px;
 }
 
 .t-reply-actions button {
@@ -3054,6 +3074,10 @@ button.streammaker-btn:hover {
   justify-content: flex-start;
   align-items: center;
   color: #999;
+  background: white;
+  padding: 17px 17px 0px 17px;
+  margin: 0px 15px 0px 15px;
+  border-radius: 8px 8px 0px 0px;
 }
 
 .t-reply-profile img {
@@ -3082,12 +3106,14 @@ button.cancelBtn {
 
 button.doneBtn {
   border: none;
-  background: #337ab7;
+  background: #2D86DA;;
   color: white;
-  border-radius: 5px;
+  border-radius: 30px;
   font-weight: bold;
   padding: 10px 20px;
   outline: none;
+  margin-right: 15px;
+  width: 140px;
 }
 
 .content-finder {
@@ -4540,11 +4566,12 @@ aside .btn-group {
 }
 
 .t-reply-container.f-post-container {
-  background: white;
+  background: #F5F7FB;
 }
 
 .f-post-container .DraftEditor-root {
   height: auto;
+  margin: 22px;
 }
 
 .bg-heading {

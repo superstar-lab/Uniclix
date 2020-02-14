@@ -53,8 +53,8 @@ class ReadMore extends Component {
         
         return (
             
-            <div onClick={(e) => onTagClick(e.target.text)}>            
-                {this.prepareHtml()}
+            <div onClick={(e) => onTagClick(e.target.text)} className="readMore-body">            
+                <div className="readMore-content">{this.prepareHtml()}</div>
                 {typeof(children) !== "undefined" && children.length > length ?
                     <p className="linkify-text" onClick={this.toggleExpand}>{!expanded ? "Read more" : "Read less"}</p> : ""
                 }

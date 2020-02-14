@@ -316,12 +316,11 @@ class Channel extends Model
     public function tweetsTableData($sDate, $eDate)
     {
         $tweets = collect($this->getTweets());
-
-        foreach($tweets as $tweet)
-        {
-            $tweet->date = Carbon::parse($tweet->created_at)->format('M d Y, H:i');
+        for($i = 0; $i < count($tweets); $i++){
+            $replies = count($this->getStatusReplies($tweets[$i]->user->screen_name, $tweets[$i]->id_str));
+            $tweets[$i]->replies = $replies;
+            $tweets[$i]->date = Carbon::parse($tweets[$i]->created_at)->format('M d Y, H:i');
         }
-
         return $tweets;
     }
 

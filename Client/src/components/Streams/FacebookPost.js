@@ -47,15 +47,23 @@ class FacebookPost extends React.Component{
     render(){
         const {close, postData, channel} = this.props;
         return (
-            <div className="t-reply-container f-post-container">
+            <div className="t-reply-container">
                 <div className="t-reply-heading">
-                    <h3>Share</h3>
+                <h3>Share</h3>
                     <i onClick={close} className="fa fa-close link-cursor"></i>
                 </div>
                 <div className="t-reply-body">
+                    <StreamPost {...postData} type="twitterReply" />
+                </div>
+                <div className="t-reply-footer">
                     <div className="t-reply-profile">
-                        <img src={channel.avatar} />
-                        <p>{channel.name} sharing {postData.username}'s post</p>
+                        <span className="pull-left profile-img-container">
+                            <img src={channel.avatar} style={{width: 52}}/>
+                            <i className={`fab fa-${channel.type} ${channel.type}_bg smallIcon`}></i>
+                        </span>
+                        <p>
+                            {channel.name} sharing {postData.username}'s post
+                        </p>
                     </div>
                     <DraftEditor 
                         content={this.state.content}
@@ -66,17 +74,16 @@ class FacebookPost extends React.Component{
                         showImagesIcon={false}
                         showEmojiIcon={false}
                         showHashtagsIcon={false}
-                        network="twitter"
+                        network="facebook"
                     />
-                    <StreamPost {...postData} />
-                </div>
-                <div className="t-reply-footer">
+                    <p className={`letter-count pull-left ${this.state.letterCount > 250 ? 'red-txt' : ''}`}>{250 - this.state.letterCount} characters left</p>
                     <div className="t-reply-actions">
                         <button onClick={close} className="cancelBtn" >Cancel</button>
-                        {
+                        {this.state.letterCount < 1 || this.state.letterCount > 250 ?
+                            <button className="doneBtn disabled-btn" >Share</button> :
                             !this.state.loading ? 
                             <button onClick={this.send} className="doneBtn" >Share</button> :
-                            <button className="doneBtn" ><i className="fa fa-circle-o-notch fa-spin"></i> Share</button>
+                            <button className="doneBtn" ><i className="fa fa-circle-o-notch fa-spin"></i> Sharing</button>
                         }
                     </div>
                 </div>
@@ -84,5 +91,5 @@ class FacebookPost extends React.Component{
         );
     }
 }
-
+                            
 export default FacebookPost;

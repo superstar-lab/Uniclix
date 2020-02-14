@@ -4,11 +4,9 @@ import {like, unlike, retweet} from '../../requests/twitter/tweets';
 import {abbrNum} from '../../utils/numberFormatter';
 import TwitterReply from './TwitterReply';
 import TwitterReplies from './TwitterReplies';
-import { ToastContainer } from "react-toastr";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Loader from "../../components/Loader";
-
-let toastContainer;
-
 
 class TwitterActions extends React.Component{
 
@@ -17,7 +15,8 @@ class TwitterActions extends React.Component{
         retweeted: this.props.feedItem.retweeted,
         replyBox: false,
         repliesBox: false,
-        loading: true
+        loading: true,
+        toast: false,
     }
 
     componentDidMount() {
@@ -113,11 +112,35 @@ class TwitterActions extends React.Component{
         }), () => {
             
             if(message == "success"){
-                toastContainer.success("Message posted.", "Success", {closeButton: true});
+                const {feedItem} = this.props;
+                toast(
+                    <div>
+                        <span className="toast-icon">
+                            <i className="fa fa-check" style={{color: '#2D86DA'}}></i>
+                        </span>
+                        Your message has been posted!
+                    </div>, 
+                    {
+                        containerId: feedItem.id_str,
+                        className: "toast-body",
+                    }
+                );   
             }
 
             if(message == "error"){
-                toastContainer.error("Something went wrong.", "Error", {closeButton: true});
+                const {feedItem} = this.props;
+                toast(
+                    <div>
+                        <span className="toast-icon">
+                            <i className="fa fa-exclamation" style={{color: 'white'}}></i>
+                        </span>
+                        Your message has been failed!
+                    </div>, 
+                    {
+                        containerId: feedItem.id_str,
+                        className: "toast-error",
+                    }
+                );
             }
         });
     };
@@ -146,9 +169,11 @@ class TwitterActions extends React.Component{
         const retweetCount = feedCurrentItem.retweet_count > 0 ? abbrNum(feedCurrentItem.retweet_count) : '';
         return (
             <div>
-                <ToastContainer
-                    ref={ref => toastContainer = ref}
-                    className="toast-top-right"
+                <ToastContainer 
+                    enableMultiContainer 
+                    containerId={feedItem.id_str} 
+                    position={toast.POSITION.TOP_RIGHT}
+                    hideProgressBar={true}
                 />
                 {this.state.replyBox &&
                 <Modal

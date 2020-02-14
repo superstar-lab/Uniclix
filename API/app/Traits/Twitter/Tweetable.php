@@ -517,7 +517,7 @@ trait Tweetable
     }
 
     public function getStatusReplies($username, $tweetId){
-        $results = $this->getSearch(["q"=>"@$username", "since_id"=>$tweetId, "count"=>100]);
+        $results = $this->getTweets(["screen_name"=>$username, "since_id"=>$tweetId, "count"=>100]);
         if(count($results) < 1) return [];
         $results = collect($results)->where("in_reply_to_status_id_str", $tweetId)->values()->toArray();
 
