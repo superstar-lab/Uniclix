@@ -49,7 +49,7 @@
 
     .recharts-surface,
     .chart-container {
-        height: 350px;
+        min-height: 350px;
     }
 
     .dropdown-selectors {
@@ -194,6 +194,7 @@
         font-size: 1.1em;
         font-weight: 500;
         font-family: Rubik;
+        margin: 0;
     }
 }
 
@@ -304,6 +305,11 @@
     .engagements-card {
         background-color: #FFF;
         padding: 20px;
+        min-width: 283px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
 
         .graphics {
             display: flex;

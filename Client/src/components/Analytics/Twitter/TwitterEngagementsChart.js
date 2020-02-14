@@ -7,6 +7,7 @@ import { UTC_MONTHS } from '../../../utils/constants';
 
 import { pageInsightsByType } from '../../../requests/twitter/channels';
 import EngagementsChart from '../EngagementsChart';
+import EngagementCardsSection from '../EngagementCardsSection';
 
 class TwitterEngagementsChart extends React.Component {
   static propTypes = {
@@ -149,6 +150,7 @@ class TwitterEngagementsChart extends React.Component {
 
   render() {
     const { isLoading, data } = this.state;
+    const { accountId, startDate, endDate, selectedPeriod, socialMedia } = this.props;
 
     return (
     <div>
@@ -158,6 +160,13 @@ class TwitterEngagementsChart extends React.Component {
           <Loader type="Bars" color="#46a5d1" height={60} width={60} />
         </div>
       )}
+      {/* <EngagementCardsSection
+        socialMedia={socialMedia}
+        accountId={accountId}
+        startDate={startDate}
+        endDate={endDate}
+        selectedPeriod={selectedPeriod}
+      /> */}
     </div>
     );
   }

@@ -83,7 +83,7 @@ class TweetsTable extends React.Component {
                                             text={tweet.text}
                                             shares={tweet.retweet_count}
                                             sharesLabel="Retweets"
-                                            comments={0}
+                                            comments={tweet.replies}
                                             likes={tweet.favorite_count}
                                             likesLabel="Likes"
                                         />

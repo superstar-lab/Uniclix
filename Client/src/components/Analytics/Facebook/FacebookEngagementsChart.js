@@ -7,13 +7,15 @@ import { UTC_MONTHS } from '../../../utils/constants';
 
 import { pageInsightsByType } from '../../../requests/facebook/channels';
 import EngagementsChart from '../EngagementsChart';
+import EngagementCardsSection from '../EngagementCardsSection';
 
-class TwitterEngagementsChart extends React.Component {
+class FacebookEngagementsChart extends React.Component {
   static propTypes = {
     accountId: PropTypes.number.isRequired,
     startDate: PropTypes.number.isRequired,
     endDate: PropTypes.number.isRequired,
-    selectedPeriod: PropTypes.string.isRequired
+    selectedPeriod: PropTypes.string.isRequired,
+    socialMedia: PropTypes.string.isRequired
   };
 
   state = {
@@ -149,6 +151,7 @@ class TwitterEngagementsChart extends React.Component {
 
   render() {
     const { isLoading, data } = this.state;
+    const { accountId, startDate, endDate, selectedPeriod, socialMedia } = this.props;
 
     return (
     <div>
@@ -158,9 +161,16 @@ class TwitterEngagementsChart extends React.Component {
           <Loader type="Bars" color="#46a5d1" height={60} width={60} />
         </div>
       )}
+      <EngagementCardsSection
+        socialMedia={socialMedia}
+        accountId={accountId}
+        startDate={startDate}
+        endDate={endDate}
+        selectedPeriod={selectedPeriod}
+      />
     </div>
     );
   }
 }
 
-export default TwitterEngagementsChart;
+export default FacebookEngagementsChart;
