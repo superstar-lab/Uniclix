@@ -5,6 +5,9 @@ import { changePlan, getPlanData } from '../../../requests/billing';
 import SweetAlert from "sweetalert2-react";
 import Checkout from './Checkout';
 import Loader, { LoaderWithOverlay } from '../../Loader';
+import Modal from 'react-modal';
+import { cancelSubscription } from '../../../requests/billing';
+import CongratsPayment from "./CongratsPayment";
 
 class BillingProfile extends React.Component {
     state = {
@@ -14,14 +17,19 @@ class BillingProfile extends React.Component {
         billingPeriod: this.props.profile.subscription.annual ? "annually" : "monthly",
         planChange: false,
         planName: "",
+        selectedPlan: null,
         loading: false,
         roleBilling: "",
         buttontext: "Upgrade",
-        onAddCard: false
+        onAddCard: false,
+        subscriptionStatus: false,
+        forbidden: false,
     }
 
     componentDidMount() {
         getPlanData().then(response => {
+            console.log(response);
+            console.log(this.props.profile);
             this.setState({
                 allPlans: response.allPlans,
                 roleBilling: this.props.profile.role.name,
@@ -43,23 +51,32 @@ class BillingProfile extends React.Component {
 
     setRole = (role) => {
         let item = role.toLowerCase();
-        console.log(item)
         this.setState({
-            roleBilling: item
+            roleBilling: item,
+            subscriptionStatus: !this.state.subscriptionStatus,
         });
-        console.log(this.state.roleBilling, 'role');
     }
-    setForbidden = (forbidden = false) => {
+    setForbidden = () => {
         this.setState(() => ({
-            forbidden
+            loading: true,
         }));
+        
+        cancelSubscription().then(response => {
+            if(response.success){
+                this.setState({
+                    loading: false,
+                    roleBilling: "",
+                    subscriptionStatus: !this.state.subscriptionStatus,
+                });
+            }
+            
+        });
     };
 
     setPlanChange = (planName) => {
         this.setState(() => ({
             planChange: planName,
             planName: planName,
-            onAddCard: false
         }));
     };
 
@@ -76,27 +93,13 @@ class BillingProfile extends React.Component {
         }));
     };
 
-    startCheckout = () => {
-        this.setState({ shouldBlockNavigation: false })
-        setTimeout(() => {
-            this.props.history.push('/twitter-booster/checkout')
-        }, 0)
-    }
-
     render() {
-        const { allPlans, onAddCard, planName, planChange } = this.state;
+        const { allPlans, onAddCard, planName, planChange, selectedPlan, billingPeriod } = this.state;
         const { profile } = this.props;
-
-        // let planData = allPlans.filter(plan => plan["Name"].toLowerCase() === profile.role.name);
-        // planData = planData.length > 0 ? planData[0] : false;
-        // let planName = "";
-        // if (planData) {
-        //     planName = this.state.billingPeriod === "annually" ? planData["Name"].toLowerCase() + "_annual" : planData["Name"].toLowerCase();
-        // }
 
         return (
             onAddCard ?
-                <Checkout planName={planName} />
+                <Checkout planName={planName} plan={selectedPlan} billingPeriod={billingPeriod} onChangePlan={() => this.setState({onAddCard: false})} onChangePeriod={() => this.setBillingPeriod()} />
                 :
                 <div>
                     <SweetAlert
@@ -112,7 +115,21 @@ class BillingProfile extends React.Component {
                         }}
                         onCancel={() => this.setPlanChange(false)}
                     />
-
+                    {this.state.subscriptionStatus && 
+                        <Modal
+                        ariaHideApp={false}
+                        className="billing-profile-modal"
+                        isOpen={this.state.subscriptionStatus}
+                        >
+                            <div className="modal-title">Are you sure you want to cancel your subscription?</div>
+                            <div className="modal-contents">All the accounts and members linked will be lost</div>
+                            <div style={{float:'right'}}>
+                                <button onClick={() => this.setState({subscriptionStatus: !this.state.subscriptionStatus})} className="cancelBtn" >Cancel</button>
+                                <button onClick={() => this.setForbidden()} className="cancelBtn" >Yes, cancel it</button>
+                            </div>
+                            
+                        </Modal>
+                    }
                     {this.state.loading && <LoaderWithOverlay />}
 
                     {allPlans.length > 0 ?
@@ -126,7 +143,8 @@ class BillingProfile extends React.Component {
                                             type="checkbox" name="check"
                                             value={this.state.billingPeriod}
                                             onChange={this.setBillingPeriod}
-                                            checked={this.state.billingPeriod === "annually"} />
+                                            checked={this.state.billingPeriod === "annually"} 
+                                        />
                                         <div className="toggle-inner">
                                             <div className="indicator"></div>
                                         </div>
@@ -164,7 +182,7 @@ class BillingProfile extends React.Component {
                                                             <button className={`btn billing-btn  ${plan["Name"].toLowerCase() == this.state.roleBilling ? 'active' : ''}`} onClick={() => this.setRole(plan["Name"])}>Cancel Subscription</button>
                                                             :
 
-                                                            <button className="btn billing-btn" onClick={() => { this.setPlanChange(plan["Name"].toLowerCase()) }}>Upgrade</button>
+                                                            <button className="btn billing-btn" onClick={() => { this.setState({selectedPlan: plan}); this.setPlanChange(plan["Name"].toLowerCase()) }}>Upgrade</button>
                                                     }
                                                 </div>
                                             </div>
@@ -175,6 +193,14 @@ class BillingProfile extends React.Component {
                             </section>
                         </div> : <Loader />
                     }
+                    <div>
+                        <div className="billing-bottom-container">
+                            <div className="bottom-title">Enterprise</div>
+                            <div className="billing-profile-content">Contact us to get a custom plan that fits your needs
+                                <button className="billing-profile-button">Contact us</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
         );
     }

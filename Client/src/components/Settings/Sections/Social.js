@@ -139,11 +139,6 @@ class Social extends React.Component {
                     middleware={'channels'}
                     AddOtherAccounts={this.AddOtherAccounts} />
                 :
-                <React.Fragment>
-                    <Prompt
-                        when={shouldBlockNavigation}
-                        message='If you leave the page without proceeding to checkout all the accounts you linked will be lost.'
-                    />
                     <div className="main-container">
                         <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden} />
                         <SweetAlert
@@ -211,7 +206,6 @@ class Social extends React.Component {
                             </div>
                         </div>
                     </div>
-                </React.Fragment>
         );
     };
 }

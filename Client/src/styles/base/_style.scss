@@ -733,6 +733,7 @@ a:link {
   border: none;
   font-weight: bold;
   color: #d83e7f;
+  margin-left: -5px;
 }
 
 .auth-switch-btn {
@@ -3098,7 +3099,7 @@ button.cancelBtn {
   background: none;
   border: none;
   font-weight: bold;
-  color: #5a94c5;
+  color: #2D86DA;
   padding: 10px 20px;
   font-size: 16px;
   outline: none;
@@ -4009,6 +4010,8 @@ aside .btn-group {
 
 .plan-content-description {
   font-weight: bold;
+  font-size: large;
+  margin-top: 20px;
 }
 
 .plan-content>p {
@@ -5360,7 +5363,7 @@ section.pricing {
 .billing-body-c {
   position: relative;
   width: 100%;
-  min-height: 500px;
+  min-height: 533px;
   background: #ffffff;
   box-sizing: border-box;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);

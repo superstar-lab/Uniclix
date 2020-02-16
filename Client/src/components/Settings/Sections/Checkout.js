@@ -37,6 +37,7 @@ class Checkout extends React.Component {
     shouldBlockNavigation: true,
     newAccounts: 0,
     actualUsers: 0,
+    planTitle: "Basic Plan",    
     form: {
       cardnumber: '',
       cvc: '',
@@ -69,9 +70,11 @@ class Checkout extends React.Component {
     this.activeYears();
     this.loadStripe();
     this.accountsBilling();
+
+    this.setState({planTitle: this.props.planName.charAt(0).toUpperCase() + this.props.planName.slice(1) + " Plan"});
+
   }
   setLocation = (val) => {
-    console.log(val)
     this.setState({ location: val, openCountry: false })
   }
 
@@ -88,8 +91,8 @@ class Checkout extends React.Component {
   accountsBilling = () => {
     this.setState({ loading: true })
     this.setState({
-      newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
-      actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
+      // newAccounts: (this.props.channels).filter(channel => channel.details.payload == 0).length,
+      // actualUsers: (this.props.channels).filter(channel => channel.details.payload == 1).length
     })
   }
   loadStripe = () => {
@@ -184,11 +187,10 @@ class Checkout extends React.Component {
     this.refs.pickAMonth.show()
   }
   handleClickMonthBoxHidde = (e) => {
-    this.refs.pickAMonth.hidde()
+    this.refs.pickAMonth.hidden()
   }
 
   ConfirmOrder = (e) => {
-    e.preventDefault();
 
     this.setState({
       loading: false
@@ -215,9 +217,9 @@ class Checkout extends React.Component {
     });
   }
 
-  onToken = (token) => {
-    token.plan = this.props.planName
-    token.trialDays = 0
+  onToken = (token) => {    
+    token.plan = this.props.billingPeriod === "annually" ? this.props.planName + "_annual" : this.props.planName;
+    token.trialDays = 15
     token.created = new Date().getTime();
     token.subType = "main"
     createSubscription(token).then(response => {
@@ -230,7 +232,6 @@ class Checkout extends React.Component {
         });
       })
     }).catch(e => {
-      console.log(e)
       this.setState({
         loading: true,
         message: ""
@@ -240,7 +241,8 @@ class Checkout extends React.Component {
 
   render() {
     const { validClaas, form, years, loading, 
-      orderFinished, countries, newAccounts, actualUsers, openCountry, location } = this.state
+      orderFinished, countries, newAccounts, actualUsers, openCountry, location, planTitle } = this.state
+    const { plan, billingPeriod, onChangePlan, onChangePeriod } = this.props;
     // const location = form.location;
     const items = countries.map((item) => {
       return <li onClick={() => this.setLocation(item)}> {item} </li>;
@@ -253,7 +255,7 @@ class Checkout extends React.Component {
       , from: 'From', to: 'To'
     }
       , mvalue = { year: minumumYear, month: minumumMonth + 1 }
-console.log(this.props.planName, 'this.props.planName');
+
     return (
       <div className="main-container">
         {!loading ? <LoaderWithOverlay /> :
@@ -410,37 +412,27 @@ console.log(this.props.planName, 'this.props.planName');
                       <h3>Order summary</h3>
 
                       <div className="plan-content table">
-                        {actualUsers > 0 &&
                           <div className="row-price">
                             <div className="col-price">
-                              <p className="plan-content-description">Current price</p>
-                              <p className="plan-content-accounts">x{actualUsers} accounts</p>
-                            </div>
-                            <div className="col-price">
-                              <p className="price">$10</p>
+                              <p className="plan-content-description">{planTitle}</p>
+                              <p className="price">${billingPeriod === "annually" ? plan['Annual Billing'] : plan["Monthly"]}</p>
+                              <button className="btn-text-pink" onClick={() => onChangePlan() }>Change</button>
                             </div>
                           </div>
-                        }
-                        <br />
-                        {newAccounts > 0 &&
+                          <br />
                           <div className="row-price new-accounts">
-                            <div className="col-price">
-                              <p className="plan-content-accounts">x{newAccounts} accounts</p>
-                            </div>
-                            <div className="col-price">
-                              <p className="price">${newAccounts * 10}</p>
-                            </div>
+                      <p className="disccount-title">20% Discount<span className="disccount-currency">-${Math.round((billingPeriod === "annually" ? plan['Annual Billing'] * 0.2 : plan["Monthly"] * 0.2) * 100.0) / 100.0}</span></p>
                           </div>
-                        }
                       </div>
                       <div className="order-total table">
                         <div className="row-price">
                           <div className="col-price">
                             <p className="plan-content-description">TOTAL</p>
-                            <p className="plan-content-accounts">Monthly</p>
+                            <p className="plan-content-accounts">{billingPeriod === "annually" ? 'Annually' : 'Monthly'}</p>
+                            <button className="btn-text-pink" onClick={() => onChangePeriod()}>Switch to {billingPeriod === "annually" ? 'month' : 'annual'}</button>
                           </div>
-                          <div className="col-price">
-                            <p className="price">${(newAccounts + actualUsers) * 10}</p>
+                          <div className="currency-label">
+                            <p>${Math.round((billingPeriod === "annually" ? plan['Annual Billing'] * 0.8 : plan["Monthly"] * 0.8) * 100.0) / 100.0}</p>
                           </div>
                         </div>
                       </div>

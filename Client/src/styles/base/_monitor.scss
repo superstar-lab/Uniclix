@@ -765,3 +765,109 @@ $blue: lighten(rgb(4,159,217), 5%);
 .readMore-content {
 	padding: 10px;
 }
+
+.bottom-title {
+	font-family: Rubik;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 22px;
+	line-height: 24px;
+	letter-spacing: 0.167808px;
+	color: #363636;
+}
+
+.billing-profile-content {
+	font-family: Rubik;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: 0.122042px;
+	color: #363636;
+	display: flex;
+	margin-top: 20px;
+}
+
+.billing-profile-button {
+	border-radius: 5rem;
+    padding: 1rem 2rem;
+    background: none;
+    border: 2px solid #2d86da;
+    color: #2d86da;
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    bottom: 0px;
+    transform: translate(-50%, -50%);
+	margin: 0 auto;
+	margin-right: 25px;
+}
+
+.billing-bottom-container {
+	margin-left: 30px !important;
+	padding: 25px 25px 7px 25px;
+	background: #FFFFFF;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+	border-radius: 6px;
+	width: 87%;
+}
+
+.modal-title {
+	padding: 17px 21px 12px 24px;
+	font-family: Rubik;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: 0.137298px;
+	color: #363636;
+}
+
+.modal-contents {
+	font-family: Lato;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 18px;
+	letter-spacing: 0.130517px;
+	color: #363636;
+	margin: 0px 0px 20px 24px;
+}
+
+.billing-profile-modal {
+	width: 407px !important;
+    margin: 10px;
+    background: #F5F7FB;
+    outline: none;
+    overflow: auto;
+    max-height: 95vh;
+	border-radius: 8px;
+	padding: 15px;
+}
+
+.disccount-title {
+	font-weight: bold;
+  	color: #57B894;
+}
+
+.currency-label {
+	font-family: Lato;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 22px;
+	line-height: 24px;
+	letter-spacing: 0.137298px;
+	color: #363636;
+	margin-left: 20%;
+}
+
+.disccount-currency {
+	margin-left: 46%;
+}
+
+.price {
+	margin: -43px 0px 14px 74%;
+	font-size: 21px;
+}

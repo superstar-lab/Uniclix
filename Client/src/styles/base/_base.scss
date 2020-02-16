@@ -241,13 +241,14 @@
 
     &.new-accounts {
         color: $primary_blue;
+        font-size: 17px;
     }
 
     .col-price {
         display: table-cell;
 
         &:last-child {
-            text-align: right;
+            
             vertical-align: bottom;
         }
 

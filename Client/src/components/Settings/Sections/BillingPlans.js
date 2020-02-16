@@ -4,7 +4,6 @@ import { startSetProfile } from "../../../actions/profile";
 import { changePlan, getPlanData } from '../../../requests/billing';
 import UpgradeAlert from '../../UpgradeAlert';
 import SweetAlert from "sweetalert2-react";
-import Checkout from './Checkout';
 import Loader, { LoaderWithOverlay } from '../../Loader';
 class BillingPlans extends React.Component {
     state = {
@@ -55,11 +54,9 @@ class BillingPlans extends React.Component {
 
     setRole = (role) => {
         let item = role.toLowerCase();
-        console.log(item)
         this.setState({
             roleBilling: item
         });
-        console.log(this.state.roleBilling, 'role');
     }
     setForbidden = (forbidden = false) => {
         this.setState(() => ({
@@ -95,7 +92,6 @@ class BillingPlans extends React.Component {
 
         let planData = allPlans.filter(plan => plan["Name"].toLowerCase() === profile.role.name);
         planData = planData.length > 0 ? planData[0] : false;
-        console.log('plan ', allPlans)
         let planName = "";
         if (planData) {
             planName = this.state.billingPeriod === "annually" ? planData["Name"].toLowerCase() + "_annual" : planData["Name"].toLowerCase();
