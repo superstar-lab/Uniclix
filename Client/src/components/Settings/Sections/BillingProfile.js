@@ -28,8 +28,6 @@ class BillingProfile extends React.Component {
 
     componentDidMount() {
         getPlanData().then(response => {
-            console.log(response);
-            console.log(this.props.profile);
             this.setState({
                 allPlans: response.allPlans,
                 roleBilling: this.props.profile.role.name,
@@ -171,9 +169,13 @@ class BillingProfile extends React.Component {
                                                         <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Users"]} user</li>
                                                         <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Post Limitation"]} post</li>
                                                         <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Schedule and Publish"] != true ? 'manage and schedule posts' : ''}</li>
-                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Mentions"]} track mentions</li>
-                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Social Listening & Monitoring"]} monitor activity</li>
                                                         {plan["Content Curation"] == true ? <li><span className="fa-li"><i className="fa fa-check"></i></span>Content Curation</li> : ''}
+                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Social Listening & Monitoring"]} monitor activity</li>
+                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Mentions"]} track mentions</li>
+                                                        {plan["Analytics"] == true ? <li><span className="fa-li"><i className="fa fa-check"></i></span>Analytics</li> : ''}
+                                                        {plan["Create and Manage Draft Posts"] == true ? <li><span className="fa-li"><i className="fa fa-check"></i></span>Create and Manage Draft Posts</li> : ''}
+                                                        {plan["Team: Invite Additional Users"] == true ? <li><span className="fa-li"><i className="fa fa-check"></i></span>Team: Invite Additional Users</li> : ''}
+                                                        {plan["Approval Workflow"] == true ? <li><span className="fa-li"><i className="fa fa-check"></i></span>Approval Workflow</li> : ''}
                                                     </ul>
                                                     {
                                                         plan["Name"].toLowerCase() == this.state.roleBilling
