@@ -1,389 +1,127 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import BottomScrollListener from 'react-bottom-scroll-listener';
-import UpgradeAlert from '../../UpgradeAlert';
-import { setComposerModal } from "../../../actions/composer";
-import channelSelector from '../../../selectors/channels';
-import { scheduledPosts, destroyPost, postNow } from '../../../requests/channels';
-import PostListCalendar from '../../PostListCalendar';
-import Loader from '../../Loader';
-import Tabs from '../../Tabs';
-import UnapprovedPosts from './UnapprovedPosts';
-import PastScheduled from './PastScheduled';
 import moment from 'moment';
+import { Select } from 'antd';
 
-export class ScheduledPosts extends React.Component {
+import { scheduledPosts } from '../../../requests/channels';
 
-    defaultAction = {
-        type: '',
-        id: ''
-    };
+import Compose from '../../Compose/index';
+import DateRangeSelector from '../components/DateRangeSelector';
+import PostsCalendar from '../components/PostsCalendar';
+import TodaysAgenda from '../components/TodaysAgenda';
+import Loader from '../../Loader';
 
-    state = {
-        posts: [],
-        page: 1,
-        loading: this.props.channelsLoading,
-        action: this.defaultAction,
-        forbidden: false,
-        error: false,
-        titleDate: "",
-        events: [],
-        viewType: "week",
-        currentDate: new Date(),
-        Navigate: 'week',
-        timeZoneVal: '',
-        calendarDate: new Date(),
-        viewTypes: [
-            {
-                id: 'month',
-                label: 'Month'
-            },
-            {
-                id: 'week',
-                label: 'Week'
-            },
-            {
-                id: 'day',
-                label: 'Day'
-            }
-        ]
+const { Option } = Select;
+
+const PERIODS = [
+  'Month',
+  'Week',
+  'Day'
+];
+
+class ScheduledPosts extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoading: false,
+      posts: [],
+      calendarDisplay: 'Week',
+      startDate: moment().tz(props.timezone).startOf('week'),
+      endDate: moment().tz(props.timezone).endOf('week')
     }
+  }
 
-    componentDidMount() {
+  componentDidMount() {
+    this.fetchPosts();
+  }
 
-        if (!this.props.channelsLoading) {
-            this.fetchPosts();
-        }
+  componentDidUpdate(prevProps, prevState) {
+    // We get the posts when the date changes
+    if (prevState.startDate.format('YYYY-MM-DD') !== this.state.startDate.format('YYYY-MM-DD')) {
+      this.fetchPosts();
     }
+  }
 
-    componentDidUpdate(prevProps) {
-        if ((this.props.selectedChannel !== prevProps.selectedChannel)) {
-            this.fetchPosts();
+  flattenPosts = (items) => {
+    const flattenedPosts = [];
+    items.forEach(posts => flattenedPosts.push(...posts))
+
+    return flattenedPosts;
+  }
+
+  fetchPosts = () => {
+    const { startDate, endDate } = this.state;
+    this.setState({ isLoading: true });
+
+    try {
+      scheduledPosts(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD'))
+        .then((response) => {
+            const posts = this.flattenPosts(response.items);
             this.setState({
-                timeZoneVal: this.props.profile ? this.props.profile.user.timezone : ''
-            })
-        }
-    }
-
-    setLoading = (loading = false) => {
-        this.setState(() => ({
-            loading
-        }));
-    };
-
-    setAction = (action = this.defaultAction) => {
-        this.setState(() => ({
-            action
-        }));
-    };
-
-    setError = (error = true) => {
-        this.setState(() => ({
-            error
-        }));
-    };
-
-    setForbidden = (forbidden = false) => {
-        this.setState(() => ({
-            forbidden
-        }));
-    };
-
-    publishPost = (postId) => {
-        this.setLoading(true);
-        return postNow(postId)
-            .then((response) => {
-                this.fetchPosts();
-                this.setLoading(false);
-            }).catch((error) => {
-
-                if (typeof error.response.data.message != 'undefined') {
-                    this.setState(() => ({
-                        error: error.response.data.message
-                    }));
-                }
-
-                if (typeof error.response.data.error != 'undefined') {
-                    this.setState(() => ({
-                        error: error.response.data.error
-                    }));
-                }
-
-                this.setLoading(false);
+                posts,
+                isLoading: false,
             });
-    };
-
-    destroy = (postId) => {
-        this.setLoading(true);
-        return destroyPost(postId)
-            .then((response) => {
-                this.fetchPosts();
-                this.setLoading(false);
-            }).catch((error) => {
-
-                if (typeof error.response.data.message != 'undefined') {
-                    this.setState(() => ({
-                        error: error.response.data.message
-                    }));
-                }
-
-                if (typeof error.response.data.error != 'undefined') {
-                    this.setState(() => ({
-                        error: error.response.data.error
-                    }));
-                }
-
-                this.setLoading(false);
-            });
-    };
-
-    formatEvents = (events) => {
-        let StructureEvents = []
-        events.map((event) => {
-            let eventItem = event.map((eventItem) => {
-                let timeevent = new Date(eventItem.scheduled_at);
-                let timeeventstart = timeevent.setTime(timeevent - (60 * timeevent.getMinutes() * 1000));
-                timeevent.setTime(timeeventstart + (60 * 60 * 1000));
-                eventItem.start = new Date(timeeventstart)
-                eventItem.end = new Date(timeevent)
-                StructureEvents.push(eventItem)
-                return eventItem;
-            })
-            return eventItem;
-        })
-        return StructureEvents
+        }).catch((error) => {
+          this.setState({ isLoading: false });
+        });
+    } catch(error) {
+      console.log(error);
     }
+  }
 
-    fetchPosts = () => {
-        this.setLoading(true);
-        scheduledPosts()
-            .then((response) => {
-                this.setState(() => ({
-                    loading: false,
-                    forbidden: false,
-                    page: 1,
-                    events: this.formatEvents(response.items)
-                }));
+  onDateChange = (startDate, endDate) => {
+    const { timezone } = this.props;
 
-                setTimeout(() => {
-                    this.setState({
-                        titleDate: document.getElementsByClassName('rbc-toolbar-label')[0].innerHTML
-                    })
-                }, 20)
-            }).catch((error) => {
+    this.setState({
+      startDate: moment(startDate).tz(timezone),
+      endDate: moment(endDate).tz(timezone)
+    });
+  };
 
-                if (typeof error.response.data.message != 'undefined') {
-                    this.setState(() => ({
-                        error: error.response.data.message
-                    }));
-                }
+  onPeriodChange = (value) => {
+    this.setState({ calendarDisplay: value });
+  };
 
-                if (error.response.status === 403) {
-                    this.setForbidden(true);
-                }
+  render() {
+    const { startDate, endDate, calendarDisplay, posts, isLoading } = this.state;
+    const { timezone } = this.props;
 
-                this.setLoading(false);
-            });
-
-        let todayDate = moment().format('YYYY-MM-DD');
-        scheduledPosts(1, todayDate, todayDate)
-            .then((response) => {
-
-                this.setState(() => ({
-                    posts: response.items,
-                    loading: false,
-                    forbidden: false,
-                    page: 1,
-                }));
-
-            }).catch((error) => {
-                if (typeof error.response.data.message != 'undefined') {
-                    this.setState(() => ({
-                        error: error.response.data.message
-                    }));
-                }
-
-                if (error.response.status === 403) {
-                    this.setForbidden(true);
-                }
-
-                this.setLoading(false);
-            });
-    }
-
-    loadMore = () => {
-        this.setLoading(true);
-        let page = this.state.page + 1;
-        scheduledPosts(page)
-            .then((response) => {
-                this.setState((prevState) => ({
-                    posts: prevState.posts.concat(response.items),
-                    page,
-                    loading: false
-                }));
-            }).catch((error) => {
-                this.setLoading(false);
-
-                if (error.response.status === 401) {
-
-                    if (this.props.selectedChannel.active) {
-                        this.props.startSetChannels();
-                    }
-                }
-
-                return Promise.reject(error);
-            });
-    };
-
-
-
-
-    changeView = (item) => {
-        this.setState({
-            viewType: item.target.value,
-            Navigate: item.target.value
-        })
-        setTimeout(() => {
-            if (document.getElementsByClassName('rbc-toolbar-label')[0]) {
-                this.setState({
-                    titleDate: document.getElementsByClassName('rbc-toolbar-label')[0].innerHTML
-                })
-            }
-        }, 15)
-    }
-
-    onNextDate = () => {
-        let { currentDate, viewType } = this.state
-        let newDate = new Date();
-        switch (viewType) {
-            case 'day':
-                newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
-                break;
-            case 'week':
-                newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 7);
-                break
-            case 'month':
-                newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
-                break
-            default:
-                newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
-                break;
-        }
-        this.setState({
-            calendarDate: newDate,
-            currentDate: newDate,
-        })
-
-        setTimeout(() => {
-            this.setState({
-                titleDate: document.getElementsByClassName('rbc-toolbar-label')[0].innerHTML
-            })
-        }, 1)
-    }
-
-    onPrevDate = () => {
-        let { currentDate, viewType } = this.state
-        let newDate = new Date();
-        switch (viewType) {
-            case 'day':
-                newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - 1);
-                break;
-            case 'week':
-                newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - 7);
-                break
-            case 'month':
-                newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
-                break
-            default:
-                newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - 1);
-                break;
-        }
-        this.setState({
-            calendarDate: newDate,
-            currentDate: newDate,
-        })
-
-        setTimeout(() => {
-            this.setState({
-                titleDate: document.getElementsByClassName('rbc-toolbar-label')[0].innerHTML
-            })
-        }, 1)
-    }
-    changeTimeZone = (val) => {
-        this.setState({
-            timeZoneVal: val
-        })
-    }
-    render() {
-        return (
-            <div className="main-section">
-                <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
-                <div className="section-header no-border mb-40">
-                    <div className="section-header__first-row row">
-                        <div className="col-xs-12 col-md-8 ">
-                            <h2>Posts</h2>
-                        </div>
-                        <div className="col-xs-12 col-md-4">
-                            <button className="magento-btn pull-right" onClick={() => { this.props.setComposerModal(true) }}>New Post</button>
-                        </div>
-                    </div>
-                </div>
-                <Tabs>
-                    <div label="Scheduled">
-                        <PostListCalendar
-                            action={this.state.action}
-                            setAction={this.setAction}
-                            destroyPost={this.destroy}
-                            publishPost={this.publishPost}
-                            error={this.state.error}
-                            setError={this.setError}
-                            posts={this.state.posts}
-                            changeTimeZone={this.changeTimeZone}
-                            timeZoneVal={this.state.timeZoneVal}
-                            title=""
-                            calendarDate={this.state.calendarDate}
-                            viewTypes={this.state.viewTypes}
-                            viewType={this.state.viewType}
-                            events={this.state.events}
-                            loading={this.state.loading}
-                            changeView={this.changeView}
-                            onPrevDate={this.onPrevDate}
-                            onNextDate={this.onNextDate}
-                            Navigate={this.state.Navigate}
-                            titleDate={this.state.titleDate}
-                            type="scheduled-posts"
-                        />
-                    </div>
-                    <div label="Awaiting Approval">
-                        <UnapprovedPosts />
-                    </div>
-                    <div label="Previous Posts">
-                        <PastScheduled />
-                    </div>
-                </Tabs>
-                <BottomScrollListener onBottom={this.loadMore} />
-                {this.state.loading && <Loader />}
-            </div>
-
-        );
-    }
+    return (
+      <div className="calendar-events">
+        <div className="calendar-container">
+          <div className="header">
+            <DateRangeSelector
+              startDate={startDate}
+              endDate={endDate}
+              selectedPeriod={calendarDisplay}
+              onDateChange={this.onDateChange}
+            />
+            <Select value={calendarDisplay} onChange={this.onPeriodChange}>
+              {
+                PERIODS.map(period => <Option key={period} value={period}>{period}</Option>)
+              }
+            </Select>
+          </div>
+          <PostsCalendar
+            events={posts}
+            view={calendarDisplay.toLowerCase()}
+            timezone={timezone}
+            startDate={startDate}
+            fetchPosts={this.fetchPosts}
+          />
+        </div>
+        <div>
+          <TodaysAgenda
+            posts={posts}
+            timezone={timezone}
+          />
+        </div>
+        { isLoading && <Loader fullscreen /> }
+        <Compose onPost={this.fetchPosts} />
+      </div>
+    );
+  }
 }
 
-//TODO refresh schedule page when publishing, fetch past scheduled posts
-const mapStateToProps = (state) => {
-    const selectedGlobalChannel = { selected: 1, provider: undefined };
-    const selectedChannel = channelSelector(state.channels.list, selectedGlobalChannel);
-
-    return {
-        channelsLoading: state.channels.loading,
-        selectedChannel: selectedChannel.length ? selectedChannel[0] : {},
-        profile: state.profile
-    };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-    setComposerModal: (modal) => dispatch(setComposerModal(modal))
-});
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(ScheduledPosts);
+export default ScheduledPosts;

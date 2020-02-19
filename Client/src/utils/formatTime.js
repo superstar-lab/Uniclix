@@ -25,3 +25,10 @@ export default (value) => {
     }
 
 }
+
+// This help us to create a date object maintaining the timezon configured
+// in the moment object.
+export const momentToDate = (momentObj) => {
+    const formattedDate = momentObj.format("YYYY-MM-DD HH:mm:ss");
+    return new Date(formattedDate);
+}

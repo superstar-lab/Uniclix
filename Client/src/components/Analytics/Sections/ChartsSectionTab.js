@@ -7,7 +7,7 @@ const PERIODS = [
   'Month',
   'Week',
   'Day'
-]
+];
 
 const TWITTER_PERIODS = [
   'Month',

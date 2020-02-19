@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import TopMenu from "../components/Menus/TopMenu";
-import Composer from "../components/Compose";
 import EmailChecker from "../components/EmailChecker";
 import ActiveChecker from "../components/ActiveChecker";
 import Middleware from "../components/Middleware";
@@ -31,7 +30,6 @@ export const PrivateRoute = ({
                             <BrowserView viewClassName="app-wrap">
                                 <TopMenu />
                                 <Component {...props} />
-                                <Composer />
                                 <EmailChecker />
                                 <ActiveChecker />
                             </BrowserView>

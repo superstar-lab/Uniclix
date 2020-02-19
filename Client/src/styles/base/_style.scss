@@ -2327,11 +2327,6 @@ button.streammaker-btn:hover {
   display: none;
 }
 
-// /
-// .item-row .profile-info .item-actions {
-//   display: block;
-// }
-
 .item-row .user-action {
   width: 30px;
   height: 30px;
@@ -2499,6 +2494,29 @@ button.streammaker-btn:hover {
   color: white;
 }
 
+.publish-btn {
+  background-color: #2D86DA;
+}
+
+.secondary-btn {
+  background-color: transparent;
+  color: #2D86DA;
+  border: none;
+  font-weight: 500;
+}
+
+.buttons-section {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  .right {
+    width: 220px;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
 .publish-group {
   border-radius: 20px;
   float: left;
@@ -2530,8 +2548,46 @@ button.streammaker-btn:hover {
 }
 
 .DraftEditor-root {
-  height: 200px;
+  height: 100px;
   overflow-y: auto;
+}
+
+.ant-calendar-picker-container,
+.ant-time-picker-panel {
+  font-family: Rubik;
+}
+
+.draft_editor_container {
+  position: relative;
+
+  .draft-body {
+    min-height: 158px;
+  }
+
+  .editor-icons {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
+}
+
+.draft-body {
+  padding: 10px;
+  position: relative;
+
+  .fileContainer {
+    justify-content: flex-start;
+    display: flex;
+    flex-direction: row;
+
+    .uploadPicturesWrapper {
+      width: auto !important;
+      
+      .uploadPictureContainer {
+        width: 50px;
+      }
+    }
+  }
 }
 
 
@@ -2697,6 +2753,7 @@ button.streammaker-btn:hover {
 .ReactModalPortal .ReactModal__Overlay {
   transition: opacity 300ms ease-in-out;
   background: rgba(0, 0, 0, 0.15);
+  overflow: auto;
 
   &--after-open {
     opacity: 1;
@@ -5534,10 +5591,183 @@ section.pricing {
   }
 }
 
-.action-icon-button {
-  width: 22px;
+.category-post {
+  padding: 5px;
+  background-color: #0073B1;
+  border-radius: 4px;
+  color: #fff;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  margin: 0;
 }
 
+.header-posts-table {
+  margin-top: 3rem;
+
+  h4 {
+    font-family: Rubik;
+    font-size: 14px;
+    line-height: 14px;
+    letter-spacing: 0.130517px;
+    color: #000000;
+  }
+}
+
+.item-list {
+  &.shadow-box {
+    overflow: visible;
+  }
+
+  .schedule-row {
+
+    &,
+    h4 {
+      font-family: Lato;
+      font-size: 14px;
+      line-height: 18px;
+      letter-spacing: 0.130517px;
+      color: #363636;
+    }
+
+    h4 {
+      margin: 0;
+    }
+
+    .post-info {
+
+      img {
+        margin-left: 0;
+        max-width: 120px !important;
+      }
+
+      span {
+        padding: 15px 5px 15px 15px;
+        display: inline-block;
+      }
+    }
+
+    .item-actions {
+      overflow: visible;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      div {
+        i {
+          display: inline-block;
+          padding: 0 15px;
+          cursor: pointer;
+        }
+
+        ul {
+          display: none;
+          position: absolute;
+          right: 0;
+          top: 100%;
+          background: #FFFFFF;
+          box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.05);
+          border-radius: 8px;
+          min-width: 200px;
+          padding: 10px 20px;
+          z-index: 9999;
+        }
+
+        &:hover ul {
+          display: block;
+        }
+
+        li {
+          padding: 10px 0;
+
+          a {
+            font-family: Rubik;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 16px;
+            letter-spacing: 0.436364px;
+            color: #363636;
+          }
+        }
+      }
+    }
+  }
+}
+
+.compose-body {
+  .group-field {
+    margin-bottom: 20px;
+  }
+
+  .time-schedule-fields {
+    .row {
+      justify-content: flex-end;
+      display: flex;
+      margin: 0 -4px;
+
+      >div {
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
+        padding: 0 4px;
+        position: relative;
+
+        .uc-calendar {
+          position: absolute;
+          left: 0;
+          top: 100%;
+          padding: 0 5px;
+
+          .SingleDatePicker {
+            float: left;
+            width: 100%;
+            .SingleDatePicker_picker {
+              top: 8px !important;
+            }
+          }
+        }
+      }
+    }
+
+
+    .checkbox-inline {
+      font-family: Rubik;
+      font-size: 14px;
+      line-height: 14px;
+      letter-spacing: 0.130517px;
+      color: #363636;
+      padding-left: 25px;
+
+      &::after {
+        font-family: fontawesome;
+        content: '\f0c8';
+        font-size: 20px;
+        line-height: 34px;
+        text-align: center;
+        letter-spacing: 0.228406px;
+        color: #2D86DA;
+        position: absolute;
+        left: 0;
+        top: -8px;
+        width: 20px;
+        height: 20px;
+        pointer-events: none;
+      }
+
+      input {
+        margin: 0;
+        left: 0;
+        width: 20px;
+        height: 20px;
+      }
+
+      input:checked~&::after {
+        content: '\f14a';
+      }
+    }
+  }
 .action-icon-button:hover {
   border-radius: 50px;
   border: 1px solid darkgrey;

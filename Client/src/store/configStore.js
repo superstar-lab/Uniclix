@@ -6,6 +6,7 @@ import postReducer from "../reducers/posts";
 import composerReducer from "../reducers/composer";
 import profileReducer from "../reducers/profile";
 import middlewareReducer from "../reducers/middleware";
+import generalReducer from '../reducers/general';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export default () => {
@@ -16,7 +17,8 @@ export default () => {
             profile: profileReducer,
             channels: channelReducer,
             posts: postReducer,
-            composer: composerReducer
+            composer: composerReducer,
+            general: generalReducer
         }),
         composeEnhancers(applyMiddleware(thunk))
     );

@@ -10,6 +10,7 @@ import setAuthorizationHeader from "./utils/setAuthorizationHeader";
 import { setProfile, startSetProfile } from "./actions/profile";
 import { setChannels, startSetChannels } from "./actions/channels";
 import { setMiddleware } from "./actions/middleware";
+import { startGeneral } from './actions/general';
 import 'antd/dist/antd.css';
 
 const store = configStore();
@@ -62,6 +63,11 @@ const setAuthentication = () => {
         }).then(() => {
             store.dispatch(startSetProfile());
             store.dispatch(startSetChannels());
+        });
+
+        new Promise((resolve, reject) => {
+            store.dispatch(startGeneral());
+            return resolve(true);
         });
     }
 

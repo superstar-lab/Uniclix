@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/profile', 'ProfileController@update');
+    Route::post('/update-timezone', 'ProfileController@updateTimeZone');
     Route::get('/profile', 'ProfileController@profile');
 
     Route::get('/team', 'TeamController@getTeams');

@@ -42,6 +42,7 @@ class PublishController extends Controller
      */
     public function store(Request $request)
     {
+        $currentChannel = $this->selectedChannel;
         try {
             $post = $request->input('post');
             $scheduled = $post['scheduled'];
@@ -49,7 +50,6 @@ class PublishController extends Controller
             $images = $post['images'];
             $publishType = $post['publishType'];
             $scheduledTime = Carbon::parse($scheduled['publishUTCDateTime'])->format("Y-m-d H:i:s");
-            $currentChannel = $this->selectedChannel;
 
             $uploadedImages = $this->uploadImages($images);
 

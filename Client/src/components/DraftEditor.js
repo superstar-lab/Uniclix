@@ -143,12 +143,17 @@ class DraftEditor extends React.Component{
 
                 {inclusive &&
                     <div className="modal-header">
-                        <button type="button" id="closeModal" onClick={toggle} className="close fa fa-times-circle" data-dismiss="modal"></button>
+                        <button
+                            id="closeModal"
+                            onClick={toggle}
+                            className="close fa fa-times-circle"
+                            data-dismiss="modal">
+                        </button>
                         <h4>Editing</h4>
                     </div>
                 }
 
-                <div className="modal-body">
+                <div className="draft-body">
                     <form id="draft_form">
                         <div>
                             <div className="editor" onClick={this.focus}>
