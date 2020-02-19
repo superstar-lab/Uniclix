@@ -69,6 +69,7 @@ class BillingController extends Controller
         $trialDays = $token['trialDays'];
         $subType = $token['subType'];
         $id = $token['id'];
+        $couponCode = $token['couponCode'];
         $user = $this->user;
 
         try {
@@ -76,7 +77,7 @@ class BillingController extends Controller
             if($trialDays != "0"){
                 $user->newSubscription($subType, $plan)->trialDays($trialDays)->create($id);
             } else {
-                $user->newSubscription($subType, $plan)->create($id);
+                $user->newSubscription($subType, $plan)->withCoupon($couponCode)->create($id);
             }
 
             $roleName = explode("_", $plan)[0];
