@@ -11,6 +11,9 @@ import CongratsPayment from "./CongratsPayment";
 import { createSubscription } from '../../../requests/billing';
 import { stripePublishableKey } from '../../../config/api';
 import Countries from "../../../fixtures/country";
+import { Select } from 'antd';
+
+const Option = Select.Option;
 
 class Checkout extends React.Component {
   constructor(props) {
@@ -38,6 +41,7 @@ class Checkout extends React.Component {
     newAccounts: 0,
     actualUsers: 0,
     planTitle: "Basic Plan",    
+    couponCode: '',
     form: {
       cardnumber: '',
       cvc: '',
@@ -48,7 +52,6 @@ class Checkout extends React.Component {
       last_name: '',
       address_line1: '',
       address_city: '',
-      location: '',
       postal: ''
     }
   }
@@ -66,6 +69,10 @@ class Checkout extends React.Component {
     })
   }
 
+  componentWillMount() {
+    this.setState({countries: Countries});
+  }
+
   componentDidMount() {
     this.activeYears();
     this.loadStripe();
@@ -75,16 +82,8 @@ class Checkout extends React.Component {
 
   }
   setLocation = (val) => {
-    this.setState({ location: val, openCountry: false })
-  }
-
-  filterCountry = (e) => {
-    let val = e.target.value;
-    let countries = Countries.filter(item => item.toLowerCase().includes(val.toLowerCase()))
-
-    this.setState({
-      countries: countries,
-      location: val
+    this.setState({ 
+        location: val
     })
   }
 
@@ -186,8 +185,14 @@ class Checkout extends React.Component {
   handleClickMonthBox = (e) => {
     this.refs.pickAMonth.show()
   }
+
   handleClickMonthBoxHidde = (e) => {
     this.refs.pickAMonth.hidden()
+  }
+
+  setCouponCode = (e) => {
+    let val = e.target.value;
+    this.setState({couponCode: val});
   }
 
   ConfirmOrder = (e) => {
@@ -219,9 +224,10 @@ class Checkout extends React.Component {
 
   onToken = (token) => {    
     token.plan = this.props.billingPeriod === "annually" ? this.props.planName + "_annual" : this.props.planName;
-    token.trialDays = 15
+    token.trialDays = 0;
     token.created = new Date().getTime();
     token.subType = "main"
+    token.couponCode = this.props.billingPeriod === "annually" ? this.state.couponCode : '';
     createSubscription(token).then(response => {
       this.props.startSetChannels().then(res => {
         this.props.startSetProfile().then(res => {
@@ -243,10 +249,6 @@ class Checkout extends React.Component {
     const { validClaas, form, years, loading, 
       orderFinished, countries, newAccounts, actualUsers, openCountry, location, planTitle } = this.state
     const { plan, billingPeriod, onChangePlan, onChangePeriod } = this.props;
-    // const location = form.location;
-    const items = countries.map((item) => {
-      return <li onClick={() => this.setLocation(item)}> {item} </li>;
-    });
     const todayDate = new Date();
     const minumumYear = todayDate.getFullYear();
     const minumumMonth = todayDate.getMonth();
@@ -341,7 +343,7 @@ class Checkout extends React.Component {
                     </div>
                     <div>
                       <p>Send receipt to my email
-                                                <label className="switch round">
+                          <label className="switch round">
                           <input type="checkbox" defaultChecked='checked' onChange={(e) => this.activateDm(e)} />
                           <span className="slider round"></span>
                           <p className={"off"}>Off</p>
@@ -379,23 +381,21 @@ class Checkout extends React.Component {
                           placeholder="City" />
                       </div>
                       <div className="form-field col-12 col-md-6 mb1 form-field form-country">
-                        {/* <label htmlFor="country">Country</label> */}
-                        <input
-                          className="form-control whiteBg"
-                          type="text"
-                          id="location"
-                          onFocus={() => this.setState({ openCountry: true })}
-                          onBlur={() => { setTimeout(() => { this.setState({ openCountry: false }) }, 600) }}
-                          autoComplete="false"
-                          value={location}
-                          autoComplete="new-password"
-                          onChange={(e) => this.filterCountry(e)}
-                          placeholder="Select Country" />
-                        {openCountry &&
-                          <ul className="country-list">
-                            {items}
-                          </ul>
-                        }
+                        <Select
+                          size="default"
+                          onChange={(value) => this.setLocation(value)}
+                          showSearch
+                          style={{ width: '100%' }}
+                          placeholder="Select a country"
+                          optionFilterProp="children"
+                          filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                        >
+                          {!!countries &&
+                            countries.map((item) => (
+                            <Option value={item}>{item}</Option>
+                            ))
+                          }
+                        </Select>
                       </div>
                       <div className="form-field col-12 col-md-6 mb1">
                         <input className={'form-control whiteBg '}
@@ -421,7 +421,9 @@ class Checkout extends React.Component {
                           </div>
                           <br />
                           <div className="row-price new-accounts">
-                      <p className="disccount-title">20% Discount<span className="disccount-currency">-${Math.round((billingPeriod === "annually" ? plan['Annual Billing'] * 0.2 : plan["Monthly"] * 0.2) * 100.0) / 100.0}</span></p>
+                          {billingPeriod === "annually" &&  
+                            <p className="disccount-title">20% Discount<span className="disccount-currency">-${Math.round((billingPeriod === "annually" ? plan['Annual Billing'] * 0.2 : plan["Monthly"] * 0.2) * 100.0) / 100.0}</span></p>
+                          }
                           </div>
                       </div>
                       <div className="order-total table">
@@ -429,15 +431,15 @@ class Checkout extends React.Component {
                           <div className="col-price">
                             <p className="plan-content-description">TOTAL</p>
                             <p className="plan-content-accounts">{billingPeriod === "annually" ? 'Annually' : 'Monthly'}</p>
-                            <button className="btn-text-pink" onClick={() => onChangePeriod()}>Switch to {billingPeriod === "annually" ? 'month' : 'annual'}</button>
+                            <button className="btn-text-pink" onClick={() => onChangePeriod()}>Switch to {billingPeriod === "annually" ? 'monthly' : 'yearly'}</button>
                           </div>
                           <div className="currency-label">
-                            <p>${Math.round((billingPeriod === "annually" ? plan['Annual Billing'] * 0.8 : plan["Monthly"] * 0.8) * 100.0) / 100.0}</p>
+                            <p>${Math.round((billingPeriod === "annually" ? plan['Annual Billing'] * 0.8 : plan["Monthly"]) * 100.0) / 100.0}</p>
                           </div>
                         </div>
                       </div>
                       <div className="discount-cnt">
-                        <input className="discount" placeholder="Add discount code" />
+                        <input className="discount" placeholder="Add discount code" onChange={(e) => this.setCouponCode(e)}/>
                       </div>
 
                       <button className="btn-blue" onClick={(e) => this.ConfirmOrder(e)}>Confirm order</button>
