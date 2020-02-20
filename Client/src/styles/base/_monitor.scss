@@ -818,7 +818,7 @@ $blue: lighten(rgb(4,159,217), 5%);
 	padding: 17px 21px 12px 24px;
 	font-family: Rubik;
 	font-style: normal;
-	font-weight: normal;
+	font-weight: 500;
 	font-size: 16px;
 	line-height: 24px;
 	letter-spacing: 0.137298px;
@@ -870,4 +870,78 @@ $blue: lighten(rgb(4,159,217), 5%);
 .price {
 	margin: -43px 0px 14px 74%;
 	font-size: 21px;
+}
+
+.save-card-button {
+	background: #2d86da;
+	font-size: 1.6rem;
+	border: 1px solid transparent;
+	padding: 6px 40px;
+	border-radius: 100px;
+	letter-spacing: 0.43px;
+	color: white;
+}
+
+.card-selector {
+	background: #FFFFFF;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+	padding: 25px 0px 25px 0px;
+	margin: 0px 0px 0px 0px;
+	&:hover {
+		cursor: pointer;
+		background: rgba(45, 134, 218, 0.08);
+	}
+}
+
+.card-image {
+	text-align: center;
+    background: rgba(45, 134, 218, 0.12);
+    border-radius: 100px;
+    width: 40px;
+    height: 40px;
+    padding: 7px;
+    margin-left: 20px;
+}
+
+.common-font {
+	font-family: Rubik;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: 0.137298px;
+	color: #1F2024;
+	margin-top: 8px;
+}
+
+.icon-spacing {
+	margin-top: 8px;
+}
+
+.cvv-image {
+	margin-top: -62px;
+    margin-left: 72%;
+}
+
+.card-save-result {
+	background: rgba(45, 134, 218, 0.08);;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+	padding: 25px 0px 25px 0px;
+	margin: 0px 0px 0px 0px;
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.edit-icon-spacing {
+	padding: 5px 4px 2px 9px;
+	&:hover {
+		border-radius: 100px;
+		width: 40px;
+		height: 40px;
+		background: rgba(45, 134, 218, 0.12);
+		padding: 5px 4px 2px 9px;
+	}
 }
