@@ -50,6 +50,20 @@ export const cancelSubscription = () => {
         });
 }
 
+export const deleteSubscription = () => {
+    return axios.post(`${apiUrl}/billing/subscription/delete`)
+        .then((response) => {
+            return response.data;
+        });
+}
+
+export const addSubscription = (token) => {
+    return axios.post(`${apiUrl}/billing/subscription/add`, {token})
+        .then((response) => {
+            return response.data;
+        });
+}
+
 export const resumeSubscription = (type) => {
     return axios.post(`${apiUrl}/billing/subscription/resume`, {type})
         .then((response) => {

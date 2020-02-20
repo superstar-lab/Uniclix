@@ -118,6 +118,32 @@ class BillingController extends Controller
         }
     }
 
+    public function deleteSubscription()
+    {
+        try {
+            $user = $this->user;
+
+            //$user->deletePaymentMethods();
+            
+            return response()->json(["success" => true], 200);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => "Something went wrong!"], 404);
+        }
+    }
+
+    public function addSubscription(Request $request)
+    {
+        try {
+            $token = $request->input('token');
+            $id = $token['id'];
+            $user = $this->user;
+            //$user->createSetupIntent();
+            return response()->json(["success" => true], 200);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => "Something went wrong!"], 404);
+        }
+    }
+
     public function resumeSubscription(Request $request)
     {
         try {

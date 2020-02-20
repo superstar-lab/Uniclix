@@ -30,6 +30,8 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/billing/subscription/create', 'BillingController@createSubscription');
     Route::post('/billing/subscription/cancel', 'BillingController@cancelSubscription');
     Route::post('/billing/subscription/resume', 'BillingController@resumeSubscription');
+    Route::post('/billing/subscription/delete', 'BillingController@deleteSubscription');
+    Route::post('/billing/subscription/add', 'BillingController@addSubscription');
 
     Route::get('/channels', 'ChannelController@channels');
     Route::patch('/channels/select/{id}', 'ChannelController@select');
