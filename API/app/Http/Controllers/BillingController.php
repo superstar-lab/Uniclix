@@ -69,6 +69,7 @@ class BillingController extends Controller
         $trialDays = $token['trialDays'];
         $subType = $token['subType'];
         $id = $token['id'];
+        $couponCode = $token['couponCode'];
         $user = $this->user;
 
         try {
@@ -76,7 +77,7 @@ class BillingController extends Controller
             if($trialDays != "0"){
                 $user->newSubscription($subType, $plan)->trialDays($trialDays)->create($id);
             } else {
-                $user->newSubscription($subType, $plan)->create($id);
+                $user->newSubscription($subType, $plan)->withCoupon($couponCode)->create($id);
             }
 
             $roleName = explode("_", $plan)[0];
@@ -111,6 +112,32 @@ class BillingController extends Controller
 
             $user->subscription('main')->cancel();
 
+            return response()->json(["success" => true], 200);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => "Something went wrong!"], 404);
+        }
+    }
+
+    public function deleteSubscription()
+    {
+        try {
+            $user = $this->user;
+
+            //$user->deletePaymentMethods();
+            
+            return response()->json(["success" => true], 200);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => "Something went wrong!"], 404);
+        }
+    }
+
+    public function addSubscription(Request $request)
+    {
+        try {
+            $token = $request->input('token');
+            $id = $token['id'];
+            $user = $this->user;
+            //$user->createSetupIntent();
             return response()->json(["success" => true], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => "Something went wrong!"], 404);

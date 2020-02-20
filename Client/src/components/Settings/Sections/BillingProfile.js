@@ -2,12 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { startSetProfile } from "../../../actions/profile";
 import { changePlan, getPlanData } from '../../../requests/billing';
-import SweetAlert from "sweetalert2-react";
 import Checkout from './Checkout';
 import Loader, { LoaderWithOverlay } from '../../Loader';
 import Modal from 'react-modal';
-import { cancelSubscription } from '../../../requests/billing';
-import CongratsPayment from "./CongratsPayment";
+import { cancelSubscription, resumeSubscription } from '../../../requests/billing';
 
 class BillingProfile extends React.Component {
     state = {
@@ -16,11 +14,13 @@ class BillingProfile extends React.Component {
         redirect: '/accounts',
         billingPeriod: this.props.profile.subscription.annual ? "annually" : "monthly",
         planChange: false,
+        planCancel: false,
+        planResume: false,
+        planConfirm: false,
         planName: "",
         selectedPlan: null,
         loading: false,
         roleBilling: "",
-        buttontext: "Upgrade",
         onAddCard: false,
         subscriptionStatus: false,
         forbidden: false,
@@ -36,39 +36,76 @@ class BillingProfile extends React.Component {
         });
     };
 
-    onPlanClick = (plan) => {
+    onCheckout = (plan) => {
         this.setState(() => ({
             planChange: false,
             planName: plan,
             onAddCard: true
         }));
     };
+
+    onPlanClick = (plan) => {
+        
+        if(this.props.profile.subscription.activeSubscription == false){
+            this.setState(() => ({
+                planChange: false,
+                planName: plan,
+                onAddCard: true
+            }));
+            return;
+        }
+
+        this.setState(() => ({
+            planChange: false,
+            planName: plan,
+            loading: true
+        }));
+
+        changePlan(plan).then(response => {
+            this.props.startSetProfile();
+            this.setLoading();
+            this.setState({
+                roleBilling: plan,
+            })
+        }).then()
+            .catch(error => {
+                this.setLoading();
+                if (error.response.status === 403) {
+                    this.setState(() => ({
+                        forbidden: true,
+                        error: error.response.data.error,
+                        redirect: error.response.data.redirect  
+                    }))
+                } else {
+                    this.setError("Something went wrong!");
+                }
+            });
+    };
+
     setBillingPeriod = () => {
         this.setState(() => ({ billingPeriod: this.state.billingPeriod === "annually" ? "monthly" : "annually" }));
     };
 
-    setRole = (role) => {
-        let item = role.toLowerCase();
-        this.setState({
-            roleBilling: item,
-            subscriptionStatus: !this.state.subscriptionStatus,
-        });
-    }
-    setForbidden = () => {
-        this.setState(() => ({
-            loading: true,
-        }));
-        
+    cancelPlan = () => {
+        this.setLoading(true);
         cancelSubscription().then(response => {
-            if(response.success){
-                this.setState({
-                    loading: false,
-                    roleBilling: "",
-                    subscriptionStatus: !this.state.subscriptionStatus,
-                });
-            }
-            
+          this.props.startSetProfile();
+          this.setLoading(false);
         });
+    };
+    
+    resumePlan = (type) => {
+        this.setLoading(true);
+        resumeSubscription(type).then(response => {
+            this.props.startSetProfile();
+            this.setLoading(false);
+        });
+    };
+
+    setForbidden = (forbidden = false) => {
+        this.setState(() => ({
+          forbidden
+        }));
     };
 
     setPlanChange = (planName) => {
@@ -78,12 +115,12 @@ class BillingProfile extends React.Component {
         }));
     };
 
-    setChangeButtonText = () => {
+    setPlanConfirm = (planName) => {
         this.setState(() => ({
-            buttontext: "Confirm Order"
+            planConfirm: planName,
+            planName: planName,
         }));
-    };
-
+    }
 
     setLoading = (loading = false) => {
         this.setState(() => ({
@@ -91,8 +128,20 @@ class BillingProfile extends React.Component {
         }));
     };
 
+    setPlanCancel = (cancel = true) => {
+        this.setState(() => ({
+            planCancel: cancel
+        }));
+    };
+
+    setPlanResume = (resume = true) => {
+        this.setState(() => ({
+            planResume: resume
+        }));
+    };
+
     render() {
-        const { allPlans, onAddCard, planName, planChange, selectedPlan, billingPeriod } = this.state;
+        const { allPlans, onAddCard, planName, planChange, planCancel, planResume, planConfirm, selectedPlan, billingPeriod, roleBilling } = this.state;
         const { profile } = this.props;
 
         return (
@@ -100,34 +149,66 @@ class BillingProfile extends React.Component {
                 <Checkout planName={planName} plan={selectedPlan} billingPeriod={billingPeriod} onChangePlan={() => this.setState({onAddCard: false})} onChangePeriod={() => this.setBillingPeriod()} />
                 :
                 <div>
-                    <SweetAlert
-                        show={!!planChange}
-                        title={`You are about to change to ${planChange}`}
-                        text="Do you wish to proceed with this change?"
-                        showCancelButton
-                        type="info"
-                        confirmButtonText="Yes"
-                        cancelButtonText="No"
-                        onConfirm={() => {
-                            this.onPlanClick(planChange);
-                        }}
-                        onCancel={() => this.setPlanChange(false)}
-                    />
-                    {this.state.subscriptionStatus && 
+                    {!!planConfirm && 
                         <Modal
                         ariaHideApp={false}
                         className="billing-profile-modal"
-                        isOpen={this.state.subscriptionStatus}
+                        isOpen={!!planConfirm}
                         >
-                            <div className="modal-title">Are you sure you want to cancel your subscription?</div>
-                            <div className="modal-contents">All the accounts and members linked will be lost</div>
+                            <div className="modal-title">{`You can order ${planConfirm}`}</div>
+                            <div className="modal-contents">{`Do you wish to proceed with this confirm order?`}</div>
                             <div style={{float:'right'}}>
-                                <button onClick={() => this.setState({subscriptionStatus: !this.state.subscriptionStatus})} className="cancelBtn" >Cancel</button>
-                                <button onClick={() => this.setForbidden()} className="cancelBtn" >Yes, cancel it</button>
+                                <button onClick={() => this.setPlanConfirm(false)} className="cancelBtn" >No</button>
+                                <button onClick={() => {this.setPlanConfirm(false); this.onPlanClick(planConfirm)}} className="cancelBtn" >Yes</button>
                             </div>
-                            
                         </Modal>
                     }
+
+                    {!!planChange && 
+                        <Modal
+                        ariaHideApp={false}
+                        className="billing-profile-modal"
+                        isOpen={!!planChange}
+                        >
+                            <div className="modal-title">{`You are about to change to ${planChange}`}</div>
+                            <div className="modal-contents">{`Do you wish to proceed with this change?`}</div>
+                            <div style={{float:'right'}}>
+                                <button onClick={() => this.setPlanChange(false)} className="cancelBtn" >No</button>
+                                <button onClick={() => {this.setPlanChange(false);this.onPlanClick(planChange)}} className="cancelBtn" >Yes</button>
+                            </div>
+                        </Modal>
+                    }
+
+                    {!!planResume && 
+                        <Modal
+                        ariaHideApp={false}
+                        className="billing-profile-modal"
+                        isOpen={!!planResume}
+                        >
+                            <div className="modal-title">{`You are about to continue your subscription`}</div>
+                            <div className="modal-contents">{`Do you wish to proceed with your current subscription?`}</div>
+                            <div style={{float:'right'}}>
+                                <button onClick={() => this.setPlanResume(false)} className="cancelBtn" >No</button>
+                                <button onClick={() => {this.resumePlan("main"); this.setPlanResume(false);}} className="cancelBtn" >Yes</button>
+                            </div>
+                        </Modal>
+                    }
+
+                    {!!planCancel && 
+                        <Modal
+                        ariaHideApp={false}
+                        className="billing-profile-modal"
+                        isOpen={!!planCancel}
+                        >
+                            <div className="modal-title">{`Are you sure you want to cancel your subscription?`}</div>
+                            <div className="modal-contents">{`All the accounts and members linked will be lost`}</div>
+                            <div style={{float:'right'}}>
+                                <button onClick={() => this.setPlanCancel(false)} className="cancelBtn" >Cancel</button>
+                                <button onClick={() => {this.cancelPlan();this.setPlanCancel(false);}} className="cancelBtn" >Yes, cancel it</button>
+                            </div>
+                        </Modal>
+                    }
+
                     {this.state.loading && <LoaderWithOverlay />}
 
                     {allPlans.length > 0 ?
@@ -155,9 +236,9 @@ class BillingProfile extends React.Component {
                                 {allPlans.map((plan, index) => {
                                     return (
                                         <div key={index} className="col-4 col-md-4 col-sm-12">
-                                            <div className={`card billing-body-c ${plan["Name"].toLowerCase() == this.state.roleBilling ? 'active' : ''}`}>
+                                            <div className={`card billing-body-c ${plan["Name"].toLowerCase() == roleBilling ? 'active' : ''}`}>
                                                 <div className="card-body">
-                                                    <h6 className="card-selected text-center">{plan["Name"].toLowerCase() == this.state.roleBilling ? 'Selected plan' : ''}</h6>
+                                                    <h6 className="card-selected text-center">{plan["Name"].toLowerCase() == roleBilling ? 'Selected plan' : ''}</h6>
                                                     <h5 className="card-title text-muted text-uppercase text-center">{plan["Name"]}</h5>
                                                     {this.state.billingPeriod === "annually" ?
                                                         <h6 className="card-price text-center">${plan['Annual Billing']}<span className="period">/annual</span></h6>
@@ -177,14 +258,25 @@ class BillingProfile extends React.Component {
                                                         {plan["Team: Invite Additional Users"] == true ? <li><span className="fa-li"><i className="fa fa-check"></i></span>Team: Invite Additional Users</li> : ''}
                                                         {plan["Approval Workflow"] == true ? <li><span className="fa-li"><i className="fa fa-check"></i></span>Approval Workflow</li> : ''}
                                                     </ul>
+                                                    
                                                     {
-                                                        plan["Name"].toLowerCase() == this.state.roleBilling
-                                                            ?
-                                                            // duhet edhe ni button, Confirm Order / Cancel Subscribtion
-                                                            <button className={`btn billing-btn  ${plan["Name"].toLowerCase() == this.state.roleBilling ? 'active' : ''}`} onClick={() => this.setRole(plan["Name"])}>Cancel Subscription</button>
+                                                        !profile.subscription.activeSubscription ?
+                                                        <button className={`btn billing-btn active`} onClick={() => {this.setState({selectedPlan: plan}); this.setPlanConfirm(plan["Name"].toLowerCase())}}>Confirm order</button>
+                                                        :                                                        
+                                                        (plan["Name"].toLowerCase() == roleBilling ?
+                                                            (profile.subscription.onGracePeriod ?
+                                                                <button className={`btn billing-btn active`} onClick={() => this.setPlanResume(plan["Name"].toLowerCase())}>Resume plan</button>
                                                             :
-
-                                                            <button className="btn billing-btn" onClick={() => { this.setState({selectedPlan: plan}); this.setPlanChange(plan["Name"].toLowerCase()) }}>Upgrade</button>
+                                                                <button className={`btn billing-btn active`} onClick={() => this.setPlanCancel(plan["Name"].toLowerCase())}>Cancel Subscription</button>
+                                                            )
+                                                        :
+                                                            // Separate the plans by price
+                                                            (plan["Monthly"] > allPlans.find(item => item["Name"] == roleBilling.charAt(0).toUpperCase() + roleBilling.slice(1))["Monthly"] ?
+                                                                <button className="btn billing-btn" onClick={() => { this.setPlanChange(plan["Name"].toLowerCase()) }}>Upgrade</button>
+                                                            :
+                                                                <button className="btn billing-btn" onClick={() => { this.setPlanChange(plan["Name"].toLowerCase()) }}>Downgrade</button>
+                                                            )
+                                                        )
                                                     }
                                                 </div>
                                             </div>
@@ -199,7 +291,7 @@ class BillingProfile extends React.Component {
                         <div className="billing-bottom-container">
                             <div className="bottom-title">Enterprise</div>
                             <div className="billing-profile-content">Contact us to get a custom plan that fits your needs
-                                <button className="billing-profile-button">Contact us</button>
+                                <button className="billing-profile-button" onClick={() => window.location.href='mailto:Info@uniclixapp.com'}>Contact us</button>
                             </div>
                         </div>
                     </div>

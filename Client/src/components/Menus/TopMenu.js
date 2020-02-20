@@ -84,7 +84,7 @@ class TopMenu extends React.Component {
                         Add your billing information now to start your subscription.
                         <button
                             className="btn-text-pink"
-                            onClick={() => props.history.push('/settings/manage-account')}>
+                            onClick={() => props.history.push('/settings/billing')}>
                                 Start subscription
                         </button>
                     </div>

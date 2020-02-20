@@ -8,9 +8,15 @@ import { startAddTwitterChannel, startSetChannels } from "../../../actions/chann
 import channelSelector from "../../../selectors/channels";
 import Loader, { LoaderWithOverlay } from '../../Loader';
 import CongratsPayment from "./CongratsPayment";
-import { createSubscription } from '../../../requests/billing';
+import { createSubscription, deleteSubscription, addSubscription } from '../../../requests/billing';
 import { stripePublishableKey } from '../../../config/api';
 import Countries from "../../../fixtures/country";
+import { Select } from 'antd';
+import ReactTooltip from 'react-tooltip';
+import { Typography } from '@material-ui/core';
+import Modal from 'react-modal';
+
+const Option = Select.Option;
 
 class Checkout extends React.Component {
   constructor(props) {
@@ -38,6 +44,12 @@ class Checkout extends React.Component {
     newAccounts: 0,
     actualUsers: 0,
     planTitle: "Basic Plan",    
+    couponCode: '',
+    setStart: false,
+    endCardSetting: false,
+    editCardSetting: false,
+    editCardInfo: false,
+    deleteCard: false,
     form: {
       cardnumber: '',
       cvc: '',
@@ -48,7 +60,6 @@ class Checkout extends React.Component {
       last_name: '',
       address_line1: '',
       address_city: '',
-      location: '',
       postal: ''
     }
   }
@@ -66,6 +77,12 @@ class Checkout extends React.Component {
     })
   }
 
+  componentWillMount() {
+    this.setState({countries: Countries});
+    this.setState({setStart: true});
+    this.setState({editCardInfo: false});
+  }
+
   componentDidMount() {
     this.activeYears();
     this.loadStripe();
@@ -75,16 +92,8 @@ class Checkout extends React.Component {
 
   }
   setLocation = (val) => {
-    this.setState({ location: val, openCountry: false })
-  }
-
-  filterCountry = (e) => {
-    let val = e.target.value;
-    let countries = Countries.filter(item => item.toLowerCase().includes(val.toLowerCase()))
-
-    this.setState({
-      countries: countries,
-      location: val
+    this.setState({ 
+        location: val
     })
   }
 
@@ -143,6 +152,10 @@ class Checkout extends React.Component {
 
   }
 
+  activateDm = (e) => {
+
+  }
+
   ValidateCvv = (e) => {
     let value = e.target.value;
     let cvv = value * 1;
@@ -186,8 +199,14 @@ class Checkout extends React.Component {
   handleClickMonthBox = (e) => {
     this.refs.pickAMonth.show()
   }
+
   handleClickMonthBoxHidde = (e) => {
     this.refs.pickAMonth.hidden()
+  }
+
+  setCouponCode = (e) => {
+    let val = e.target.value;
+    this.setState({couponCode: val});
   }
 
   ConfirmOrder = (e) => {
@@ -219,9 +238,10 @@ class Checkout extends React.Component {
 
   onToken = (token) => {    
     token.plan = this.props.billingPeriod === "annually" ? this.props.planName + "_annual" : this.props.planName;
-    token.trialDays = 15
+    token.trialDays = 0;
     token.created = new Date().getTime();
     token.subType = "main"
+    token.couponCode = this.props.billingPeriod === "annually" ? this.state.couponCode : '';
     createSubscription(token).then(response => {
       this.props.startSetChannels().then(res => {
         this.props.startSetProfile().then(res => {
@@ -239,14 +259,86 @@ class Checkout extends React.Component {
     })
   }
 
+  saveCardInfo = (e) => {
+    this.setState({
+      endCardSetting: true,
+      editCardSetting: false
+    });
+
+    this.setState({
+      loading: false
+    });
+
+    window.Stripe.card.createToken({
+      number: this.state.form.cardnumber,
+      exp_month: this.state.form.exp_month,
+      exp_year: this.state.form.exp_year,
+      cvc: this.state.form.cvc,
+      address_city: this.state.form.address_city,
+      address_zip: this.state.form.postal,
+      address_line1: this.state.form.address_line1
+    }, (status, response) => {
+
+      if (status === 200) {
+        addSubscription(response).then(response => {
+          this.props.startSetChannels().then(res => {
+            this.props.startSetProfile().then(res => {
+              this.setState({
+                loading: true
+              });
+            });
+          })
+        });
+      } else {
+        this.setState({
+          loading: true,
+          message: ""
+        });
+      }
+    });
+
+
+  }
+
+  setDeleteCard = (remove = true) => {
+    this.setState(() => ({
+        deleteCard: remove
+    }));
+  };
+
+  deleteCard = () => {
+    this.setLoading(true);
+    deleteSubscription().then(response => {
+      this.props.startSetProfile();
+      this.setLoading(true);
+      this.setState({
+        setStart: true, 
+        endCardSetting: false,
+        form: {
+          cardnumber: '',
+          cvc: '',
+          exp_month: '',
+          exp_year: '',
+          exp_date: '',
+          name: '',
+          last_name: '',
+          address_line1: '',
+          address_city: '',
+          postal: ''
+        }});
+    });
+  }
+
+  setLoading = (loading = false) => {
+    this.setState(() => ({
+        loading
+    }));
+  };
+
   render() {
     const { validClaas, form, years, loading, 
-      orderFinished, countries, newAccounts, actualUsers, openCountry, location, planTitle } = this.state
+      orderFinished, countries, newAccounts, actualUsers, openCountry, location, planTitle, setStart, endCardSetting, editCardSetting, editCardInfo, deleteCard } = this.state
     const { plan, billingPeriod, onChangePlan, onChangePeriod } = this.props;
-    // const location = form.location;
-    const items = countries.map((item) => {
-      return <li onClick={() => this.setLocation(item)}> {item} </li>;
-    });
     const todayDate = new Date();
     const minumumYear = todayDate.getFullYear();
     const minumumMonth = todayDate.getMonth();
@@ -255,6 +347,21 @@ class Checkout extends React.Component {
       , from: 'From', to: 'To'
     }
       , mvalue = { year: minumumYear, month: minumumMonth + 1 }
+    let card_type;
+    switch(form.cardnumber.charAt(0)) {
+      case "3":
+        card_type = "American Express"
+        break;
+      case "4":
+        card_type = "Visa"
+        break;
+      case "5":
+        card_type = "MasterCard"
+        break;
+      case "6":
+        card_type = "Discover Card"
+        break;
+    }
 
     return (
       <div className="main-container">
@@ -275,6 +382,20 @@ class Checkout extends React.Component {
                     this.setError("");
                   }}
                 />
+                {!!deleteCard && 
+                  <Modal
+                  ariaHideApp={false}
+                  className="billing-profile-modal"
+                  isOpen={!!deleteCard}
+                  >
+                    <div className="modal-title">{`Are you sure you want to delete this payment method?`}</div>
+                    <div className="modal-contents">{`If you delete your payment method, your subscription will not renew automatically and you could loose access to your accounts.`}</div>
+                    <div style={{float:'right'}}>
+                        <button onClick={() => this.setDeleteCard(false)} className="cancelBtn" >Cancel</button>
+                        <button onClick={() => {this.deleteCard();this.setDeleteCard(false);}} className="cancelBtn" >Yes, delete it</button>
+                    </div>
+                  </Modal>
+                }
 
                 <div className="row">
                   <div className="col-md-6">
@@ -294,54 +415,178 @@ class Checkout extends React.Component {
                     <div className="section-header__second-row">
                       <h3>Payment details</h3>
                     </div>
-                    <div className="card-inputs form-field row">
-                      <div className="col-12 col-md-6">
-                        <input className={'form-control whiteBg ' + validClaas}
-                          onChange={(e) => this.checkIfValidCC(e.target.value)}
-                          type="tel"
-                          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                          size="19"
-                          maxLength="19"
-                          value={form.cardnumber} placeholder="Card number" />
-                      </div>
-                      <div className="col-12 col-md-3">
-                        <Picker
-                          ref="pickAMonth"
-                          years={years}
-                          value={mvalue}
-                          lang={pickerLang.months}
-                          onChange={this.handleAMonthChange}
-                          onDismiss={this.handleAMonthDissmis}
-                        >
-                          <input className="form-control whiteBg"
-                            type="tel"
-                            onChange={(e) => this.onDateChange(e)}
-                            value={form.exp_date}
-                            onClick={this.handleClickMonthBox}
-                            onFocus={this.handleClickMonthBox}
-                            onBlur={this.handleClickMonthBoxHidde}
-                            name="exp_date"
-                            autoComplete={"off"}
-                            autoComplete="new-password"
-                            maxLength="9"
-                            placeholder="MM/DD" />
-                        </Picker>
-                      </div>
-                      <div className="col-12 col-md-3">
-                        <input className="form-control whiteBg"
-                          onChange={(e) => this.ValidateCvv(e)}
-                          value={form.cvc}
-                          name="cvc"
-                          placeholder="CVV" />
-                      </div>
-                    </div>
-
+                    {
+                      setStart && !endCardSetting?
+                        <div className="card-selector row" onClick={() =>this.setState({setStart: false})}>
+                            <div className="card-image col-12 col-md-2">
+                              <img src="/images/card-image.svg"/>
+                            </div>
+                            <div className="common-font col-12 col-md-9">
+                              Add a new payment method
+                            </div>
+                            <div className="icon-spacing col-12 col-md-1">
+                              <i className="fa fa-chevron-right" aria-hidden="true" style={{color: '#2D86DA'}}></i>
+                            </div>
+                        </div>
+                      :
+                        (
+                          endCardSetting ?
+                            (
+                              editCardSetting?
+                                (
+                                  editCardInfo?
+                                  <div>
+                                    <div className="card-inputs form-field row">
+                                      <div className="col-12 col-md-6">
+                                        <input className={'form-control whiteBg ' + validClaas}
+                                          onChange={(e) => this.checkIfValidCC(e.target.value)}
+                                          type="tel"
+                                          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                                          size="19"
+                                          maxLength="19"
+                                          value={form.cardnumber} placeholder="Card number" />
+                                      </div>
+                                      <div className="col-12 col-md-3">
+                                        <Picker
+                                          ref="pickAMonth"
+                                          years={years}
+                                          value={mvalue}
+                                          lang={pickerLang.months}
+                                          onChange={this.handleAMonthChange}
+                                          onDismiss={this.handleAMonthDissmis}
+                                        >
+                                          <input className="form-control whiteBg"
+                                            type="tel"
+                                            onChange={(e) => this.onDateChange(e)}
+                                            value={form.exp_date}
+                                            onClick={this.handleClickMonthBox}
+                                            onFocus={this.handleClickMonthBox}
+                                            onBlur={this.handleClickMonthBoxHidde}
+                                            name="exp_date"
+                                            autoComplete={"off"}
+                                            autoComplete="new-password"
+                                            maxLength="9"
+                                            placeholder="Expiry date" />
+                                        </Picker>
+                                      </div>
+                                      <div className="col-12 col-md-3">
+                                        <input className="form-control whiteBg"
+                                          onChange={(e) => this.ValidateCvv(e)}
+                                          value={form.cvc}
+                                          name="cvc"
+                                          placeholder="CVV" />
+                                          <img className="cvv-image" src="/images/cvv-image.svg"/>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      {
+                                        form.cardnumber == "" ?
+                                        <button className="save-card-button disabled-btn">Save card</button>
+                                      :
+                                        <button className="save-card-button" onClick={(e) => this.saveCardInfo(e)}>Save card</button>
+                                      }
+                                    </div>
+                                  </div>
+                                :
+                                  <div className="card-save-result row">
+                                    <div className="card-image col-12 col-md-2">
+                                      <img src="/images/card-image.svg"/>
+                                    </div>
+                                    <div className="common-font col-12 col-md-8">
+                                      {card_type} ended in {this.state.form.exp_year}
+                                    </div>
+                                    <div className="col-12 col-md-1" >
+                                      <div className="edit-icon-spacing" data-for="edit" data-tip data-iscapture='true' data-event-off='click' onClick={() => this.setState({editCardInfo: true, endCardSetting: false})}>
+                                        <img src="/images/pencil.svg"/>
+                                      </div>
+                                      <ReactTooltip className="stream-menu-tooltip" place="bottom" type="info" effect="solid" globalEventOff='click' id="edit">
+                                        <Typography className="stream-menu-tooltip-label">Edit</Typography>
+                                      </ReactTooltip>
+                                    </div>
+                                    <div className="col-12 col-md-1">
+                                      <div className="edit-icon-spacing" data-for="delete" data-tip data-iscapture='true' data-event-off='click' onClick={() => this.setDeleteCard()}>
+                                        <img src="/images/trash.svg"/>
+                                      </div>
+                                      <ReactTooltip className="stream-menu-tooltip" place="bottom" type="info" effect="solid" globalEventOff='click' id="delete">
+                                        <Typography className="stream-menu-tooltip-label">Delete</Typography>
+                                      </ReactTooltip>
+                                    </div>
+                                  </div>  
+                                )
+                            :
+                              <div className="card-save-result row" onClick={() =>this.setState({editCardSetting: true, editCardInfo: false})}>
+                                <div className="card-image col-12 col-md-2">
+                                  <img src="/images/card-image.svg"/>
+                                </div>
+                                <div className="common-font col-12 col-md-9">
+                                  {card_type} ended in {this.state.form.exp_year}
+                                </div>
+                                <div className="icon-spacing col-12 col-md-1">
+                                  <i className="fa fa-check" aria-hidden="true" style={{color: '#2D86DA'}}></i>
+                                </div>
+                              </div>
+                            )
+                          :
+                            <div>
+                              <div className="card-inputs form-field row">
+                                <div className="col-12 col-md-6">
+                                  <input className={'form-control whiteBg ' + validClaas}
+                                    onChange={(e) => this.checkIfValidCC(e.target.value)}
+                                    type="tel"
+                                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                                    size="19"
+                                    maxLength="19"
+                                    value={form.cardnumber} placeholder="Card number" />
+                                </div>
+                                <div className="col-12 col-md-3">
+                                  <Picker
+                                    ref="pickAMonth"
+                                    years={years}
+                                    value={mvalue}
+                                    lang={pickerLang.months}
+                                    onChange={this.handleAMonthChange}
+                                    onDismiss={this.handleAMonthDissmis}
+                                  >
+                                    <input className="form-control whiteBg"
+                                      type="tel"
+                                      onChange={(e) => this.onDateChange(e)}
+                                      value={form.exp_date}
+                                      onClick={this.handleClickMonthBox}
+                                      onFocus={this.handleClickMonthBox}
+                                      onBlur={this.handleClickMonthBoxHidde}
+                                      name="exp_date"
+                                      autoComplete={"off"}
+                                      autoComplete="new-password"
+                                      maxLength="9"
+                                      placeholder="Expiry date" />
+                                  </Picker>
+                                </div>
+                                <div className="col-12 col-md-3">
+                                  <input className="form-control whiteBg"
+                                    onChange={(e) => this.ValidateCvv(e)}
+                                    value={form.cvc}
+                                    name="cvc"
+                                    placeholder="CVV" />
+                                    <img className="cvv-image" src="/images/cvv-image.svg"/>
+                                </div>
+                              </div>
+                              <div>
+                                {
+                                  form.cardnumber == "" ?
+                                  <button className="save-card-button disabled-btn">Save card</button>
+                                :
+                                  <button className="save-card-button" onClick={(e) => this.saveCardInfo(e)}>Save card</button>
+                                }
+                              </div>
+                            </div>
+                        )
+                    }
                     <div className="section-header__second-row">
                       <h3>Billing information</h3>
                     </div>
                     <div>
                       <p>Send receipt to my email
-                                                <label className="switch round">
+                          <label className="switch round">
                           <input type="checkbox" defaultChecked='checked' onChange={(e) => this.activateDm(e)} />
                           <span className="slider round"></span>
                           <p className={"off"}>Off</p>
@@ -379,23 +624,21 @@ class Checkout extends React.Component {
                           placeholder="City" />
                       </div>
                       <div className="form-field col-12 col-md-6 mb1 form-field form-country">
-                        {/* <label htmlFor="country">Country</label> */}
-                        <input
-                          className="form-control whiteBg"
-                          type="text"
-                          id="location"
-                          onFocus={() => this.setState({ openCountry: true })}
-                          onBlur={() => { setTimeout(() => { this.setState({ openCountry: false }) }, 600) }}
-                          autoComplete="false"
-                          value={location}
-                          autoComplete="new-password"
-                          onChange={(e) => this.filterCountry(e)}
-                          placeholder="Select Country" />
-                        {openCountry &&
-                          <ul className="country-list">
-                            {items}
-                          </ul>
-                        }
+                        <Select
+                          size="default"
+                          onChange={(value) => this.setLocation(value)}
+                          showSearch
+                          style={{ width: '100%' }}
+                          placeholder="Select a country"
+                          optionFilterProp="children"
+                          filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                        >
+                          {!!countries &&
+                            countries.map((item) => (
+                            <Option value={item}>{item}</Option>
+                            ))
+                          }
+                        </Select>
                       </div>
                       <div className="form-field col-12 col-md-6 mb1">
                         <input className={'form-control whiteBg '}
@@ -421,7 +664,9 @@ class Checkout extends React.Component {
                           </div>
                           <br />
                           <div className="row-price new-accounts">
-                      <p className="disccount-title">20% Discount<span className="disccount-currency">-${Math.round((billingPeriod === "annually" ? plan['Annual Billing'] * 0.2 : plan["Monthly"] * 0.2) * 100.0) / 100.0}</span></p>
+                          {billingPeriod === "annually" &&  
+                            <p className="disccount-title">20% Discount<span className="disccount-currency">-${Math.round((billingPeriod === "annually" ? plan['Annual Billing'] * 0.2 : plan["Monthly"] * 0.2) * 100.0) / 100.0}</span></p>
+                          }
                           </div>
                       </div>
                       <div className="order-total table">
@@ -429,18 +674,22 @@ class Checkout extends React.Component {
                           <div className="col-price">
                             <p className="plan-content-description">TOTAL</p>
                             <p className="plan-content-accounts">{billingPeriod === "annually" ? 'Annually' : 'Monthly'}</p>
-                            <button className="btn-text-pink" onClick={() => onChangePeriod()}>Switch to {billingPeriod === "annually" ? 'month' : 'annual'}</button>
+                            <button className="btn-text-pink" onClick={() => onChangePeriod()}>Switch to {billingPeriod === "annually" ? 'monthly' : 'yearly'}</button>
                           </div>
                           <div className="currency-label">
-                            <p>${Math.round((billingPeriod === "annually" ? plan['Annual Billing'] * 0.8 : plan["Monthly"] * 0.8) * 100.0) / 100.0}</p>
+                            <p>${Math.round((billingPeriod === "annually" ? plan['Annual Billing'] * 0.8 : plan["Monthly"]) * 100.0) / 100.0}</p>
                           </div>
                         </div>
                       </div>
                       <div className="discount-cnt">
-                        <input className="discount" placeholder="Add discount code" />
+                        <input className="discount" placeholder="Add discount code" onChange={(e) => this.setCouponCode(e)}/>
                       </div>
-
-                      <button className="btn-blue" onClick={(e) => this.ConfirmOrder(e)}>Confirm order</button>
+                      {
+                        endCardSetting ?
+                        <button className="btn-blue" onClick={(e) => this.ConfirmOrder(e)}>Confirm order</button>
+                        :
+                        <button className="btn-blue disabled-btn">Confirm order</button>
+                      }
                     </div>
                   </div>
                 </div>
