@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Tabs } from 'antd';
+import moment from 'moment';
 
 import ScheduledPosts from './Sections/ScheduledPosts';
 import TimezoneSelector from './components/TimezoneSelector';
@@ -14,7 +15,9 @@ class ScheduledPage extends React.Component {
 
     this.state = {
       activeTab: 'scheduled',
-      selectedTimezone: props.profile.user.timezone
+      selectedTimezone: props.profile.user.timezone ?
+        props.profile.user.timezone :
+        moment.tz.guess()
     }
   }
 
