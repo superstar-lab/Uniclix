@@ -239,6 +239,7 @@ class Channel extends Model
                 $result = $this->getChartDataByType("getFollowers", $sDate, $eDate, $period);
                 break;
             case 'engagementsChartData':
+            case 'engagementsCardData':
                 $result[0] = $this->getChartDataByType("getLikes", $sDate, $eDate, $period);
                 $result[1] = $this->getChartDataByType("getMentions", $sDate, $eDate, $period);
                 $result[2] = $this->getChartDataByType("getRetweets", $sDate, $eDate, $period);
