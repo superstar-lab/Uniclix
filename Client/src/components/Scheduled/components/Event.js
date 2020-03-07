@@ -19,7 +19,7 @@ const Event = ({ event, view, timezone, closeEvent, isSelected, channelsList, to
 
   const deletePost = () => {
     toggleLoading();
-    destroyPost(event.id)
+    destroyPost(event.post_id)
       .then(() => {
         toggleLoading();
         fetchPosts();
