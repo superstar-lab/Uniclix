@@ -6,10 +6,12 @@ namespace App\Traits;
 use App\Models\Role;
 use App\Models\RoleLimit;
 use App\Models\RoleAddon;
+use App\Models\User;
 use Carbon\Carbon;
 
 trait Permissible
 {
+    private $user;
     public function hasRole($roleName)
     {  
         if($roleName=="free") return true;
@@ -23,7 +25,13 @@ trait Permissible
 
     public function hasPermission($permission)
     {
+        
         $role = Role::where("id", $this->role_id)->first();
+        $trial_ends_at = strtotime(User::getRemainDate());
+        $current_date = Carbon::now()->timestamp;
+        if($trial_ends_at >= $current_date && !$this->hasRole($role->name)) {
+            return true;
+        }
 
         if ($this->hasRole($role->name)) {
 

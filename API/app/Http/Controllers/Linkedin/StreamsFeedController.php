@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Facebook;
+namespace App\Http\Controllers\Linkedin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -36,7 +36,7 @@ class StreamsFeedController extends Controller{
 
             $channel = $channel->details;
 
-            if($type == "pages") $func = "getPageFeed";
+            if($type == "pages") $func = "getPages";
             else $func = "get".ucfirst($type);
 
             $feed = $channel->{$func}($params);

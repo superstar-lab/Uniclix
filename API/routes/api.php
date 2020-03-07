@@ -157,6 +157,9 @@ Route::prefix("linkedin")->group(function () {
         Route::get('channels/pages', 'Linkedin\ChannelController@getPages');
         Route::post('channels/pages/save', 'Linkedin\ChannelController@savePages');
         Route::get('insights/page/{type}', 'Linkedin\AnalyticsController@pageInsightsByType');
+        
+        Route::post('streams/scheduled', 'Linkedin\StreamsFeedController@scheduled');
+        Route::post('streams/{type}', 'Linkedin\StreamsFeedController@index');
     });
 });
 

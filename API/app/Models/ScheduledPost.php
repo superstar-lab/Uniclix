@@ -17,7 +17,8 @@ class ScheduledPost extends Model
         "posted",
         "approved",
         "article_id",
-        "category_id"
+        "category_id",
+        "post_id"
     ];
 
     public function channel()
@@ -39,7 +40,7 @@ class ScheduledPost extends Model
         foreach ($images as $image) {
             $exists = self::where("payload", "like", "%" . $image['absolutePath'] . "%")->exists();
 
-            if (!$exists) {
+            if (!!$exists) {
                 $filePath = str_replace("storage", "public", $image['relativePath']);
                 \Storage::delete($filePath);
             }

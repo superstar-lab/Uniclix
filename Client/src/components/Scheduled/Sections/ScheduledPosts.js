@@ -45,8 +45,7 @@ class ScheduledPosts extends React.Component {
 
   flattenPosts = (items) => {
     const flattenedPosts = [];
-    items.forEach(posts => flattenedPosts.push(...posts))
-
+    items.forEach(posts => flattenedPosts.push(posts))
     return flattenedPosts;
   }
 

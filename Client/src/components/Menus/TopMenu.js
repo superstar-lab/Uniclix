@@ -79,7 +79,13 @@ class TopMenu extends React.Component {
                 (!profile.subscription.activeSubscription ?
                     <div className="top-alert">
                         <span>
-                            You have {profile.role.trial_days} days remaining on your Twitter Booster trial.
+                            {
+                                profile.remain_date > 0 ?
+                                `You have ${profile.remain_date} days remaining on your Twitter Booster trial. `
+                                :
+                                `Your free trial period is expired. Please order plan. `
+                            }
+                            
                         </span>
                         Add your billing information now to start your subscription.
                         <button

@@ -16,6 +16,7 @@ class ScheduledPosts extends Migration
         Schema::create("scheduled_posts", function(Blueprint $table){
             $table->increments("id");
             $table->integer("channel_id")->unsigned();
+            $table->text("post_id")->nullable();
             $table->text("content")->nullable();
             $table->text("payload")->nullable();
             $table->boolean("posted")->default(0);

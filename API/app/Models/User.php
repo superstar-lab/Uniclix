@@ -266,4 +266,33 @@ class User extends Authenticatable
     {
         return strtotime($this->created_at) <= strtotime(Carbon::now()->subHours($hours));
     }
+
+    public function getAllScheduledPosts($from_date = null, $to_date = null)
+    {
+        if($from_date == null || $to_date == null){
+            return ScheduledPost::with('category')
+            ->where("posted", 0)
+            ->where("approved", 1)
+            ->orderBy('scheduled_at', 'asc')
+            ->get();
+        } else {
+            return ScheduledPost::with('category')
+            ->where("posted", 0)
+            ->where("approved", 1)
+            ->whereDate('scheduled_at', '>=', $from_date)
+            ->whereDate('scheduled_at', '<=', $to_date)
+            ->orderBy('scheduled_at', 'asc')
+            ->get();
+        }
+    }
+    
+    public function getRemainDate()
+    {
+        $selectedChannel = $this->selectedChannel();
+        $user_id = $selectedChannel['user_id'];
+        $selectedUser = $this->where('id', $user_id)->first();
+        $trial_ends_at = $selectedUser['trial_ends_at'];
+        
+        return $trial_ends_at;
+    }
 }

@@ -50,13 +50,20 @@ class PublishController extends Controller
             $images = $post['images'];
             $publishType = $post['publishType'];
             $scheduledTime = Carbon::parse($scheduled['publishUTCDateTime'])->format("Y-m-d H:i:s");
-
             $uploadedImages = $this->uploadImages($images);
-
             $bestTime = false;
             $permissionLevel = "publisher";
             $failedChannels = [];
             $channelCount = 0;
+            $postId = '';
+            $channelsCount = count($channels);
+            
+            if($post['type'] == 'store'){
+                $postId = uniqid();
+            } else if($post['type'] == 'edit') {
+                $postId = $post['id'];
+            }
+            
             foreach ($channels as $channel) {
                 $boards = false;
 
@@ -153,14 +160,49 @@ class PublishController extends Controller
                     // 'posted' => $publishType == 'now' ? 1 : 0,
                     'posted' => 0,
                     'article_id' => $post['articleId'] ? $post['articleId'] : null,
-                    'category_id' => $post['category_id'] ? $post['category_id'] : null
+                    'category_id' => $post['category_id'] ? $post['category_id'] : null,
+                    'post_id' => $postId
                 ];
 
                 if ($post['type'] == 'edit') {
-                    if ($channel->scheduledPosts()->where("id", $post['id'])->where("approved", 0)->exists()) {
-                        $channel->scheduledPosts()->where("id", $post['id'])->where("approved", 0)->update($postData);
+                    $posts = $this->user->getAllScheduledPosts()->where("post_id", $post['id']);
+                    $account_count = count($posts->where("channel_id", $channel['id']));
+                    $posts_approved = $posts->first();
+                    $item_post = $posts->where("channel_id", $channel['id'])->first();
+                    $item_approved_post = $posts->where("channel_id", $channel['id'])->where("approved", 0)->first();
+                    
+                    if ($posts_approved->approved == 0) {
+                        if($account_count < $channelsCount){
+                            if($posts->where("channel_id", $channel['id'])->where("approved", 0)->count() > 0){
+                                $item_approved_post->update($postData);
+                            } else {
+                                $channel->scheduledPosts()->create($postData);
+                            }   
+                        } else {
+                            foreach($posts as $post) {
+                                if($channel['id'] == $post->channel_id){
+                                $item_approved_post->update($postData);
+                                } else {
+                                    $post->delete();
+                                }
+                            }                            
+                        }
                     } else if ($this->user->hasPublishPermission($channel)) {
-                        $channel->scheduledPosts()->where("id", $post['id'])->update($postData);
+                        if($account_count < $channelsCount){
+                            if($posts->where("channel_id", $channel['id'])->count() > 0){
+                                $item_post->update($postData);
+                            } else {
+                                $channel->scheduledPosts()->create($postData);
+                            }   
+                        } else {
+                            foreach($posts as $post) {
+                                if($channel['id'] == $post->channel_id){
+                                $item_post->update($postData);
+                                } else {
+                                    $post->delete();
+                                }
+                            }                            
+                        }
                     } else {
                         return response()->json(["error" => "You don't have permission to perform this action."], 401);
                     }
@@ -190,7 +232,6 @@ class PublishController extends Controller
         $uploadedImages = [];
 
         foreach ($images as $image) {
-
             if (str_contains($image, "http") && str_contains($image, "storage")) {
 
                 $relativePath = 'storage' . explode('storage', $image)[1];
@@ -200,13 +241,12 @@ class PublishController extends Controller
                     'absolutePath' => $image
                 ];
             } else {
-
                 if (str_contains($image, "http")) {
                     $contents = file_get_contents($image);
                     $name = substr($image, strrpos($image, '/') + 1);
                     $imageName = str_contains($name, "?") ? explode("?", $name)[0] : $name;
                     $imageName = str_random(35) . "-" . $imageName;
-                } else {
+                } else if(!empty($image)){
                     $imageData = explode(',', $image);
                     $imageBase64 = $imageData[1];
                     $imageInfo = explode(';', $imageData[0]);
@@ -214,6 +254,8 @@ class PublishController extends Controller
                     $imageExtension = $imageOriginalName[1];
                     $contents = base64_decode($imageBase64);
                     $imageName = str_random(35) . '.' . $imageExtension;
+                } else if(empty($image)){
+                    continue;
                 }
 
                 $today = Carbon::today();
@@ -291,10 +333,17 @@ class PublishController extends Controller
             return response()->json(["error" => "Publisher permission required."], 403);
 
         if ($this->selectedChannel) {
-
             try {
-                $scheduledPost = $this->selectedChannel->scheduledPosts()->find($postId);
-                $scheduledPost->destroyCompletely();
+                $posts = $this->user->getAllScheduledPosts()->where("post_id", $postId);
+                foreach($posts as $post) {
+                    $payload = unserialize($post->payload);
+                    $images = $payload['images'];
+                    foreach ($images as $image) {
+                        $filePath = str_replace("storage", "public", $image['relativePath']);
+                        \Storage::delete($filePath);
+                    }
+                    $post->delete();
+                }
             } catch (\Exception $e) {
                 return getErrorResponse($e, $this->selectedChannel);
             }

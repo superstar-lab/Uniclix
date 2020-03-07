@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class OAuthController extends Controller
 {
@@ -47,6 +48,13 @@ class OAuthController extends Controller
             'password' => Hash::make($request->input('password')),
         ]);
 
+        $email = $request->input('email');
+        $user_register = User::where('email', $email)->first();
+        
+        $created_at = strtotime($user_register['created_at']);
+        $trial_ends_at = date("Y-m-d h:i:s", $created_at + 14 * 86400);
+
+        \DB::table('users')->where('email', $email)->update(['trial_ends_at' => $trial_ends_at]);
         // $user->notify(new \App\Notifications\User\UserSignUp());
 
         return response()->json($user->createToken("Password Token"));
