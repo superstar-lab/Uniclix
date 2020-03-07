@@ -4,10 +4,10 @@ import moment from 'moment';
 import { destroyPost } from '../../../requests/channels';
 
 const Event = ({ event, view, timezone, closeEvent, isSelected, channelsList, toggleLoading, fetchPosts, setComposerToEdit }) => {
-  const { content, wasAlreadyPosted, payload: { scheduled: { publishUTCDateTime } }, category } = event;
+  const { content, wasAlreadyPosted, payload: { scheduled: { publishUTCDateTime } }, category, channel_ids } = event;
   let timeEvent = moment(publishUTCDateTime).tz(timezone);
 
-  const channels = channelsList.filter(channel => event['channel_id'] === channel.id);
+  const channels = channelsList.filter(channel => channel_ids.indexOf(channel.id) !== -1);
 
   // Everytime the card gets clicked the calendar is re-rendered.
   // I prevent that behavior by stop propagating the event
@@ -30,27 +30,29 @@ const Event = ({ event, view, timezone, closeEvent, isSelected, channelsList, to
   };
 
   const editPost = () => {
-    const {
-      id,
-      channel_id,
-      content,
-      payload: { images, scheduled: { publishUTCDateTime } },
-      category_id
-    } = event;
+    if (!wasAlreadyPosted) {
+      const {
+        post_id,
+        channel_ids,
+        content,
+        payload: { images, scheduled: { publishUTCDateTime } },
+        category_id
+      } = event;
 
-    const date = moment(publishUTCDateTime).tz(timezone).format('YYYY-MM-DDTHH:mmZ');
+      const date = moment(publishUTCDateTime).tz(timezone).format('YYYY-MM-DDTHH:mmZ');
 
-    const postData = {
-      id,
-      publishChannels: new Set([channel_id]),
-      content,
-      pictures: images,
-      category: category_id,
-      date,
-      selectedTimezone: timezone
-    };
+      const postData = {
+        id: post_id,
+        publishChannels: new Set(channel_ids),
+        content,
+        pictures: images,
+        category: category_id,
+        date,
+        selectedTimezone: timezone
+      };
 
-    setComposerToEdit(postData);
+      setComposerToEdit(postData);
+    }
   };
 
   // this flag will determine if the event needs to be expanded
