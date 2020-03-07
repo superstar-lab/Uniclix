@@ -1,15 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
 import BottomScrollListener from 'react-bottom-scroll-listener';
-import Article from './Article';
+import moment from 'moment';
+
 import { updateProfile } from "../../../requests/profile";
 import { getArticles } from '../../../requests/articles';
-import { startSetProfile } from '../../../actions/profile';
 import { setPost } from '../../../actions/posts';
+import { startSetProfile } from '../../../actions/profile';
+import { setComposerForArticle } from '../../../actions/composer';
+
+import Article from './Article';
 import { ArticleLoader } from '../../Loader';
-import TailoredPostModal from '../../TailoredPostModal';
 
 class Articles extends React.Component {
     static propTypes = {
@@ -22,13 +24,8 @@ class Articles extends React.Component {
         forbidden: false,
         topics: [],
         topic: "",
-        isTailoredPostOpen: false,
-        openedTitle: "",
-        openedImage: "",
-        openedSource: "",
-        openedDescription: "",
-        openedPostId: "",
-        page: 0
+        page: 0,
+        last_page: 0
     }
 
     componentDidMount(){
@@ -58,12 +55,14 @@ class Articles extends React.Component {
                     articles: [...response.data],
                     loading: false,
                     forbidden: false,
+                    last_page: response.last_page,
                     page
                 }));
             }else{
                 this.setState((prevState) => ({
                     articles: [...prevState.articles, ...response.data],
                     loading: false,
+                    last_page: response.last_page,
                     page
                 }));
             }
@@ -77,15 +76,14 @@ class Articles extends React.Component {
         });
     };
 
-    toggleTailoredPostModal = ({title = "", image = "", source = "", description = "", postId = ""}) => {
-        this.setState(() => ({
-            isTailoredPostOpen: !this.state.isTailoredPostOpen,
-            openedTitle: title,
-            openedImage: image,
-            openedSource: source,
-            openedDescription: description,
-            openedPostId: postId
-        }));
+    openComposer = ({title = "", image = "", source = "", description = "", articleId = ""}) => {
+        this.props.setComposerForArticle({
+            content: `${title} ${source}`,
+            pictures: image ? [image] : [],
+            articleId,
+            date: moment().format('YYYY-MM-DDTHH:mmZ'),
+            selectedTimezone: moment.tz.guess()
+        });
     }
 
     onTopicsFieldChange = (topic) => {
@@ -147,20 +145,11 @@ class Articles extends React.Component {
     };
 
     render() {
-        const { articles, loading } = this.state;
+        const { articles, loading, page, last_page } = this.state;
         const { filterTopics } = this.props;
 
         return (
             <div className="articles-container">
-                <TailoredPostModal 
-                    isOpen={this.state.isTailoredPostOpen}
-                    postId={this.state.openedPostId}
-                    title={this.state.openedTitle}
-                    image={this.state.openedImage}
-                    source={this.state.openedSource}
-                    description={this.state.openedDescription}
-                    toggleTailoredPostModal={this.toggleTailoredPostModal}
-                />
                 {
                     !!articles.length && !filterTopics.length && articles.map((article, index) => (
                             <div key={index}>
@@ -168,7 +157,7 @@ class Articles extends React.Component {
                                 key={index}
                                 article={article}
                                 setPost={this.props.setPost}
-                                toggleTailoredPostModal={this.toggleTailoredPostModal}
+                                toggleComposer={this.openComposer}
                             />
                             </div>
                     ))
@@ -182,7 +171,7 @@ class Articles extends React.Component {
                                     key={index}
                                     article={article}
                                     setPost={this.props.setPost}
-                                    toggleTailoredPostModal={this.toggleTailoredPostModal}
+                                    toggleComposer={this.openComposer}
                                 />
                             </div>
                         ))
@@ -197,7 +186,7 @@ class Articles extends React.Component {
                     )
                 }
                 {
-                    !!articles.length && <BottomScrollListener onBottom={this.loadArticles} />
+                    !!articles.length && page < last_page && <BottomScrollListener onBottom={this.loadArticles} />
                 }
             </div>
         );
@@ -212,7 +201,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     startSetProfile: () => dispatch(startSetProfile()),
-    setPost: (post) => dispatch(setPost(post))
+    setPost: (post) => dispatch(setPost(post)),
+    setComposerForArticle: (data) => dispatch(setComposerForArticle(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Articles);

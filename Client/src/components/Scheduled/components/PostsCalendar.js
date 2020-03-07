@@ -5,7 +5,7 @@ import moment from "moment";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-import { setComposerModal } from '../../../actions/composer';
+import { setComposerModal, setComposerToEdit } from '../../../actions/composer';
 import { momentToDate } from '../../../utils/formatTime';
 import Event from './Event';
 import Loader from '../../Loader';
@@ -78,7 +78,9 @@ class PostsCalendar extends React.Component {
 
   eventPropGetter = (event) => {
     const { selectedEvent } = this.state;
-    let className = event.id === selectedEvent.id ? 'rbc-selected' : ''
+    const { view } = this.props;
+
+    let className = event.id === selectedEvent.id ? `rbc-selected ${view}` : ''
 
     return { className, style: { backgroundColor: event.category.color } };
   }
@@ -91,6 +93,21 @@ class PostsCalendar extends React.Component {
       '';
 
     return { className };
+  }
+
+  dayPropGetter = (day) => {
+    const { view, timezone } = this.props;
+    const { currentDate } = this.state;
+
+    if (view === 'month') {
+      const dayMoment = moment(day).tz(timezone);
+      const today = moment(currentDate.format('YYYY-MM-DD')).tz(timezone);
+      const className = dayMoment.isBefore(today) ?
+        'disabled' :
+        '';
+
+      return { className };
+    }
   }
 
   onSelectEvent = (event) => {
@@ -107,7 +124,7 @@ class PostsCalendar extends React.Component {
   };
 
   render() {
-    const { view, startDate, channelsList, setComposerModal, timezone, fetchPosts } = this.props;
+    const { view, startDate, channelsList, setComposerModal, setComposerToEdit, timezone, fetchPosts } = this.props;
     const { currentDate, selectedEvent, isLoading } = this.state;
 
     return (
@@ -130,11 +147,14 @@ class PostsCalendar extends React.Component {
                 toggleLoading={this.toggleLoading}
                 fetchPosts={fetchPosts}
                 timezone={timezone}
+                setComposerToEdit={setComposerToEdit}
+                view={view}
               />
             )
           }}
           eventPropGetter={this.eventPropGetter}
           slotPropGetter={this.slotPropGetter}
+          dayPropGetter={this.dayPropGetter}
           onSelectEvent={this.onSelectEvent}
           selected={selectedEvent}
           selectable={true}
@@ -179,4 +199,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setComposerModal })(PostsCalendar);
+export default connect(mapStateToProps, { setComposerModal, setComposerToEdit })(PostsCalendar);

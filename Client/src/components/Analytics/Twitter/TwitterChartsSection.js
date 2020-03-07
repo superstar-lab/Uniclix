@@ -69,7 +69,7 @@ class TwitterChartsSection extends React.Component {
               }
             />
         </div>
-        <div label="Impressions">
+        {/* <div label="Impressions">
           <ChartsSectionTab
               accountId={selectedAccount}
               socialMedia={socialMedia}
@@ -79,7 +79,7 @@ class TwitterChartsSection extends React.Component {
                 (<TwitterImpressionsChart {...props} />)
               }
             />
-        </div>
+        </div> */}
       </Tabs>
     );
   }

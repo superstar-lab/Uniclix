@@ -5,6 +5,7 @@ class ChannelsRow extends React.Component {
   static propTypes = {
     publishChannels: PropTypes.array.isRequired,
     setShowSelectAccount: PropTypes.func.isRequired,
+    channels: PropTypes.array.isRequired
   };
 
   toggleSelectChannelsModal = () => {
@@ -12,14 +13,14 @@ class ChannelsRow extends React.Component {
   };
 
   render() {
-    const { publishChannels } = this.props;
+    const { publishChannels, channels } = this.props;
 
     return (
       <div className="channels-section">
         {
-          publishChannels && publishChannels
-            .map(({ type, avatar, selected }, index) => {
-              return selected ? (
+          publishChannels && channels
+            .map(({ type, avatar, details: { channel_id } }, index) => {
+              return publishChannels.has(channel_id) ? (
                 <div key={`${type}-${index}`}>
                   <img src={avatar} />
                   <i className={`fab fa-${type} ${type}_bg`} />

@@ -21,10 +21,10 @@ import {
 } from "../../actions/composer";
 
 import ContentInput from './components/ContentInput';
-import ChannelSelector from './components/ChannelSelector';
 import ChannelsRow from './components/ChannelsRow';
 import DateTimeSelector from './components/DateTimeSelector';
 import FooterSection from './components/FooterSection';
+import SelectAccountModal from './components/SelectAccountsModal';
 
 const { Option } = Select;
 
@@ -33,8 +33,11 @@ class Compose extends React.Component {
   componentDidUpdate() {
     const { updatePublishChannels, publishChannels, channels } = this.props;
 
+    // if there are no publish channels, we populate the array with the selected one
     if (!publishChannels) {
-      updatePublishChannels(channels);
+      channels.forEach(channel => {
+        if (channel.selected) updatePublishChannels(new Set([channel.details.channel_id]));
+      });
     }
   }
 
@@ -44,6 +47,7 @@ class Compose extends React.Component {
       isOpen,
       showSelectAccounts,
       publishChannels,
+      channels,
       content,
       pictures,
       category,
@@ -59,7 +63,6 @@ class Compose extends React.Component {
       setShowSelectAccount,
       setDate,
       setPostAtBestTime,
-      updatePublishChannels,
       setPostNow,
       onPost
     } = this.props;
@@ -72,11 +75,8 @@ class Compose extends React.Component {
       >
         {
           showSelectAccounts ? (
-            <ChannelSelector
-              publishChannels={publishChannels}
-              showSelectAccounts={showSelectAccounts}
-              updatePublishChannels={updatePublishChannels}
-              setShowSelectAccount={setShowSelectAccount}
+            <SelectAccountModal
+              selectedAccounts={publishChannels}
             />
           ) :
           (
@@ -96,6 +96,7 @@ class Compose extends React.Component {
                 <ChannelsRow
                   publishChannels={publishChannels}
                   setShowSelectAccount={setShowSelectAccount}
+                  channels={channels}
                 />
                 <ContentInput
                   setContent={setContent}
@@ -137,11 +138,7 @@ class Compose extends React.Component {
               </div>
               <FooterSection
                 {...this.props}
-                publishChannels={
-                  publishChannels ?
-                    publishChannels.filter(({ selected }) => selected) :
-                    []
-                }
+                publishChannels={publishChannels}
                 onPost={onPost}
               />
             </div>

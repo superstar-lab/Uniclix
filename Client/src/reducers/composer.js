@@ -1,11 +1,14 @@
 const defaultState = {
-    isOpen: false,
+		isOpen: false,
+		id: '',
     publishChannels: undefined,
 		showSelectAccounts: false,
 		content: '',
 		pictures: [],
 		category: undefined,
 		date: undefined,
+		type: 'store',
+		articleId: undefined,
 
 		startsAt: undefined,
 		selectedTimezone: '',
@@ -21,6 +24,21 @@ export default (state = defaultState, action) => {
 				isOpen: true,
 				startsAt: action.startsAt,
 				selectedTimezone: action.selectedTimezone
+			};
+		case 'SET_COMPOSER_TO_EDIT':
+			const { postData } = action;
+			return {
+				...defaultState,
+				...postData,
+				type: 'edit',
+				isOpen: true
+			};
+		case 'SET_COMPOSER_FOR_ARTICLE':
+			const { postData: articleData } = action;
+			return {
+				...defaultState,
+				...articleData,
+				isOpen: true
 			};
 		case 'CLOSE_MODAL':
 			return {

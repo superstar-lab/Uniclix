@@ -44,7 +44,7 @@ class TwitterAnalyticsBoard extends React.Component {
                                 </div>
                                 <div className="col-md-3 col-xs-12">
                                     <TwitterOverviewCard
-                                        title="Engagements"
+                                        title="Following"
                                         type="followingCount"
                                         icon="chart"
                                         selectedAccount={selectedAccount}
@@ -53,7 +53,7 @@ class TwitterAnalyticsBoard extends React.Component {
                                 </div>
                                 <div className="col-md-3 col-xs-12">
                                     <TwitterOverviewCard
-                                        title="Impressions"
+                                        title="Likes"
                                         type="totalLikesCount"
                                         icon="eye"
                                         selectedAccount={selectedAccount}

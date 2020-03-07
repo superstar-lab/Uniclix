@@ -43,12 +43,6 @@ class ScheduledPosts extends React.Component {
     }
   }
 
-  flattenPosts = (items) => {
-    const flattenedPosts = [];
-    items.forEach(posts => flattenedPosts.push(posts))
-    return flattenedPosts;
-  }
-
   fetchPosts = () => {
     const { startDate, endDate } = this.state;
     this.setState({ isLoading: true });
@@ -56,7 +50,7 @@ class ScheduledPosts extends React.Component {
     try {
       scheduledPosts(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD'))
         .then((response) => {
-            const posts = this.flattenPosts(response.items);
+            const posts = response.items;
             this.setState({
                 posts,
                 isLoading: false,
@@ -94,6 +88,7 @@ class ScheduledPosts extends React.Component {
               startDate={startDate}
               endDate={endDate}
               selectedPeriod={calendarDisplay}
+              timezone={timezone}
               onDateChange={this.onDateChange}
             />
             <Select value={calendarDisplay} onChange={this.onPeriodChange}>

@@ -40,6 +40,7 @@
     height: auto;
    }
 
+  .rbc-day-bg.disabled,
   .rbc-time-slot.disabled {
     background-color: rgba(0, 0, 0, 0.03);
   }
@@ -111,6 +112,37 @@
           z-index: 10;
           position: relative;
 
+          &.day {
+            left: 0 !important;
+            width: 100% !important;
+
+            .event-card-calendar  {
+              display: flex;
+              justify-content: space-between;
+              width: 100%;
+              height: 74px;
+              padding: 5px;
+            }
+
+            .left-section,
+            .right-section{
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+            }
+
+            .middle-section {
+              display: flex;
+              align-items: center;
+
+              .description {
+                max-width: 470px;
+                margin-bottom: 0;
+              }
+            }
+
+          }
+
           .event-card-calendar {
             width: 300px;
             height: auto;
@@ -132,30 +164,31 @@
               justify-content: space-between;
               align-items: center;
               margin-bottom: 15px;
+            }
 
-              .topic {
-                color: #FFF;
-                padding: 5px;
-                font-weight: 500;
-                border-radius: 5px;
+            .topic {
+              display: block;
+              color: #FFF;
+              padding: 5px;
+              font-weight: 500;
+              border-radius: 5px;
+            }
+
+            .icons-section {
+              display: flex;
+              width: 100px;
+              justify-content: space-between;
+              color: #2D86DA;
+              font-size: 18px;
+              
+              i {
+                cursor: pointer;
               }
-  
-              .icons-section {
-                display: flex;
-                width: 100px;
-                justify-content: space-between;
-                color: #2D86DA;
-                font-size: 18px;
-                
-                i {
-                  cursor: pointer;
-                }
 
-                .disabled {
-                  color: rgb(104, 127, 148);
-                  i {
-                    cursor: default;
-                  }
+              .disabled {
+                color: rgb(104, 127, 148);
+                i {
+                  cursor: default;
                 }
               }
             }
@@ -214,7 +247,10 @@
           background-color: #FFF;
           color: #363636;
           padding: 5px;
+          min-width: 85px;
 
+          .topic,
+          .icons-section,
           .event-channels,
           .event-header {
             display: none;

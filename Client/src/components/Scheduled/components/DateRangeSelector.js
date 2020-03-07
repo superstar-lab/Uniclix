@@ -14,6 +14,34 @@ class DateRangeSelector extends React.Component {
     calendarMode: PropTypes.bool
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.selectedPeriod !== this.props.selectedPeriod) {
+      this.resetDates();
+    }
+  }
+
+  resetDates = () => {
+    const { selectedPeriod, timezone, onDateChange } = this.props;
+    // The timezone is important because we are creating a moment object using the local
+    // timezone when we need to use the selected one. Otherwise the dates will be wrong.
+    let newStartDate = moment().tz(timezone),
+      newEndDate;
+
+    switch (selectedPeriod) {
+      case 'Day':
+        newEndDate = newStartDate.clone();
+        break;
+      case 'Year':
+      case 'Month':
+      case 'Week':
+        newStartDate = newStartDate.clone().startOf(selectedPeriod.toLowerCase());
+        newEndDate = newStartDate.clone().endOf(selectedPeriod.toLowerCase());
+        break;
+    }
+
+    onDateChange(newStartDate.toDate(), newEndDate.toDate());
+  }
+
   moveDates = (toAdd) => {
     const { selectedPeriod, startDate, onDateChange } = this.props;
     let newStartDate = moment(startDate),
@@ -43,33 +71,25 @@ class DateRangeSelector extends React.Component {
 
     switch (selectedPeriod) {
       case 'Day':
-        // I'm adding since the value of rangeMovement will be a negative number
-        const date = new Date(startDate);
-        dateStructure = <span>{`${date.getDate()} ${UTC_MONTHS[date.getMonth()]}`}</span>;
+        dateStructure = <span>{`${startDate.date()} ${UTC_MONTHS[startDate.month()]}`}</span>;
         break;
       case 'Week':
-        // Multiplying by 6 because of the edge day + the rest of the days in the week
-        const startWeek = new Date(startDate),
-          endWeek = new Date(endDate);
-
         dateStructure = <span>
-          {`${startWeek.getDate()} ${UTC_MONTHS[startWeek.getMonth()]} - ${endWeek.getDate()} ${UTC_MONTHS[endWeek.getMonth()]}`}
+          {`${startDate.date()} ${UTC_MONTHS[startDate.month()]} - ${endDate.date()} ${UTC_MONTHS[endDate.month()]}`}
         </span>;
         break;
       case 'Month':
-        const month = new Date(startDate),
-          showYear = new Date().getFullYear() !== month.getFullYear();
+          const showYear = moment().year() !== startDate.year();
         dateStructure = <span>
           {
             showYear ?
-              `${UTC_MONTHS[month.getMonth()]} - ${month.getFullYear()}` :
-              `${UTC_MONTHS[month.getMonth()]}`
+              `${UTC_MONTHS[startDate.month()]} - ${startDate.year()}` :
+              `${UTC_MONTHS[startDate.month()]}`
           }
         </span>;
         break;
       case 'Year':
-        const year = new Date(startDate);
-        dateStructure = <span>{`${year.getFullYear()}`}</span>;
+        dateStructure = <span>{startDate.year()}</span>;
         break;          
     }
 

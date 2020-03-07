@@ -3,26 +3,42 @@ import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 import moment from 'moment';
 
+import { updateTimeZone } from '../../requests/profile';
+import { setComposerModal } from '../../actions/composer';
+
 import ScheduledPosts from './Sections/ScheduledPosts';
 import TimezoneSelector from './components/TimezoneSelector';
 
 const { TabPane } = Tabs;
 
-class ScheduledPage extends React.Component {
+class Scheduled extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
       activeTab: 'scheduled',
-      selectedTimezone: props.profile.user.timezone ?
-        props.profile.user.timezone :
-        moment.tz.guess()
+      selectedTimezone: props.timezone ? props.timezone : moment.tz.guess()
     }
   }
 
-  changeTimezone = (value) => {
-    this.setState({ selectedTimezone: value });
+  componentDidUpdate(prevProps) {
+    // This is needed since the scheduled posts is the landing page and by the time
+    // the component gets mounted the profile info is not available. This way, when
+    // the profile state gets populated, we make sure to show the stored timezone
+    if (prevProps.timezone !== this.props.timezone) {
+      this.setState({ selectedTimezone: this.props.timezone });
+    }
+  }
+
+  changeTimezone = (timezone) => {
+    updateTimeZone({ timezone })
+      .then(() => {
+        this.setState({ selectedTimezone: timezone });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   getTabExtraContent = () => {
@@ -32,6 +48,10 @@ class ScheduledPage extends React.Component {
       case 'scheduled':
         return <TimezoneSelector value={selectedTimezone} onChange={this.changeTimezone} />;
     }
+  };
+
+  onNewPostClick = () => {
+    this.props.setComposerModal(moment().format('YYYY-MM-DDTHH:mmZ'), this.state.selectedTimezone);
   };
 
   render() {
@@ -47,6 +67,7 @@ class ScheduledPage extends React.Component {
             <div className="col-xs-12 col-md-4">
               <button
                   className="magento-btn pull-right"
+                  onClick={this.onNewPostClick}
               >
                   New Post
               </button>
@@ -68,9 +89,11 @@ class ScheduledPage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  const { profile: { user: { timezone } } = {} } = state;
+
   return {
-    profile: state.profile
+    timezone
   };
 };
 
-export default connect(mapStateToProps)(ScheduledPage);
+export default connect(mapStateToProps, { setComposerModal })(Scheduled);

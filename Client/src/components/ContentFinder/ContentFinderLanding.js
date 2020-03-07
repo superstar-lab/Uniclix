@@ -9,8 +9,9 @@ import DisplayOptions from './Sections/DisplayOptions';
 import AddedByYouSection from './Sections/AddedByYouSection';
 import TopicButton from './Sections/TopicButton';
 import SaveTopicsButton from './Sections/SaveTopicsButton';
-import Loader from '../../components/Loader';
 import Articles from './Sections/Articles';
+import Loader from '../../components/Loader';
+import Compose from '../../components/Compose';
 
 class ContentFinderLanding extends React.Component {
   static propTypes = {
@@ -61,7 +62,7 @@ class ContentFinderLanding extends React.Component {
         {
           showTopics && (
             <React.Fragment>
-              <AddedByYouSection topicsAddedByYou={topicsAddedBYou} />
+              <AddedByYouSection topicsAddedByYou={topicsAddedBYou} allTopics={selectedTopics} />
                 <div className="seperator mt20 mb20"></div>
                 <span className="sub-title">Trending Topics</span>
                 <div className="topics">
@@ -95,6 +96,7 @@ class ContentFinderLanding extends React.Component {
             </React.Fragment>
           )
         }
+        <Compose />
         { isLoading && <Loader fullscreen /> }
       </div>
     );

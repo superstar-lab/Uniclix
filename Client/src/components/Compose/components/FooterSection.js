@@ -24,6 +24,7 @@ class FooterSection extends React.Component {
     date: PropTypes.string.isRequired,
     postAtBestTime: PropTypes.bool.isRequired,
     postNow: PropTypes.bool.isRequired,
+    channels: PropTypes.array.isRequired,
     onPost: PropTypes.func
   };
 
@@ -34,7 +35,7 @@ class FooterSection extends React.Component {
   canPost = () => {
     const { content, category, date, publishChannels } = this.props;
 
-    return !!content.length && category && date && !!publishChannels.length;
+    return !!content.length && category && date && !!publishChannels.size;
   };
 
   getPublishType = () => {
@@ -47,18 +48,30 @@ class FooterSection extends React.Component {
         'date';
   };
 
+  // This is necessary since we are storing the ids of the channels and the
+  // backend expects the whole object
+  getPublishChannels = () => {
+    const { channels, publishChannels } = this.props;
+    const selectedChannels = channels.filter(channel => publishChannels.has(channel.details.channel_id));
+
+    return selectedChannels;
+  }
+
   savePost = () => {
+    const {
+      id,
+      content,
+      pictures,
+      category,
+      selectedTimezone,
+      date,
+      type,
+      articleId = '',
+      closeModal,
+      onPost,
+    } = this.props;
+
     try {
-      const {
-        content,
-        pictures,
-        category,
-        selectedTimezone,
-        date,
-        publishChannels,
-        closeModal,
-        onPost
-      } = this.props;
 
       const scheduled = {
         publishUTCDateTime: date,
@@ -71,11 +84,11 @@ class FooterSection extends React.Component {
         scheduled,
         content,
         images: pictures,
-        publishChannels,
-        type: "store",
+        publishChannels: this.getPublishChannels(),
+        type,
         publishType: this.getPublishType(),
-        id: '',
-        articleId: '',
+        id,
+        articleId,
         category_id: category
       }).then((res) => {
         this.setState({ isLoading: false });
@@ -83,8 +96,13 @@ class FooterSection extends React.Component {
           onPost();
         }
         closeModal();
+      })
+      .catch((error) => {
+        console.log(error);
+        closeModal();
       });
     } catch(error) {
+      console.log(error);
       this.setState({ isLoading: false });
       closeModal();
     }

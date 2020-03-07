@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {truncate} from '../../../utils/helpers';
 
-const Article = ({article, postedArticle, toggleTailoredPostModal}) => {
+const Article = ({article, postedArticle, toggleComposer}) => {
     if(article.posted == null){
 
         if(typeof(postedArticle) !== "undefined" && typeof(postedArticle.articleId) !== "undefined"){
@@ -26,13 +26,13 @@ const Article = ({article, postedArticle, toggleTailoredPostModal}) => {
                     <div className="img-overlay">
                         <div className="icons">
                             <div onClick={() => {
-                                toggleTailoredPostModal({
+                                toggleComposer({
                                     title: article.title,
                                     image: article.image_url,
                                     source: article.url,
                                     description: article.description,
                                     articleBody: article.content ? article.content : article.description,
-                                    postId: article.id
+                                    articleId: article.id
                                 })
                             }}>
                                 <div className="svg-container">

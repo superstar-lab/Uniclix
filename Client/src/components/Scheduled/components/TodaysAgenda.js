@@ -37,7 +37,7 @@ const TodaysAgenda = ({ posts, timezone, channelsList }) => {
                     </div>
                   </div>
                   <div className="content">
-                    {post.content}
+                  {`${(post.content).substring(0, 200)}${post.content.length > 200 ? '...' : ''}`}
                   </div>
                   <div className="event-channels">
                     {

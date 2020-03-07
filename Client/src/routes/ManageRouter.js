@@ -13,7 +13,6 @@ import BlackList from '../components/TwitterBooster/Sections/BlackList';
 import Checkout from '../components/Accounts/Checkout';
 import AnalyticsLanding from '../components/Analytics/AnalyticsLanding';
 import ScheduledRouter from '../routes/ScheduledRouter';
-import ContentFinder from '../components/ContentFinder/ContentFinder';
 import ContentFinderLanding from '../components/ContentFinder/ContentFinderLanding';
 
 const ManageRouter = () => (
