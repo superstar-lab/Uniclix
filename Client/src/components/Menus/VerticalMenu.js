@@ -99,12 +99,12 @@ const ProfileSelectionDropDown = ({ channels, selectChannel, isOpen }) => (
                     <ProfileSelectionItem key={channel.id} channel={channel} selectChannel={selectChannel} />
                 ))
             }
-            <div className="add-profile channel-container">
+            <NavLink to="/settings/manage-account" className="add-profile channel-container">
                 <div className="circle">
                     <i className="fa fa-plus" />
                 </div>
                 <p>Add new account</p>
-            </div>
+            </NavLink>
         </div>
     </div>
 );

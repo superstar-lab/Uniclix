@@ -4,8 +4,9 @@ import moment from 'moment';
 import { destroyPost } from '../../../requests/channels';
 
 const Event = ({ event, view, timezone, closeEvent, isSelected, channelsList, toggleLoading, fetchPosts, setComposerToEdit }) => {
-  const { content, wasAlreadyPosted, payload: { scheduled: { publishUTCDateTime } }, category, channel_ids } = event;
+  const { content, payload: { scheduled: { publishUTCDateTime } }, category, channel_ids } = event;
   let timeEvent = moment(publishUTCDateTime).tz(timezone);
+  const wasNotAlreadyPosted = timeEvent.isAfter(moment().tz());
 
   const channels = channelsList.filter(channel => channel_ids.indexOf(channel.id) !== -1);
 
@@ -30,7 +31,9 @@ const Event = ({ event, view, timezone, closeEvent, isSelected, channelsList, to
   };
 
   const editPost = () => {
-    if (!wasAlreadyPosted) {
+
+    // We want to let the user to edit the post when it wasn't published yet
+    if (wasNotAlreadyPosted) {
       const {
         post_id,
         channel_ids,
@@ -73,7 +76,7 @@ const Event = ({ event, view, timezone, closeEvent, isSelected, channelsList, to
             <div onClick={deletePost}>
               <i className="far fa-trash-alt"></i>
             </div>
-            <div className={wasAlreadyPosted ? 'disabled' : ''} onClick={editPost}>
+            <div className={!wasNotAlreadyPosted ? 'disabled' : ''} onClick={editPost}>
               <i className="fas fa-pen"></i>
             </div>
             <div onClick={closeEvent}>
@@ -133,7 +136,7 @@ const Event = ({ event, view, timezone, closeEvent, isSelected, channelsList, to
             <div onClick={deletePost}>
               <i className="far fa-trash-alt"></i>
             </div>
-            <div className={wasAlreadyPosted ? 'disabled' : ''} onClick={editPost}>
+            <div className={!wasNotAlreadyPosted ? 'disabled' : ''} onClick={editPost}>
               <i className="fas fa-pen"></i>
             </div>
             <div onClick={closeEvent}>
@@ -155,12 +158,21 @@ const Event = ({ event, view, timezone, closeEvent, isSelected, channelsList, to
     );
   }
 
+  const renderMonthView = () => {
+    return (
+      <div>
+        { timeEvent.format("h:mm A") }
+      </div>
+    );
+  };
+
   switch(view) {
     case 'day':
       return renderDayView();
     case 'week':
-    case 'year':
       return renderWeekView();
+    case 'month':
+      return renderMonthView();
     default:
       return null;
   }

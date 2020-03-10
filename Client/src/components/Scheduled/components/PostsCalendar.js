@@ -19,6 +19,8 @@ class PostsCalendar extends React.Component {
     timezone: PropTypes.string.isRequired,
     channelsList: PropTypes.array.isRequired,
     fetchPosts: PropTypes.func.isRequired,
+    onPeriodChange: PropTypes.func.isRequired,
+    onDateChange: PropTypes.func.isRequired,
     startDate: PropTypes.object
   };
 
@@ -111,6 +113,16 @@ class PostsCalendar extends React.Component {
   }
 
   onSelectEvent = (event) => {
+    const { view, onPeriodChange, onDateChange, timezone } = this.props;
+
+    if (view === 'month') {
+      const startDate = moment(event.payload.scheduled.publishUTCDateTime).tz(timezone);
+      const endDate = moment(event.payload.scheduled.publishUTCDateTime).tz(timezone);
+
+      onDateChange(startDate, endDate);
+      onPeriodChange('Day', false);
+    }
+
     this.setState({ selectedEvent: event });
   };
 
@@ -123,8 +135,32 @@ class PostsCalendar extends React.Component {
     this.setState({ isLoading: !this.state.isLoading });
   };
 
+  onSelectSlot = (slotInfo) => {
+    const { view, onPeriodChange, onDateChange, setComposerModal, timezone } = this.props;
+    const { currentDate } = this.state;
+
+    // When is month view, when the user clicks we want to show him the selected day
+    // in the day view
+    if (view === 'month') {
+      const startDate = moment(slotInfo.start);
+      const endDate = moment(slotInfo.start);
+
+      onDateChange(startDate, endDate);
+      onPeriodChange('Day', false);
+    } else {
+      if (slotInfo.end.getTime() > momentToDate(currentDate).getTime()) {
+        // The Calendar will keep the local timezone. Formating this way
+        // we set the datetime using the calendar's datetime but
+        // keeping the timezone that the user selected
+        const date = moment(slotInfo.start).format('YYYY-MM-DDTHH:mm');
+        const postTz = moment().tz(timezone).format('Z');
+        setComposerModal(`${date}${postTz}`, timezone);
+      }
+    }
+  };
+
   render() {
-    const { view, startDate, channelsList, setComposerModal, setComposerToEdit, timezone, fetchPosts } = this.props;
+    const { view, startDate, channelsList, setComposerToEdit, timezone, fetchPosts } = this.props;
     const { currentDate, selectedEvent, isLoading } = this.state;
 
     return (
@@ -158,16 +194,7 @@ class PostsCalendar extends React.Component {
           onSelectEvent={this.onSelectEvent}
           selected={selectedEvent}
           selectable={true}
-          onSelectSlot={(slotInfo) => {
-            if (slotInfo.end.getTime() > momentToDate(currentDate).getTime()) {
-              // The Calendar will keep the local timezone. Formating this way
-              // we set the datetime using the calendar's datetime but
-              // keeping the timezone that the user selected
-              const date = moment(slotInfo.start).format('YYYY-MM-DDTHH:mm');
-              const postTz = moment().tz(timezone).format('Z');
-              setComposerModal(`${date}${postTz}`, timezone);
-            }
-          }}
+          onSelectSlot={this.onSelectSlot}
         />
         { isLoading && <Loader fullscreen /> }
       </React.Fragment>

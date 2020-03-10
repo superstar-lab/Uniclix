@@ -10,12 +10,13 @@ class DateRangeSelector extends React.Component {
     endDate: PropTypes.object.isRequired,
     selectedPeriod: PropTypes.oneOf(['Year', 'Month', 'Week', 'Day' ]),
     onDateChange: PropTypes.func.isRequired,
+    resetDates: PropTypes.bool.isRequired,
     pastTimeLimit: PropTypes.number,
     calendarMode: PropTypes.bool
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.selectedPeriod !== this.props.selectedPeriod) {
+    if (prevProps.selectedPeriod !== this.props.selectedPeriod && this.props.resetDates) {
       this.resetDates();
     }
   }
