@@ -78,5 +78,8 @@ export const getCategories = () => {
     return axios.get(`${apiUrl}/post/category`)
         .then((response) => {
             return response.data;
+        })
+        .catch(() => {
+            getCategories();
         });
 };

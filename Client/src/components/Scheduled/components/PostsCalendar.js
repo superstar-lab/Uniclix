@@ -142,8 +142,12 @@ class PostsCalendar extends React.Component {
     // When is month view, when the user clicks we want to show him the selected day
     // in the day view
     if (view === 'month') {
-      const startDate = moment(slotInfo.start);
-      const endDate = moment(slotInfo.start);
+      // We need to do this to avoid getting a different date when changing timezones
+      const startDateString = moment(slotInfo.start).format('YYYY-MM-DDTHH:mm');
+      const endDateString = moment(slotInfo.end).format('YYYY-MM-DDTHH:mm');
+      const currentTz = moment().tz(timezone).format('Z');
+      const startDate = moment(`${startDateString}${currentTz}`);
+      const endDate = moment(`${endDateString}${currentTz}`);
 
       onDateChange(startDate, endDate);
       onPeriodChange('Day', false);
