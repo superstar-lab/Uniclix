@@ -8,6 +8,7 @@ import { setComposerModal } from '../../actions/composer';
 
 import ScheduledPosts from './Sections/ScheduledPosts';
 import TimezoneSelector from './components/TimezoneSelector';
+import Loader from '../Loader';
 
 const { TabPane } = Tabs;
 
@@ -18,7 +19,8 @@ class Scheduled extends React.Component {
 
     this.state = {
       activeTab: 'scheduled',
-      selectedTimezone: props.timezone ? props.timezone : moment.tz.guess()
+      selectedTimezone: props.timezone ? props.timezone : moment.tz.guess(),
+      isLoading: false
     }
   }
 
@@ -32,11 +34,13 @@ class Scheduled extends React.Component {
   }
 
   changeTimezone = (timezone) => {
+    this.setState({ isLoading: true });
     updateTimeZone({ timezone })
       .then(() => {
-        this.setState({ selectedTimezone: timezone });
+        this.setState({ selectedTimezone: timezone, isLoading: false });
       })
       .catch((error) => {
+        this.setState({ isLoading: false });
         console.log(error);
       });
   }
@@ -55,7 +59,7 @@ class Scheduled extends React.Component {
   };
 
   render() {
-    const { selectedTimezone } = this.state;
+    const { selectedTimezone, isLoading } = this.state;
 
     return (
       <div className="scheduled">
@@ -83,6 +87,7 @@ class Scheduled extends React.Component {
             <ScheduledPosts timezone={selectedTimezone} />
           </TabPane>
         </Tabs>
+        { isLoading && <Loader fullscreen /> }
       </div>
     );
   }

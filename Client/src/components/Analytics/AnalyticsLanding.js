@@ -12,7 +12,7 @@ import AccountSelector from '../../components/AccountSelector';
 import SocialMediaSelector from '../../components/SocialMediaSelector';
 
 const ACCOUNT_SELECTOR_FILTERS = {
-    'facebook': (account) => account.details.account_type !== 'profile'
+    'facebook': (account) => account.details.account_type === 'page'
 };
 
 class AnalyticsLanding extends React.Component {
@@ -29,7 +29,8 @@ class AnalyticsLanding extends React.Component {
 
         props.allChannels.forEach(({ type }) => {
             // Getting the options for the socialMedia dropdown
-            if (this.socialMediasSelectorOptions.indexOf(type) === -1) {
+            // Hiding linkedin for the moment
+            if (this.socialMediasSelectorOptions.indexOf(type) === -1 && type !== 'linkedin') {
                 this.socialMediasSelectorOptions.push(type);
             }
         });        

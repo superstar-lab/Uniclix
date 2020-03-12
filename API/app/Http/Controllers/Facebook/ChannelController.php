@@ -72,6 +72,7 @@ class ChannelController extends Controller
             $pages = collect($response["data"])->map(function($page){
                 $page["token"] = @$page["access_token"];
                 $page["avatar"] = @$page["picture"]["data"]["url"];
+                $page["type"] = "page";
 
                 return $page;
             });
@@ -83,6 +84,7 @@ class ChannelController extends Controller
             $groups = collect($response["data"])->map(function($group) use ($channel){
                 $group["token"] = @$channel->access_token;
                 $group["avatar"] = @$group["picture"]["data"]["url"];
+                $group["type"] = "group";
 
                 return $group;
             });
@@ -120,7 +122,7 @@ class ChannelController extends Controller
                         "access_token" => $account["token"],
                         "parent_id" => $channel->id,
                         "payload" => serialize((object) $account),
-                        "account_type" => $account["token"] == "group" ? "group" : "page"
+                        "account_type" => $account["type"]
                     ]);
 
                     $newChannel->select();
