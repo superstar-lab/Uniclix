@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { setMiddleware } from '../actions/middleware';
 import TwitterLogin from 'react-twitter-auth';
+import Modal from './Modal';
 import SelectAccountsModal from './Accounts/SelectAccountsModal';
 import { startSetChannels, startAddFacebookChannel, startAddLinkedinChannel, startAddPinterestChannel, startAddTwitterChannel } from "../actions/channels";
 import { startSetProfile } from "../actions/profile";
@@ -20,8 +21,6 @@ import { getParameterByName } from "../utils/helpers";
 import Checkout from "./Settings/Sections/Checkout";
 import ChannelItems from "./Accounts/ChannelItems";
 import {getPages, savePages} from "../requests/linkedin/channels";
-
-
 
 class Middleware extends React.Component {
     state = {
@@ -151,10 +150,18 @@ class Middleware extends React.Component {
                         this.setState(() => ({ loading: false, addAccounts: "twitter" }));
                     }).catch(error => {
                         this.setState(() => ({ loading: false }));
-                        if (error.response.status === 403) {
-                            this.setForbidden(true);
+                        if (error.response.status === 409) {
+                            Modal({
+                                type: 'error',
+                                title: 'Error',
+                                content: 'This account is currently being used by other Uniclix users, please contact our helpdesk support for additional details'
+                            });
                         } else {
-                            this.setError("Something went wrong!");
+                            Modal({
+                                type: 'error',
+                                title: 'Error',
+                                content: 'Something went wrong!'
+                            });
                         }
                     });
             });
@@ -166,7 +173,6 @@ class Middleware extends React.Component {
         try {
             this.setState(() => ({ loading: true }));
             if (response) {
-                this.setState(() => ({ loading: false }));
                 this.props.startAddFacebookChannel(response.accessToken)
                     .then(() => {
                         this.setState(() => ({ loading: true }));
@@ -189,10 +195,17 @@ class Middleware extends React.Component {
                         }
 
                         if (error.response.status === 409) {
-                            this.setError("This facebook account is already registered from another uniclix account.");
-                        }
-                        else {
-                            this.setError("Something went wrong!");
+                            Modal({
+                                type: 'error',
+                                title: 'Error',
+                                content: 'This account is currently being used by other Uniclix users, please contact our helpdesk support for additional details'
+                            });
+                        } else {
+                            Modal({
+                                type: 'error',
+                                title: 'Error',
+                                content: 'Something went wrong!'
+                            });
                         }
                     });
             }
@@ -254,22 +267,31 @@ class Middleware extends React.Component {
         try {
             this.setState(() => ({ loading: true }));
             this.props.startAddLinkedinChannel(response.accessToken).then(() => {
-                this.setState(() => ({ loading: false, addAccounts: "linkedin" }));
+                this.setState(() => ({ addAccounts: "linkedin" }));
                 getPages().then((response) =>{
                     if(response.length){
                         this.setState(() => ({
                             bussinesPages: response,
                             bussinesModal: true,
-                            addAccounts: "linkedin"
+                            addAccounts: "linkedin",
+                            loading: false
                         }));
                     }
                 });
             }).catch(error => {
                 this.setState(() => ({ loading: false }));
-                if (error.response.status === 403) {
-                    this.setForbidden(true);
+                if (error.response.status === 409) {
+                    Modal({
+                        type: 'error',
+                        title: 'Error',
+                        content: 'This account is currently being used by other Uniclix users, please contact our helpdesk support for additional details'
+                    });
                 } else {
-                    this.setError("Something went wrong!");
+                    Modal({
+                        type: 'error',
+                        title: 'Error',
+                        content: 'Something went wrong!'
+                    });
                 }
             });
         } catch (e) {
