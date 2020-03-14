@@ -3160,6 +3160,7 @@ button.cancelBtn {
   padding: 10px 20px;
   font-size: 16px;
   outline: none;
+  text-decoration: none;
 }
 
 button.doneBtn {
@@ -5804,4 +5805,21 @@ section.pricing {
   border-radius: 50px;
   border: 1px solid darkgrey;
   padding: 1px;
+}
+
+.modal-content1{
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    letter-spacing: 0.130517px;
+    color: #363636;
+    margin: 0px 0px 20px 24px;
+}
+
+.cancelBtn1{
+  font-weight: 700;
+  color : #2D86DA;
+  text-decoration: none;
+  padding: 10px 20px;
 }

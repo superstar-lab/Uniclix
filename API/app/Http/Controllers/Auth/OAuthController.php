@@ -52,7 +52,7 @@ class OAuthController extends Controller
         $user_register = User::where('email', $email)->first();
         
         $created_at = strtotime($user_register['created_at']);
-        $trial_ends_at = date("Y-m-d h:i:s", $created_at + 14 * 86400);
+        $trial_ends_at = date("Y-m-d h:i:s", $created_at + 1 * 86400);
 
         \DB::table('users')->where('email', $email)->update(['trial_ends_at' => $trial_ends_at]);
         // $user->notify(new \App\Notifications\User\UserSignUp());

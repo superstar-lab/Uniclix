@@ -77,25 +77,27 @@ class TopMenu extends React.Component {
                 </div>
                 {!!profile.subscription ?
                 (!profile.subscription.activeSubscription ?
-                    <div className="top-alert">
-                        <span>
-                            {
-                                profile.remain_date > 0 ?
-                                `You have ${profile.remain_date} days remaining on your Twitter Booster trial. `
-                                :
-                                `Your free trial period is expired. Please order plan. `
-                            }
-                            
-                        </span>
-                        Add your billing information now to start your subscription.
-                        <button
-                            className="btn-text-pink"
-                            onClick={() => props.history.push('/settings/billing')}>
-                                Start subscription
-                        </button>
-                    </div>
-                    : ""
-                ) : ""
+                    (
+                        profile.remain_date > 0 ?
+                        <div className="top-alert">
+                            <span>
+                                You have {profile.remain_date} days remaining on your Twitter Booster trial.
+                            </span>
+                            Add your billing information now to start your subscription.
+                            <button
+                                className="btn-text-pink"
+                                onClick={() => props.history.push('/settings/billing')}>
+                                    Start subscription
+                            </button>
+                        </div>
+                        :
+                        ""
+                    )
+                    :
+                    ""
+                ) 
+                :
+                ""
             }
             </div>
         );

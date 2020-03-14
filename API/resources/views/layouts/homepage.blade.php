@@ -70,45 +70,21 @@
             "id" => 'products',
             "active" => Request::is("social-media-calendar") || Request::is("content-curation-tool") || Request::is("social-listening-tool") || Request::is("social-media-analytics") || Request::is("twitter-followers-app")? 'active' : '',
             "submenu" => [
-                "publisher" =>
-                [
-                    "name" => "Publisher",
-                    "description" => "Craft the perfect post for each social network, all in…",
-                    "url" => route('products.publisher'),
-                    "active" => Request::is("social-media-calendar") ? 'active' : '',
-                    "id" => "publisher"
+                "twitter_growth" => [
+                    "name" => "Twitter Booster",
+                    "description" => "Grow your community on Twitter by targeting the right audience.",
+                    "url" => route('products.twitter_booster'),
+                    "active" => Request::is("twitter-followers-app") ? 'active' : '',
+                    "id" => "twitter_growth"
                 ],
-                "content_curation" =>
+                "social_media_manager" =>
                 [
-                    "name" => "Content Curation",
-                    "description" => "Simplify Your Social Content Curation",
-                    "url" => route('products.content_curation'),
-                    "active" => Request::is("content-curation-tool") ? 'active' : '',
-                    "id" => "content_curation"
-                ],
-                "social_listening" =>
-                [
-                    "name" => "Social Listening",
-                    "description" => "People are talking, make sure your listening.",
+                    "name" => "Social Media Manager",
+                    "description" => "Centralize, manage and grow your social media accounts.",
                     "url" => route('products.social_listening'),
                     "active" => Request::is("social-listening-tool") ? 'active' : '',
                     "id" => "social_listening"
                 ],
-                "analytics" => 
-                [
-                    "name" => "Analytics",
-                    "description" => "A simpler way to measure performance",
-                    "url" => route('products.analytics'),
-                    "active" => Request::is("social-media-analytics") ? 'active' : '',
-                    "id" => "analytics"
-                ],
-                "twitter_growth" => [
-                    "name" => "Twitter Booster",
-                    "description" => "Grow your Twitter audience and expand your Influence",
-                    "url" => route('products.twitter_booster'),
-                    "active" => Request::is("twitter-followers-app") ? 'active' : '',
-                    "id" => "twitter_growth"
-                ]
             ]
         ],
         "pricing" =>
@@ -117,6 +93,14 @@
             "url" => route('pricing'),
             "id" => 'pricing',
             "active" => Request::is("pricing") ? 'active' : '',
+            "submenu" => []
+        ],
+        "affiliate" =>
+        [
+            "name" => "Affiliate Program",
+            "url" => route('affiliate'),
+            "id" => 'affiliate',
+            "active" => Request::is("affiliate") ? 'active' : '',
             "submenu" => []
         ],
         "blog" => 
@@ -142,8 +126,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a href="{{ route('homepage.index') }}" class="navbar-brand text-center">
-                        <img class="img-responsive" id="logo-img" src="{{ asset('images/logo.png') }}" alt="uniclix">
-                        <!-- <span class="logo-text">uniclix</span> -->
+                        <label class="home-title">Uniclix.</label>
                     </a>
                 </div>
                 <div class="navbar-collapse collapse">
@@ -169,8 +152,9 @@
                 <div class="projects-navbar-container">
                     @foreach($menu['products']['submenu'] as $item)
                     <div class="projects-menu-item">
-                        <h5>{{$item['name']}}</h5>
+                        <h5>{{$item['name']}}<span class="point-color">.<span></h5>
                         <p>{{$item['description']}}</p>
+                        <br>
                         <a href="{{ $item['url'] }}">Learn more</a>
                     </div>
                     @endforeach
@@ -180,7 +164,7 @@
 
         <div class="mobile-nav">
             <nav id="nav" class="nav" role="navigation">
-                <a href="{{ route('homepage.index') }}" ><img src="{{asset('images/logo-white.png')}}" id="logo" /></a>
+                <a href="{{ route('homepage.index') }}" class="navbar-brand text-center"><label class="home-title">Uniclix.</label></a>
                 <!-- ACTUAL NAVIGATION MENU -->
                 <ul class="nav__menu" id="menu" tabindex="-1" aria-label="main navigation" hidden>
                     @foreach($menu as $item)

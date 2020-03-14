@@ -52,12 +52,26 @@ class StreamInitiator extends React.Component {
 
     //Set the default state value
     componentWillMount() {
+        this.initialValue();
+    }
+    
+    componentDidUpdate(prevProps) {
+        
+        if(prevProps.selectedChannel !== this.props.selectedChannel){
+            this.initialValue();
+        }
+        
+    }
+
+    initialValue = () => {
         let socialMediaCards = getSocialMediaCards();
         let socialMediasSelectorOptions = [];
         this.props.channels.forEach(({ type, id }) => {
             // Getting the options for the socialMedia dropdown
             if (socialMediasSelectorOptions.indexOf(type) === -1) {
-                socialMediasSelectorOptions.push(type);
+                if(type != 'facebook'){
+                    socialMediasSelectorOptions.push(type);
+                }
             }
         });
         this.setState({socialMediasSelectorOptions: socialMediasSelectorOptions});
@@ -79,7 +93,7 @@ class StreamInitiator extends React.Component {
         this.props.onChangeSocial(selectedSocial);
         this.props.onChangeAccount(selectedAccountId);
     }
-    
+
     //Function to add stream
     submitStream = (item) => {
         this.setState(() => ({
@@ -313,9 +327,11 @@ const ProfileChannel = ({ channel }) => (
 );
 
 const mapStateToProps = (state) => {
-    const channels = streamChannels(state.channels.list);
+    //const channels_all = channelSelector(state.channels.list, { selected: undefined, provider: undefined, publishable: true });
+    //const channels = channelSelector(channels_all, { selected: 1 });
+    //const selectedChannel = channelSelector(channels_all, { selected: 1 });
+    const channels = channelSelector(state.channels.list, { selected: undefined, provider: undefined, publishable: true });
     const selectedChannel = channelSelector(channels, { selected: 1 });
-
     return {
         channels,
         selectedChannel: selectedChannel.length ? selectedChannel[0] : {},

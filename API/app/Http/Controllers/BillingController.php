@@ -159,18 +159,25 @@ class BillingController extends Controller
 
     public function changePlan(Request $request)
     {
-
         $plan = $request->input('plan');
         $roleName = explode("_", $plan)[0];
         $role = Role::where("name", $roleName)->first();
+        $user = $this->user;
+        $current_role_name = $this->user->role->name;
+        $channels_count = $user->channels()->count() - $user->channels()->where('type', 'facebook')->count();
         if(!$role) return response()->json(["error" => "Plan not found"], 404);
 
-        $user = $this->user;
-        if($user->channels()->count() > $role->roleLimit->account_limit) 
-            return response()->json(["error" => "Please delete some social accounts to correspond to the limits of your new plan.", "redirect" => "/accounts"], 403);
-
-        if($user->teamMembers()->count() + 1 > $role->roleLimit->team_accounts) 
-            return response()->json(["error" => 'Please delete some team accounts to correspond to the limits of your new plan.', "redirect" => "/settings/team"], 403);
+        if($current_role_name == 'premium'){
+            if($channels_count > $role->roleLimit->account_limit) 
+            return response()->json(["message" => "more than 5 accounts", "redirect" => "/accounts"]);
+            if($user->teamMembers()->count() + 1 > $role->roleLimit->team_accounts) 
+            return response()->json(["message" => 'Please delete some team accounts to correspond to the limits of your new plan.', "redirect" => "/settings/team"], 403);
+        } else if($current_role_name == 'pro') {
+            if($channels_count > $role->roleLimit->account_limit) 
+            return response()->json(["message" => "more than 20 accounts", "redirect" => "/accounts"]);
+            if($user->teamMembers()->count() + 1 > $role->roleLimit->team_accounts) 
+            return response()->json(["message" => 'Please delete some team accounts to correspond to the limits of your new plan.', "redirect" => "/settings/team"], 403);
+        }
 
         if($plan !== 'free') $user->subscription('main')->swap($plan);
         else $user->subscription('main')->cancel();

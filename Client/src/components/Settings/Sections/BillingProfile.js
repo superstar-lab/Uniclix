@@ -24,6 +24,8 @@ class BillingProfile extends React.Component {
         onAddCard: false,
         subscriptionStatus: false,
         forbidden: false,
+        accountsModal: false,
+        message: '',
     }
 
     componentDidMount() {
@@ -62,6 +64,22 @@ class BillingProfile extends React.Component {
         }));
 
         changePlan(plan).then(response => {
+            let message = response.message;
+            if(message == 'more than 5 accounts') {
+                this.setState({
+                    accountsModal: true,
+                    message: 'You currently are utilizing more than 5 accounts, please assure that you have five active accounts only before downgrade.'
+                });
+                this.setLoading();
+                return;
+            } else if(message == 'more than 20 accounts'){
+                this.setState({
+                    accountsModal: true,
+                    message: 'You currently are utilizing more than 20 accounts, please assure that you have five active accounts only before downgrade.'
+                });
+                this.setLoading();
+                return;
+            }
             this.props.startSetProfile();
             this.setLoading();
             this.setState({
@@ -141,7 +159,7 @@ class BillingProfile extends React.Component {
     };
 
     render() {
-        const { allPlans, onAddCard, planName, planChange, planCancel, planResume, planConfirm, selectedPlan, billingPeriod, roleBilling } = this.state;
+        const { allPlans, onAddCard, planName, planChange, planCancel, planResume, planConfirm, selectedPlan, billingPeriod, roleBilling, accountsModal, message } = this.state;
         const { profile } = this.props;
 
         return (
@@ -205,6 +223,21 @@ class BillingProfile extends React.Component {
                             <div style={{float:'right'}}>
                                 <button onClick={() => this.setPlanCancel(false)} className="cancelBtn" >Cancel</button>
                                 <button onClick={() => {this.cancelPlan();this.setPlanCancel(false);}} className="cancelBtn" >Yes, cancel it</button>
+                            </div>
+                        </Modal>
+                    }
+
+                    {!!accountsModal && 
+                        <Modal
+                        ariaHideApp={false}
+                        className="billing-profile-modal"
+                        isOpen={!!accountsModal}
+                        >
+                            <div className="modal-title">{`Attention`}</div>
+                            <div className="modal-content1">{message}</div>
+                            <div style={{float:'right'}}>
+                                <button onClick={() => this.setState({accountsModal: false})} className="cancelBtn" >No</button>
+                                <a href="/settings/manage-account" className="cancelBtn1" >Yes</a>
                             </div>
                         </Modal>
                     }

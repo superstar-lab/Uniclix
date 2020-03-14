@@ -18,16 +18,31 @@ Grow your community on Twitter by targeting the right audience. Think of our Boo
 
 @section('content')
 
-<div id="page-banner"></div>
+<div id="home-banner"></div>
 <div class="product-pages">
-    <div class="tg-first-section">
+    <div class="">
         <div class="container">
-            <div class="row standard-padding text-center">
-                <div class="col-xs-12">
-                    <h2>Grow your Twitter audience and expand your influence</h2>
-                    <p>Grow your community on Twitter by targeting the right audience. Think of our Booster tool as a matchmaker that connects you with people most interested in what you have to offer.</p>
+            <div class="left-side-social">
+            <div class="spacing"><a target="_blank" href="https://web.facebook.com/UniClixApp/"><img src="{{ asset('images/facebook-icon.svg') }}" /></a></div>
+            <div class="spacing"><a target="_blank" href="https://twitter.com/UniClix"><img src="{{ asset('images/twitter-icon.svg') }}" /></a></div>
+            <div class="spacing"><a target="_blank" href="https://linkedin.com/UniClix"><img src="{{ asset('images/linkedin-icon.svg') }}" /></a></div>
+            <div class="spacing"><a target="_blank" href="https://www.instagram.com/uniclix/"><img src="{{ asset('images/instagram-icon.svg') }}" /></a></div>
+        </div>
+        <div class="row pb50 intro-banner">           
+            <div class="home-image1"><img src="{{ asset('images/home-image1.svg') }}" class="img-responsive laptop-img" /></div>
+            <div class="home-image2"><img src="{{ asset('images/home-image2.svg') }}" class="img-responsive laptop-img" /></div>
+            <div class="col-md-12 col-xs-12">
+                <h1>Your twitter life is about to <br> get a boost<span class="point-color">.</span></h1>
+                    <div class="home-subtitle">
+                        <div>Target your audience<span class="point-pink-color">&nbsp;.&nbsp;</span>Clean-up inactives<span class="point-pink-color">&nbsp;.&nbsp;</span>Track performance</div>
+                    </div>
+                <div class="button-layout">
+                    <a class="btn theme-btn mt30" href="{{config('frontendclient.client_url')}}?register" target="_blank">Try 14 days for free</a>
                 </div>
+                <div class="home-image3"><img id="main-picture" src="{{ asset('images/home-image6.svg') }}" class="img-responsive laptop-img" /></div>
+                <!-- <a href="/pricing" class="btn theme-btn mt30">Learn more</a> -->
             </div>
+        </div>
         </div>
     </div>
 

@@ -32,7 +32,9 @@ class ConnectAccounts extends React.Component {
         allPlans: [],
         loading: false,
         forbidden: false,
-        addAccounts: ""
+        addAccounts: "",
+        accountsModal: false,
+        message: '',
     }
 
     twitterRef = React.createRef();
@@ -113,6 +115,36 @@ class ConnectAccounts extends React.Component {
             response.json().then(body => {
                 this.props.startAddTwitterChannel(body.oauth_token, body.oauth_token_secret)
                     .then(response => {
+                        let message = response.message;
+                        if(message == 'upgrade to Premium'){
+                            this.setState({
+                                accountsModal: true,
+                                message: 'Please upgrade to Premium before adding additional accounts.',
+                                loading: false,
+                            });
+                            return;
+                        } else if(message == 'upgrade to PRO'){
+                            this.setState({
+                                accountsModal: true,
+                                message: 'Please upgrade to PRO before adding additional accounts.',
+                                loading: false,
+                            });
+                            return;
+                        } else if(message == 'contact customer'){
+                            this.setState({
+                                accountsModal: true,
+                                message: 'Please contact customer service for Enterprise version.',
+                                loading: false,
+                            });
+                            return;
+                        } else if(message == 'freetrial'){
+                            this.setState({
+                                accountsModal: true,
+                                message: 'Please upgrade to Basic before adding additional accounts.',
+                                loading: false,
+                            });
+                            return;
+                        }
                         this.setState(() => ({ loading: false, addAccounts: "twitter" }));
                     }).catch(error => {
                         this.setState(() => ({ loading: false }));
@@ -378,13 +410,13 @@ class ConnectAccounts extends React.Component {
 
     render() {
         const { channels, AddOtherAccounts } = this.props;
-        const { loading, addAccounts, bussinesPagesModal, bussinesPages, error } = this.state;
+        const { loading, addAccounts, bussinesPagesModal, bussinesPages, error, accountsModal, message } = this.state;
         let countLinkedFacebookAcc = channels.length > 0 ? channels.filter(item => item.type == 'facebook').length : 0
         let countLinkedTwitterAcc = channels.length > 0 ? channels.filter(item => item.type == 'twitter').length : 0
         let countLinkedLinkedinAcc = channels.length > 0 ? channels.filter(item => item.type == 'linkedin').length : 0
         return (
             <div className="main-container">
-
+                        
                 {loading && <LoaderWithOverlay />}
                 <div className="col-xs-12 text-center">
                     <SelectAccountsModal
@@ -395,6 +427,21 @@ class ConnectAccounts extends React.Component {
                         closeModal={this.togglebussinesPagesModal}
                     />
                     {loading && <LoaderWithOverlay />}
+                   
+                    {!!accountsModal && 
+                        <Modal
+                        ariaHideApp={false}
+                        className="billing-profile-modal"
+                        isOpen={!!accountsModal}
+                        >
+                            <div className="modal-title">{`Attention`}</div>
+                            <div className="modal-content1">{message}</div>
+                            <div style={{float:'right'}}>
+                                <button onClick={() => this.setState({accountsModal: false})} className="cancelBtn" >No</button>
+                                <a href="/settings/billing" className="cancelBtn1" >Yes</a>
+                            </div>
+                        </Modal>
+                    }
 
                     <div className="box channels-box">
                         {channels.length > 0 && addAccounts.length > 0

@@ -33,6 +33,15 @@ class Scheduled extends React.Component {
     }
   }
 
+  componentWillMount() {
+    if(this.props.main_profile.remain_date <= 0){
+      this.setState({
+        accountsModal: true,
+        message: 'Your free trial has expired, please upgrade.'
+      });
+    }
+  }
+
   changeTimezone = (timezone) => {
     this.setState({ isLoading: true });
     updateTimeZone({ timezone })
@@ -63,6 +72,20 @@ class Scheduled extends React.Component {
 
     return (
       <div className="scheduled">
+        {!!accountsModal && 
+          <Modal
+          ariaHideApp={false}
+          className="billing-profile-modal"
+          isOpen={!!accountsModal}
+          >
+              <div className="modal-title">{`Attention`}</div>
+              <div className="modal-content1">{message}</div>
+              <div style={{float:'right'}}>
+                  <button onClick={() => this.setState({accountsModal: false})} className="cancelBtn" >No</button>
+                  <a href="/settings/billing" className="cancelBtn1" >Yes</a>
+              </div>
+          </Modal>
+        }
         <div className="section-header no-border mb-40">
           <div className="section-header__first-row row">
             <div className="col-xs-12 col-md-8 ">
@@ -95,9 +118,10 @@ class Scheduled extends React.Component {
 
 const mapStateToProps = (state) => {
   const { profile: { user: { timezone } } = {} } = state;
-
+  const main_profile = state.profile;
   return {
-    timezone
+    timezone,
+    main_profile
   };
 };
 

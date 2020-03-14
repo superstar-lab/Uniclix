@@ -6,13 +6,27 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Controller;
 use App\Models\Twitter\Channel;
+use Carbon\Carbon;
 
 class ChannelController extends Controller
 {
 
     public function add(Request $request){
         $user = auth()->user();
-        if($user->channels()->count() >= $user->getLimit("account_limit")) return response()->json(["error" => "You have exceeded the account limit for this plan."], 403);
+        $trial_ends_date = $user->trial_ends_at;
+        $current_date = Carbon::now()->timestamp;
+        $current_role_name = $user->role->name;
+        if($trial_ends_at >= $current_date && !$current_role_name) {
+            return response()->json(["message" => "freetrial"]);
+        }
+        $channels_count = $user->channels()->count() - $user->channels()->where('type', 'facebook')->count();
+        if($current_role_name == 'basic' && $channels_count >= $user->getLimit("account_limit")) {
+            return response()->json(["message" => "upgrade to Premium"]);
+        } else if($current_role_name == 'premium' && $channels_count >= $user->getLimit("account_limit")) {
+            return response()->json(["message" => "upgrade to PRO"]);
+        } else if($current_role_name == 'pro' && $channels_count >= $user->getLimit("account_limit")) {
+            return response()->json(["message" => "contact customer"]);
+        }
         
         $accessToken = $request->input("oauth_token");
         $accessTokenSecret = $request->input("oauth_token_secret");
