@@ -439,6 +439,7 @@ class Middleware extends React.Component {
                             accounts={bussinesPages}
                             onSave={this.onBussinesPagesSave}
                             error={this.state.error}
+                            closeModal={this.togglebussinesModal}
                         />
                         {middleware !== "channels" && middleware !== "billing" && <Loader />}
                         {loading && <LoaderWithOverlay />}

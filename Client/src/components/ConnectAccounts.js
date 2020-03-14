@@ -18,8 +18,7 @@ import Loader, { LoaderWithOverlay } from './Loader';
 import { getParameterByName } from "../utils/helpers";
 import ChannelItems from "./Accounts/ChannelItems";
 import { getPages, savePages } from "../requests/linkedin/channels";
-
-
+import Modal from './Modal';
 
 class ConnectAccounts extends React.Component {
     state = {
@@ -117,10 +116,18 @@ class ConnectAccounts extends React.Component {
                         this.setState(() => ({ loading: false, addAccounts: "twitter" }));
                     }).catch(error => {
                         this.setState(() => ({ loading: false }));
-                        if (error.response.status === 403) {
-                            this.setForbidden(true);
+                        if (error.response.status === 409) {
+                            Modal({
+                                type: 'error',
+                                title: 'Error',
+                                content: 'This account is currently being used by other Uniclix users, please contact our helpdesk support for additional details'
+                            });
                         } else {
-                            this.setError("Something went wrong!");
+                            Modal({
+                                type: 'error',
+                                title: 'Error',
+                                content: 'Something went wrong!'
+                            });
                         }
                     });
             });
@@ -155,10 +162,17 @@ class ConnectAccounts extends React.Component {
                         }
 
                         if (error.response.status === 409) {
-                            this.setError("This facebook account is already registered from another uniclix account.");
-                        }
-                        else {
-                            this.setError("Something went wrong!");
+                            Modal({
+                                type: 'error',
+                                title: 'Error',
+                                content: 'This account is currently being used by other Uniclix users, please contact our helpdesk support for additional details'
+                            });
+                        } else {
+                            Modal({
+                                type: 'error',
+                                title: 'Error',
+                                content: 'Something went wrong!'
+                            });
                         }
                     });
             }
@@ -231,10 +245,18 @@ class ConnectAccounts extends React.Component {
                 });
             }).catch(error => {
                 this.setState(() => ({ loading: false }));
-                if (error.response.status === 403) {
-                    this.setForbidden(true);
+                if (error.response.status === 409) {
+                    Modal({
+                        type: 'error',
+                        title: 'Error',
+                        content: 'This account is currently being used by other Uniclix users, please contact our helpdesk support for additional details'
+                    });
                 } else {
-                    this.setError("Something went wrong!");
+                    Modal({
+                        type: 'error',
+                        title: 'Error',
+                        content: 'Something went wrong!'
+                    });
                 }
             });
         } catch (e) {
@@ -370,6 +392,7 @@ class ConnectAccounts extends React.Component {
                         accounts={bussinesPages}
                         onSave={this.onBussinesPagesSave}
                         error={error}
+                        closeModal={this.togglebussinesPagesModal}
                     />
                     {loading && <LoaderWithOverlay />}
 

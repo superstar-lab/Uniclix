@@ -20,7 +20,7 @@ class SelectAccountsModal extends React.Component{
     };
 
     render(){
-        const {isOpen, accounts, onSave, error} = this.props;
+        const {isOpen, accounts, onSave, error, closeModal} = this.props;
         return (
             <Modal
             isOpen={isOpen}
@@ -30,6 +30,10 @@ class SelectAccountsModal extends React.Component{
         
                 <div className="center-inline p10 m10-top">
                     Select Accounts
+                </div>
+
+                <div className="close-icon" onClick={closeModal}>
+                    <img src="/images/monitor-icons/close.svg" />
                 </div>
 
                 <div className="center-inline p10 m10-top">
