@@ -3524,6 +3524,17 @@ button.doneBtn {
   margin: 0 auto;
 }
 
+.ReactModal__Content.ReactModal__Content--after-open.account-select-modal {
+  position: relative !important;
+
+  .close-icon {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+  }
+}
+
 .account-select-modal {
   width: 500px !important;
   max-width: 500px !important;

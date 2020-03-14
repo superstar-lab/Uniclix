@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import SweetAlert from "sweetalert2-react";
 import {linkedinAppId} from "../../config/api";
-import SelectAccountsModal from './SelectAccountsModal';
 import {startAddLinkedinChannel, startSetChannels} from "../../actions/channels";
 import channelSelector from "../../selectors/channels";
 import {destroyChannel} from "../../requests/channels";
