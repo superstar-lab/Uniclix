@@ -13,7 +13,7 @@ class ChannelController extends Controller
 
     public function add(Request $request){
         $user = auth()->user();
-        $trial_ends_date = $user->trial_ends_at;
+        $trial_ends_at = $user->trial_ends_at;
         $current_date = Carbon::now()->timestamp;
         $current_role_name = $user->role->name;
         if($trial_ends_at >= $current_date && !$current_role_name) {
