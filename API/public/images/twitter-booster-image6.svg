@@ -1,5 +1,11 @@
-<svg width="188" height="537" viewBox="0 0 188 537" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="188" height="752" viewBox="0 0 188 752" fill="none" xmlns="http://www.w3.org/2000/svg">
 <line y1="-0.5" x2="606.696" y2="-0.5" transform="matrix(0.469773 -0.882787 -0.891181 -0.453647 -98.2383 535.696)" stroke="#D8753E"/>
 <line y1="-0.5" x2="606.51" y2="-0.5" transform="matrix(0.956267 -0.292494 -0.329927 -0.944006 -393.214 177.514)" stroke="#D8753E"/>
-<path d="M158.367 19.6548L-189.862 751.339L-399.115 209.407L158.367 19.6548Z" fill="#D83E7F"/>
+<path d="M158.367 19.6548L-189.862 751.339L-399.115 209.407L158.367 19.6548Z" fill="url(#paint0_linear)"/>
+<defs>
+<linearGradient id="paint0_linear" x1="144.587" y1="67.6244" x2="-211.3" y2="241.418" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F08345"/>
+<stop offset="1" stop-color="#D8753E" stop-opacity="0.7"/>
+</linearGradient>
+</defs>
 </svg>

@@ -18,7 +18,8 @@ import Loader, { LoaderWithOverlay } from './Loader';
 import { getParameterByName } from "../utils/helpers";
 import ChannelItems from "./Accounts/ChannelItems";
 import { getPages, savePages } from "../requests/linkedin/channels";
-import Modal from './Modal';
+
+import Modal from 'react-modal';
 
 class ConnectAccounts extends React.Component {
     state = {

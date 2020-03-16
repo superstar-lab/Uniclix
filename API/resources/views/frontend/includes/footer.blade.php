@@ -63,8 +63,6 @@
                     <ul class="footer-ul">
                         <li><a href="mailto:info@uniclixapp.com?Subject=The%20sky%20is%20falling!">Support</a></li>
                         <!-- <li><a href="#">Contact</a></li> -->
-
-                        <li><a href="#about">Support</a></li>
                         <li><a target="_blank" href="/privacy-policy">Terms of Service</a></li>
                         <li><a target="_blank" href="/privacy-policy">Privacy Policy</a></li>
                     </ul>

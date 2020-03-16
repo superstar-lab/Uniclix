@@ -9,6 +9,7 @@ import { setComposerModal } from '../../actions/composer';
 import ScheduledPosts from './Sections/ScheduledPosts';
 import TimezoneSelector from './components/TimezoneSelector';
 import Loader from '../Loader';
+import Modal from 'react-modal';
 
 const { TabPane } = Tabs;
 
@@ -20,7 +21,9 @@ class Scheduled extends React.Component {
     this.state = {
       activeTab: 'scheduled',
       selectedTimezone: props.timezone ? props.timezone : moment.tz.guess(),
-      isLoading: false
+      isLoading: false,
+      accountsModal: false,
+      message: ''
     }
   }
 
@@ -68,7 +71,7 @@ class Scheduled extends React.Component {
   };
 
   render() {
-    const { selectedTimezone, isLoading } = this.state;
+    const { selectedTimezone, isLoading, accountsModal, message } = this.state;
 
     return (
       <div className="scheduled">
