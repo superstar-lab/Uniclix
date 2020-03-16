@@ -128,17 +128,17 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
 }
 
 .signin-btn.nav-btn{
-    //font-family: open-sansSemiBold, sans-serif, arial !important;
+    /* font-family: open-sansSemiBold, sans-serif, arial !important; */
 }
 
 .signin-btn.nav-btn.nav-btn-white{
-    //background:white !important;
-    //color:black !important;
+    /* background:white !important;
+    color:black !important; */
 }
 
 .signin-btn.nav-btn.nav-btn-white:hover{
-    //color: white !important;
-    //background: transparent !important;
+    /* color: white !important;
+    background: transparent !important; */
 }
 
 .signin-btn {
@@ -158,7 +158,7 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
 }
 
 .signin-btn:hover {
-    //border-bottom: 3px solid darkgray;
+    /* border-bottom: 3px solid darkgray; */
 }
 
 .compose-btn,
@@ -1693,7 +1693,7 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
     .mobile-nav{
         display: block;
         height: 85px;
-        //background: linear-gradient(to left, #48BBB8, #438AF1);
+        /* background: linear-gradient(to left, #48BBB8, #438AF1); */
     }
 
     .mobile-nav nav#nav {
@@ -1833,6 +1833,22 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
     .home-image2 {
         right: -65px !important;
     }
+    
+    .twitter-booster1 {
+        right: -56px !important;
+    }
+
+    .twitter-booster3 {
+        left: -42px !important;
+    }
+
+    .twitter-booster4 {
+        right: -57px !important;
+    }
+
+    .home-image5 {
+        right: -39px !important;
+    } 
 }
 
 @media only screen and (max-width: 770px) {
@@ -1948,7 +1964,7 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
 
     #home-banner {
         /*padding-top: 100px;*/
-        //background-color: #49AFC2;
+        /* background-color: #49AFC2; */
     }
     
     .container {
@@ -1962,6 +1978,25 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
     .home-image2 {
         right: -65px !important;
     }
+
+    .twitter-booster1 {
+        right: -56px !important;
+    }
+
+    .twitter-booster2 {
+        left: -43px !important;
+    }
+
+    .twitter-booster3 {
+        left: -42px !important;
+    } 
+    
+    .twitter-booster4 {
+        right: -57px !important;
+    }
+    .home-image5 {
+        right: -39px !important;
+    } 
 }
 
 @media only screen and (max-width: 425px) {
@@ -2103,11 +2138,25 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
     .article-image-image {
         width: 95%;
     }
+    .twitter-booster1 {
+        right: -56px !important;
+    }
+
+    .home-image5 {
+        right: -39px !important;
+    }
+
+    .twitter-booster4 {
+        right: -57px !important;
+    }
 }
 
 @media only screen and (max-width: 320px) {
     #banner {
         padding-top: 150px;
+    }
+    .twitter-booster1 {
+        right: -56px;
     }
 }
 
@@ -2193,6 +2242,28 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
 .home-image6 {
     position: absolute;
     left: 28%;
+}
+
+.twitter-booster1 {
+    top: 7%;
+    position: absolute;
+    right: 0px;
+}
+
+.twitter-booster2 {
+    position: absolute;
+    left: 20px;
+    top: 52%;
+}
+
+.twitter-booster3 {
+    position: absolute;
+    left: 0px;
+}
+
+.twitter-booster4 {
+    position: absolute;
+    right: 0px;
 }
 
 .affordable-title {
@@ -2321,4 +2392,9 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
     letter-spacing: 0.436364px;
 
     color: #2D86DA;
+}
+
+.tool-icon {
+    position: absolute;
+    left: 77px;
 }
