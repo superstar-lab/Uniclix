@@ -13,15 +13,21 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
 
 @section('content')
 <div id="page-banner">
-</div>
-<div class="product-pages">
-    <div class="p-first-section">
-        <div class="container">
-            <div class="row standard-padding">
-                <div class="col-xs-12 text-center">
-                    <h2>Uniclix price table</h2>
+    <div class="container">
+        <div class="left-side-social">
+        <div class="spacing"><a target="_blank" href="https://web.facebook.com/UniClixApp/"><img src="{{ asset('images/facebook-icon.svg') }}" /></a></div>
+        <div class="spacing"><a target="_blank" href="https://twitter.com/UniClix"><img src="{{ asset('images/twitter-icon.svg') }}" /></a></div>
+        <div class="spacing"><a target="_blank" href="https://linkedin.com/UniClix"><img src="{{ asset('images/linkedin-icon.svg') }}" /></a></div>
+        <div class="spacing"><a target="_blank" href="https://www.instagram.com/uniclix/"><img src="{{ asset('images/instagram-icon.svg') }}" /></a></div>
+    </div>
+    <div class="row pb50 intro-banner">           
+        <div class="twitter-booster2"><img src="{{ asset('images/pricing-image1.svg') }}" class="img-responsive laptop-img" /></div>
+        <div class="twitter-booster1" style="top: 9%;"><img src="{{ asset('images/pricing-image2.svg') }}" class="img-responsive laptop-img" /></div>
+        <div class="col-md-12 col-xs-12">
+            <h1 style="text-align: center;font-size: 60px;margin-top: 10%;">We have the right<br>  price for you<span class="point-color">.</span></h1>
+                <div class="home-subtitle">
+                    <div><span class="point-pink-color">&nbsp;.&nbsp;</span>Social Media Management<span class="point-pink-color">&nbsp;.&nbsp;</span>Twitter booster<span class="point-pink-color">&nbsp;.&nbsp;</span></div>
                 </div>
-            </div>
         </div>
     </div>
 </div>
@@ -56,7 +62,7 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                     @foreach($paidPlans as $plan)
                         <div class="plan plan-shadow">
                             <div class="plan-name-container">
-                                <div class="plan-name">{{$plan["Name"]}}</div>
+                                <h2 class="booster-title">{{$plan["Name"]}}</h2>
                             </div>
                             <div class="plan-price-container">
                                 <div>
@@ -71,7 +77,7 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                                 <div class="plan-items"><img src="{{asset('/images/plan-tick.svg')}}"> {{$plan["Users"]}} user</div>
                             </div>
                             <div class="plan-button-container">
-                                <a class="btn plan-price-btn" href="{{config('frontendclient.client_url')}}?register&plan={{strtolower($plan['Name'])}}&period=annually">Start 30 days free trial</a>
+                                <a class="btn plan-price-btn" href="{{config('frontendclient.client_url')}}?register&plan={{strtolower($plan['Name'])}}&period=annually">Start 14 days free trial</a>
                                 <div class="plan-see-more">or <a href="#compareplans">see more features</a></div>
                             </div>
                         </div>
@@ -91,8 +97,7 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                             </th>
                             @foreach($allPlans as $plan)
                             <th>
-                                <h5>{{$plan["Name"]}}</h5>
-                                <a class="btn plan-price-btn" data-url="{{config('frontendclient.client_url')}}" data-addon="" data-plan="{{strtolower($plan['Name'])}}" data-period="annually" href="{{config('frontendclient.client_url')}}?register&plan={{strtolower($plan['Name'])}}&period=annually">Start 30 days trial</a>
+                                <h2 class="booster-title">{{$plan["Name"]}}</h2>
                             </th>
                             @endforeach
                         </tr>
@@ -225,13 +230,22 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                             @endforeach
                         </tr>
                         <tr>
+                            <td class="fs14 text-left">Social media: Facebook Pages and Groups, Twitter, LinkedIn Pages and Profile</td>
+                            @foreach($allPlans as $plan)
+                                @if(!$plan["Social Listening & Monitoring"])
+                                <td><img src="{{asset('/images/plan-cancel.svg')}}"></td>
+                                @else
+                                <td><img src="{{asset('/images/plan-success.svg')}}"></td>
+                                @endif
+                            @endforeach
+                        </tr>
+                        <tr>
                             <th style="width:20%">
                             </th>
 
                             @foreach($allPlans as $plan)
                             <th>
-                                <h5>{{$plan["Name"]}}</h5>
-                                <a class="btn plan-price-btn" data-url="{{config('frontendclient.client_url')}}" data-addon="" data-plan="{{strtolower($plan['Name'])}}" data-period="annually" href="{{config('frontendclient.client_url')}}?register&plan={{strtolower($plan['Name'])}}&period=annually">Start 30 days trial</a>
+                                <a class="btn plan-price-btn" data-url="{{config('frontendclient.client_url')}}" data-addon="" data-plan="{{strtolower($plan['Name'])}}" data-period="annually" href="{{config('frontendclient.client_url')}}?register&plan={{strtolower($plan['Name'])}}&period=annually">Get Started</a>
                             </th>
                             @endforeach
                             
