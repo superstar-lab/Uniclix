@@ -107,6 +107,7 @@
 .billing-toggle {
     font-size: 16px;
     font-weight: 700;
+    color: #2D86DA;
 }
 .pricing-plans {
     display: flex;
@@ -118,26 +119,35 @@
     margin: 5px;
 }
 .plan-name-container {
-    padding: 40px 0;
+    padding: 27px 0;
 }
 .plan-name {
     font-size: 20px;
     font-weight:700;
 }
 .plan-price-container {
-    padding: 20px 0;
-    border-top: 1px solid #ebebeb;
-    border-bottom: 1px solid #ebebeb;
+    padding: 40px 0;
 }
 .plan-price {
-    font-size:34px;
-    font-weight: 700;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 40px;
+    line-height: 32px;
+    text-align: center;
+    color: #2D86DA;
 }
 .billed-period {
-    font-size: 16px;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 32px;
+    text-align: center;
+    color: #3F3D56;
 }
 .plan-content-container {
-    padding: 40px 10px;
+    padding: 27px 35px;
 }
 .plan-items {
     padding: 8px 0;
@@ -146,27 +156,39 @@
 }
 .plan-button-container {
     padding: 0px 10px 50px 10px;
+    margin-top: -27px;
+    border-bottom: 1px solid #CCCCCC;
 }
 .plan-see-more {
-    font-size: 16px;
     padding-top: 20px;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 32px;
+    color: #363636;
 }
 .plan-see-more a {
-    color: #489FD7;
-    text-decoration: none;
+    color: darkgray;
 }
 .plan-shadow {
-    /* -webkit-box-shadow: 0px 0px 20px 1px rgba(235,235,235,1);
--moz-box-shadow: 0px 0px 20px 1px rgba(235,235,235,1);
-box-shadow: 0px 0px 20px 1px rgba(235,235,235,1); */
+    background: #FFFFFF;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
 }
 .plan-price-btn {
-    background: #b358b3;
-    color: #fff;
+    margin-top: 34px;
+    width: 77%;
+    background: #2D86DA;
     border-radius: 30px;
-    font-size: 16px;
-    width: 100%;
+    font-family: Rubik;
+    font-style: normal;
     font-weight: 500;
+    font-size: 16px;
+    line-height: 23px;
+    text-align: center;
+    letter-spacing: 0.436364px;
+    color: #FFFFFF;
 }
 .color-theme-btn {
     background: #b358b3;
@@ -190,6 +212,13 @@ box-shadow: 0px 0px 20px 1px rgba(235,235,235,1); */
 }
 .compare-plans-container {
     margin-top: 100px;
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 45px;
+    line-height: 53px;
+    text-align: center;
+    color: #363636;
 }
 .compare-plans-table th{
    padding: 15px;
@@ -290,13 +319,16 @@ box-shadow: 0px 0px 20px 1px rgba(235,235,235,1); */
   position: relative;
   display: inline-block;
   padding: 15px 60px;
-  border: 1px solid transparent;
-  border-bottom: 0;
-  margin-bottom: 0px;
   cursor: pointer;
   font-weight: 700;
   font-size: 20px;
-  background: #F0F0F0;
+  background: #FFFFFF;
+  border: 1px solid #D8D8D8;
+  box-sizing: border-box;
+  border-radius: 6px;
+  margin-left: 1%;
+  padding: 2% 4%;
+  margin-right: 1%;
 }
 
 .tabset > input:checked + label {
@@ -304,8 +336,8 @@ box-shadow: 0px 0px 20px 1px rgba(235,235,235,1); */
     border: 1px solid #2D86DA;
     box-sizing: border-box;
     border-radius: 6px;
-    padding: 3% 10%;
-    margin-right: 3%;
+    padding: 2% 4%;
+    margin-right: 1%;
 }
 
 .tab-panel {
@@ -315,6 +347,7 @@ box-shadow: 0px 0px 20px 1px rgba(235,235,235,1); */
 
 .tabset {
   text-align: center;
+  margin-top: 7%;
 }
 
 .label {
@@ -498,6 +531,20 @@ box-shadow: 0px 0px 20px 1px rgba(235,235,235,1); */
     }
 }
 
+.pricing-title {
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    padding: 0 21px;
+    text-align: center;
+    color: #909090;
+}
 
-
-
+.compare-plans-table-container {
+    background: #FFFFFF;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    margin-top: 6%;
+}
