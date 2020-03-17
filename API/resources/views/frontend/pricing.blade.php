@@ -21,7 +21,7 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
         <div class="spacing"><a target="_blank" href="https://www.instagram.com/uniclix/"><img src="{{ asset('images/instagram-icon.svg') }}" /></a></div>
     </div>
     <div class="row pb50 intro-banner">           
-        <div class="twitter-booster2"><img src="{{ asset('images/pricing-image1.svg') }}" class="img-responsive laptop-img" /></div>
+        <div class="twitter-booster2" style="top: 46%;"><img src="{{ asset('images/pricing-image1.svg') }}" class="img-responsive laptop-img" /></div>
         <div class="twitter-booster1" style="top: 9%;"><img src="{{ asset('images/pricing-image2.svg') }}" class="img-responsive laptop-img" /></div>
         <div class="col-md-12 col-xs-12">
             <h1 style="text-align: center;font-size: 60px;margin-top: 10%;">We have the right<br>  price for you<span class="point-color">.</span></h1>
@@ -35,13 +35,24 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
 <div class="tabset">
 
     <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked>
-    <label for="tab1">Product Plan</label>
+    
+    <label for="tab1">
+        <div class="row">
+            <div class="col-md-3 col-xs-3"><div style="width: 23px;"><img src="{{ asset('images/twitter-booster-image9.svg') }}" /></div></div>
+            <div class="col-md-9 col-xs-9">Product Plan</div>
+        </div>
+    </label>
 
     <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">
-    <label for="tab2">Twitter Growth</label>
+    <label for="tab2">
+        <div class="row">
+            <div class="col-md-2 col-xs-2"><div style="width: 23px;"><img src="{{ asset('images/twitter-booster-image9.svg') }}" /></div></div>
+            <div class="col-md-10 col-xs-10">Twitter Growth</div>
+        </div>
+    </label>
 
-    <div class="tab-panels">
-        <section id="marzen" class="tab-panel plan-shadow">
+    <div class="tab-panels" style="margin-top: 7%;">
+        <section id="marzen" class="tab-panel">
             <div class="container">
                 <div class="montly-annual text-right">
                     <span class="billing-toggle">monthly billing</span>
@@ -56,13 +67,16 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                     </label>
                     <span class="billing-toggle">annual billing</span>
                 </div>
-                <div class="text-right mb30">save up to 20%</div>
+                <div class="text-right mb30" style="color:#2D86DA;font-style: italic;">save up to 20%</div>
+                <div class="twitter-booster1" style="top: 110%;z-index:-1;"><img src="{{ asset('images/pricing-image.svg') }}" class="img-responsive laptop-img" /></div>
                 <div class="pricing-plans">
-                    
                     @foreach($paidPlans as $plan)
                         <div class="plan plan-shadow">
                             <div class="plan-name-container">
                                 <h2 class="booster-title">{{$plan["Name"]}}</h2>
+                            </div>
+                            <div class="pricing-title">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam non mattis nisi. 
                             </div>
                             <div class="plan-price-container">
                                 <div>
@@ -71,22 +85,21 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                                 </div>
                                 <div class="billed-period">Billend monthly</div>
                             </div>
-                            <div class="plan-content-container">
-                                <div class="plan-items"><img src="{{asset('/images/plan-tick.svg')}}"> {{$plan["Social Accounts"]}} social accounts</div>
-                                <div class="plan-items"><img src="{{asset('/images/plan-tick.svg')}}"> {{$plan["Post Limitation"]}} posts</div>
-                                <div class="plan-items"><img src="{{asset('/images/plan-tick.svg')}}"> {{$plan["Users"]}} user</div>
-                            </div>
                             <div class="plan-button-container">
                                 <a class="btn plan-price-btn" href="{{config('frontendclient.client_url')}}?register&plan={{strtolower($plan['Name'])}}&period=annually">Start 14 days free trial</a>
                                 <div class="plan-see-more">or <a href="#compareplans">see more features</a></div>
                             </div>
+                            <div class="plan-content-container">
+                                <div class="plan-items"><img src="{{asset('/images/check-icon.svg')}}"> {{$plan["Social Accounts"]}} social accounts</div>
+                                <div class="plan-items"><img src="{{asset('/images/check-icon.svg')}}"> {{$plan["Post Limitation"]}} posts</div>
+                                <div class="plan-items"><img src="{{asset('/images/check-icon.svg')}}"> {{$plan["Users"]}} user</div>
+                            </div>
+                            
                         </div>
                     @endforeach
         
                 </div>
-                <div class="text-box plan-shadow">
-                    Try our basic free plan. 2 social accounts, 10 posts per account, 1 user. <a href="{{config('frontendclient.client_url')}}?register&plan=basic&period=annually">Get started now</a>
-                </div>
+                <div class="home-image1" style="top: 180%;z-index:-1;"><img src="{{ asset('images/pricing-image3.svg') }}" class="img-responsive laptop-img" /></div>
                 <div class="compare-plans-container text-left" id="compareplans">
                     <h1>Compare plans</h1>
                 </div>
@@ -145,7 +158,7 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                                 @if($plan["Schedule and Publish"] === 'Limited')
                                 <td class="plan-table-text">{{$plan["Schedule and Publish"]}}</td>
                                 @else
-                                <td><img src="{{asset('/images/plan-success.svg')}}"></td>
+                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
                                 @endif
                             @endforeach
                         </tr>
@@ -155,7 +168,7 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                                 @if($plan["Content Curation"] === 'Limited')
                                 <td class="plan-table-text">{{$plan["Content Curation"]}}</td>
                                 @else
-                                <td><img src="{{asset('/images/plan-success.svg')}}"></td>
+                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
                                 @endif
                             @endforeach
                         </tr>
@@ -163,9 +176,9 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                             <td class="fs14 text-left">Mentions</td>
                             @foreach($allPlans as $plan)
                                 @if(!$plan["Mentions"])
-                                <td><img src="{{asset('/images/plan-cancel.svg')}}"></td>
+                                <td><img src="{{asset('/images/close-icon.svg')}}"></td>
                                 @else
-                                <td><img src="{{asset('/images/plan-success.svg')}}"></td>
+                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
                                 @endif
                             @endforeach
                         </tr>
@@ -173,9 +186,9 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                             <td class="fs14 text-left">Social Listening & Monitoring</td>
                             @foreach($allPlans as $plan)
                                 @if(!$plan["Social Listening & Monitoring"])
-                                <td><img src="{{asset('/images/plan-cancel.svg')}}"></td>
+                                <td><img src="{{asset('/images/close-icon.svg')}}"></td>
                                 @else
-                                <td><img src="{{asset('/images/plan-success.svg')}}"></td>
+                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
                                 @endif
                             @endforeach
                         </tr>
@@ -185,7 +198,7 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                                 @if($plan["Analytics"] === 'Limited')
                                 <td class="plan-table-text">{{$plan["Analytics"]}}</td>
                                 @else
-                                <td><img src="{{asset('/images/plan-success.svg')}}"></td>
+                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
                                 @endif
                             @endforeach
                         </tr>
@@ -193,9 +206,9 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                             <td class="fs14 text-left">Advanced Schedule</td>
                             @foreach($allPlans as $plan)
                                 @if(!$plan["Advanced Schedule"])
-                                <td><img src="{{asset('/images/plan-cancel.svg')}}"></td>
+                                <td><img src="{{asset('/images/close-icon.svg')}}"></td>
                                 @else
-                                <td><img src="{{asset('/images/plan-success.svg')}}"></td>
+                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
                                 @endif
                             @endforeach
                         </tr>
@@ -203,9 +216,9 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                             <td class="fs14 text-left">Create and Manage Draft Posts</td>
                             @foreach($allPlans as $plan)
                                 @if(!$plan["Create and Manage Draft Posts"])
-                                <td><img src="{{asset('/images/plan-cancel.svg')}}"></td>
+                                <td><img src="{{asset('/images/close-icon.svg')}}"></td>
                                 @else
-                                <td><img src="{{asset('/images/plan-success.svg')}}"></td>
+                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
                                 @endif
                             @endforeach
                         </tr>
@@ -213,9 +226,9 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                             <td class="fs14 text-left">Team: Invite Additional Users</td>
                             @foreach($allPlans as $plan)
                                 @if(!$plan["Team: Invite Additional Users"])
-                                <td><img src="{{asset('/images/plan-cancel.svg')}}"></td>
+                                <td><img src="{{asset('/images/close-icon.svg')}}"></td>
                                 @else
-                                <td><img src="{{asset('/images/plan-success.svg')}}"></td>
+                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
                                 @endif
                             @endforeach
                         </tr>
@@ -223,9 +236,9 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                             <td class="fs14 text-left">Approval Workflow</td>
                             @foreach($allPlans as $plan)
                                 @if(!$plan["Approval Workflow"])
-                                <td><img src="{{asset('/images/plan-cancel.svg')}}"></td>
+                                <td><img src="{{asset('/images/close-icon.svg')}}"></td>
                                 @else
-                                <td><img src="{{asset('/images/plan-success.svg')}}"></td>
+                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
                                 @endif
                             @endforeach
                         </tr>
@@ -233,9 +246,9 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                             <td class="fs14 text-left">Social media: Facebook Pages and Groups, Twitter, LinkedIn Pages and Profile</td>
                             @foreach($allPlans as $plan)
                                 @if(!$plan["Social Listening & Monitoring"])
-                                <td><img src="{{asset('/images/plan-cancel.svg')}}"></td>
+                                <td><img src="{{asset('/images/close-icon.svg')}}"></td>
                                 @else
-                                <td><img src="{{asset('/images/plan-success.svg')}}"></td>
+                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
                                 @endif
                             @endforeach
                         </tr>
