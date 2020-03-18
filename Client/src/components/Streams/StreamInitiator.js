@@ -69,7 +69,7 @@ class StreamInitiator extends React.Component {
         this.props.channels.forEach(({ type, id }) => {
             // Getting the options for the socialMedia dropdown
             if (socialMediasSelectorOptions.indexOf(type) === -1) {
-                if(type != 'facebook'){
+                if(type != 'linkedin'){
                     socialMediasSelectorOptions.push(type);
                 }
             }
