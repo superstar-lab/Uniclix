@@ -105,7 +105,10 @@ class StreamItems extends Component {
     this.props.channels.forEach(({ type, id }) => {
       // Getting the options for the socialMedia dropdown
       if (this.state.socialMediasSelectorOptions.indexOf(type) === -1) {
-        this.state.socialMediasSelectorOptions.push(type);
+        if(type != 'linkedin') {
+          this.state.socialMediasSelectorOptions.push(type);
+        }
+        
       }
     });
   }
