@@ -9,8 +9,9 @@ import { logout } from "../../../actions/auth";
 import Loader from "../../Loader";
 import ChannelItems from "../../Accounts/ChannelItems";
 import UpgradeAlert from "../../UpgradeAlert";
-import { Prompt } from 'react-router'
+import { Modal } from '../../Modal';
 import { withRouter } from "react-router";
+import { notification } from 'antd';
 
 class Social extends React.Component {
     constructor(props) {
@@ -84,9 +85,10 @@ class Social extends React.Component {
             .then((response) => {
                 this.props.startSetChannels()
                     .then((response) => {
-                        // if(response.length < 1){
-                        //     this.props.logout();
-                        // }
+                        notification.success({
+                            message: 'Done!',
+                            description: 'Account deleted successfuly'
+                        });
                         this.setState(() => ({
                             action: this.defaultAction
                         }));
@@ -98,6 +100,10 @@ class Social extends React.Component {
                     }));
                     return;
                 }
+                notification.error({
+                    message: 'Error',
+                    description: 'We couldn\'t delet your account, please try again later'
+                });
             });
     }
 
@@ -131,8 +137,9 @@ class Social extends React.Component {
     AddOtherAccounts = (val) => {
         this.setState({ addneacc: val })
     }
+
     render() {
-        const { shouldBlockNavigation, addneacc } = this.state
+        const { addneacc, action } = this.state
         return (
             addneacc ?
                 <ConnectAccounts
@@ -141,21 +148,19 @@ class Social extends React.Component {
                 :
                     <div className="main-container">
                         <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden} />
-                        <SweetAlert
-                            show={!!this.state.action.id}
-                            title={`Do you wish to ${this.state.action.type} this item?`}
-                            text="To confirm your decision, please click one of the buttons below."
-                            showCancelButton
-                            type="warning"
-                            confirmButtonText="Yes"
-                            cancelButtonText="No"
-                            onConfirm={() => {
-                                if (this.state.action.type === 'delete') {
-                                    this.remove(this.state.action.id);
+                        <Modal
+                            type="confirm"
+                            isOpen={!!action.id}
+                            title="Do you wish to delete this account?"
+                            message="To confirm your decision, please click one of the buttons below"
+                            onOk={() => {
+                                if (action.type === 'delete') {
+                                    this.remove(action.id);
                                 } else {
                                     console.log('something went wrong');
                                 }
                             }}
+                            onCancel={() => this.setState({ action: this.defaultAction })}
                         />
 
                         <SweetAlert

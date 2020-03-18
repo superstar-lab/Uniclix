@@ -28,7 +28,7 @@ class PostsCalendar extends React.Component {
     super(props);
 
     this.state = {
-      currentDate: moment().tz(props.timezone),
+      currentDate: props.timezone ? moment().tz(props.timezone) : moment(),
       selectedEvent: {},
       isLoading: false,
       intervalId: ''

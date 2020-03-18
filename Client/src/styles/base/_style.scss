@@ -338,10 +338,6 @@ a:link {
   width: 100%;
 }
 
-.account-info p {
-  max-width: 250px !important;
-}
-
 .box-container>button,
 .social-login>button {
   background: #00aced;
@@ -5823,3 +5819,24 @@ section.pricing {
   text-decoration: none;
   padding: 10px 20px;
 }
+
+.custom-modal {
+	width: 407px !important;
+  margin: 10px;
+  background: #F5F7FB;
+  outline: none;
+  overflow: auto;
+  max-height: 95vh;
+	border-radius: 8px;
+  padding: 15px;
+
+  .modalBtn {
+    font-weight: 700;
+    color : #2D86DA;
+    text-decoration: none;
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+  }
+}
+

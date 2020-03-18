@@ -8,6 +8,8 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Auth\AuthenticationException;
 use Auth; 
 
+use App\Exceptions\FacebookException as FacebookException;
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -49,6 +51,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof FacebookException) {
+            return $exception->render();
+        }
+
         return parent::render($request, $exception);
     }
 

@@ -18,8 +18,8 @@ import Loader, { LoaderWithOverlay } from './Loader';
 import { getParameterByName } from "../utils/helpers";
 import ChannelItems from "./Accounts/ChannelItems";
 import { getPages, savePages } from "../requests/linkedin/channels";
-
-import Modal from 'react-modal';
+import Modal from './Modal';
+import ReactModal from 'react-modal';
 
 class ConnectAccounts extends React.Component {
     state = {
@@ -172,7 +172,6 @@ class ConnectAccounts extends React.Component {
         try {
             this.setState(() => ({ loading: true }));
             if (response) {
-                this.setState(() => ({ loading: false }));
                 this.props.startAddFacebookChannel(response.accessToken)
                     .then(() => {
                         this.setState(() => ({ loading: true }));
@@ -199,6 +198,12 @@ class ConnectAccounts extends React.Component {
                                 type: 'error',
                                 title: 'Error',
                                 content: 'This account is currently being used by other Uniclix users, please contact our helpdesk support for additional details'
+                            });
+                        } else if (error.response.status === 419) {
+                            Modal({
+                                type: 'error',
+                                title: 'Error',
+                                content: 'You reached the limit of requests to Facebook\'s API, please try again in 20 minutes'
                             });
                         } else {
                             Modal({
@@ -409,9 +414,21 @@ class ConnectAccounts extends React.Component {
         this.setState({ addAccounts: "" })
     }
 
+    getAccountsForModal = () => {
+        const { channels } = this.props;
+        const { bussinesPages } = this.state;
+
+        // first we get the facebook channels that are already registered
+        const facebookChannels = channels.filter(channel => channel.type === 'facebook');
+        const filteredAccounts = bussinesPages
+            .filter(page => facebookChannels.findIndex(fb => fb.details.original_id === page.id) === -1);
+
+        return filteredAccounts;
+    };
+
     render() {
         const { channels, AddOtherAccounts } = this.props;
-        const { loading, addAccounts, bussinesPagesModal, bussinesPages, error, accountsModal, message } = this.state;
+        const { loading, addAccounts, bussinesPagesModal, error, accountsModal, message } = this.state;
         let countLinkedFacebookAcc = channels.length > 0 ? channels.filter(item => item.type == 'facebook').length : 0
         let countLinkedTwitterAcc = channels.length > 0 ? channels.filter(item => item.type == 'twitter').length : 0
         let countLinkedLinkedinAcc = channels.length > 0 ? channels.filter(item => item.type == 'linkedin').length : 0
@@ -422,7 +439,7 @@ class ConnectAccounts extends React.Component {
                 <div className="col-xs-12 text-center">
                     <SelectAccountsModal
                         isOpen={bussinesPagesModal}
-                        accounts={bussinesPages}
+                        accounts={this.getAccountsForModal()}
                         onSave={this.onBussinesPagesSave}
                         error={error}
                         closeModal={this.togglebussinesPagesModal}
@@ -430,7 +447,7 @@ class ConnectAccounts extends React.Component {
                     {loading && <LoaderWithOverlay />}
                    
                     {!!accountsModal && 
-                        <Modal
+                        <ReactModal
                         ariaHideApp={false}
                         className="billing-profile-modal"
                         isOpen={!!accountsModal}
@@ -441,7 +458,7 @@ class ConnectAccounts extends React.Component {
                                 <button onClick={() => this.setState({accountsModal: false})} className="cancelBtn" >No</button>
                                 <a href="/settings/billing" className="cancelBtn1" >Yes</a>
                             </div>
-                        </Modal>
+                        </ReactModal>
                     }
 
                     <div className="box channels-box">

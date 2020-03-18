@@ -411,9 +411,21 @@ class Middleware extends React.Component {
         this.setState({addAccounts: ""})
     }
 
+    getAccountsForModal = () => {
+        const { channels } = this.props;
+        const { bussinesPages } = this.state;
+
+        // first we get the facebook channels that are already registered
+        const facebookChannels = channels.filter(channel => channel.type === 'facebook');
+        const filteredAccounts = bussinesPages
+            .filter(page => facebookChannels.findIndex(fb => fb.details.original_id === page.id) === -1);
+
+        return filteredAccounts;
+    };
+
     render() {
         const { middleware, channels } = this.props;
-        const { loading, allPlans, addon, addonTrial, addAccounts, bussinesModal, bussinesPages } = this.state;
+        const { loading, allPlans, addon, addonTrial, addAccounts, bussinesModal } = this.state;
         let planParam = getParameterByName("plan", this.props.location.search);
         let planData = allPlans.filter(plan => plan["Name"].toLowerCase() === planParam);
         planData = planData.length > 0 ? planData[0] : false;
@@ -430,13 +442,13 @@ class Middleware extends React.Component {
                 <div className="logo">
                     <img src="/images/uniclix.png" />
                 </div>
-                
-                {this.state.loading && <LoaderWithOverlay />}
+
+                {loading && <LoaderWithOverlay />}
                 <div className="col-md-7 col-xs-12 text-center">
                     <div className="col-xs-12 text-center">
                         <SelectAccountsModal 
-                            isOpen={bussinesModal} 
-                            accounts={bussinesPages}
+                            isOpen={bussinesModal}
+                            accounts={this.getAccountsForModal()}
                             onSave={this.onBussinesPagesSave}
                             error={this.state.error}
                             closeModal={this.togglebussinesModal}
@@ -467,6 +479,7 @@ class Middleware extends React.Component {
                                 </div>
                                 :
                                 <div>
+                                    {loading && <LoaderWithOverlay />}
                                     <div className="header-title">
                                         {middleware !== "loading" && <h2>Connect your accounts</h2>}
                                         <h5>Click one of the buttons below to get started:</h5>

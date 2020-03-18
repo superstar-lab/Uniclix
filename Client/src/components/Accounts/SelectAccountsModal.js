@@ -39,7 +39,12 @@ class SelectAccountsModal extends React.Component{
                 <div className="center-inline p10 m10-top">
                     <div className="form-group center-inline account-items-wrapper top-border">
                         {accounts.map(account => (
-                            <AccountItem key={account.id} account={account} removeAccount = {this.removeAccount} addAccount={this.addAccount} />
+                            <AccountItem
+                                key={account.id}
+                                account={account}
+                                removeAccount={this.removeAccount}
+                                addAccount={this.addAccount}
+                            />
                         ))}
                     </div>
                 </div>

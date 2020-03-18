@@ -40,8 +40,24 @@ class AnalyticsLanding extends React.Component {
             forbidden: false,
             calendarChange: false,
             loading: props.channelsLoading,
-            selectedAccount: accountSelectorOptions[0].id,
+            selectedAccount: accountSelectorOptions[0] ? accountSelectorOptions[0].id : 0,
             selectedSocialMedia
+        }
+    }
+
+    componentDidMount() {
+        // This will be erased once Linkedin analytics is done
+        if (this.state.selectedSocialMedia === 'linkedin') {
+            if (this.socialMediasSelectorOptions.length) {
+                const socialMediaToRedirectIndex = this.socialMediasSelectorOptions.findIndex(
+                    sm => sm !== 'linkedin'
+                );
+                if (socialMediaToRedirectIndex !== -1) {
+                    this.props.history.push(`/analytics/${this.socialMediasSelectorOptions[socialMediaToRedirectIndex]}`);
+                } else {
+                    this.props.history.push('/scheduled/posts');
+                }
+            }
         }
     }
 

@@ -3,7 +3,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 
 const TodaysAgenda = ({ posts, timezone, channelsList }) => {
-  const currentDate = moment().tz(timezone);
+  const currentDate = timezone ? moment().tz(timezone) : moment();
 
   const filterTodaysByTimezone = (post) => {
     const { payload: { scheduled: { publishUTCDateTime } } } = post;
