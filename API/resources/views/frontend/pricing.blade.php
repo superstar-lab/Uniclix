@@ -47,7 +47,7 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
     <label for="tab2">
         <div class="row">
             <div class="col-md-2 col-xs-2"><div style="width: 23px;"><img src="{{ asset('images/twitter-booster-image9.svg') }}" /></div></div>
-            <div class="col-md-10 col-xs-10">Twitter Growth</div>
+            <div class="col-md-10 col-xs-10">Twitter Booster</div>
         </div>
     </label>
 
@@ -104,216 +104,208 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                     <h1>Compare plans</h1>
                 </div>
                 <div class="compare-plans-table-container">
-                    <table class="compare-plans-table" style="width:100%">
-                        <tr>
-                            <th style="width:20%">
-                            </th>
-                            @foreach($allPlans as $plan)
-                            <th>
-                                <h2 class="booster-title">{{$plan["Name"]}}</h2>
-                            </th>
-                            @endforeach
-                        </tr>
-                        <tr class="grey-tr">
-                            <td class="fs14 text-left">Monthly</td>
-                            @foreach($allPlans as $plan)
-                                @if($plan["Monthly"] > 0)
-                                <td>${{$plan["Monthly"]}}</td>
-                                @else
-                                <td></td>
-                                @endif
-                            @endforeach
-                        </tr>
-                        <tr>
-                            <td class="fs14 text-left">Annual Billing</td>
-                            @foreach($allPlans as $plan)
-                                @if($plan["Annual Billing"] > 0)
-                                <td>${{$plan["Annual Billing"]}}</td>
-                                @else
-                                <td></td>
-                                @endif
-                            @endforeach
-                        </tr>
-                        <tr class="grey-tr">
-                            <td class="fs14 text-left">Social Accounts</td>
-                            @foreach($allPlans as $plan)
-                            <td>{{$plan["Social Accounts"]}}</td>
-                            @endforeach
-                        </tr>
-                        <tr>
-                            <td class="fs14 text-left">Users</td>
-                            @foreach($allPlans as $plan)
-                            <td>{{$plan["Users"]}}</td>
-                            @endforeach
-                        </tr>
-                        <tr class="grey-tr">
-                            <td class="fs14 text-left">Post Limitation</td>
-                            @foreach($allPlans as $plan)
-                            <td class="plan-table-text">{{$plan["Post Limitation"]}}</td>
-                            @endforeach
-                        </tr>
-                        <tr>
-                            <td class="fs14 text-left">Schedule and Publish</td>
-                            @foreach($allPlans as $plan)
-                                @if($plan["Schedule and Publish"] === 'Limited')
-                                <td class="plan-table-text">{{$plan["Schedule and Publish"]}}</td>
-                                @else
-                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
-                                @endif
-                            @endforeach
-                        </tr>
-                        <tr class="grey-tr">
-                            <td class="fs14 text-left">Content Curation</td>
-                            @foreach($allPlans as $plan)
-                                @if($plan["Content Curation"] === 'Limited')
-                                <td class="plan-table-text">{{$plan["Content Curation"]}}</td>
-                                @else
-                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
-                                @endif
-                            @endforeach
-                        </tr>
-                        <tr>
-                            <td class="fs14 text-left">Mentions</td>
-                            @foreach($allPlans as $plan)
-                                @if(!$plan["Mentions"])
-                                <td><img src="{{asset('/images/close-icon.svg')}}"></td>
-                                @else
-                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
-                                @endif
-                            @endforeach
-                        </tr>
-                        <tr class="grey-tr">
-                            <td class="fs14 text-left">Social Listening & Monitoring</td>
-                            @foreach($allPlans as $plan)
-                                @if(!$plan["Social Listening & Monitoring"])
-                                <td><img src="{{asset('/images/close-icon.svg')}}"></td>
-                                @else
-                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
-                                @endif
-                            @endforeach
-                        </tr>
-                        <tr>
-                            <td class="fs14 text-left">Analytics</td>
-                            @foreach($allPlans as $plan)
-                                @if($plan["Analytics"] === 'Limited')
-                                <td class="plan-table-text">{{$plan["Analytics"]}}</td>
-                                @else
-                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
-                                @endif
-                            @endforeach
-                        </tr>
-                        <tr class="grey-tr">
-                            <td class="fs14 text-left">Advanced Schedule</td>
-                            @foreach($allPlans as $plan)
-                                @if(!$plan["Advanced Schedule"])
-                                <td><img src="{{asset('/images/close-icon.svg')}}"></td>
-                                @else
-                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
-                                @endif
-                            @endforeach
-                        </tr>
-                        <tr>
-                            <td class="fs14 text-left">Create and Manage Draft Posts</td>
-                            @foreach($allPlans as $plan)
-                                @if(!$plan["Create and Manage Draft Posts"])
-                                <td><img src="{{asset('/images/close-icon.svg')}}"></td>
-                                @else
-                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
-                                @endif
-                            @endforeach
-                        </tr>
-                        <tr class="grey-tr">
-                            <td class="fs14 text-left">Team: Invite Additional Users</td>
-                            @foreach($allPlans as $plan)
-                                @if(!$plan["Team: Invite Additional Users"])
-                                <td><img src="{{asset('/images/close-icon.svg')}}"></td>
-                                @else
-                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
-                                @endif
-                            @endforeach
-                        </tr>
-                        <tr>
-                            <td class="fs14 text-left">Approval Workflow</td>
-                            @foreach($allPlans as $plan)
-                                @if(!$plan["Approval Workflow"])
-                                <td><img src="{{asset('/images/close-icon.svg')}}"></td>
-                                @else
-                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
-                                @endif
-                            @endforeach
-                        </tr>
-                        <tr>
-                            <td class="fs14 text-left">Social media: Facebook Pages and Groups, Twitter, LinkedIn Pages and Profile</td>
-                            @foreach($allPlans as $plan)
-                                @if(!$plan["Social Listening & Monitoring"])
-                                <td><img src="{{asset('/images/close-icon.svg')}}"></td>
-                                @else
-                                <td><img src="{{asset('/images/check-icon.svg')}}"></td>
-                                @endif
-                            @endforeach
-                        </tr>
-                        <tr>
-                            <th style="width:20%">
-                            </th>
+                    <div style="padding: 40px 50px 0px 50px;">
+                        <table class="compare-plans-table" style="width:100%">
+                            <tr>
+                                <th class="table-title" style="width:20%">
+                                </th>
+                                @foreach($allPlans as $plan)
+                                <th>
+                                    <h2 class="booster-title">{{$plan["Name"]}}</h2>
+                                </th>
+                                @endforeach
+                            </tr>
+                            <tr class="">
+                                <td class="table-title">Monthly</td>
+                                @foreach($allPlans as $plan)
+                                    @if($plan["Monthly"] > 0)
+                                    <td>${{$plan["Monthly"]}}</td>
+                                    @else
+                                    <td></td>
+                                    @endif
+                                @endforeach
+                            </tr>
+                            <tr>
+                                <td class="table-title">Annual Billing</td>
+                                @foreach($allPlans as $plan)
+                                    @if($plan["Annual Billing"] > 0)
+                                    <td>${{$plan["Annual Billing"]}}</td>
+                                    @else
+                                    <td></td>
+                                    @endif
+                                @endforeach
+                            </tr>
+                            <tr class="">
+                                <td class="table-title">Social Accounts</td>
+                                @foreach($allPlans as $plan)
+                                <td>{{$plan["Social Accounts"]}}</td>
+                                @endforeach
+                            </tr>
+                            <tr>
+                                <td class="table-title">Users</td>
+                                @foreach($allPlans as $plan)
+                                <td>{{$plan["Users"]}}</td>
+                                @endforeach
+                            </tr>
+                            <tr class="">
+                                <td class="table-title">Post Limitation</td>
+                                @foreach($allPlans as $plan)
+                                <td class="plan-table-text">{{$plan["Post Limitation"]}}</td>
+                                @endforeach
+                            </tr>
+                            <tr>
+                                <td class="table-title">Schedule and Publish</td>
+                                @foreach($allPlans as $plan)
+                                    @if($plan["Schedule and Publish"] === 'Limited')
+                                    <td class="plan-table-text">{{$plan["Schedule and Publish"]}}</td>
+                                    @else
+                                    <td><img src="{{asset('/images/check-icon.svg')}}"></td>
+                                    @endif
+                                @endforeach
+                            </tr>
+                            <tr class="">
+                                <td class="table-title">Content Curation</td>
+                                @foreach($allPlans as $plan)
+                                    @if($plan["Content Curation"] === 'Limited')
+                                    <td class="plan-table-text">{{$plan["Content Curation"]}}</td>
+                                    @else
+                                    <td><img src="{{asset('/images/check-icon.svg')}}"></td>
+                                    @endif
+                                @endforeach
+                            </tr>
+                            <tr>
+                                <td class="table-title">Mentions</td>
+                                @foreach($allPlans as $plan)
+                                    @if(!$plan["Mentions"])
+                                    <td><img src="{{asset('/images/close-icon.svg')}}"></td>
+                                    @else
+                                    <td><img src="{{asset('/images/check-icon.svg')}}"></td>
+                                    @endif
+                                @endforeach
+                            </tr>
+                            <tr class="">
+                                <td class="table-title">Social Listening & Monitoring</td>
+                                @foreach($allPlans as $plan)
+                                    @if(!$plan["Social Listening & Monitoring"])
+                                    <td><img src="{{asset('/images/close-icon.svg')}}"></td>
+                                    @else
+                                    <td><img src="{{asset('/images/check-icon.svg')}}"></td>
+                                    @endif
+                                @endforeach
+                            </tr>
+                            <tr>
+                                <td class="table-title">Analytics</td>
+                                @foreach($allPlans as $plan)
+                                    @if($plan["Analytics"] === 'Limited')
+                                    <td class="plan-table-text">{{$plan["Analytics"]}}</td>
+                                    @else
+                                    <td><img src="{{asset('/images/check-icon.svg')}}"></td>
+                                    @endif
+                                @endforeach
+                            </tr>
+                            <tr class="">
+                                <td class="table-title">Advanced Schedule</td>
+                                @foreach($allPlans as $plan)
+                                    @if(!$plan["Advanced Schedule"])
+                                    <td><img src="{{asset('/images/close-icon.svg')}}"></td>
+                                    @else
+                                    <td><img src="{{asset('/images/check-icon.svg')}}"></td>
+                                    @endif
+                                @endforeach
+                            </tr>
+                            <tr>
+                                <td class="table-title">Create and Manage Draft Posts</td>
+                                @foreach($allPlans as $plan)
+                                    @if(!$plan["Create and Manage Draft Posts"])
+                                    <td><img src="{{asset('/images/close-icon.svg')}}"></td>
+                                    @else
+                                    <td><img src="{{asset('/images/check-icon.svg')}}"></td>
+                                    @endif
+                                @endforeach
+                            </tr>
+                            <tr class="">
+                                <td class="table-title">Team: Invite Additional Users</td>
+                                @foreach($allPlans as $plan)
+                                    @if(!$plan["Team: Invite Additional Users"])
+                                    <td><img src="{{asset('/images/close-icon.svg')}}"></td>
+                                    @else
+                                    <td><img src="{{asset('/images/check-icon.svg')}}"></td>
+                                    @endif
+                                @endforeach
+                            </tr>
+                            <tr>
+                                <td class="table-title">Approval Workflow</td>
+                                @foreach($allPlans as $plan)
+                                    @if(!$plan["Approval Workflow"])
+                                    <td><img src="{{asset('/images/close-icon.svg')}}"></td>
+                                    @else
+                                    <td><img src="{{asset('/images/check-icon.svg')}}"></td>
+                                    @endif
+                                @endforeach
+                            </tr>
+                            <tr>
+                                <td class="table-title">Social media: Facebook Pages and Groups, Twitter, LinkedIn Pages and Profile</td>
+                                @foreach($allPlans as $plan)
+                                    @if(!$plan["Social Listening & Monitoring"])
+                                    <td><img src="{{asset('/images/close-icon.svg')}}"></td>
+                                    @else
+                                    <td><img src="{{asset('/images/check-icon.svg')}}"></td>
+                                    @endif
+                                @endforeach
+                            </tr>
+                            <tr>
+                                <th class="table-title" style="width:20%;border-bottom:none !important;">
+                                </th>
 
-                            @foreach($allPlans as $plan)
-                            <th>
-                                <a class="btn plan-price-btn" data-url="{{config('frontendclient.client_url')}}" data-addon="" data-plan="{{strtolower($plan['Name'])}}" data-period="annually" href="{{config('frontendclient.client_url')}}?register&plan={{strtolower($plan['Name'])}}&period=annually">Get Started</a>
-                            </th>
-                            @endforeach
-                            
-                        </tr>
-                    </table>
+                                @foreach($allPlans as $plan)
+                                <th class="table-title-bottom">
+                                    <a class="btn plan-price-btn" style="margin: 12px 12px;" data-url="{{config('frontendclient.client_url')}}" data-addon="" data-plan="{{strtolower($plan['Name'])}}" data-period="annually" href="{{config('frontendclient.client_url')}}?register&plan={{strtolower($plan['Name'])}}&period=annually">Get Started</a>
+                                </th>
+                                @endforeach
+                                
+                            </tr>
+                        </table>
+                        <div class="twitter-booster1" style="top: 220%;z-index:-1;"><img src="{{ asset('images/pricing-image4.svg') }}" class="img-responsive laptop-img" /></div>
+                        <div class="home-image1" style="top: 280%;z-index:-1;"><img src="{{ asset('images/pricing-image5.svg') }}" class="img-responsive laptop-img" /></div>
+                    </div>
                 </div>
             </div>
         </section>
-        <section id="rauchbier" class="tab-panel plan-shadow">
-            <div class="container">
+        <section id="rauchbier" class="tab-panel">
+            <div class="container" style="width: 70%;">
                 <div class="compare-plans-table-container">
-                    <table class="compare-plans-table" style="width:100%">
-                        <tr>
-                            <th style="width:80%">
-                            </th>
-                            <th>
-                                <h5>Twitter Growth</h5>
-                                <a class="btn plan-price-btn" href="{{config('frontendclient.client_url')}}?register&addon={{strtolower($addon['name'])}}&redirect=twitter-booster&period=monthly">Buy now</a>
-                            </th>
-                        </tr>
-                        <tr>
-                            <td class="fs14 text-left">Monthly</td>
-                            <td>${{$addon->monthly_price}}</td>
-                        </tr>
-                        <tr class="grey-tr">
-                            <td class="fs14 text-left">Targeted Followers</td>
-                            <td><img src="{{asset('/images/plan-success.svg')}}"></td>
-                        </tr>
-                        <tr>
-                            <td class="fs14 text-left">Recommended Unfollowers</td>
-                            <td><img src="{{asset('/images/plan-success.svg')}}"></td>
-                        </tr>
-                        <tr class="grey-tr">
-                            <td class="fs14 text-left">Target Audience</td>
-                            <td><img src="{{asset('/images/plan-success.svg')}}"></td>
-                        </tr>
-                        <tr>
-                            <td class="fs14 text-left">DM</td>
-                            <td><img src="{{asset('/images/plan-success.svg')}}"></td>
-                        </tr>
-                        <tr class="grey-tr">
-                            <td class="fs14 text-left">Mentions</td>
-                            <td><img src="{{asset('/images/plan-success.svg')}}"></td>
-                        </tr>
-                        <tr>
-                            <th style="width:80%">
-                            </th>
-                            <th>
-                                <a class="btn plan-price-btn" data-url="{{config('frontendclient.client_url')}}" data-addon="{{strtolower($addon['name'])}}" data-plan="" data-period="monthly" href="{{config('frontendclient.client_url')}}?register&addon={{strtolower($addon['name'])}}&redirect=twitter-booster&period=monthly">Buy now</a>
-                                <h5>Twitter Growth</h5>
-                            </th>
-                        </tr>
-                    </table>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div style="margin-top: 60px;">
+                                <img src="{{ asset('images/twitter-booster-image.svg') }}" class="laptop-img" />
+                            </div>
+                            <div class="plan-price-container">
+                                <div>
+                                    <span class="plan-price">$<span class="">{{$addon->monthly_price}}</span></span>
+                                    <span class="fw700" style="color: #2D86DA">/ mo</span>
+                                </div>
+                                <div class="booster-sub-title">Per account</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="plan-content-container" style="margin-top: 40px;margin-left: 46px;">
+                                <div class="plan-items"><img src="{{asset('/images/check-icon.svg')}}">&nbsp;Targeted Followers</div>
+                                <div class="plan-items"><img src="{{asset('/images/check-icon.svg')}}">&nbsp;Recommended Unfollowers</div>
+                                <div class="plan-items"><img src="{{asset('/images/check-icon.svg')}}">&nbsp;Target Audience</div>
+                                <div class="plan-items"><img src="{{asset('/images/check-icon.svg')}}">&nbsp;DM</div>
+                                <div class="plan-items"><img src="{{asset('/images/check-icon.svg')}}">&nbsp;Mentions</div>
+                                <div class="plan-items"><img src="{{asset('/images/check-icon.svg')}}">&nbsp;1 Twitter account</div>
+                            </div>
+                            <div class="plan-button-container" style="border:none;width: 80%;">
+                                <a class="btn plan-price-btn" data-url="{{config('frontendclient.client_url')}}" 
+                                data-addon="{{strtolower($addon['name'])}}" data-plan="" data-period="monthly" 
+                                href="{{config('frontendclient.client_url')}}?register&addon={{strtolower($addon['name'])}}&redirect=twitter-booster&period=monthly">Start 14 days free trial</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="twitter-booster1" style="top: 110%;z-index:-1;"><img src="{{ asset('images/pricing-image.svg') }}" class="img-responsive laptop-img" /></div>
         </section>
     </div>
 
@@ -364,7 +356,7 @@ $(document).ready(function(){
     });
 })
 </script>
-
+@include('frontend.includes.readytostart')
 @include('frontend.includes.footer')
 
 @endsection

@@ -116,7 +116,7 @@
 }
 .plan {
     flex: 1 1 auto;
-    margin: 5px;
+    margin: 10px;
 }
 .plan-name-container {
     padding: 27px 0;
@@ -223,11 +223,21 @@
 .compare-plans-table th{
    padding: 15px;
    text-align: center;
+   border-bottom: 1px solid #D6D8E0;
+   border-left: 1px solid #D6D8E0;
 }
 .compare-plans-table tr td {
     padding: 20px 10px;
-    font-size: 20px;
-    font-weight: 700;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+    text-align: center;
+
+    color: #363636;
+
+    border-left: 1px solid #D6D8E0;
+    border-bottom: 1px solid #D6D8E0;
 }
 .grey-tr {
     background-color: #F1F2F4;
@@ -547,4 +557,28 @@
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
     border-radius: 6px;
     margin-top: 6%;
+    margin-bottom: 8%;
+}
+.table-title {
+    padding-left: 20px !important;
+    text-align: left !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-size: 18px !important;
+    color: #363636 !important;
+    border-left: none !important;
+    width: 30%;
+}
+
+.table-title-bottom {
+    border-bottom: none !important;
+}
+
+.booster-sub-title {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 32px;
+    text-align: center;
+    color: #3F3D56;
 }
