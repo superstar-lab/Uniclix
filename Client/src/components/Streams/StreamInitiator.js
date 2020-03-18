@@ -11,6 +11,7 @@ import getSocialMediaCards from '../../config/socialmediacards';
 import { Grid } from '@material-ui/core';
 import AccountSelector from '../../components/AccountSelector';
 import SocialMediaSelector from '../../components/SocialMediaSelector';
+import { notification } from 'antd';
 
 const ACCOUNT_SELECTOR_FILTERS = {
     'facebook': (account) => account.details.account_type !== 'profile'
@@ -105,7 +106,15 @@ class StreamInitiator extends React.Component {
         const selectedTab = this.props.selectedTab;
         const searchTerm = this.state.searchTerm;
 
-        return addStream(item, channelId, selectedTab, network, searchTerm).then(() => this.props.reload()).then(() => {
+        return addStream(item, channelId, selectedTab, network, searchTerm).then(
+            (response) => {
+                this.props.reload();
+                if(response){
+                    this.openNotificationWithIcon('success');
+                } else {
+                    this.openNotificationWithIcon('error');
+                }
+            }).then(() => {
             if (typeof this.props.close !== "undefined") this.props.close();
         });
     };
@@ -223,6 +232,22 @@ class StreamInitiator extends React.Component {
         this.setState(() => ({
             streamCreator: !this.state.streamCreator
         }));
+    };
+
+    openNotificationWithIcon = (type) => {
+        if(type == 'success'){
+            notification[type]({
+                message: 'Added Success!',
+                description:
+                  'Added streamcard succesfully.'
+            });
+        } else {
+            notification[type]({
+                message: 'Added Error!',
+                description:
+                  'Error occurred on stream card adding.'
+            });
+        }
     };
 
     render() {
