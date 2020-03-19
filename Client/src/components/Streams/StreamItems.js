@@ -84,6 +84,7 @@ class StreamItems extends Component {
       socialMediasSelectorOptions: [],
       streamIcons: [],
       selectedAvatar: '',
+      isClosed: false
 
     };
 
@@ -344,8 +345,10 @@ class StreamItems extends Component {
   
   render() {
     const { channels, refreshRate, selectedTab, reload, isStreamMakerOpen } = this.props;
-    const { socialMediasSelectorOptions, selectedSocial, streamIcons, selectedAvatar, selectedAccountId } = this.state;
+    const { socialMediasSelectorOptions, selectedSocial, streamIcons, selectedAvatar, selectedAccountId, isClosed } = this.state;
     return (
+
+      
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Droppable droppableId="droppable" direction="horizontal">
           {(provided, snapshot) => (
@@ -396,6 +399,20 @@ class StreamItems extends Component {
                                   {item.title} 
                                 </span> 
                             } 
+                            {!!isClosed && 
+                              <Modal
+                              ariaHideApp={false}
+                              className="billing-profile-modal"
+                              isOpen={!!isClosed}
+                              >
+                                  <div className="modal-title">{`Attention`}</div>
+                                  <div className="modal-contents">{`Do you wish to delete this stream?`}</div>
+                                  <div style={{float:'right'}}>
+                                      <button onClick={() => this.setState({isClosed:false})} className="cancelBtn" >No</button>
+                                      <button onClick={() => {this.setState({isClosed:false}); this.handleStreamClose(item);}} className="cancelBtn" >Yes</button>
+                                  </div>
+                              </Modal>
+                            }
                           <span className="stream-user">{item.network == "twitter" ? "@" + channel.username : "@" + channel.name}</span>
                           <div className="pull-right">
                             <img 
@@ -406,7 +423,7 @@ class StreamItems extends Component {
                             <img 
                               className="action-btn stream-close-btn" 
                               src="/images/monitor-icons/close.svg" 
-                              onClick={() => this.handleStreamClose(item)} 
+                              onClick={() => this.setState({isClosed: true})} 
                             />
                           </div>
                         </h3>

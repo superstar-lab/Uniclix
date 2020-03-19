@@ -7,6 +7,7 @@ import StreamFeedItem from './StreamFeedItem';
 import {getStreamFeed} from '../../requests/streams';
 import Lightbox from 'react-images';
 import {PostLoader} from '../Loader';
+import {notification} from 'antd';
 
 class StreamFeed extends React.Component{
     state = {
@@ -40,6 +41,12 @@ class StreamFeed extends React.Component{
         this.setState(() => ({loading: true}));
         getStreamFeed(streamItem.type, streamItem.network, streamItem.channel_id, streamItem.search_query, "").then((response) => {
             const items = typeof response["data"] !== "undefined" ? response["data"] : response;
+            if(items.length){
+                this.openNotificationWithIcon('success');
+            } else {
+                this.openNotificationWithIcon('warning');
+            }
+
             let data = items.length ? items[items.length - 1] : "";
             let nextPage = data && typeof(data.id) !== "undefined" ? data.id : "";
             if(typeof(response["paging"]) !== "undefined" 
@@ -66,7 +73,7 @@ class StreamFeed extends React.Component{
             if(errorStatus === 401){
                 error = e.response.data.message;
             }
-            
+            this.openNotificationWithIcon('error');
             this.setState(() => ({loading: false, error, errorStatus}));  
         });
     };
@@ -143,6 +150,31 @@ class StreamFeed extends React.Component{
             items
         }));
     }
+
+    openNotificationWithIcon = (type) => {
+        if(type == 'success'){
+            notification[type]({
+                message: 'Updated Success!',
+                description:
+                  'Updated streamcard succesfully.',
+                duration: 14,
+            });
+        } else if(type == 'error') {
+            notification[type]({
+                message: 'Updated Error!',
+                description:
+                  'Error occurred on stream card adding.',
+                duration: 14,
+            });
+        } else {
+            notification[type]({
+                message: 'Updated Warning!',
+                description:
+                  'No data found.',
+                duration: 5,
+            });
+        }
+    };
 
     loadMore = () => {
         const {streamItem} = this.props;
