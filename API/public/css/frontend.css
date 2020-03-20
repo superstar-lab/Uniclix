@@ -2398,3 +2398,16 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
     position: absolute;
     left: 77px;
 }
+
+.booster-title {
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 30px;
+    line-height: 36px;
+    /* identical to box height */
+
+    text-align: center;
+
+    color: #363636;
+}

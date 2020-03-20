@@ -4,6 +4,11 @@ import {getUserInfo} from '../../requests/twitter/channels';
 import Loader from 'react-loader-spinner';
 import {abbrNum} from '../../utils/numberFormatter';
 
+
+const popupStyle = {
+    width: 500,
+}
+
 class TwitterInfoCard extends React.Component{
 
     state = {
@@ -42,6 +47,7 @@ class TwitterInfoCard extends React.Component{
                 position="right center"
                 arrow={false}
                 closeOnDocumentClick={true}
+                contentStyle={popupStyle}
                 >
                 {
                 close => ( 

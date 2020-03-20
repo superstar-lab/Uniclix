@@ -30,7 +30,7 @@ Grow your community on Twitter by targeting the right audience. Think of our Boo
         <div class="twitter-booster2"><img src="{{ asset('images/home-image3.svg') }}" class="img-responsive laptop-img" /></div>
         <div class="twitter-booster1"><img src="{{ asset('images/twitter-booster-image5.svg') }}" class="img-responsive laptop-img" /></div>
         <div class="col-md-12 col-xs-12">
-            <h1 style="text-align: center;font-size: 60px;">Your twitter life is about to <br> get a boost<span class="point-color">.</span></h1>
+            <h1 style="text-align: center;font-size: 60px;margin-top: 7%;">Your twitter life is about to <br> get a boost<span class="point-color">.</span></h1>
                 <div class="home-subtitle">
                     <div>Target your audience<span class="point-pink-color">&nbsp;.&nbsp;</span>Clean-up inactives<span class="point-pink-color">&nbsp;.&nbsp;</span>Track performance</div>
                 </div>
