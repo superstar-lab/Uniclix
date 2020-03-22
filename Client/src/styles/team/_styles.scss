@@ -1,0 +1,245 @@
+.settings-team {
+  .team-member-row {
+    background-color: #FFF;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    
+    &:hover {
+      background-color: #EAF3FB;
+
+      .created-at,
+      .role {
+        display: none;
+      }
+
+      .edit-member,
+      .delete-member {
+        display: flex;
+      }
+    }
+
+    .edit-member,
+    .delete-member {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      position: relative;
+
+      .svg-container {
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+        color: #2D86DA;
+      }
+
+      .action-label {
+        display: none;
+        position: absolute;
+        bottom: -30px;
+        left: -7px;
+        background-color: #0E4F8C;
+        padding: 5px;
+        color: #FFF;
+        border-radius: 5px;
+        width: 50px;
+        text-align: center;
+        font-size: 10px;
+      }
+
+      &:hover {
+        .svg-container {
+          background-color: rgba(45, 134, 218, 0.12);
+        }
+        
+        .action-label {
+          display: block;
+        }
+      }
+    }
+
+    .edit-member {
+      margin-right: 50px;
+    }
+
+    .role,
+    .managing,
+    .name {
+      font-family: Lato;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .email {
+      font-size: 14px;
+      color: #909090;
+      font-family: Lato;
+    }
+
+    .left-section {
+      width: 200px;
+    }
+
+    .middle-section {
+      .channels-row {
+        display: flex;
+        justify-content: center;
+      }
+
+      .channel-avatar {
+        position: relative;
+        margin-right: 10px;
+  
+        img {
+          width: 30px;
+          height: 30px;
+          object-fit: cover;
+          border-radius: 100%;
+          border: 1px solid #ccc;
+        }
+  
+        .icon {
+          width: 10px;
+          height: 10px;
+          border-radius: 100%;
+          position: absolute;
+          right: -2px;
+          bottom: 0;
+          font-size: 1rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 5px;
+          padding-top: 1px;
+        }
+      }
+    }
+
+    .right-section {
+      display: flex;
+      align-items: center;
+      min-width: 180px;
+
+      .created-at {
+        margin-right: 20px;
+      }
+    }
+  }
+
+  .add-button {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px dashed #909090;
+    border-radius: 6px;
+    width: 100%;
+
+    .btn-label {
+      font-size: 1.6rem;
+      margin-left: 10px;
+      font-weight: bold;
+    }
+  }
+
+  // Overrides
+  .ant-tabs-nav .ant-tabs-tab:hover,
+  .ant-tabs-nav .ant-tabs-tab-active {
+    color: #363636;
+  }
+
+  .ant-tabs-ink-bar {
+    background-color: #D83E7F;
+  }
+}
+
+.add-memeber-modal {
+  width: 620px;
+  height: 460px;
+  padding: 20px;
+  background: #F5F7FB;
+  font-family: Rubik;
+  overflow: scroll;
+
+  .name-section, 
+  .email-section {
+    margin-bottom: 20px;
+  }
+
+  .add-member-title {
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
+
+  .ant-select-selection,
+  input {
+    border: none;
+  }
+
+  .ant-select {
+    min-width: 175px;
+  }
+
+  .input-group {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  .accounts-group-container {
+    margin-bottom: 10px;
+  }
+
+  .add-modal-button-container {
+    padding: 10px 10px;
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px dashed #909090;
+    border-radius: 6px;
+    margin-right: 20px;
+    min-width: 100%;
+    
+    .add-modal-plus-btn {
+      margin-right: 10px;
+      padding: 7px 10px;
+      border-radius: 100px;
+      color: #FFF;
+      font-size: 10px;
+      background-color: #2D86DA;
+    }
+  }
+
+  .buttons-section {
+    margin-top: 25px;
+    width: 250px;
+    float: right;
+    display: flex;
+    justify-content: space-between;
+
+    .ant-btn-link {
+      color: #2D86DA;
+    }
+
+    .ant-btn-primary {
+      background-color: #2D86DA;
+      border-color: #2D86DA;
+      width: 120px;
+      height: 42px;
+    }
+  }
+
+  //Overrides
+  .ant-select-selection--multiple .ant-select-selection__choice {
+    background-color: rgba(216,62,127, 0.15);
+    color: #D83E7F;
+    font-weight: 500;
+    font-family: Rubik;
+    border-radius: 5px;
+  }
+}
