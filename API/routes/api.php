@@ -20,6 +20,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('/team', 'TeamController@getTeams');
     Route::get('/team/members', 'TeamController@getMembers');
+    Route::get('/team/members/pending/', 'TeamController@getMembersByPending');
     Route::post('/team/members/update', 'TeamController@addOrUpdate');
     Route::post('/team/members/remove', 'TeamController@remove');
 
