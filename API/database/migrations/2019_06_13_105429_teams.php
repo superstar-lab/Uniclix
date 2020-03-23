@@ -33,6 +33,7 @@ class Teams extends Migration
             $table->integer("owner_id")->unsigned();
             $table->integer("team_id")->unsigned();
             $table->boolean("is_admin")->default(0);
+            $tabel->boolean("is_pending")->default(1);
             $table->timestamps();
 
             $table->foreign("member_id")->references("id")->on("users")->onDelete("cascade");

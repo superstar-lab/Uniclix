@@ -191,7 +191,8 @@ class UserRolePermissionLimitsSeeder extends Seeder
             "mentions"])->pluck("id");
 
         $twitterGrowthPerm = Permission::whereIn("name",
-            ["manage",
+            [
+                "manage",
                 "manage-dashboard",
                 "manage-reply",
                 "manage-fans",
