@@ -86,7 +86,11 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                                 <div class="billed-period">Billed monthly</div>
                             </div>
                             <div class="plan-button-container">
+                                @if($plan["Name"] == "Basic")
                                 <a class="btn plan-price-btn" href="{{config('frontendclient.client_url')}}?register">Start 14 days free trial</a>
+                                @else
+                                <a class="btn plan-price-btn" href="{{config('frontendclient.client_url')}}?register">Sign up</a>
+                                @endif
                                 <div class="plan-see-more">or <a href="#compareplans">see more features</a></div>
                             </div>
                             <div class="plan-content-container">
