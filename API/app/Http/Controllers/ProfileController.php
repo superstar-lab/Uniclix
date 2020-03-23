@@ -39,7 +39,12 @@ class ProfileController extends Controller
         $addonOnGracePeriod = $this->user->subscribed('addon') ? $this->user->subscription('addon')->onGracePeriod() : false;
         $trial_ends_at = strtotime($this->user->getRemainDate());
         $current_date = Carbon::now()->timestamp;
-        $remain_date = intval(($trial_ends_at - $current_date) / 86400) + 1;
+        if($trial_ends_at >= $current_date){
+            $remain_date = intval(($trial_ends_at - $current_date) / 86400) + 1;
+        } else {
+            $remain_date = 0;
+        }
+        
         
         $subscription = [
             "currentPlan" => $currentPLan,

@@ -81,7 +81,7 @@ class TopMenu extends React.Component {
                         profile.remain_date > 0 ?
                         <div className="top-alert">
                             <span>
-                                You have {profile.remain_date} days remaining on your Twitter Booster trial.
+                                You have {profile.remain_date} days remaining on your Uniclix trial.
                             </span>
                             Add your billing information now to start your subscription.
                             <button

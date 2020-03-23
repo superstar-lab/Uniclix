@@ -37,7 +37,7 @@ class Scheduled extends React.Component {
   }
 
   componentWillMount() {
-    if(this.props.main_profile.remain_date <= 0){
+    if(this.props.main_profile.remain_date <= 0 && this.props.main_profile.subscription.activeSubscription == false){
       this.setState({
         accountsModal: true,
         message: 'Your free trial has expired, please upgrade.'

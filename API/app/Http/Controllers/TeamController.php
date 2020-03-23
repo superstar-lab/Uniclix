@@ -165,4 +165,15 @@ class TeamController extends Controller
 
         return response()->json(["message" => "Member removed successfuly."]);
     }
+
+    public function getMembersByPending(Request $request) {
+        $user = $this->user;
+        $teamId = $request->input("teamId");
+
+        if(!$teamId || $teamId == 'false') return [];
+        $team = Team::find($teamId);
+        $members = $team->members()->where([['team_id', '=', $teamId],['is_pending', '=', 1]])->orderBy("created_at", "DESC")->get();
+
+        return $members;
+    }
 }
