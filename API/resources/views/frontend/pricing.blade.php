@@ -83,10 +83,10 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                                     <span class="plan-price">$<span class="plan-price-amount">{{$plan["Monthly"]}}</span></span>
                                     <span class="fw700">/ mo</span>
                                 </div>
-                                <div class="billed-period">Billend monthly</div>
+                                <div class="billed-period">Billed monthly</div>
                             </div>
                             <div class="plan-button-container">
-                                <a class="btn plan-price-btn" href="{{config('frontendclient.client_url')}}?register&plan={{strtolower($plan['Name'])}}&period=annually">Start 14 days free trial</a>
+                                <a class="btn plan-price-btn" href="{{config('frontendclient.client_url')}}?register">Start 14 days free trial</a>
                                 <div class="plan-see-more">or <a href="#compareplans">see more features</a></div>
                             </div>
                             <div class="plan-content-container">
@@ -299,7 +299,7 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                             <div class="plan-button-container" style="border:none;width: 80%;">
                                 <a class="btn plan-price-btn" data-url="{{config('frontendclient.client_url')}}" 
                                 data-addon="{{strtolower($addon['name'])}}" data-plan="" data-period="monthly" 
-                                href="{{config('frontendclient.client_url')}}?register&addon={{strtolower($addon['name'])}}&redirect=twitter-booster&period=monthly">Start 14 days free trial</a>
+                                href="{{config('frontendclient.client_url')}}?register">Start 14 days free trial</a>
                             </div>
                         </div>
                     </div>
