@@ -115,37 +115,7 @@ class ConnectAccounts extends React.Component {
         try {
             response.json().then(body => {
                 this.props.startAddTwitterChannel(body.oauth_token, body.oauth_token_secret)
-                    .then(response => {
-                        let message = response.message;
-                        if(message == 'upgrade to Premium'){
-                            this.setState({
-                                accountsModal: true,
-                                message: 'Please upgrade to Premium before adding additional accounts.',
-                                loading: false,
-                            });
-                            return;
-                        } else if(message == 'upgrade to PRO'){
-                            this.setState({
-                                accountsModal: true,
-                                message: 'Please upgrade to PRO before adding additional accounts.',
-                                loading: false,
-                            });
-                            return;
-                        } else if(message == 'contact customer'){
-                            this.setState({
-                                accountsModal: true,
-                                message: 'Please contact customer service for Enterprise version.',
-                                loading: false,
-                            });
-                            return;
-                        } else if(message == 'freetrial'){
-                            this.setState({
-                                accountsModal: true,
-                                message: 'Please upgrade to Basic before adding additional accounts.',
-                                loading: false,
-                            });
-                            return;
-                        }
+                    .then(() => {
                         this.setState(() => ({ loading: false, addAccounts: "twitter" }));
                     }).catch(error => {
                         this.setState(() => ({ loading: false }));
@@ -154,6 +124,14 @@ class ConnectAccounts extends React.Component {
                                 type: 'error',
                                 title: 'Error',
                                 content: 'This account is currently being used by other Uniclix users, please contact our helpdesk support for additional details'
+                            });
+                        } else if (error.response.status === 432) {
+                            Modal({
+                                type: 'confirm',
+                                title: 'Error',
+                                content: 'You reached the limit of accounts for your current plan. Please upgrade to continue adding them.',
+                                okText: 'Upgrade',
+                                onOk: this.props.goToUpgrade
                             });
                         } else {
                             Modal({
@@ -175,7 +153,8 @@ class ConnectAccounts extends React.Component {
                 this.props.startAddFacebookChannel(response.accessToken)
                     .then(() => {
                         this.setState(() => ({ loading: true }));
-                        getAccounts().then((response) => {
+                        getAccounts()
+                        .then((response) => {
 
                             if (response.length) {
                                 this.setState(() => ({
@@ -185,6 +164,17 @@ class ConnectAccounts extends React.Component {
                                     addAccounts: 'facebook'
                                 }));
                             }
+                        })
+                        .catch(error => {
+                            this.setState({
+                                bussinesPagesModal: false,
+                                loading: false
+                            });
+                            Modal({
+                                type: 'error',
+                                title: 'Error',
+                                content: 'Something went wrong!'
+                            });
                         });
                     }).catch(error => {
                         this.setState(() => ({ loading: false }));
@@ -227,31 +217,61 @@ class ConnectAccounts extends React.Component {
         }));
 
         if (this.state.addAccounts == 'linkedin') {
-            savePages(accounts).then(() => {
-                this.setState(() => ({ loading: false }));
-                this.props.startSetChannels();
-                this.togglebussinesPagesModal();
-            }).catch(error => {
-                this.setState(() => ({ loading: false }));
-                if (error.response.status === 403) {
-                    this.setForbidden(true);
-                } else {
-                    this.setError("Something went wrong!");
-                }
-            });
+            savePages(accounts)
+                .then(() => {
+                    this.setState(() => ({ loading: false }));
+                    this.props.startSetChannels();
+                    this.togglebussinesPagesModal();
+                })
+                .catch(error => {
+                    this.setState({
+                        bussinesPagesModal: false,
+                        loading: false
+                    });
+                    if (error.response.status === 432) {
+                        Modal({
+                            type: 'confirm',
+                            title: 'Error',
+                            content: 'You reached the limit of accounts for your current plan. Please upgrade to continue adding them.',
+                            okText: 'Upgrade',
+                            onOk: this.props.goToUpgrade
+                        });
+                    } else {
+                        Modal({
+                            type: 'error',
+                            title: 'Error',
+                            content: 'Something went wrong!'
+                        });
+                    }
+                });
         } else {
-            saveAccounts(accounts).then(() => {
-                this.setState(() => ({ loading: false }));
-                this.props.startSetChannels();
-                this.togglebussinesPagesModal();
-            }).catch(error => {
-                this.setState(() => ({ loading: false }));
-                if (error.response.status === 403) {
-                    this.setForbidden(true);
-                } else {
-                    this.setError("Something went wrong!");
-                }
-            });
+            saveAccounts(accounts)
+                .then(() => {
+                    this.setState(() => ({ loading: false }));
+                    this.props.startSetChannels();
+                    this.togglebussinesPagesModal();
+                })
+                .catch(error => {
+                    this.setState({
+                        bussinesPagesModal: false,
+                        loading: false
+                    });
+                    if (error.response.status === 432) {
+                        Modal({
+                            type: 'confirm',
+                            title: 'Error',
+                            content: 'You reached the limit of accounts for your current plan. Please upgrade to continue adding them.',
+                            okText: 'Upgrade',
+                            onOk: this.props.goToUpgrade
+                        });
+                    } else {
+                        Modal({
+                            type: 'error',
+                            title: 'Error',
+                            content: 'Something went wrong!'
+                        });
+                    }
+                });
         }
     };
 

@@ -19,13 +19,13 @@ class ChannelController extends Controller
         if($trial_ends_at >= $current_date && !$current_role_name) {
             return response()->json(["message" => "freetrial"]);
         }
-        $channels_count = $user->channels()->count() - $user->channels()->where('type', 'facebook')->count();
+        $channels_count = $user->countChannels();
         if($current_role_name == 'basic' && $channels_count >= $user->getLimit("account_limit")) {
-            return response()->json(["message" => "upgrade to Premium"]);
+            return response()->json(["message" => "limit of accounts exceded"], 432);
         } else if($current_role_name == 'premium' && $channels_count >= $user->getLimit("account_limit")) {
-            return response()->json(["message" => "upgrade to PRO"]);
+            return response()->json(["message" => "limit of accounts exceded"], 432);
         } else if($current_role_name == 'pro' && $channels_count >= $user->getLimit("account_limit")) {
-            return response()->json(["message" => "contact customer"]);
+            return response()->json(["message" => "limit of accounts exceded"], 432);
         }
         
         $accessToken = $request->input("oauth_token");

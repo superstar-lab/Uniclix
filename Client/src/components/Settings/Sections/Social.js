@@ -138,13 +138,19 @@ class Social extends React.Component {
         this.setState({ addneacc: val })
     }
 
+    goToUpgrade = () => {
+        this.props.history.push('/settings/billing');
+    };
+
     render() {
         const { addneacc, action } = this.state
         return (
             addneacc ?
                 <ConnectAccounts
                     middleware={'channels'}
-                    AddOtherAccounts={this.AddOtherAccounts} />
+                    AddOtherAccounts={this.AddOtherAccounts}
+                    goToUpgrade={this.goToUpgrade}
+                />
                 :
                     <div className="main-container">
                         <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden} />

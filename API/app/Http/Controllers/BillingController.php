@@ -164,7 +164,7 @@ class BillingController extends Controller
         $role = Role::where("name", $roleName)->first();
         $user = $this->user;
         $current_role_name = $this->user->role->name;
-        $channels_count = $user->channels()->count();
+        $channels_count = $user->countChannels();
         if(!$role) return response()->json(["error" => "Plan not found"], 404);
 
         if($current_role_name == 'premium'){

@@ -17,7 +17,7 @@ class ChannelController extends Controller
     public function add(Request $request){
         
         $user = auth()->user();
-        if($user->channels()->count() >= $user->getLimit("account_limit")) return response()->json(["error" => "You have exceeded the account limit for this plan."], 403);
+        // if($user->countChannels() >= $user->getLimit("account_limit")) return response()->json(["error" => "You have exceeded the account limit for this plan."], 403);
 
         $accessToken = $request->input("access_token");
         $accessToken = exchangeFBToken($accessToken)->getValue();
@@ -122,7 +122,9 @@ class ChannelController extends Controller
     
             if(!$accounts) return;
             
-            if($user->channels()->count() + count($accounts) > $user->getLimit("account_limit")) return response()->json(["error" => "You have exceeded the account limit for this plan."], 403);
+            if($user->countChannels() + count($accounts) > $user->getLimit("account_limit")) {
+                return response()->json(["message" => "limit of accounts exceded"], 432);
+            }
             
             $accountData = [];
             foreach($accounts as $account){

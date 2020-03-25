@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 use Carbon\Carbon;
+use App\Models\Facebook\Channel as FacebookChannel;
 
 class User extends Authenticatable
 {
@@ -294,5 +295,13 @@ class User extends Authenticatable
         $trial_ends_at = $selectedUser['trial_ends_at'];
         
         return $trial_ends_at;
+    }
+
+    public function countChannels()
+    {
+        // We need to filter the facebook profile accounts from the counting
+        $facebookChannels = $this->hasMany(FacebookChannel::class)->where('parent_id', '!=', null)->count();
+        $restOfChannels = $this->hasMany(Channel::class)->where('type', '!=', 'facebook')->count();
+        return $facebookChannels + $restOfChannels;
     }
 }
