@@ -168,40 +168,43 @@ class PostsCalendar extends React.Component {
     const { currentDate, selectedEvent, isLoading } = this.state;
 
     return (
-      <React.Fragment>
-        <Calendar
-          localizer={localizer}
-          formats={formats}
-          events={this.prepareEvents()}
-          defaultView="week"
-          view={view}
-          date={momentToDate(startDate)}
-          getNow={() => momentToDate(currentDate)}
-          components={{
-            event: ({ event: event }) => (
-              <Event
-                event={event}
-                closeEvent={this.onCloseEvent}
-                isSelected={event.id === selectedEvent.id}
-                channelsList={channelsList}
-                toggleLoading={this.toggleLoading}
-                fetchPosts={fetchPosts}
-                timezone={timezone}
-                setComposerToEdit={setComposerToEdit}
-                view={view}
-              />
-            )
-          }}
-          eventPropGetter={this.eventPropGetter}
-          slotPropGetter={this.slotPropGetter}
-          dayPropGetter={this.dayPropGetter}
-          onSelectEvent={this.onSelectEvent}
-          selected={selectedEvent}
-          selectable={true}
-          onSelectSlot={this.onSelectSlot}
-        />
-        { isLoading && <Loader fullscreen /> }
-      </React.Fragment>
+      currentDate ? (
+        <React.Fragment>
+          <Calendar
+            localizer={localizer}
+            formats={formats}
+            events={this.prepareEvents()}
+            defaultView="week"
+            view={view}
+            date={momentToDate(startDate)}
+            getNow={() => momentToDate(currentDate)}
+            components={{
+              event: ({ event: event }) => (
+                <Event
+                  event={event}
+                  closeEvent={this.onCloseEvent}
+                  isSelected={event.id === selectedEvent.id}
+                  channelsList={channelsList}
+                  toggleLoading={this.toggleLoading}
+                  fetchPosts={fetchPosts}
+                  timezone={timezone}
+                  setComposerToEdit={setComposerToEdit}
+                  view={view}
+                />
+              )
+            }}
+            eventPropGetter={this.eventPropGetter}
+            slotPropGetter={this.slotPropGetter}
+            dayPropGetter={this.dayPropGetter}
+            onSelectEvent={this.onSelectEvent}
+            selected={selectedEvent}
+            selectable={true}
+            onSelectSlot={this.onSelectSlot}
+          />
+          { isLoading && <Loader fullscreen /> }
+        </React.Fragment>
+      ) :
+      null
     );
   }
 }

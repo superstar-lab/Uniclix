@@ -164,19 +164,19 @@ class BillingController extends Controller
         $role = Role::where("name", $roleName)->first();
         $user = $this->user;
         $current_role_name = $this->user->role->name;
-        $channels_count = $user->channels()->count() - $user->channels()->where('type', 'facebook')->count();
+        $channels_count = $user->channels()->count();
         if(!$role) return response()->json(["error" => "Plan not found"], 404);
 
         if($current_role_name == 'premium'){
             if($channels_count > $role->roleLimit->account_limit) 
-            return response()->json(["message" => "more than 5 accounts", "redirect" => "/accounts"]);
+            return response()->json(["message" => "more than 5 accounts", "accounts" => 5], 432);
             if($user->teamMembers()->count() + 1 > $role->roleLimit->team_accounts) 
-            return response()->json(["message" => 'Please delete some team accounts to correspond to the limits of your new plan.', "redirect" => "/settings/team"], 403);
+            return response()->json(["message" => 'team members limit'], 433);
         } else if($current_role_name == 'pro') {
             if($channels_count > $role->roleLimit->account_limit) 
-            return response()->json(["message" => "more than 20 accounts", "redirect" => "/accounts"]);
+            return response()->json(["message" => "more than 20 accounts", "accounts" => 20], 432);
             if($user->teamMembers()->count() + 1 > $role->roleLimit->team_accounts) 
-            return response()->json(["message" => 'Please delete some team accounts to correspond to the limits of your new plan.', "redirect" => "/settings/team"], 403);
+            return response()->json(["message" => 'team members limit'], 433);
         }
 
         if($plan !== 'free') $user->subscription('main')->swap($plan);

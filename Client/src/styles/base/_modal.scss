@@ -288,4 +288,13 @@ body.ReactModal__Body--open {
   button {
     font-weight: 500;
   }
+
+  .ant-btn,
+  .ant-btn-link {
+    background: none;
+    border: none;
+    color: #2D86DA;
+    padding: 10px 20px;
+    font-size: 16px;
+  }
 }

@@ -5,6 +5,7 @@ import { changePlan, getPlanData } from '../../../requests/billing';
 import Checkout from './Checkout';
 import Loader, { LoaderWithOverlay } from '../../Loader';
 import Modal from 'react-modal';
+import FunctionModal from '../../Modal';
 import { cancelSubscription, resumeSubscription } from '../../../requests/billing';
 
 class BillingProfile extends React.Component {
@@ -24,7 +25,6 @@ class BillingProfile extends React.Component {
         onAddCard: false,
         subscriptionStatus: false,
         forbidden: false,
-        accountsModal: false,
         message: '',
     }
 
@@ -64,22 +64,6 @@ class BillingProfile extends React.Component {
         }));
 
         changePlan(plan).then(response => {
-            let message = response.message;
-            if(message == 'more than 5 accounts') {
-                this.setState({
-                    accountsModal: true,
-                    message: 'You currently are utilizing more than 5 accounts, please assure that you have five active accounts only before downgrade.'
-                });
-                this.setLoading();
-                return;
-            } else if(message == 'more than 20 accounts'){
-                this.setState({
-                    accountsModal: true,
-                    message: 'You currently are utilizing more than 20 accounts, please assure that you have five active accounts only before downgrade.'
-                });
-                this.setLoading();
-                return;
-            }
             this.props.startSetProfile();
             this.setLoading();
             this.setState({
@@ -88,16 +72,42 @@ class BillingProfile extends React.Component {
         }).then()
             .catch(error => {
                 this.setLoading();
-                if (error.response.status === 403) {
-                    this.setState(() => ({
-                        forbidden: true,
-                        error: error.response.data.error,
-                        redirect: error.response.data.redirect  
-                    }))
-                } else {
-                    this.setError("Something went wrong!");
+                if (error.response.status === 432) {
+                    FunctionModal({
+                        type: 'confirm',
+                        title: 'Social Media accounts limit',
+                        content: (
+                            <div>
+                                <div>The current amount of accounts that you have is beyond the limit permited of accounts in the plan that you want to switch to.</div>
+                                <div>Please delete a few to be able to downgrade your plan</div>
+                            </div>
+                        ),
+                        okText: "Ok, let's go to accounts",
+                        onOk: this.limitAccountsReachedOnOk
+                    })
+                } else if (error.response.status === 433) {
+                    FunctionModal({
+                        type: 'confirm',
+                        title: 'Team Members limit',
+                        content: (
+                            <div>
+                                <div>The current amount of team members that you have is beyond the limit permited of members in the plan that you want to switch to.</div>
+                                <div>Please delete a few to be able to downgrade your plan</div>
+                            </div>
+                        ),
+                        okText: "Ok, let's go to team",
+                        onOk: this.limitMembersReachedOnOk
+                    })
                 }
             });
+    };
+
+    limitAccountsReachedOnOk = () => {
+        this.props.history.push('/settings/manage-account');
+    }
+
+    limitMembersReachedOnOk = () => {
+        this.props.history.push('/settings/team');
     };
 
     setBillingPeriod = () => {
@@ -159,7 +169,7 @@ class BillingProfile extends React.Component {
     };
 
     render() {
-        const { allPlans, onAddCard, planName, planChange, planCancel, planResume, planConfirm, selectedPlan, billingPeriod, roleBilling, accountsModal, message } = this.state;
+        const { allPlans, onAddCard, planName, planChange, planCancel, planResume, planConfirm, selectedPlan, billingPeriod, roleBilling } = this.state;
         const { profile } = this.props;
 
         return (
@@ -223,21 +233,6 @@ class BillingProfile extends React.Component {
                             <div style={{float:'right'}}>
                                 <button onClick={() => this.setPlanCancel(false)} className="cancelBtn" >Cancel</button>
                                 <button onClick={() => {this.cancelPlan();this.setPlanCancel(false);}} className="cancelBtn" >Yes, cancel it</button>
-                            </div>
-                        </Modal>
-                    }
-
-                    {!!accountsModal && 
-                        <Modal
-                        ariaHideApp={false}
-                        className="billing-profile-modal"
-                        isOpen={!!accountsModal}
-                        >
-                            <div className="modal-title">{`Attention`}</div>
-                            <div className="modal-content1">{message}</div>
-                            <div style={{float:'right'}}>
-                                <button onClick={() => this.setState({accountsModal: false})} className="cancelBtn" >No</button>
-                                <a href="/settings/manage-account" className="cancelBtn1" >Yes</a>
                             </div>
                         </Modal>
                     }
