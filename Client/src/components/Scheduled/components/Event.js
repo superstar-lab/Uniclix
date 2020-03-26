@@ -92,7 +92,7 @@ const Event = ({ event, view, timezone, closeEvent, isSelected, channelsList, to
           }
         </div>
         <div className="description">
-          {`${(content).substring(0, 40)}${content.length > 40 ? '...' : ''}`}
+          { content ? `${(content).substring(0, 40)}${content.length > 40 ? '...' : ''}` : '' }
         </div>
         <div className="event-channels">
           {

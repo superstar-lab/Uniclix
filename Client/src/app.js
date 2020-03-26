@@ -44,11 +44,22 @@ const setAuthentication = () => {
     setAuthorizationHeader(token);
 
     if(token && token !== "undefined"){
-        let channels = localStorage.getItem("channels");
-        channels = channels ? JSON.parse(channels) : [];
+        let channels;
+        let profile;
 
-        let profile = localStorage.getItem("profile");
-        profile = profile ? JSON.parse(profile) : "";
+        try {
+            let channels = localStorage.getItem("channels");
+            channels = channels ? JSON.parse(channels) : [];
+        } catch (error) {
+            channels = [];
+        }
+
+        try {
+            profile = localStorage.getItem("profile");
+            profile = profile ? JSON.parse(profile) : "";
+        } catch (error) {
+            profile = "";
+        }
 
         if(!profile){
             localStorage.setItem("token", undefined);
@@ -63,11 +74,8 @@ const setAuthentication = () => {
         }).then(() => {
             store.dispatch(startSetProfile());
             store.dispatch(startSetChannels());
-        });
-
-        new Promise((resolve, reject) => {
+        }).then(() => {
             store.dispatch(startGeneral());
-            return resolve(true);
         });
     }
 
