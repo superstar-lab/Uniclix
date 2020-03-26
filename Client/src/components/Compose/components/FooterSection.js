@@ -33,9 +33,9 @@ class FooterSection extends React.Component {
   };
 
   canPost = () => {
-    const { content, category, date, publishChannels } = this.props;
+    const { content, category, date, publishChannels, pictures } = this.props;
 
-    return !!content.length && category && date && !!publishChannels.size;
+    return (!!content.length || !!pictures.length) && category && date && !!publishChannels.size;
   };
 
   getPublishType = () => {

@@ -5,7 +5,7 @@ import { addChannel as addLinkedinChannel } from "../requests/linkedin/channels"
 import { addChannel as addPinterestChannel } from "../requests/pinterest/channels";
 import { setMiddleware } from "./middleware";
 
-export const setChannels = (list) => ({
+export const setChannels = (list = []) => ({
     type: "SET_CHANNELS",
     list
 });

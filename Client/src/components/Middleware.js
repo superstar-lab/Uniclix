@@ -62,12 +62,16 @@ class Middleware extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.profile.subscription !== this.props.profile.subscription || prevProps.profile.addon !== this.props.profile.addon) {
+        if (
+            prevProps.profile.subscription !== this.props.profile.subscription ||
+            prevProps.profile.addon !== this.props.profile.addon ||
+            prevProps.channels !== this.props.channels
+        ) {
             if ((this.state.plan || this.state.addon) && !this.props.profile.subscription.activeSubscription && !this.props.profile.addon.activeAddon && !this.state.addonTrial) {
                 this.props.setMiddleware("billing");
                 return;
             } else {
-                if (this.props.channels.length < 1) {
+                if (this.props.channels.length < 1 && !this.props.channelsLoading) {
                     this.props.setMiddleware("channels");
                     return;
                 }
@@ -439,11 +443,12 @@ class Middleware extends React.Component {
         let countLinkedLinkedinAcc = channels.length  > 0 ? channels.filter(item => item.type == 'linkedin').length : 0
         return (
             <div className="login-container">
-                <div className="logo">
-                    <img src="/images/uniclix.png" />
-                </div>
+                { middleware && middleware !== 'loading' && (
+                    <div className="logo">
+                        <img src="/images/uniclix.png" />
+                    </div>)
+                }
 
-                {loading && <LoaderWithOverlay />}
                 <div className="col-md-7 col-xs-12 text-center">
                     <div className="col-xs-12 text-center">
                         <SelectAccountsModal 
@@ -624,8 +629,7 @@ class Middleware extends React.Component {
 
                 }
                 </div>
-                <div className="col-md-5 middleware-side">
-                </div>
+                { middleware && middleware !== 'loading' && <div className="col-md-5 middleware-side"></div> }
             </div>
         );
     }
@@ -640,7 +644,8 @@ const mapStateToProps = (state) => {
         middleware: state.middleware.step,
         channels: state.channels.list,
         profile: state.profile,
-        selectedChannel
+        selectedChannel,
+        channelsLoading: state.channels.loading
     }
 };
 
