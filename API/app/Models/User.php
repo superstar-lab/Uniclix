@@ -287,13 +287,10 @@ class User extends Authenticatable
         }
     }
     
-    public function getRemainDate()
+    public function getRemainDate($user_id)
     {
-        $selectedChannel = $this->selectedChannel();
-        $user_id = $selectedChannel['user_id'];
         $selectedUser = $this->where('id', $user_id)->first();
         $trial_ends_at = $selectedUser['trial_ends_at'];
-        
         return $trial_ends_at;
     }
 

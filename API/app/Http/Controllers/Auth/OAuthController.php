@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Models\TeamUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -66,6 +67,8 @@ class OAuthController extends Controller
         $password = $request->input('password');
 
         $user = User::where('email', $email)->first();
+        $user_id = User::where('email', $email)->first()->id;
+        TeamUser::where('member_id', $user_id)->update(['is_pending' => 0]);
 
         if(!$user || !Hash::check($password, $user->password)) return response()->json(["error" => "Incorrect email or password."], 404);
 

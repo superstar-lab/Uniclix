@@ -23,11 +23,12 @@ trait Permissible
         return $this->hasAddon($roleName);
     }
 
-    public function hasPermission($permission)
+    public function hasPermission($permission, $user_id)
     {
         
         $role = Role::where("id", $this->role_id)->first();
-        $trial_ends_at = strtotime(User::getRemainDate());
+
+        $trial_ends_at = strtotime(User::getRemainDate($user_id));
         $current_date = Carbon::now()->timestamp;
         if($trial_ends_at >= $current_date && !$this->hasRole($role->name)) {
             return true;

@@ -157,8 +157,8 @@ class PublishController extends Controller
                     'scheduled_at_original' => $publishOriginalTime,
                     'payload' => serialize($payload),
                     'approved' => $permissionLevel ? 1 : 0,
-                    // 'posted' => $publishType == 'now' ? 1 : 0,
-                    'posted' => 0,
+                    'posted' => $publishType == 'now' ? 1 : 0,
+                    //'posted' => 0,
                     'article_id' => $post['articleId'] ? $post['articleId'] : null,
                     'category_id' => $post['category_id'] ? $post['category_id'] : null,
                     'post_id' => $postId
@@ -170,13 +170,13 @@ class PublishController extends Controller
                     $posts_approved = $posts->first();
                     $item_post = $posts->where("channel_id", $channel['id'])->first();
                     $item_approved_post = $posts->where("channel_id", $channel['id'])->where("approved", 0)->first();
-                    
+                    $scheduledPost = $item_post->update($postData);
                     if ($posts_approved->approved == 0) {
                         if($account_count < $channelsCount){
                             if($posts->where("channel_id", $channel['id'])->where("approved", 0)->count() > 0){
-                                $item_approved_post->update($postData);
+                                $scheduledPost = $item_approved_post->update($postData);
                             } else {
-                                $channel->scheduledPosts()->create($postData);
+                                $scheduledPost = $channel->scheduledPosts()->create($postData);
                             }   
                         } else {
                             foreach($posts as $post) {
@@ -190,9 +190,9 @@ class PublishController extends Controller
                     } else if ($this->user->hasPublishPermission($channel)) {
                         if($account_count < $channelsCount){
                             if($posts->where("channel_id", $channel['id'])->count() > 0){
-                                $item_post->update($postData);
+                                $scheduledPost = $item_post->update($postData);
                             } else {
-                                $channel->scheduledPosts()->create($postData);
+                                $scheduledPost = $channel->scheduledPosts()->create($postData);
                             }   
                         } else {
                             foreach($posts as $post) {
@@ -215,9 +215,10 @@ class PublishController extends Controller
                 }
 
                 $channelCount++;
-                // if($publishType == 'now'){
-                //     $channel->details->publishScheduledPost($scheduledPost);
-                // }
+                if($publishType == 'now'){
+                    
+                    $channel->details->publishScheduledPost($scheduledPost);
+                }
             }
         } catch (\Exception $e) {
             return getErrorResponse($e, $currentChannel);

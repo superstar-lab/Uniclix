@@ -28,6 +28,7 @@ class ProfileController extends Controller
     {
         $topics = $this->user->topics;
         $locations = $this->user->locations;
+        $user_id = $this->user->id;
         $role = $this->user->role()->with("permissions")->first();
         $roleAddons = $this->user->roleAddons()->with("permissions")->get();
         $currentPLan = $this->user->role_id;
@@ -37,7 +38,7 @@ class ProfileController extends Controller
         $addonTrial = $this->user->roleAddons()->where("trial_ends_at", ">", Carbon::now())->whereNotNull("trial_ends_at")->exists();
         $activeAddon = $this->user->subscribed('addon') || $addonTrial;
         $addonOnGracePeriod = $this->user->subscribed('addon') ? $this->user->subscription('addon')->onGracePeriod() : false;
-        $trial_ends_at = strtotime($this->user->getRemainDate());
+        $trial_ends_at = strtotime($this->user->getRemainDate($user_id));
         $current_date = Carbon::now()->timestamp;
         if($trial_ends_at >= $current_date){
             $remain_date = intval(($trial_ends_at - $current_date) / 86400) + 1;

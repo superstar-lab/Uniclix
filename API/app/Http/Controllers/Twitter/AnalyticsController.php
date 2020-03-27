@@ -20,8 +20,8 @@ class AnalyticsController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->user = auth()->user();
-
-            if(!$this->user->hasPermission("analytics")) return response()->json(["error" => "You need to upgrade to unlock this feature."], 403);
+            $user_id = $this->user->id;
+            if(!$this->user->hasPermission("analytics", $user_id)) return response()->json(["error" => "You need to upgrade to unlock this feature."], 403);
             return $next($request);
         });
     }
@@ -45,7 +45,8 @@ class AnalyticsController extends Controller
 
     public function pageInsightsByType($type, Request $request)
     {
-        if(!$this->user->hasPermission("advanced-analytics") && !$this->user->hasAddon("twitter_growth")) return response()->json(["error" => "You need to upgrade to unlock this feature."], 403);
+        $user_id = $this->user->id;
+        if(!$this->user->hasPermission("advanced-analytics", $user_id) && !$this->user->hasAddon("twitter_growth")) return response()->json(["error" => "You need to upgrade to unlock this feature."], 403);
         $user       = $this->user;
         $channel    = $user->getChannel($request->id);
         $period     = $request->period;
