@@ -18,7 +18,7 @@ class AddMemberModal extends React.Component {
     toggleModal: PropTypes.func.isRequired,
     channels: PropTypes.array.isRequired,
     teamId: PropTypes.number.isRequired,
-    fetchActiveMembers: PropTypes.func.isRequired,
+    refreshMembers: PropTypes.func.isRequired,
     editMember: PropTypes.object
   }
 
@@ -52,6 +52,14 @@ class AddMemberModal extends React.Component {
       const member = this.prepareMemeberToEdit();
       const remainingAccountOptions = this.getRemaningOptions();
       this.setState({ ...member, remainingAccountOptions });
+    }
+
+    if (prevProps.channels !== this.props.channels) {
+      let remainingAccountOptions = [ ...this.props.channels ]
+      if (this.props.editMember) {
+        remainingAccountOptions = this.getRemaningOptions();
+      }
+      this.setState({ remainingAccountOptions });
     }
   }
 
@@ -194,7 +202,7 @@ class AddMemberModal extends React.Component {
   onSaveMember = () => {
     const assignedChannels = [];
     const { name, email, isAdmin, accountsGroups, accountsGroupsRoles } = this.state;
-    const { teamId, fetchActiveMembers } = this.props;
+    const { teamId, refreshMembers } = this.props;
 
     accountsGroups.forEach((group, i) => {
       group.forEach(account => {
@@ -216,7 +224,7 @@ class AddMemberModal extends React.Component {
       .then(() => {
         this.setState({ isLoading: false });
         this.closeModal();
-        fetchActiveMembers();
+        refreshMembers();
       })
       .catch(err => {
         this.setState({ isLoading: false });

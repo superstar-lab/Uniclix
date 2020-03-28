@@ -10,7 +10,7 @@ import FunctionModal from '../../../Modal';
 class MemberRow extends React.Component {
   static propTypes = {
     member: PropTypes.object.isRequired,
-    fetchActiveMembers: PropTypes.func.isRequired,
+    refreshMembers: PropTypes.func.isRequired,
     editMember: PropTypes.func.isRequired
   };
 
@@ -24,7 +24,7 @@ class MemberRow extends React.Component {
   };
 
   deleteMember = () => {
-    const { fetchActiveMembers, member: { team_id, member_id } } = this.props;
+    const { refreshMembers, member: { team_id, member_id } } = this.props;
     
     removeMember({
       teamId: team_id,
@@ -34,7 +34,7 @@ class MemberRow extends React.Component {
         title: 'Success!',
         message: 'The member was successfuly erased!'
       });
-      fetchActiveMembers();
+      refreshMembers();
     })
     .catch((error) => {
       console.log(error);

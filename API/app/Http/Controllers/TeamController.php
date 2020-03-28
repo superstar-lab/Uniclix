@@ -182,7 +182,17 @@ class TeamController extends Controller
 
         if(!$teamId || $teamId == 'false') return [];
         $team = Team::find($teamId);
-        $members = $team->members()->where([['team_id', '=', $teamId],['is_pending', '=', 1]])->orderBy("created_at", "DESC")->get();
+        $members = $team
+            ->members()
+            ->where([['team_id', '=', $teamId],['is_pending', '=', 1]])
+            ->with("details")
+            ->orderBy("created_at", "DESC")
+            ->get();
+
+        return collect($members)->map(function($member){
+            $member->assignedChannels = $member->formattedChannels(true);
+            return $member;
+        });
 
         return $members;
     }

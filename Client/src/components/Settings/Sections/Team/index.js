@@ -1,11 +1,12 @@
 import React from 'react';
 import { Tabs } from 'antd';
 
-import { getTeamMembers, getTeams } from '../../../../requests/team';
+import { getTeamMembers, getTeams, getPendingMembers } from '../../../../requests/team';
 
 import FunctionModal from '../../../Modal';
 import Loader from '../../../Loader';
 import ActivePane from './ActivePane';
+import PendingPane from './PendingPane';
 
 const { TabPane } = Tabs;
 
@@ -17,7 +18,9 @@ class Team extends React.Component {
     this.state = {
       activeIsLoading: false,
       teamsIsLoading: false,
+      pendingIsLoading: false,
       activeMembers: [],
+      pendingMembers: [],
       teams: []
     };
   }
@@ -29,6 +32,7 @@ class Team extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (!prevState.teams.length && this.state.teams.length) {
       this.fetchActiveMembers();
+      this.fetchPendingMembers();
     }
   }
 
@@ -72,8 +76,41 @@ class Team extends React.Component {
       });
   }
 
+  fetchPendingMembers = () => {
+    const { teams } = this.state;
+    this.setState({ pendingIsLoading: true });
+    getPendingMembers(teams[0].id)
+      .then(response => {
+        this.setState({
+          pendingMembers: response,
+          pendingIsLoading: false
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({ activeIsLoading: false });
+        FunctionModal({
+          type: 'error',
+          title: 'Error',
+          content: 'There was a problem trying to get the pending members. Please reload the page.'
+        });
+      });
+  }
+
+  refreshMembers = () => {
+    this.fetchActiveMembers();
+    this.fetchPendingMembers();
+  }
+
   render() {
-    const { activeIsLoading, activeMembers, teams } = this.state;
+    const {
+      activeIsLoading,
+      pendingIsLoading,
+      teamsIsLoading,
+      activeMembers,
+      pendingMembers,
+      teams
+    } = this.state;
 
     return (
       <div className="settings-team">
@@ -84,10 +121,16 @@ class Team extends React.Component {
               members={activeMembers}
               teams={teams}
               fetchActiveMembers={this.fetchActiveMembers}
+              refreshMembers={this.refreshMembers}
+            />
+          </TabPane>
+          <TabPane tab="Pending" key="pending">
+            <PendingPane
+              pendingMembers={pendingMembers}
             />
           </TabPane>
         </Tabs>
-        { activeIsLoading && <Loader fullscreen/> }
+        { (teamsIsLoading || activeIsLoading || pendingIsLoading) && <Loader fullscreen/> }
       </div>
     );
   }

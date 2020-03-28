@@ -9,7 +9,8 @@ class ActivePane extends React.Component {
   static propTypes = {
     members: PropTypes.array.isRequired,
     teams: PropTypes.array.isRequired,
-    fetchActiveMembers: PropTypes.func.isRequired
+    fetchActiveMembers: PropTypes.func.isRequired,
+    refreshMembers: PropTypes.func.isRequired
   };
 
   state = {
@@ -26,7 +27,7 @@ class ActivePane extends React.Component {
   }
 
   render() {
-    const { teams, members, fetchActiveMembers } = this.props;
+    const { teams, members, fetchActiveMembers, refreshMembers } = this.props;
     const { isAddModalOpen, memberToEdit } = this.state;
 
     return (
@@ -35,7 +36,7 @@ class ActivePane extends React.Component {
           members.map(member => (
             <MemberRow
               member={member}
-              fetchActiveMembers={fetchActiveMembers}
+              refreshMembers={refreshMembers}
               editMember={this.editMember}
             />
           ))
@@ -50,7 +51,7 @@ class ActivePane extends React.Component {
           isOpen={isAddModalOpen}
           toggleModal={this.toggleModal}
           teamId={teams.length ? teams[0].id : 0}
-          fetchActiveMembers={fetchActiveMembers}
+          refreshMembers={refreshMembers}
           editMember={memberToEdit}
         />
       </div>
