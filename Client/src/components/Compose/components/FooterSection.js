@@ -39,7 +39,15 @@ class FooterSection extends React.Component {
   };
 
   getPublishType = () => {
-    const { postAtBestTime, postNow } = this.props;
+    let { postAtBestTime, postNow, selectedTimezone, date } = this.props;
+    const publishTime = moment(date).tz(selectedTimezone);
+    const now = moment().tz(selectedTimezone);
+
+    if (publishTime) {
+      if (publishTime.isSameOrBefore(now)) {
+        postNow = true;
+      }
+    }
 
     return postNow ?
       'now' :
