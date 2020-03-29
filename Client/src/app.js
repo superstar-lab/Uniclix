@@ -75,7 +75,7 @@ const setAuthentication = () => {
             store.dispatch(startSetProfile());
             store.dispatch(startSetChannels());
         }).then(() => {
-            store.dispatch(startGeneral());
+            // store.dispatch(startGeneral());
         });
     }
 
