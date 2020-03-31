@@ -32,7 +32,7 @@ class MemberRow extends React.Component {
     }).then(() => {
       notification.success({
         title: 'Success!',
-        message: 'The member was successfuly erased!'
+        message: 'The member was successfully erased!'
       });
       refreshMembers();
     })

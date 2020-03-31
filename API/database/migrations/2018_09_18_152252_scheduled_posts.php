@@ -17,7 +17,7 @@ class ScheduledPosts extends Migration
             $table->increments("id");
             $table->integer("channel_id")->unsigned();
             $table->text("post_id")->nullable();
-            $table->text("content")->nullable();
+            $table->text("content")->default("");
             $table->text("payload")->nullable();
             $table->boolean("posted")->default(0);
             $table->integer("status")->nullable();

@@ -272,13 +272,11 @@ class User extends Authenticatable
     {
         if($from_date == null || $to_date == null){
             return ScheduledPost::with('category')
-            ->where("posted", 0)
             ->where("approved", 1)
             ->orderBy('scheduled_at', 'asc')
             ->get();
         } else {
             return ScheduledPost::with('category')
-            ->where("posted", 0)
             ->where("approved", 1)
             ->whereDate('scheduled_at', '>=', $from_date)
             ->whereDate('scheduled_at', '<=', $to_date)

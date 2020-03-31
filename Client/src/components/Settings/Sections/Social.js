@@ -87,7 +87,7 @@ class Social extends React.Component {
                     .then((response) => {
                         notification.success({
                             message: 'Done!',
-                            description: 'Account deleted successfuly'
+                            description: 'Account deleted successfully'
                         });
                         this.setState(() => ({
                             action: this.defaultAction

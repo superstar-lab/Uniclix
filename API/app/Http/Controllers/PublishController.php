@@ -152,7 +152,7 @@ class PublishController extends Controller
                 $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled['publishTimezone']);
 
                 $postData = [
-                    'content' => isset($post[$networkContent]) ? $post[$networkContent] : $post['content'],
+                    'content' => isset($post[$networkContent]) ? $post[$networkContent] : $post['content'] ? $post['content'] : '',
                     'scheduled_at' => $publishTime,
                     'scheduled_at_original' => $publishOriginalTime,
                     'payload' => serialize($payload),
