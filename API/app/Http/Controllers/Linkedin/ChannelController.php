@@ -14,7 +14,7 @@ class ChannelController extends Controller
         
         $user = auth()->user();
 
-        if($user->countChannels() + count($accounts) > $user->getLimit("account_limit")) {
+        if($user->countChannels() > $user->getLimit("account_limit")) {
             return response()->json(["message" => "limit of accounts exceded"], 432);
         }
 
