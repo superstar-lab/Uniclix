@@ -64,13 +64,13 @@ class Middleware extends React.Component {
     componentDidUpdate(prevProps) {
         if (
             prevProps.profile.subscription !== this.props.profile.subscription ||
-            prevProps.profile.addon !== this.props.profile.addon ||
-            prevProps.channels !== this.props.channels
+            prevProps.profile.addon !== this.props.profile.addon
         ) {
             if ((this.state.plan || this.state.addon) && !this.props.profile.subscription.activeSubscription && !this.props.profile.addon.activeAddon && !this.state.addonTrial) {
                 this.props.setMiddleware("billing");
                 return;
             } else {
+                // We don't want to show the modal when the app is still fetching the channels
                 if (this.props.channels.length < 1 && !this.props.channelsLoading) {
                     this.props.setMiddleware("channels");
                     return;

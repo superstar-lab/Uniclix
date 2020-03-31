@@ -645,7 +645,7 @@ class Checkout extends React.Component {
                           onChange={(e) => this.onFieldChange(e)}
                           value={form.postal}
                           name="postal"
-                          placeholder="Zipp Code" />
+                          placeholder="Zip Code" />
                       </div>
                     </div>
                   </div>
