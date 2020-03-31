@@ -2,7 +2,9 @@ import React from 'react';
 import { Button } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { notification } from 'antd';
 
+import FunctionModal from '../../Modal';
 import { publish } from '../../../requests/channels';
 
 import Loader from '../../Loader';
@@ -104,10 +106,19 @@ class FooterSection extends React.Component {
           onPost();
         }
         closeModal();
+        notification.success({
+          message: 'Done!',
+          description: 'The post has been scheduled'
+        });
       })
       .catch((error) => {
         console.log(error);
         closeModal();
+        FunctionModal({
+          type: 'error',
+          title: 'Error',
+          content: 'Something went wrong when trying to schedule your post, please try again later.'
+        });
       });
     } catch(error) {
       console.log(error);

@@ -2,7 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 import moment from 'moment';
+import { notification } from 'antd';
 
+import FunctionModal from '../Modal';
 import { updateTimeZone } from '../../requests/profile';
 import { setComposerModal } from '../../actions/composer';
 
@@ -50,10 +52,19 @@ class Scheduled extends React.Component {
     updateTimeZone({ timezone })
       .then(() => {
         this.setState({ selectedTimezone: timezone, isLoading: false });
+        notification.success({
+          message: 'Done!',
+          description: 'The timezone has been changed'
+        });
       })
       .catch((error) => {
         this.setState({ isLoading: false });
         console.log(error);
+        FunctionModal({
+          type: 'error',
+          title: 'Error',
+          content: 'Something went wrong when trying to change the timezone, please try again later.'
+        });
       });
   }
 
