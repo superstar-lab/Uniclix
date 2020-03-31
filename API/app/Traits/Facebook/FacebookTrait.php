@@ -544,6 +544,7 @@ trait FacebookTrait
 
             $text = $scheduledPost->content;
             $link = findUrlInText($text);
+            $post = [];
 
             if($link){
                 $text = str_replace($link, "", $text);
