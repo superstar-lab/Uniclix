@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import { UTC_MONTHS, MONTHS_FINISH_DATE } from '../../../utils/constants';
+import { UTC_MONTHS } from '../../../utils/constants';
 
 class DateRangeSelector extends React.Component {
   static propTypes = {
