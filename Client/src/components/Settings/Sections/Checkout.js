@@ -685,7 +685,7 @@ class Checkout extends React.Component {
                         <input className="discount" placeholder="Add discount code" onChange={(e) => this.setCouponCode(e)}/>
                       </div>
                       {
-                        endCardSetting ?
+                        form.cardnumber != "" ?
                         <button className="btn-blue" onClick={(e) => this.ConfirmOrder(e)}>Confirm order</button>
                         :
                         <button className="btn-blue disabled-btn">Confirm order</button>
