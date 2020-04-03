@@ -88,28 +88,33 @@ class User extends Authenticatable
 
         $selectedChannel = $this->selectedChannel();
         $selectedTwitterChannel = $this->selectedTwitterChannel();
-
+        
         if($channels = $this->channels()->get()){
-
-            return collect($channels)->map(function($channel) use ($selectedChannel, $selectedTwitterChannel) {
-
-                    $channel->details = @$channel->details;
-                    $channel->selected = $selectedChannel && $selectedChannel->id == $channel->id ? 1 : 0;
-                    if($channel->details){
-                        if($channel->details->account_type != "page" && $channel->type != "linkedin"){
-                            $avatar = @$channel->details->getAvatar();
-                        }
-                        $channel->details->payload = @unserialize($channel->details->payload);
-                        $channel->details->selected = $channel->type == "twitter" && $selectedTwitterChannel->channel_id == $channel->id ? 1 : $channel->details->selected;
-                        $channel->avatar = @$avatar ? @$avatar : @$channel->details->payload->avatar;
-                        $channel->name = @$channel->details->payload->name;
-                        $channel->username = @$channel->details->payload->nickname;
+            $result_collect = [];
+            $result = collect($channels)->map(function($channel) use ($selectedChannel, $selectedTwitterChannel) {
+                $channel->details = @$channel->details;
+                $channel->selected = $selectedChannel && $selectedChannel->id == $channel->id ? 1 : 0;
+                if($channel->details){
+                    if($channel->details->account_type != "page" && $channel->type != "linkedin"){
+                        $avatar = @$channel->details->getAvatar();
                     }
+                    $channel->details->payload = @unserialize($channel->details->payload);
+                    $channel->details->selected = $channel->type == "twitter" && $selectedTwitterChannel->channel_id == $channel->id ? 1 : $channel->details->selected;
+                    $channel->avatar = @$avatar ? @$avatar : @$channel->details->payload->avatar;
+                    $channel->name = @$channel->details->payload->name;
+                    $channel->username = @$channel->details->payload->nickname;
+                }
+                return $channel;
+            });
 
-                    return $channel;
-                });
+            
+            foreach($result as $key => $item){
+                if($item->type != "facebook"){
+                    $result_collect[] = $item;
+                }
+            }
+            return collect($result_collect);
         }
-
         return [];
     }
 
@@ -117,40 +122,46 @@ class User extends Authenticatable
         $selectedChannel = $this->selectedChannel();
         $selectedTwitterChannel = $this->selectedTwitterChannel();
         if($channels = $this->memberChannels()->get()){
+            $result_collect = [];
+            $result = collect($channels)->map(function($channel) use ($markSelected, $selectedChannel, $selectedTwitterChannel){
+                        $permissionLevel = $channel->role;
+                        $teamId = $channel->team_id;
+                        $approverId = $channel->approver_id;
+                        $channel = $channel->channel;
+                        $channel->details = @$channel->details;
+                        $channel->permissionLevel = $permissionLevel;
+                        $channel->teamId = $teamId;
+                        $channel->approverId = $approverId;
+                        $channel->selected = $selectedChannel && $selectedChannel->id == $channel->id ? 1 : 0;
 
-            return collect($channels)->map(function($channel) use ($markSelected, $selectedChannel, $selectedTwitterChannel){
-                    $permissionLevel = $channel->role;
-                    $teamId = $channel->team_id;
-                    $approverId = $channel->approver_id;
+                        if($markSelected) $channel->selected = 1;
 
-                    $channel = $channel->channel;
-                    $channel->details = @$channel->details;
-                    $channel->permissionLevel = $permissionLevel;
-                    $channel->teamId = $teamId;
-                    $channel->approverId = $approverId;
-                    $channel->selected = $selectedChannel && $selectedChannel->id == $channel->id ? 1 : 0;
-
-                    if($markSelected) $channel->selected = 1;
-
-                    if($channel->details){
-                        if($channel->details->account_type != "page" && $channel->type != "linkedin"){
-                            $avatar = @$channel->details->getAvatar();
+                        if($channel->details){
+                            if($channel->details->account_type != "page" && $channel->type != "linkedin"){
+                                $avatar = @$channel->details->getAvatar();
+                            }
+                            $channel->details->payload = @unserialize($channel->details->payload);
+                            $channel->avatar = @$avatar ? @$avatar : @$channel->details->payload->avatar;
+                            $channel->name = @$channel->details->payload->name;
+                            $channel->username = @$channel->details->payload->nickname;
+                            $channel->details->selected = $channel->type == "twitter" && $selectedTwitterChannel->channel_id == $channel->id ? 1 : $channel->details->selected;
                         }
-                        $channel->details->payload = @unserialize($channel->details->payload);
-                        $channel->avatar = @$avatar ? @$avatar : @$channel->details->payload->avatar;
-                        $channel->name = @$channel->details->payload->name;
-                        $channel->username = @$channel->details->payload->nickname;
-                        $channel->details->selected = $channel->type == "twitter" && $selectedTwitterChannel->channel_id == $channel->id ? 1 : $channel->details->selected;
-                    }
 
-                    return $channel;
-                });
+                        return $channel;
+                    });
+                    foreach($result as $item){
+                        if($item->type != "facebook"){
+                            $result_collect[] = $item;
+                        }
+                    }
+                    return collect($result_collect);
         }
 
         return [];
     }
 
     public function allFormattedChannels(){
+
         return $this->formattedChannels()->merge($this->formattedMemberChannels());
     }
 
