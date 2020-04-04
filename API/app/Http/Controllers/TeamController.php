@@ -105,6 +105,7 @@ class TeamController extends Controller
                 "email" => $email,
                 "name" => $name,
                 "role_id" => 1,
+                "timezone" => $user->timezone
             ]);
 
             $user_register = User::where('email', $email)->first();

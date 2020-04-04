@@ -35,8 +35,6 @@ class Scheduled extends React.Component {
     // the profile state gets populated, we make sure to show the stored timezone
     if (prevProps.timezone !== this.props.timezone) {
       this.setState({ selectedTimezone: this.props.timezone });
-    } else if (!this.props.timezone) {
-      this.setState({ selectedTimezone: moment.tz.guess() });
     }
   }
 

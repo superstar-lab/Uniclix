@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { connect } from "react-redux";
 import { startLogin, initLogin } from "../actions/auth";
 import { startSetChannels } from "../actions/channels";
@@ -36,7 +37,8 @@ export class RegisterPage extends React.Component {
             name: this.state.name,
             email: this.state.email,
             password: this.state.password,
-            password_confirmation: this.state.confirmPassword
+            password_confirmation: this.state.confirmPassword,
+            timezone: moment.tz.guess()
         };
 
         registerUser(data).then(response => {
