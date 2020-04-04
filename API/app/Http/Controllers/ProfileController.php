@@ -40,6 +40,9 @@ class ProfileController extends Controller
         $addonOnGracePeriod = $this->user->subscribed('addon') ? $this->user->subscription('addon')->onGracePeriod() : false;
         $trial_ends_at = strtotime($this->user->getRemainDate($user_id));
         $current_date = Carbon::now()->timestamp;
+        // We need to send this in here too to get it saved in the localStorage
+        $accessLevel = $this->user->getAccessLevel();
+
         if($trial_ends_at >= $current_date){
             $remain_date = intval(($trial_ends_at - $current_date) / 86400) + 1;
         } else {
@@ -66,6 +69,7 @@ class ProfileController extends Controller
             "topics" => $topics,
             "locations" => $locations,
             "role" => $role,
+            "accessLevel" => $accessLevel,
             "roleAddons" => $roleAddons,
             "subscription" => $subscription,
             "addon" => $addon,

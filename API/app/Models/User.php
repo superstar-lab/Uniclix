@@ -299,4 +299,23 @@ class User extends Authenticatable
         $restOfChannels = $this->hasMany(Channel::class)->where('type', '!=', 'facebook')->count();
         return $facebookChannels + $restOfChannels;
     }
+
+    // Function that let us know if the user is an member, admin or owner
+    public function getAccessLevel()
+    {
+        $team = '';
+        try {
+            $team = TeamUser::where('member_id', $this->id)->first();
+        } catch(\Exception $error) {
+
+        }
+
+        // If the user is not in the table, we assume it is an owner.
+        // If it's in the table, we check the value
+        return $team
+            ? $team->is_admin
+                ? 'admin'
+                : 'member'
+            : 'owner';
+    }
 }

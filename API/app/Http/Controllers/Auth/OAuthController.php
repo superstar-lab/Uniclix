@@ -58,7 +58,12 @@ class OAuthController extends Controller
         \DB::table('users')->where('email', $email)->update(['trial_ends_at' => $trial_ends_at]);
         // $user->notify(new \App\Notifications\User\UserSignUp());
 
-        return response()->json($user->createToken("Password Token"));
+        $token = $user->createToken("Password Token");
+
+        //The UI needs this value before the portal gets loaded
+        $token->token->accessLevel = $user->getAccessLevel();
+
+        return response()->json($token);
     }
 
     protected function login(Request $request)
@@ -71,7 +76,11 @@ class OAuthController extends Controller
         TeamUser::where('member_id', $user_id)->update(['is_pending' => 0]);
 
         if(!$user || !Hash::check($password, $user->password)) return response()->json(["error" => "Incorrect email or password."], 404);
+        $token = $user->createToken("Password Token");
 
-        return response()->json($user->createToken("Password Token"));
+        //The UI needs this value before the portal gets loaded
+        $token->token->accessLevel = $user->getAccessLevel();
+
+        return response()->json($token);
     }
 }

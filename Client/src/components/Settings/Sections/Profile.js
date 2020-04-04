@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import GeoSuggest from "react-geosuggest";
+import { isOwner } from '../../../utils/helpers';
 import { updateProfile } from "../../../requests/profile";
 import momentTz from "moment-timezone";
 import { validateEmail, validateUrl } from "../../../utils/validator";
@@ -209,6 +210,7 @@ class Profile extends React.Component {
     }
 
     render() {
+        const { profile } = this.props;
         const { isTabActive, success, error, countries, locations, openCountry, location, targets } = this.state;
         const items = countries.map((item) => {
             return <li onClick={() => this.setLocation(item)}> {item} </li>;
@@ -240,12 +242,14 @@ class Profile extends React.Component {
                                     <i className="fa fa-user"></i>
                                 </span> Personal</button>
                         </div>
-                        <div className={`radio-btn-profile ${isTabActive == 'company-info' ? 'active' : ''}`}>
-                            <button href="#company-info" onClick={() => this.ChangeTab('company-info')}>
-                                <span className="icon-bg-profile">
-                                    <i className="fa fa-building"></i>
-                                </span> Business</button>
-                        </div>
+                        {
+                            isOwner(profile.accessLevel) && <div className={`radio-btn-profile ${isTabActive == 'company-info' ? 'active' : ''}`}>
+                                <button href="#company-info" onClick={() => this.ChangeTab('company-info')}>
+                                    <span className="icon-bg-profile">
+                                        <i className="fa fa-building"></i>
+                                    </span> Business</button>
+                            </div>
+                        }
                     </div>
                     <div className="tab-body">
                         <div className={`cnt-item ${isTabActive == 'personal-info' ? 'active' : ''}`}>

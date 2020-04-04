@@ -214,7 +214,7 @@ class AddMemberModal extends React.Component {
     const data = {
       name,
       email,
-      isAdmin,
+      isAdmin: isAdmin === 'true' ? 1 : 0,
       teamId,
       assignedChannels
     };

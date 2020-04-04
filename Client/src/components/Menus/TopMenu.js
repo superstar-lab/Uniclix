@@ -5,6 +5,7 @@ import { withRouter } from "react-router";
 import { backendUrl } from "../../config/api";
 import { setComposerModal } from "../../actions/composer";
 import { startLogout } from "../../actions/auth";
+import { isOwner } from '../../utils/helpers';
 
 class TopMenu extends React.Component {
 
@@ -76,7 +77,7 @@ class TopMenu extends React.Component {
                     </div>
                 </div>
                 {!!profile.subscription ?
-                (!profile.subscription.activeSubscription ?
+                (!profile.subscription.activeSubscription && isOwner(profile.accessLevel) ?
                     (
                         profile.remain_date > 0 ?
                         <div className="top-alert">

@@ -22,7 +22,7 @@ class Scheduled extends React.Component {
 
     this.state = {
       activeTab: 'scheduled',
-      selectedTimezone: props.timezone ? props.timezone : moment.tz.guess(),
+      selectedTimezone: !!props.timezone ? props.timezone : moment.tz.guess(),
       isLoading: false,
       accountsModal: false,
       message: ''

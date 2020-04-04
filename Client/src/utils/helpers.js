@@ -78,3 +78,11 @@ export function isEmptyObject(obj) {
 export function toHumanTime(time){
     return moment.utc(Date.now()).to(moment.utc(time, timeFormats));
 }
+
+export function isOwner(accessLevel) {
+    return accessLevel === 'owner';
+}
+
+export function isOwnerOrAdmin(accessLevel) {
+    return accessLevel === 'owner' || accessLevel === 'admin';
+}

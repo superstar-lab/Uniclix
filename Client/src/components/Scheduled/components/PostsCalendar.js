@@ -176,7 +176,7 @@ class PostsCalendar extends React.Component {
             events={this.prepareEvents()}
             defaultView="week"
             view={view}
-            date={momentToDate(currentDate)}
+            date={momentToDate(startDate)}
             getNow={() => momentToDate(currentDate)}
             components={{
               event: ({ event: event }) => (

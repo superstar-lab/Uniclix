@@ -1,4 +1,13 @@
-const getMenuItems = (socialMedia) => ([
+export const membersMenuItems = [
+    {
+        id: 'twitter-booster_manage_posts',
+        displayName: 'Manage Posts',
+        uri: '/scheduled',
+        icon: 'pencil'
+    }
+];
+
+export const getMenuItems = (socialMedia) => ([
   {
       id: 'twitter-booster_manage_posts',
       displayName: 'Manage Posts',
@@ -31,4 +40,59 @@ const getMenuItems = (socialMedia) => ([
   },
 ]);
 
-export default getMenuItems;
+export const settingsMenus = {
+    'member': [
+        {
+            id: "profile",
+            displayName: "Profile",
+            uri: "/settings/profile",
+            icon: "user"
+        }
+    ],
+    'admin': [
+        {
+            id: "profile",
+            displayName: "Profile",
+            uri: "/settings/profile",
+            icon: "user"
+        },
+        {
+            id: "team",
+            displayName: "Team",
+            uri: "/settings/team",
+            icon: "users"
+        },
+        {
+            id: "manage-account",
+            displayName: "Manage Account",
+            uri: "/settings/manage-account",
+            icon: "list"
+        }
+    ],
+    'owner': [
+        {
+            id: "profile",
+            displayName: "Profile",
+            uri: "/settings/profile",
+            icon: "user"
+        },
+        {
+            id: "team",
+            displayName: "Team",
+            uri: "/settings/team",
+            icon: "users"
+        },
+        {
+            id: "manage-account",
+            displayName: "Manage Account",
+            uri: "/settings/manage-account",
+            icon: "list"
+        },
+        {
+            id: "billing",
+            displayName: "Billing",
+            uri: "/settings/billing",
+            icon: "money-bill-alt"
+        }
+    ]
+};

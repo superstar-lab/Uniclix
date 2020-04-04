@@ -1,20 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import VerticalMenu from './Menus/VerticalMenu';
-import getMenuItems from '../config/menuItems';
+import { getMenuItems, membersMenuItems } from '../config/menuItems';
+import { isOwnerOrAdmin } from '../utils/helpers';
 import ManageRouter from '../routes/ManageRouter';
 import channelSelector from '../selectors/channels';
 import { setTwitterChannel } from '../actions/channels';
 import Loader from './Loader';
 
-const MasterPage = ({channels, selectedChannel, selectChannel}) => { 
+const MasterPage = ({channels, selectedChannel, selectChannel, accessLevel}) => {
     const hasChannel = typeof(selectedChannel.username) !== 'undefined'; 
     return (
       <div className="body-wrap">
           {!!hasChannel ? 
             <div>
-              <VerticalMenu 
-                menuItems={getMenuItems(selectedChannel.type)} 
+              <VerticalMenu
+                menuItems={
+                  isOwnerOrAdmin(accessLevel) ?
+                    getMenuItems(selectedChannel.type) :
+                    membersMenuItems
+                }
                 channels={channels} 
                 selectedChannel={selectedChannel}
                 selectChannel={selectChannel}
@@ -41,7 +46,8 @@ const mapStateToProps = (state) => {
 
   return {
     channels,
-    selectedChannel: selectedChannel.length ? selectedChannel[0] : {}
+    selectedChannel: selectedChannel.length ? selectedChannel[0] : {},
+    accessLevel: state.profile.accessLevel
   };
 };
 
