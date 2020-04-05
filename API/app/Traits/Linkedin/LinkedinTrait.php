@@ -16,8 +16,7 @@ trait LinkedinTrait
     public function publish($post)
     {
         $client =new \GuzzleHttp\Client();
-
-        $result = $client->request('POST', "https://api.linkedin.com/v2/shares", [
+        $result = $client->request('POST', "https://api.linkedin.com/v2/ugcPosts", [
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->access_token,
                 'Accept' => 'application/json',
@@ -34,39 +33,114 @@ trait LinkedinTrait
      * @param object ScheduledPost
      * @return mixed
      */
+    // public function publishScheduledPost($scheduledPost)
+    // {
+    //     try{
+    //         $payload = unserialize($scheduledPost->payload);
+    //         $images = $payload['images'];
+    //         $timezone = $payload['scheduled']['publishTimezone'];
+    //         $appUrl = config("app.url");
+
+    //         $imageUrl = "";
+
+    //         $mediaIds = [];
+
+    //         foreach($images as $image){
+    //             $relativePath = str_replace('storage', 'public', $image['relativePath']);
+    //             $uploadResponse = $this->uploadMedia($relativePath);
+    //             if(!$uploadResponse) continue;
+    //             $mediaIds[] = ["entity" => $uploadResponse->location];
+    //         }
+
+    //         $text = $scheduledPost->content;
+    //         $link = findUrlInText($text);
+
+    //         $post["content"]["contentEntities"] = $mediaIds;
+    //         $payload = unserialize($this->payload);
+    //         $urnType = $this->account_type == "page" ? "organization" : "person";
+    //         //$urnType = "organization";
+
+    //         $post["owner"] = "urn:li:$urnType:$payload->id";
+
+    //         if($text){
+    //             $post["text"] = ["text" => $text];
+    //         }
+
+    //         $result = $this->publish($post);
+
+    //         $now = Carbon::now();
+
+    //         $scheduledPost->posted = 1;
+    //         $scheduledPost->status = null;
+
+    //         if(!isset($result->activity)){
+    //             $scheduledPost->posted = 0;
+    //             $scheduledPost->status = -1;
+    //             $scheduledPost->save();
+    //             throw new \Exception('Something is wrong with the token');
+    //         }
+
+    //         $scheduledPost->scheduled_at = $now;
+    //         $scheduledPost->scheduled_at_original = Carbon::parse($now)->setTimezone($timezone);
+    //         $scheduledPost->save();
+
+    //         return $result;
+
+    //     }catch(\Exception $e){
+
+    //         if($scheduledPost){
+    //             $scheduledPost->posted = 0;
+    //             $scheduledPost->status = -1;
+    //             $scheduledPost->save();
+    //         }
+
+    //         throw $e;
+    //     }
+    // }
+
     public function publishScheduledPost($scheduledPost)
     {
         try{
             $payload = unserialize($scheduledPost->payload);
             $images = $payload['images'];
             $timezone = $payload['scheduled']['publishTimezone'];
-            $appUrl = config("app.url");
+
+            $companyid = config("app.id");
 
             $imageUrl = "";
 
             $mediaIds = [];
-
-            foreach($images as $image){
-                $relativePath = str_replace('storage', 'public', $image['relativePath']);
-                $uploadResponse = $this->uploadMedia($relativePath);
-                if(!$uploadResponse) continue;
-                $mediaIds[] = ["entity" => $uploadResponse->location];
-            }
-
+            $urnType = $this->account_type == "profile" ? "organization" : "person";
             $text = $scheduledPost->content;
-            $link = findUrlInText($text);
 
-            $post["content"]["contentEntities"] = $mediaIds;
-            $payload = unserialize($this->payload);
-            $urnType = $this->account_type == "page" ? "organization" : "person";
-            //$urnType = "organization";
-
-            $post["owner"] = "urn:li:$urnType:$payload->id";
-
+            $post["author"] = "urn:li:$urnType:$companyid";
+            $post["lifecycleState"] = "PUBLISHED";
             if($text){
-                $post["text"] = ["text" => $text];
+                $post["specificContent"]["com.linkedin.ugc.ShareContent"]["shareCommentary"] = ["text" => $text];
             }
+            
+            if(!$images){
+                $post["specificContent"]["com.linkedin.ugc.ShareContent"]["shareMediaCategory"] = "NONE";
+            } else {
+                foreach($images as $image){
+                $relativePath = str_replace('storage', 'public', $image['relativePath']);
+                $uploadResponse = $this->uploadMediaV2($relativePath);
+                
+                if(!$uploadResponse) continue;
 
+                $mediaIds[] = ["status"=> "READY", "media" => $uploadResponse->location];
+                }
+
+                $post["specificContent"]["com.linkedin.ugc.ShareContent"]["shareMediaCategory"] = "IMAGE";
+                $post["specificContent"]["com.linkedin.ugc.ShareContent"]["media"] = $mediaIds;
+                
+            }
+            
+            $link = findUrlInText($text);
+            
+            $payload = unserialize($this->payload);
+            
+            $post["visibility"]["com.linkedin.ugc.MemberNetworkVisibility"] = "PUBLIC";
             $result = $this->publish($post);
 
             $now = Carbon::now();
@@ -74,7 +148,7 @@ trait LinkedinTrait
             $scheduledPost->posted = 1;
             $scheduledPost->status = null;
 
-            if(!isset($result->activity)){
+            if(!isset($result->id)){
                 $scheduledPost->posted = 0;
                 $scheduledPost->status = -1;
                 $scheduledPost->save();
@@ -129,6 +203,39 @@ trait LinkedinTrait
         }catch(\Exception $e){}
 
         return false;
+    }
+
+    public function uploadMediaV2($relativePath)
+    {
+        try {
+            if(!$relativePath) return;
+
+            $content = \Storage::get($relativePath);
+            
+            $url="https://api.linkedin.com/media/upload";
+            $client =new \GuzzleHttp\Client();
+            $fileName = basename($relativePath);
+
+            $result = $client->request('POST', $url, [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $this->access_token,
+                    'Accept' => 'application/json',
+                    'X-Restli-Protocol-Version' => '2.0.0'
+                ],
+                'multipart' => [
+                    [
+                        'name' => 'source',
+                        'contents' => $content,
+                        'filename' => $fileName,
+                    ],
+                ]
+            ]);
+
+            return json_decode($result->getBody()->getContents());
+        }catch(\Exception $e){}
+
+        return false;
+
     }
 
 
