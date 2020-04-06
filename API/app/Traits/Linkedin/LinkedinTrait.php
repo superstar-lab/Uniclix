@@ -128,7 +128,7 @@ trait LinkedinTrait
                 
                 if(!$uploadResponse) continue;
 
-                $mediaIds[] = ["status"=> "READY", "media" => $uploadResponse->location];
+                $mediaIds[] = ["status"=> "READY", "media" => $uploadResponse];
                 }
 
                 $post["specificContent"]["com.linkedin.ugc.ShareContent"]["shareMediaCategory"] = "IMAGE";
@@ -211,28 +211,53 @@ trait LinkedinTrait
             if(!$relativePath) return;
 
             $content = \Storage::get($relativePath);
-            
-            $url="https://api.linkedin.com/media/upload";
+            $url="https://api.linkedin.com/v2/assets?action=registerUpload";
             $client =new \GuzzleHttp\Client();
             $fileName = basename($relativePath);
-
-            $result = $client->request('POST', $url, [
+            $companyid = config("app.id");
+            $params = [
+                "registerUploadRequest" => [
+                    "recipes" => [
+                        "urn:li:digitalmediaRecipe:feedshare-image"
+                    ],
+                    "owner" => "urn:li:organization:$companyid",
+                    "serviceRelationships" => [
+                        [
+                            "relationshipType" => "OWNER",
+                            "identifier" => "urn:li:userGeneratedContent"
+                        ]
+                    ]
+                ]
+            ];
+            
+            $body = json_encode($params);
+            $image_request = $client->request('POST', $url, [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $this->access_token,
                     'Accept' => 'application/json',
                     'X-Restli-Protocol-Version' => '2.0.0'
                 ],
-                'multipart' => [
-                    [
-                        'name' => 'source',
-                        'contents' => $content,
-                        'filename' => $fileName,
-                    ],
-                ]
+                'body' => $body
             ]);
+            
+            $image_request_result = json_decode($image_request->getBody()->getContents(), true);
 
-            return json_decode($result->getBody()->getContents());
-        }catch(\Exception $e){}
+            $uploadUrl = $image_request_result['value']['uploadMechanism']['com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest']['uploadUrl'];
+            $imageId = $image_request_result['value']['asset'];
+            
+            $options = [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $this->access_token,
+                ],
+                'body' => $content 
+            ];
+            $result = $client->request('PUT', $uploadUrl, $options);
+            
+            return $imageId;
+
+        }
+        catch(\Exception $e){
+        }
 
         return false;
 
