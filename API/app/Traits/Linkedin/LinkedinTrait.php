@@ -125,7 +125,7 @@ trait LinkedinTrait
             } else {
                 foreach($images as $image){
                 $relativePath = str_replace('storage', 'public', $image['relativePath']);
-                $uploadResponse = $this->uploadMediaV2($relativePath);
+                $uploadResponse = $this->uploadMedia($relativePath);
                 
                 if(!$uploadResponse) continue;
 
@@ -165,7 +165,7 @@ trait LinkedinTrait
             if($scheduledPost){
                 $scheduledPost->posted = 0;
                 $scheduledPost->status = -1;
-                $scheduledPost->save();
+                //$scheduledPost->save();
             }
 
             throw $e;
