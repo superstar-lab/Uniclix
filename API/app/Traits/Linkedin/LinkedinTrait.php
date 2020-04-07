@@ -58,7 +58,7 @@ trait LinkedinTrait
     //         $post["content"]["contentEntities"] = $mediaIds;
     //         $payload = unserialize($this->payload);
     //         $urnType = $this->account_type == "page" ? "organization" : "person";
-    //         //$urnType = "organization";
+    //         
 
     //         $post["owner"] = "urn:li:$urnType:$payload->id";
 
@@ -105,15 +105,16 @@ trait LinkedinTrait
             $images = $payload['images'];
             $timezone = $payload['scheduled']['publishTimezone'];
 
-            $companyid = config("app.id");
-
             $imageUrl = "";
 
             $mediaIds = [];
-            $urnType = $this->account_type == "profile" ? "organization" : "person";
+            $payload = unserialize($this->payload);
+
+            $urnType = $this->account_type == "page" ? "organization" : "person";
+            $id = $payload->id;
             $text = $scheduledPost->content;
 
-            $post["author"] = "urn:li:$urnType:$companyid";
+            $post["author"] = "urn:li:$urnType:$id";
             $post["lifecycleState"] = "PUBLISHED";
             if($text){
                 $post["specificContent"]["com.linkedin.ugc.ShareContent"]["shareCommentary"] = ["text" => $text];
@@ -137,8 +138,6 @@ trait LinkedinTrait
             }
             
             $link = findUrlInText($text);
-            
-            $payload = unserialize($this->payload);
             
             $post["visibility"]["com.linkedin.ugc.MemberNetworkVisibility"] = "PUBLIC";
             $result = $this->publish($post);
@@ -209,18 +208,22 @@ trait LinkedinTrait
     {
         try {
             if(!$relativePath) return;
-
+            
             $content = \Storage::get($relativePath);
             $url="https://api.linkedin.com/v2/assets?action=registerUpload";
             $client =new \GuzzleHttp\Client();
             $fileName = basename($relativePath);
-            $companyid = config("app.id");
+
+            $urnType = $this->account_type == "page" ? "organization" : "person";
+            $payload = unserialize($this->payload);
+
+            $id = $payload->id;
             $params = [
                 "registerUploadRequest" => [
                     "recipes" => [
                         "urn:li:digitalmediaRecipe:feedshare-image"
                     ],
-                    "owner" => "urn:li:organization:$companyid",
+                    "owner" => "urn:li:$urnType:$id",
                     "serviceRelationships" => [
                         [
                             "relationshipType" => "OWNER",
