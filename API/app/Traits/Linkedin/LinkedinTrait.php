@@ -28,76 +28,6 @@ trait LinkedinTrait
         return json_decode($result->getBody()->getContents());
     }
 
-
-    /**
-     * @param object ScheduledPost
-     * @return mixed
-     */
-    // public function publishScheduledPost($scheduledPost)
-    // {
-    //     try{
-    //         $payload = unserialize($scheduledPost->payload);
-    //         $images = $payload['images'];
-    //         $timezone = $payload['scheduled']['publishTimezone'];
-    //         $appUrl = config("app.url");
-
-    //         $imageUrl = "";
-
-    //         $mediaIds = [];
-
-    //         foreach($images as $image){
-    //             $relativePath = str_replace('storage', 'public', $image['relativePath']);
-    //             $uploadResponse = $this->uploadMedia($relativePath);
-    //             if(!$uploadResponse) continue;
-    //             $mediaIds[] = ["entity" => $uploadResponse->location];
-    //         }
-
-    //         $text = $scheduledPost->content;
-    //         $link = findUrlInText($text);
-
-    //         $post["content"]["contentEntities"] = $mediaIds;
-    //         $payload = unserialize($this->payload);
-    //         $urnType = $this->account_type == "page" ? "organization" : "person";
-    //         
-
-    //         $post["owner"] = "urn:li:$urnType:$payload->id";
-
-    //         if($text){
-    //             $post["text"] = ["text" => $text];
-    //         }
-
-    //         $result = $this->publish($post);
-
-    //         $now = Carbon::now();
-
-    //         $scheduledPost->posted = 1;
-    //         $scheduledPost->status = null;
-
-    //         if(!isset($result->activity)){
-    //             $scheduledPost->posted = 0;
-    //             $scheduledPost->status = -1;
-    //             $scheduledPost->save();
-    //             throw new \Exception('Something is wrong with the token');
-    //         }
-
-    //         $scheduledPost->scheduled_at = $now;
-    //         $scheduledPost->scheduled_at_original = Carbon::parse($now)->setTimezone($timezone);
-    //         $scheduledPost->save();
-
-    //         return $result;
-
-    //     }catch(\Exception $e){
-
-    //         if($scheduledPost){
-    //             $scheduledPost->posted = 0;
-    //             $scheduledPost->status = -1;
-    //             $scheduledPost->save();
-    //         }
-
-    //         throw $e;
-    //     }
-    // }
-
     public function publishScheduledPost($scheduledPost)
     {
         try{
@@ -108,10 +38,10 @@ trait LinkedinTrait
             $imageUrl = "";
 
             $mediaIds = [];
-            $payload = unserialize($this->payload);
+            $payload_channel = unserialize($this->payload);
 
             $urnType = $this->account_type == "page" ? "organization" : "person";
-            $id = $payload->id;
+            $id = $payload_channel->id;
             $text = $scheduledPost->content;
 
             $post["author"] = "urn:li:$urnType:$id";
@@ -165,7 +95,6 @@ trait LinkedinTrait
             if($scheduledPost){
                 $scheduledPost->posted = 0;
                 $scheduledPost->status = -1;
-                //$scheduledPost->save();
             }
 
             throw $e;
