@@ -574,7 +574,6 @@ trait FacebookTrait
 
             $scheduledPost->posted = 0;
             $scheduledPost->status = -1;
-            $scheduledPost->save();
 
             throw $e;
         }

@@ -28,76 +28,6 @@ trait LinkedinTrait
         return json_decode($result->getBody()->getContents());
     }
 
-
-    /**
-     * @param object ScheduledPost
-     * @return mixed
-     */
-    // public function publishScheduledPost($scheduledPost)
-    // {
-    //     try{
-    //         $payload = unserialize($scheduledPost->payload);
-    //         $images = $payload['images'];
-    //         $timezone = $payload['scheduled']['publishTimezone'];
-    //         $appUrl = config("app.url");
-
-    //         $imageUrl = "";
-
-    //         $mediaIds = [];
-
-    //         foreach($images as $image){
-    //             $relativePath = str_replace('storage', 'public', $image['relativePath']);
-    //             $uploadResponse = $this->uploadMedia($relativePath);
-    //             if(!$uploadResponse) continue;
-    //             $mediaIds[] = ["entity" => $uploadResponse->location];
-    //         }
-
-    //         $text = $scheduledPost->content;
-    //         $link = findUrlInText($text);
-
-    //         $post["content"]["contentEntities"] = $mediaIds;
-    //         $payload = unserialize($this->payload);
-    //         $urnType = $this->account_type == "page" ? "organization" : "person";
-    //         //$urnType = "organization";
-
-    //         $post["owner"] = "urn:li:$urnType:$payload->id";
-
-    //         if($text){
-    //             $post["text"] = ["text" => $text];
-    //         }
-
-    //         $result = $this->publish($post);
-
-    //         $now = Carbon::now();
-
-    //         $scheduledPost->posted = 1;
-    //         $scheduledPost->status = null;
-
-    //         if(!isset($result->activity)){
-    //             $scheduledPost->posted = 0;
-    //             $scheduledPost->status = -1;
-    //             $scheduledPost->save();
-    //             throw new \Exception('Something is wrong with the token');
-    //         }
-
-    //         $scheduledPost->scheduled_at = $now;
-    //         $scheduledPost->scheduled_at_original = Carbon::parse($now)->setTimezone($timezone);
-    //         $scheduledPost->save();
-
-    //         return $result;
-
-    //     }catch(\Exception $e){
-
-    //         if($scheduledPost){
-    //             $scheduledPost->posted = 0;
-    //             $scheduledPost->status = -1;
-    //             $scheduledPost->save();
-    //         }
-
-    //         throw $e;
-    //     }
-    // }
-
     public function publishScheduledPost($scheduledPost)
     {
         try{
@@ -105,15 +35,16 @@ trait LinkedinTrait
             $images = $payload['images'];
             $timezone = $payload['scheduled']['publishTimezone'];
 
-            $companyid = config("app.id");
-
             $imageUrl = "";
 
             $mediaIds = [];
-            $urnType = $this->account_type == "profile" ? "organization" : "person";
+            $payload_channel = unserialize($this->payload);
+
+            $urnType = $this->account_type == "page" ? "organization" : "person";
+            $id = $payload_channel->id;
             $text = $scheduledPost->content;
 
-            $post["author"] = "urn:li:$urnType:$companyid";
+            $post["author"] = "urn:li:$urnType:$id";
             $post["lifecycleState"] = "PUBLISHED";
             if($text){
                 $post["specificContent"]["com.linkedin.ugc.ShareContent"]["shareCommentary"] = ["text" => $text];
@@ -124,11 +55,11 @@ trait LinkedinTrait
             } else {
                 foreach($images as $image){
                 $relativePath = str_replace('storage', 'public', $image['relativePath']);
-                $uploadResponse = $this->uploadMediaV2($relativePath);
+                $uploadResponse = $this->uploadMedia($relativePath);
                 
                 if(!$uploadResponse) continue;
 
-                $mediaIds[] = ["status"=> "READY", "media" => $uploadResponse->location];
+                $mediaIds[] = ["status"=> "READY", "media" => $uploadResponse];
                 }
 
                 $post["specificContent"]["com.linkedin.ugc.ShareContent"]["shareMediaCategory"] = "IMAGE";
@@ -137,8 +68,6 @@ trait LinkedinTrait
             }
             
             $link = findUrlInText($text);
-            
-            $payload = unserialize($this->payload);
             
             $post["visibility"]["com.linkedin.ugc.MemberNetworkVisibility"] = "PUBLIC";
             $result = $this->publish($post);
@@ -166,7 +95,6 @@ trait LinkedinTrait
             if($scheduledPost){
                 $scheduledPost->posted = 0;
                 $scheduledPost->status = -1;
-                $scheduledPost->save();
             }
 
             throw $e;
@@ -209,30 +137,59 @@ trait LinkedinTrait
     {
         try {
             if(!$relativePath) return;
-
-            $content = \Storage::get($relativePath);
             
-            $url="https://api.linkedin.com/media/upload";
+            $content = \Storage::get($relativePath);
+            $url="https://api.linkedin.com/v2/assets?action=registerUpload";
             $client =new \GuzzleHttp\Client();
             $fileName = basename($relativePath);
 
-            $result = $client->request('POST', $url, [
+            $urnType = $this->account_type == "page" ? "organization" : "person";
+            $payload = unserialize($this->payload);
+
+            $id = $payload->id;
+            $params = [
+                "registerUploadRequest" => [
+                    "recipes" => [
+                        "urn:li:digitalmediaRecipe:feedshare-image"
+                    ],
+                    "owner" => "urn:li:$urnType:$id",
+                    "serviceRelationships" => [
+                        [
+                            "relationshipType" => "OWNER",
+                            "identifier" => "urn:li:userGeneratedContent"
+                        ]
+                    ]
+                ]
+            ];
+            
+            $body = json_encode($params);
+            $image_request = $client->request('POST', $url, [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $this->access_token,
                     'Accept' => 'application/json',
                     'X-Restli-Protocol-Version' => '2.0.0'
                 ],
-                'multipart' => [
-                    [
-                        'name' => 'source',
-                        'contents' => $content,
-                        'filename' => $fileName,
-                    ],
-                ]
+                'body' => $body
             ]);
+            
+            $image_request_result = json_decode($image_request->getBody()->getContents(), true);
 
-            return json_decode($result->getBody()->getContents());
-        }catch(\Exception $e){}
+            $uploadUrl = $image_request_result['value']['uploadMechanism']['com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest']['uploadUrl'];
+            $imageId = $image_request_result['value']['asset'];
+            
+            $options = [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $this->access_token,
+                ],
+                'body' => $content 
+            ];
+            $result = $client->request('PUT', $uploadUrl, $options);
+            
+            return $imageId;
+
+        }
+        catch(\Exception $e){
+        }
 
         return false;
 
