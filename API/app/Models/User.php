@@ -90,8 +90,8 @@ class User extends Authenticatable
         $selectedTwitterChannel = $this->selectedTwitterChannel();
         
         if($channels = $this->channels()->get()){
-            $result_collect = [];
-            $result = collect($channels)->map(function($channel) use ($selectedChannel, $selectedTwitterChannel) {
+
+            return collect($channels)->map(function($channel) use ($selectedChannel, $selectedTwitterChannel) {
                 $channel->details = @$channel->details;
                 $channel->selected = $selectedChannel && $selectedChannel->id == $channel->id ? 1 : 0;
                 if($channel->details){
@@ -106,14 +106,6 @@ class User extends Authenticatable
                 }
                 return $channel;
             });
-
-            
-            foreach($result as $key => $item){
-                if($item->type != "facebook"){
-                    $result_collect[] = $item;
-                }
-            }
-            return collect($result_collect);
         }
         return [];
     }
@@ -122,8 +114,7 @@ class User extends Authenticatable
         $selectedChannel = $this->selectedChannel();
         $selectedTwitterChannel = $this->selectedTwitterChannel();
         if($channels = $this->memberChannels()->get()){
-            $result_collect = [];
-            $result = collect($channels)->map(function($channel) use ($markSelected, $selectedChannel, $selectedTwitterChannel){
+            return collect($channels)->map(function($channel) use ($markSelected, $selectedChannel, $selectedTwitterChannel){
                         $permissionLevel = $channel->role;
                         $teamId = $channel->team_id;
                         $approverId = $channel->approver_id;
@@ -149,12 +140,6 @@ class User extends Authenticatable
 
                         return $channel;
                     });
-                    foreach($result as $item){
-                        if($item->type != "facebook"){
-                            $result_collect[] = $item;
-                        }
-                    }
-                    return collect($result_collect);
         }
 
         return [];
