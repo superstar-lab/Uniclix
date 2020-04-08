@@ -10,6 +10,7 @@ import { setComposerModal } from '../../actions/composer';
 
 import ScheduledPosts from './Sections/ScheduledPosts';
 import TimezoneSelector from './components/TimezoneSelector';
+import AwaitingApproval from './Sections/AwaitingApproval';
 import Loader from '../Loader';
 import Modal from 'react-modal';
 
@@ -122,6 +123,9 @@ class Scheduled extends React.Component {
         >
           <TabPane tab="Scheduled" key="scheduled">
             <ScheduledPosts timezone={selectedTimezone} />
+          </TabPane>
+          <TabPane tab="Awaiting Approval" key="awaiting">
+            <AwaitingApproval timezone={selectedTimezone} />
           </TabPane>
         </Tabs>
         { isLoading && <Loader fullscreen /> }

@@ -317,9 +317,19 @@ class PublishController extends Controller
         if ($this->selectedChannel) {
 
             try {
-                $scheduledPost = $this->selectedChannel->scheduledPosts()->find($postId);
-                $scheduledPost->approved = 1;
-                $scheduledPost->save();
+                $scheduledPosts = $this->selectedChannel->scheduledPosts()
+                    ->with('category')
+                    ->where("posted", 0)
+                    ->where("approved", 0)
+                    ->orderBy('scheduled_at', 'asc')
+                    ->paginate(20);
+                error_log(json_encode($scheduledPosts), 3, 'C:/Users/federico.bernardi/Desktop/data.txt');
+                error_log(json_encode($postId), 3, 'C:/Users/federico.bernardi/Desktop/data.txt');
+                foreach($scheduledPosts as $post) {
+                }
+                
+                // $scheduledPost->approved = 1;
+                // $scheduledPost->save();
 
                 //$this->user->notify(new PostApprovedNotification());
             } catch (\Exception $e) {
