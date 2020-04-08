@@ -280,6 +280,15 @@ class User extends Authenticatable
             ->get();
         }
     }
+
+    public function getAllUnapprovedPosts()
+    {
+        return ScheduledPost::with('category')
+            ->where("approved", 0)
+            ->where('posted', 0)
+            ->orderBy('scheduled_at', 'asc')
+            ->get();
+    }
     
     public function getRemainDate($user_id)
     {

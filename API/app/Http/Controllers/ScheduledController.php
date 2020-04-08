@@ -28,12 +28,7 @@ class ScheduledController extends Controller
 
     public function unapprovedPosts(Request $request)
     {
-        $posts = $this->selectedChannel->scheduledPosts()
-            ->with('category')
-            ->where("posted", 0)
-            ->where("approved", 0)
-            ->orderBy('scheduled_at', 'asc')
-            ->paginate(20);
+        $posts = $this->user->getAllUnapprovedPosts();
 
         foreach ($posts as $post) {
             $post->payload = unserialize($post->payload);
