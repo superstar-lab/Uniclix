@@ -2,6 +2,7 @@ import React from 'react';
 import { DatePicker, TimePicker, Checkbox } from 'antd';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import { isOwnerOrAdmin } from '../../../utils/helpers';
 
 class DateTimeSelector extends React.Component {
   static propTypes = {
@@ -97,7 +98,7 @@ class DateTimeSelector extends React.Component {
   };
 
   render() {
-    const { postAtBestTime, postNow } = this.props;
+    const { postAtBestTime, postNow, accessLevel } = this.props;
     const dateTime = this.getDateTime();
 
     return (
@@ -122,14 +123,18 @@ class DateTimeSelector extends React.Component {
             disabledMinutes={this.disableMinutes}
             disabled={postAtBestTime || postNow}
           />
-          <div className="checkboxes-group">
-            <Checkbox checked={postAtBestTime} disabled={postNow} onChange={this.onPostAtBestTime}>
-              Post at best time
-            </Checkbox>
-            <Checkbox checked={postNow} disabled={postAtBestTime} onChange={this.onPostNow}>
-              Post now
-            </Checkbox>
-          </div>
+          {
+            isOwnerOrAdmin(accessLevel) && (
+              <div className="checkboxes-group">
+                <Checkbox checked={postAtBestTime} disabled={postNow} onChange={this.onPostAtBestTime}>
+                  Post at best time
+                </Checkbox>
+                <Checkbox checked={postNow} disabled={postAtBestTime} onChange={this.onPostNow}>
+                  Post now
+                </Checkbox>
+              </div>
+            )
+          }
         </div>
       </div>
     );

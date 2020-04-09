@@ -178,10 +178,14 @@
             .icons-section {
               display: flex;
               width: 100px;
-              justify-content: space-between;
+              justify-content: flex-end;
               color: #2D86DA;
               font-size: 18px;
               
+              div:nth-child(2) {
+                margin: 0 20px;
+              }
+
               i {
                 cursor: pointer;
               }

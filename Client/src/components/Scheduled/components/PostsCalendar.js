@@ -164,7 +164,7 @@ class PostsCalendar extends React.Component {
   };
 
   render() {
-    const { view, startDate, channelsList, setComposerToEdit, timezone, fetchPosts } = this.props;
+    const { view, startDate, channelsList, setComposerToEdit, timezone, fetchPosts, accessLevel } = this.props;
     const { currentDate, selectedEvent, isLoading } = this.state;
 
     return (
@@ -190,6 +190,7 @@ class PostsCalendar extends React.Component {
                   timezone={timezone}
                   setComposerToEdit={setComposerToEdit}
                   view={view}
+                  accessLevel={accessLevel}
                 />
               )
             }}
@@ -229,7 +230,8 @@ const formats = {
 
 const mapStateToProps = (state) => {
   return {
-    channelsList: state.channels.list
+    channelsList: state.channels.list,
+    accessLevel: state.profile.accessLevel
   };
 };
 

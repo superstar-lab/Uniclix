@@ -7,6 +7,7 @@ import { notification } from 'antd';
 import FunctionModal from '../Modal';
 import { updateTimeZone } from '../../requests/profile';
 import { setComposerModal } from '../../actions/composer';
+import { isOwnerOrAdmin } from '../../utils/helpers';
 
 import ScheduledPosts from './Sections/ScheduledPosts';
 import TimezoneSelector from './components/TimezoneSelector';
@@ -84,6 +85,7 @@ class Scheduled extends React.Component {
 
   render() {
     const { selectedTimezone, isLoading, accountsModal, message } = this.state;
+    const { accessLevel } = this.props;
 
     return (
       <div className="scheduled">
@@ -124,9 +126,13 @@ class Scheduled extends React.Component {
           <TabPane tab="Scheduled" key="scheduled">
             <ScheduledPosts timezone={selectedTimezone} />
           </TabPane>
-          <TabPane tab="Awaiting Approval" key="awaiting">
-            <AwaitingApproval timezone={selectedTimezone} />
-          </TabPane>
+          {
+            isOwnerOrAdmin(accessLevel) && (
+              <TabPane tab="Awaiting Approval" key="awaiting">
+                <AwaitingApproval timezone={selectedTimezone} />
+              </TabPane>
+            )
+          }
         </Tabs>
         { isLoading && <Loader fullscreen /> }
       </div>
@@ -135,11 +141,12 @@ class Scheduled extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { profile: { user: { timezone } } = {} } = state;
+  const { profile: { user: { timezone }, accessLevel } = {} } = state;
   const main_profile = state.profile;
   return {
     timezone,
-    main_profile
+    main_profile,
+    accessLevel
   };
 };
 

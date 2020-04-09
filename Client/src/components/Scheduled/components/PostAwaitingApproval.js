@@ -108,7 +108,7 @@ class PostAwaittingApproval extends React.Component {
           { this.renderChannels() }
         </div>
         <div className="publish-date">
-          { moment(scheduled.publishUTCDateTime).tz(timezone).format('DD MMM, h:mm') }
+          { moment(scheduled.publishUTCDateTime).tz(timezone).format('DD MMM, h:mm A') }
         </div>
           <Popover content={this.getPopoverContent()} placement="leftTop">
             <div className="actions-container">

@@ -39,24 +39,26 @@ class AwaitingApproval extends React.Component {
 
     return !isLoading ? (
       <div className="awaiting-approval-container">
-        <div className="table-header">
-          <div>Content</div>
-          <div>Category</div>
-          <div>Networks</div>
-          <div>Publish date</div>
-        </div>
         {
           !!pendingPosts.length ? (
             <div>
-              {
-                pendingPosts.map(post =>
-                  <PostAwaitingApproval
-                    timezone={timezone}
-                    channels={channels}
-                    { ...post }
-                  />
-                )
-              }
+              <div className="table-header">
+                <div>Content</div>
+                <div>Category</div>
+                <div>Networks</div>
+                <div>Publish date</div>
+              </div>
+              <div>
+                {
+                  pendingPosts.map(post =>
+                    <PostAwaitingApproval
+                      timezone={timezone}
+                      channels={channels}
+                      { ...post }
+                    />
+                  )
+                }
+              </div>
             </div>
           ) : (
             <div className="no-pendings">

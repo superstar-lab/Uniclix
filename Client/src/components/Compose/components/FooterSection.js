@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { notification } from 'antd';
 
+import { isOwnerOrAdmin } from '../../../utils/helpers';
 import FunctionModal from '../../Modal';
 import { publish } from '../../../requests/channels';
 
@@ -27,6 +28,7 @@ class FooterSection extends React.Component {
     postAtBestTime: PropTypes.bool.isRequired,
     postNow: PropTypes.bool.isRequired,
     channels: PropTypes.array.isRequired,
+    accessLevel: PropTypes.string.isRequired,
     onPost: PropTypes.func
   };
 
@@ -41,11 +43,12 @@ class FooterSection extends React.Component {
   };
 
   getPublishType = () => {
-    let { postAtBestTime, postNow, selectedTimezone, date } = this.props;
+    let { postAtBestTime, postNow, selectedTimezone, date, accessLevel } = this.props;
     const publishTime = moment(date).tz(selectedTimezone);
     const now = moment().tz(selectedTimezone);
 
-    if (publishTime) {
+    // We want to prevent the mmebers to post now
+    if (publishTime && isOwnerOrAdmin(accessLevel)) {
       if (publishTime.isSameOrBefore(now)) {
         postNow = true;
       }
