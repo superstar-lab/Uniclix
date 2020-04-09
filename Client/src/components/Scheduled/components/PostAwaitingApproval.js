@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Popover, notification } from 'antd';
 
-import { approvePost } from '../../../requests/channels';
+import { approvePost, destroyPost } from '../../../requests/channels';
 
 import { LoaderWithOverlay } from '../../Loader';
 import { Modal } from '../../Modal';
@@ -29,12 +29,15 @@ class PostAwaittingApproval extends React.Component {
       category_name: PropTypes.string.isRequired
     }).isRequired,
     channels: PropTypes.array.isRequired,
+    getAwaitingPosts: PropTypes.func.isRequired,
     article_id: PropTypes.string
   };
 
   state = {
     confirmationIsOpen: false,
-    isLoading: false
+    isLoading: false,
+    modalTitle: '',
+    modalOnOkCallback: null
   };
 
   renderChannels() {
@@ -49,25 +52,60 @@ class PostAwaittingApproval extends React.Component {
     ))
   }
 
-  toggleModal = () => this.setState({ confirmationIsOpen: !this.state.confirmationIsOpen });
+  toggleModal = (type) => {
+    let modalTitle = 'Do you want to approve the post?';
+    let modalOnOkCallback = this.approvePost;
+
+    if (type === 'delete') {
+      modalTitle = 'Are you sure you want to delete the post?';
+      modalOnOkCallback = this.deletePost;
+    }
+    this.setState({ confirmationIsOpen: true, modalTitle, modalOnOkCallback });
+  }
 
   getPopoverContent = () => {
     return (
       <div className="awaiting-post-popover-content">
-        <div onClick={this.toggleModal}>Approve Post</div>
+        <div onClick={() => this.toggleModal('approve')}>Approve Post</div>
+        <div onClick={() => this.toggleModal('delete')}>Delete Post</div>
       </div>
     );
   };
 
+  deletePost = () => {
+    const { getAwaitingPosts, post_id } = this.props;
+
+    this.setState({ isLoading: true, confirmationIsOpen: false });
+    destroyPost(post_id)
+      .then(() => {
+        notification.success({
+          message: 'Deleted',
+          description: 'The post was removed'
+        });
+        this.setState({ isLoading: false });
+        getAwaitingPosts();
+      })
+      .catch(() => {
+        notification.error({
+          message: 'Error :(',
+          description: "We couldn't remove the post. Please try later."
+        });
+        this.setState({ isLoading: false });
+      });
+  };
+
   approvePost = () => {
-    this.setState({ isLoading: true });
-    approvePost(this.props.post_id)
+    const { getAwaitingPosts, post_id } = this.props;
+
+    this.setState({ isLoading: true, confirmationIsOpen: false });
+    approvePost(post_id)
       .then(() => {
         notification.success({
           message: 'Approved!',
           description: 'The post will be posted!'
         });
-        this.setState({ isLoading: false, confirmationIsOpen: false });
+        this.setState({ isLoading: false });
+        getAwaitingPosts();
       })
       .catch(error => {
         console.log(error);
@@ -75,7 +113,7 @@ class PostAwaittingApproval extends React.Component {
           message: 'Error :(',
           description: 'Something went wrong and the post could not get approved. Please try again later.'
         });
-        this.setState({ isLoading: false, confirmationIsOpen: false });
+        this.setState({ isLoading: false });
       });
   };
 
@@ -84,12 +122,12 @@ class PostAwaittingApproval extends React.Component {
   }
 
   onConfirmationCancel = () => {
-    this.toggleModal();
+    this.setState({ confirmationIsOpen: false });
   }
 
   render() {
     const { timezone, content, category, payload: { scheduled, images } } = this.props;
-    const { confirmationIsOpen, isLoading } = this.state;
+    const { confirmationIsOpen, isLoading, modalTitle, modalOnOkCallback } = this.state;
 
     return (
       <div className="post-awaiting" style={{borderColor: category.color}}>
@@ -116,8 +154,8 @@ class PostAwaittingApproval extends React.Component {
             </div>
           </Popover>
         <Modal
-          title="Do you want to confirm the post?"
-          onOk={this.onConfirmationOk}
+          title={modalTitle}
+          onOk={modalOnOkCallback}
           onCancel={this.onConfirmationCancel}
           isOpen={confirmationIsOpen}
         />

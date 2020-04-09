@@ -339,7 +339,7 @@ class PublishController extends Controller
 
         if ($this->selectedChannel) {
             try {
-                $posts = $this->user->getAllScheduledPosts()->where("post_id", $postId);
+                $posts = $this->user->getAllPosts()->where("post_id", $postId);
                 foreach($posts as $post) {
                     $payload = unserialize($post->payload);
                     $images = $payload['images'];

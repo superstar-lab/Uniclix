@@ -264,6 +264,13 @@ class User extends Authenticatable
         return strtotime($this->created_at) <= strtotime(Carbon::now()->subHours($hours));
     }
 
+    public function getAllPosts()
+    {
+        return ScheduledPost::with('category')
+            ->orderBy('scheduled_at', 'asc')
+            ->get();
+    }
+
     public function getAllScheduledPosts($from_date = null, $to_date = null)
     {
         if($from_date == null || $to_date == null){

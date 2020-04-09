@@ -54,6 +54,7 @@ class AwaitingApproval extends React.Component {
                     <PostAwaitingApproval
                       timezone={timezone}
                       channels={channels}
+                      getAwaitingPosts={this.getAwaitingPosts}
                       { ...post }
                     />
                   )
