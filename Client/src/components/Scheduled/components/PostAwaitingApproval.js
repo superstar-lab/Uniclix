@@ -134,7 +134,7 @@ class PostAwaittingApproval extends React.Component {
         <div className="content">
           { !!images.length && <img src={images[0].absolutePath} /> }
           <span>
-            { content }
+            { content.length > 190 ? `${content.substring(0, 187)}...` : content }
           </span>
         </div>
         <div className="category">

@@ -8,10 +8,12 @@ import FunctionModal from '../Modal';
 import { updateTimeZone } from '../../requests/profile';
 import { setComposerModal } from '../../actions/composer';
 import { isOwnerOrAdmin } from '../../utils/helpers';
+import { unapprovedPosts } from '../../requests/channels';
 
 import ScheduledPosts from './Sections/ScheduledPosts';
 import TimezoneSelector from './components/TimezoneSelector';
 import AwaitingApproval from './Sections/AwaitingApproval';
+import AwaitingApprovalTabTitle from './components/AwaitingApprovalTabTitle';
 import Loader from '../Loader';
 import Modal from 'react-modal';
 
@@ -27,7 +29,14 @@ class Scheduled extends React.Component {
       selectedTimezone: !!props.timezone ? props.timezone : moment.tz.guess(),
       isLoading: false,
       accountsModal: false,
-      message: ''
+      awaitingApprovalPosts: [],
+      awaitingLoading: false
+    }
+  }
+
+  componentDidMount() {
+    if (isOwnerOrAdmin(this.props.accessLevel)) {
+      this.getAwaitingPosts();
     }
   }
 
@@ -40,14 +49,19 @@ class Scheduled extends React.Component {
     }
   }
 
-  componentWillMount() {
-    if(this.props.main_profile.remain_date <= 0 && this.props.main_profile.subscription.activeSubscription == false){
-      this.setState({
-        accountsModal: true,
-        message: 'Your free trial has expired, please upgrade.'
+  getAwaitingPosts = () => {
+    const { page } = this.state;
+
+    this.setState({ awaitingLoading: true });
+    unapprovedPosts(page)
+      .then(response => {
+        this.setState({ awaitingApprovalPosts: response.items, awaitingLoading: false });
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({ awaitingLoading: false });
       });
-    }
-  }
+  };
 
   changeTimezone = (timezone) => {
     this.setState({ isLoading: true });
@@ -83,26 +97,26 @@ class Scheduled extends React.Component {
     this.props.setComposerModal(moment().format('YYYY-MM-DDTHH:mmZ'), this.state.selectedTimezone);
   };
 
+  onTabChange = (key) => {
+    if (key === 'awaiting') {
+      this.getAwaitingPosts();
+    }
+
+    this.setState({ activeTab: key });
+  };
+
   render() {
-    const { selectedTimezone, isLoading, accountsModal, message, activeTab } = this.state;
+    const {
+      selectedTimezone,
+      isLoading,
+      activeTab,
+      awaitingApprovalPosts,
+      awaitingLoading
+    } = this.state;
     const { accessLevel } = this.props;
 
     return (
       <div className="scheduled">
-        {!!accountsModal && 
-          <Modal
-          ariaHideApp={false}
-          className="billing-profile-modal"
-          isOpen={!!accountsModal}
-          >
-              <div className="modal-title">{`Attention`}</div>
-              <div className="modal-content1">{message}</div>
-              <div style={{float:'right'}}>
-                  <button onClick={() => this.setState({accountsModal: false})} className="cancelBtn" >No</button>
-                  <a href="/settings/billing" className="cancelBtn1" >Yes</a>
-              </div>
-          </Modal>
-        }
         <div className="section-header no-border mb-40">
           <div className="section-header__first-row row">
             <div className="col-xs-12 col-md-8 ">
@@ -120,7 +134,7 @@ class Scheduled extends React.Component {
         </div>
         <Tabs
           defaultActiveKey="scheduled"
-          onChange={(key) => this.setState({ activeTab: key })}
+          onChange={(key) => this.onTabChange(key)}
           tabBarExtraContent={this.getTabExtraContent()}
         >
           <TabPane tab="Scheduled" key="scheduled">
@@ -129,14 +143,20 @@ class Scheduled extends React.Component {
           </TabPane>
           {
             isOwnerOrAdmin(accessLevel) && (
-              <TabPane tab="Awaiting Approval" key="awaiting">
-                {/* I needed a way to force the call that is made when the component gets mounted*/}
-                { activeTab === 'awaiting' &&  <AwaitingApproval timezone={selectedTimezone} /> }
+              <TabPane
+                tab={<AwaitingApprovalTabTitle amountOfPendingPosts={awaitingApprovalPosts.length}/>}
+                key="awaiting"
+              >
+                <AwaitingApproval
+                  timezone={selectedTimezone}
+                  pendingPosts={awaitingApprovalPosts}
+                  getAwaitingPosts={this.getAwaitingPosts}
+                />
               </TabPane>
             )
           }
         </Tabs>
-        { isLoading && <Loader fullscreen /> }
+        { (isLoading || awaitingLoading) && <Loader fullscreen /> }
       </div>
     );
   }

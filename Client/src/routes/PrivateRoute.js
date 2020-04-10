@@ -4,6 +4,7 @@ import { Route, Redirect } from 'react-router-dom';
 import TopMenu from "../components/Menus/TopMenu";
 import EmailChecker from "../components/EmailChecker";
 import ActiveChecker from "../components/ActiveChecker";
+import FreeTrialChecker from '../components/FreeTrialChecker';
 import Middleware from "../components/Middleware";
 import SocialAccountsPrompt from "../components/SocialAccountsPrompt";
 import ROUTES from '../config/routesPerRole';
@@ -39,6 +40,7 @@ export const PrivateRoute = ({
                                     <Component {...props} />
                                     <EmailChecker />
                                     <ActiveChecker />
+                                    <FreeTrialChecker isBillingPage={location.pathname === '/settings/billing'}/>
                                 </BrowserView>
 
                                 <MobileView>

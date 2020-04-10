@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { unapprovedPosts } from '../../../requests/channels';
-
 import { LoaderWithOverlay } from '../../Loader';
 import PostAwaitingApproval from '../components/PostAwaitingApproval';
 
@@ -14,28 +12,9 @@ class AwaitingApproval extends React.Component {
     isLoading: false
   };
 
-  componentDidMount() {
-    this.getAwaitingPosts();
-  }
-
-  getAwaitingPosts = () => {
-    const { page } = this.state;
-
-    this.setState({ isLoading: true });
-    unapprovedPosts(page)
-      .then(response => {
-        console.log(response);
-        this.setState({ pendingPosts: response.items, isLoading: false });
-      })
-      .catch(error => {
-        console.log(error);
-        this.setState({ isLoading: false });
-      });
-  };
-
   render() {
-    const { pendingPosts, isLoading } = this.state;
-    const { timezone, channels } = this.props;
+    const { isLoading } = this.state;
+    const { timezone, channels, pendingPosts } = this.props;
 
     return !isLoading ? (
       <div className="awaiting-approval-container">
@@ -54,7 +33,7 @@ class AwaitingApproval extends React.Component {
                     <PostAwaitingApproval
                       timezone={timezone}
                       channels={channels}
-                      getAwaitingPosts={this.getAwaitingPosts}
+                      getAwaitingPosts={this.props.getAwaitingPosts}
                       { ...post }
                     />
                   )

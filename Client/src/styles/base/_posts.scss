@@ -540,7 +540,7 @@
     color: #000000;
 
     div:nth-child(1) {
-      width: 30%;
+      width: 45%;
     }
 
     div:nth-child(2) {
@@ -571,7 +571,8 @@
     padding-right: 20px;
 
     .content {
-      width: 30%;
+      width: 45%;
+      display: flex;
 
       img {
         height: 100px;
