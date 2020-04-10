@@ -320,8 +320,6 @@ class PublishController extends Controller
                 $scheduledPosts = $this->user->getAllUnapprovedPosts()
                     ->where("post_id", $postId);
 
-                error_log(json_encode($scheduledPosts), 3, 'C:/Users/federico.bernardi/Desktop/data.txt');
-
                 foreach($scheduledPosts as $post) {
                     $post->approved = 1;
                     $post->save();
