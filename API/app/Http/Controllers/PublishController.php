@@ -317,11 +317,15 @@ class PublishController extends Controller
         if ($this->selectedChannel) {
 
             try {
-                $scheduledPost = $this->selectedChannel->scheduledPosts()->find($postId);
-                $scheduledPost->approved = 1;
-                $scheduledPost->save();
+                $scheduledPosts = $this->user->getAllUnapprovedPosts()
+                    ->where("post_id", $postId);
 
-                //$this->user->notify(new PostApprovedNotification());
+                error_log(json_encode($scheduledPosts), 3, 'C:/Users/federico.bernardi/Desktop/data.txt');
+
+                foreach($scheduledPosts as $post) {
+                    $post->approved = 1;
+                    $post->save();
+                }
             } catch (\Exception $e) {
                 return getErrorResponse($e, $this->selectedChannel);
             }
@@ -335,7 +339,7 @@ class PublishController extends Controller
 
         if ($this->selectedChannel) {
             try {
-                $posts = $this->user->getAllScheduledPosts()->where("post_id", $postId);
+                $posts = $this->user->getAllPosts()->where("post_id", $postId);
                 foreach($posts as $post) {
                     $payload = unserialize($post->payload);
                     $images = $payload['images'];

@@ -178,10 +178,14 @@
             .icons-section {
               display: flex;
               width: 100px;
-              justify-content: space-between;
+              justify-content: flex-end;
               color: #2D86DA;
               font-size: 18px;
               
+              div:nth-child(2) {
+                margin: 0 20px;
+              }
+
               i {
                 cursor: pointer;
               }
@@ -522,5 +526,132 @@
           }
         }
     }
+  }
+}
+
+.awaiting-approval-container {
+
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    margin: 20px 0;
+    font-family: Rubik;
+    color: #000000;
+
+    div:nth-child(1) {
+      width: 30%;
+    }
+
+    div:nth-child(2) {
+      width: 15%;
+    }
+
+    div:nth-child(3) {
+      width: 20%;
+    }
+
+    div:nth-child(4) {
+      width: 7%;
+      margin-right: 60px;
+      text-align: center;
+    }
+  }
+
+  .post-awaiting {
+    background-color: #FFF;
+    border-left: 12px solid;
+    border-radius: 7px;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-family: Lato;
+    padding-right: 20px;
+
+    .content {
+      width: 30%;
+
+      img {
+        height: 100px;
+      }
+
+      span {
+        margin-left: 30px;
+        color: #363636;
+      }
+    }
+
+    .category {
+      width: 15%;
+      display: flex;
+      justify-content: center;
+
+      .label {
+        padding: 5px;
+        border-radius: 4px;
+        color: #fff;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 16px;
+        margin: 0;
+        cursor: default;
+      }
+    }
+
+    .publish-date {
+      width: 5%;
+      text-align: center;
+      margin-right: 50px;
+    }
+
+    .channels {
+      width: 20%;
+      display: flex;
+      justify-content: center;
+
+      .channel-avatar {
+        position: relative;
+        width: 45px;
+        margin-right: 10px;
+      }
+
+      img {
+        width: 45px;
+        height: 45px;
+        object-fit: cover;
+        border-radius: 100%;
+        border: 1px solid #ccc;
+      }
+    }
+
+    .actions-container {
+      position: absolute;
+      right: 20px;
+      width: 20px;
+    }
+  }
+}
+
+.ant-popover-inner-content {
+  padding: 0 !important;
+}
+
+.awaiting-post-popover-content {
+  width: 150px;
+  padding: 0;
+
+  div {
+    font-family: Rubik;
+    font-weight: 500;
+    padding: 15px;
+    cursor: pointer;
+  }
+
+  div:hover {
+    background-color: #2d86da;
+    color: #FFF;
   }
 }

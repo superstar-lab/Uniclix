@@ -64,7 +64,8 @@ class Compose extends React.Component {
       setDate,
       setPostAtBestTime,
       setPostNow,
-      onPost
+      onPost,
+      accessLevel
     } = this.props;
 
     return (
@@ -132,6 +133,7 @@ class Compose extends React.Component {
                       postDate={date ? date : startsAt}
                       postAtBestTime={postAtBestTime}
                       postNow={postNow}
+                      accessLevel={accessLevel}
                     />
                   )
                 }
@@ -140,6 +142,7 @@ class Compose extends React.Component {
                 {...this.props}
                 publishChannels={publishChannels}
                 onPost={onPost}
+                accessLevel={accessLevel}
               />
             </div>
           )
@@ -156,6 +159,7 @@ const mapStateToProps = (state) => {
     channels,
     post: state.posts.post,
     categoryOptions: state.general.composerCategories,
+    accessLevel: state.profile.accessLevel,
     ...state.composer,
   }
 }

@@ -264,6 +264,13 @@ class User extends Authenticatable
         return strtotime($this->created_at) <= strtotime(Carbon::now()->subHours($hours));
     }
 
+    public function getAllPosts()
+    {
+        return ScheduledPost::with('category')
+            ->orderBy('scheduled_at', 'asc')
+            ->get();
+    }
+
     public function getAllScheduledPosts($from_date = null, $to_date = null)
     {
         if($from_date == null || $to_date == null){
@@ -279,6 +286,15 @@ class User extends Authenticatable
             ->orderBy('scheduled_at', 'asc')
             ->get();
         }
+    }
+
+    public function getAllUnapprovedPosts()
+    {
+        return ScheduledPost::with('category')
+            ->where("approved", 0)
+            ->where('posted', 0)
+            ->orderBy('scheduled_at', 'asc')
+            ->get();
     }
     
     public function getRemainDate($user_id)

@@ -2,8 +2,20 @@ import React from 'react';
 import moment from 'moment';
 
 import { destroyPost } from '../../../requests/channels';
+import { isOwnerOrAdmin } from '../../../utils/helpers';
 
-const Event = ({ event, view, timezone, closeEvent, isSelected, channelsList, toggleLoading, fetchPosts, setComposerToEdit }) => {
+const Event = ({
+  event,
+  view,
+  timezone,
+  closeEvent,
+  isSelected,
+  channelsList,
+  toggleLoading,
+  fetchPosts,
+  setComposerToEdit,
+  accessLevel
+}) => {
   const { content, payload: { scheduled: { publishUTCDateTime } }, category, channel_ids } = event;
   let timeEvent = moment(publishUTCDateTime).tz(timezone);
   const wasNotAlreadyPosted = timeEvent.isAfter(moment().tz());
@@ -73,12 +85,18 @@ const Event = ({ event, view, timezone, closeEvent, isSelected, channelsList, to
             {category.category_name}
           </div>
           <div className="icons-section">
-            <div onClick={deletePost}>
-              <i className="far fa-trash-alt"></i>
-            </div>
-            <div className={!wasNotAlreadyPosted ? 'disabled' : ''} onClick={editPost}>
-              <i className="fas fa-pen"></i>
-            </div>
+            {
+              isOwnerOrAdmin(accessLevel) && (
+                <React.Fragment>
+                  <div onClick={deletePost}>
+                    <i className="far fa-trash-alt"></i>
+                  </div>
+                  <div className={!wasNotAlreadyPosted ? 'disabled' : ''} onClick={editPost}>
+                    <i className="fas fa-pen"></i>
+                  </div>
+                </React.Fragment>
+              )
+            }
             <div onClick={closeEvent}>
               <i className="fas fa-times"></i>
             </div>
@@ -133,12 +151,18 @@ const Event = ({ event, view, timezone, closeEvent, isSelected, channelsList, to
         </div>
         <div className="right-section">
           <div className="icons-section">
-            <div onClick={deletePost}>
-              <i className="far fa-trash-alt"></i>
-            </div>
-            <div className={!wasNotAlreadyPosted ? 'disabled' : ''} onClick={editPost}>
-              <i className="fas fa-pen"></i>
-            </div>
+            {
+              isOwnerOrAdmin(accessLevel) && (
+                <React.Fragment>
+                  <div onClick={deletePost}>
+                    <i className="far fa-trash-alt"></i>
+                  </div>
+                  <div className={!wasNotAlreadyPosted ? 'disabled' : ''} onClick={editPost}>
+                    <i className="fas fa-pen"></i>
+                  </div>
+                </React.Fragment>
+              )
+            }
             <div onClick={closeEvent}>
               <i className="fas fa-times"></i>
             </div>

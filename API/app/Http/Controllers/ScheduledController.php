@@ -28,22 +28,40 @@ class ScheduledController extends Controller
 
     public function unapprovedPosts(Request $request)
     {
-        $posts = $this->selectedChannel->scheduledPosts()
-            ->with('category')
-            ->where("posted", 0)
-            ->where("approved", 0)
-            ->orderBy('scheduled_at', 'asc')
-            ->paginate(20);
+        $posts = $this->user->getAllUnapprovedPosts();
 
         foreach ($posts as $post) {
             $post->payload = unserialize($post->payload);
         }
 
-        $posts = $posts->groupBy(function ($date) {
-            return Carbon::parse($date->scheduled_at_original)->format('Y-m-d');
-        });
+        $posts = $posts->groupBy('post_id');
+        $new_posts = array();
+        $new_item = array();
+        $new_item_else = array();
+        $channel_ids = array();
+        foreach ($posts as $post) {
+            if(count($post) > 1) {
+                foreach ($post as $item) {
+                    array_push($channel_ids, $item->channel_id);
+                }
+                unset($post[0]->channel_id);
+                $post[0]->channel_ids = $channel_ids;
+                array_push($new_item, (object)$post[0]);
+                array_push($new_posts, (object)$new_item[0]);
+                
+            } else {
+                array_push($channel_ids, $post[0]->channel_id);
+                $post[0]->channel_ids = $channel_ids;
+                unset($post[0]->channel_id);
+                array_push($new_item_else, (object)$post[0]);
+                array_push($new_posts, (object)$new_item_else[0]);
+            }
+            $new_item_else = [];
+            $channel_ids = [];
+            $new_item = [];
+        }
 
-        return response()->json(["items" => $posts->values()]);
+        return response()->json(["items" => $new_posts]);
     }
 
     public function scheduledPosts(Request $request)
