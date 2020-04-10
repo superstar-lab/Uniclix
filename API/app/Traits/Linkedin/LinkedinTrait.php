@@ -55,7 +55,7 @@ trait LinkedinTrait
             } else {
                 foreach($images as $image){
                 $relativePath = str_replace('storage', 'public', $image['relativePath']);
-                $uploadResponse = $this->uploadMedia($relativePath);
+                $uploadResponse = $this->uploadMediaV2($relativePath);
                 
                 if(!$uploadResponse) continue;
 
