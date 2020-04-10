@@ -615,6 +615,7 @@
       .channel-avatar {
         position: relative;
         width: 45px;
+        margin-right: 10px;
       }
 
       img {
@@ -630,8 +631,6 @@
       position: absolute;
       right: 20px;
       width: 20px;
-      display: flex;
-      justify-content: center;
     }
   }
 }

@@ -84,7 +84,7 @@ class Scheduled extends React.Component {
   };
 
   render() {
-    const { selectedTimezone, isLoading, accountsModal, message } = this.state;
+    const { selectedTimezone, isLoading, accountsModal, message, activeTab } = this.state;
     const { accessLevel } = this.props;
 
     return (
@@ -124,12 +124,14 @@ class Scheduled extends React.Component {
           tabBarExtraContent={this.getTabExtraContent()}
         >
           <TabPane tab="Scheduled" key="scheduled">
-            <ScheduledPosts timezone={selectedTimezone} />
+            {/* I needed a way to force the call that is made when the component gets mounted*/}
+            { activeTab === 'scheduled' && <ScheduledPosts timezone={selectedTimezone} /> }
           </TabPane>
           {
             isOwnerOrAdmin(accessLevel) && (
               <TabPane tab="Awaiting Approval" key="awaiting">
-                <AwaitingApproval timezone={selectedTimezone} />
+                {/* I needed a way to force the call that is made when the component gets mounted*/}
+                { activeTab === 'awaiting' &&  <AwaitingApproval timezone={selectedTimezone} /> }
               </TabPane>
             )
           }

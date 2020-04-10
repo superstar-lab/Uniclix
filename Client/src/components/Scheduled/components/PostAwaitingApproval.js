@@ -148,11 +148,11 @@ class PostAwaittingApproval extends React.Component {
         <div className="publish-date">
           { moment(scheduled.publishUTCDateTime).tz(timezone).format('DD MMM, h:mm A') }
         </div>
-          <Popover content={this.getPopoverContent()} placement="leftTop">
             <div className="actions-container">
-              <img src="/images/icons/actions.svg" />
+              <Popover content={this.getPopoverContent()} placement="leftTop">
+                <img src="/images/icons/actions.svg" />
+              </Popover>
             </div>
-          </Popover>
         <Modal
           title={modalTitle}
           onOk={modalOnOkCallback}
