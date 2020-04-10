@@ -88,7 +88,7 @@ Uniclix helps you centralize, manage and grow your social media accounts with ju
     <div class="container">
         <div class="home-features mt100">
             @foreach($items as $item)
-                <div class="col-md-3 col-xs-12">
+                <div class="col-md-3 col-xs-3">
                     <div class="vertical-image" id="{{$item['id']}}">
                         <div class="under-spacing"><img id="{{$item['image_id']}}" src="{{ asset($item['image']) }}" class="img-responsive" /></div>
                         <div class="under-spacing"><label id="{{$item['label_id']}}" style="color: #909090">{{$item['label']}}</label></div>
