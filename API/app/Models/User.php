@@ -273,17 +273,21 @@ class User extends Authenticatable
 
     public function getAllScheduledPosts($from_date = null, $to_date = null)
     {
+        $id = $this->id;
+        
         if($from_date == null || $to_date == null){
-            return ScheduledPost::with('category')
+            return ScheduledPost::with('category')->select('scheduled_posts.*')
+            ->orderBy('scheduled_at', 'asc')->leftJoin('channels', 'scheduled_posts.channel_id', '=', 'channels.id')
             ->where("approved", 1)
-            ->orderBy('scheduled_at', 'asc')
+            ->where("user_id", $id)
             ->get();
         } else {
-            return ScheduledPost::with('category')
+            return ScheduledPost::with('category')->select('scheduled_posts.*')
+            ->orderBy('scheduled_at', 'asc')->leftJoin('channels', 'scheduled_posts.channel_id', '=', 'channels.id')
             ->where("approved", 1)
             ->whereDate('scheduled_at', '>=', $from_date)
             ->whereDate('scheduled_at', '<=', $to_date)
-            ->orderBy('scheduled_at', 'asc')
+            ->where("user_id", $id)
             ->get();
         }
     }
