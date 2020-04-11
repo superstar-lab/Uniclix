@@ -70,12 +70,6 @@ class ScheduledController extends Controller
         $to_date = $request->input('to_date');
         $posts = $this->user->getAllScheduledPosts($from_date, $to_date);
 
-        if ($from_date != 'null' && $to_date != 'null') {
-            $posts = $this->user->getAllScheduledPosts($from_date, $to_date);
-        } else {
-            $posts = $this->user->getAllScheduledPosts();
-        }
-
         foreach ($posts as $post) {
             $post->payload = unserialize($post->payload);
             $images = $post->payload['images'];
