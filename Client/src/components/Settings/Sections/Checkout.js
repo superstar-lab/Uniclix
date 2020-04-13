@@ -663,11 +663,6 @@ class Checkout extends React.Component {
                             </div>
                           </div>
                           <br />
-                          <div className="row-price new-accounts">
-                          {billingPeriod === "annually" &&  
-                            <p className="disccount-title">20% Discount<span className="disccount-currency">-${Math.round((billingPeriod === "annually" ? plan['Annual Billing'] * 0.2 : plan["Monthly"] * 0.2) * 100.0) / 100.0}</span></p>
-                          }
-                          </div>
                       </div>
                       <div className="order-total table">
                         <div className="row-price">
@@ -677,7 +672,7 @@ class Checkout extends React.Component {
                             <button className="btn-text-pink" onClick={() => onChangePeriod()}>Switch to {billingPeriod === "annually" ? 'monthly' : 'yearly'}</button>
                           </div>
                           <div className="currency-label">
-                            <p>${Math.round((billingPeriod === "annually" ? plan['Annual Billing'] * 0.8 : plan["Monthly"]) * 100.0) / 100.0}</p>
+                            <p>${Math.round((billingPeriod === "annually" ? plan['Annual Billing'] : plan["Monthly"]) * 100.0) / 100.0}</p>
                           </div>
                         </div>
                       </div>
