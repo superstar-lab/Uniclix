@@ -2032,6 +2032,10 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
     .home-image4 {
         left: -20px !important;
     }
+
+    .tool-icon {
+        display: none !important;
+    }
 }
 
 @media only screen and (max-width: 425px) {
@@ -2220,6 +2224,11 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
     .twitter-booster {
         margin-left: 0px !important;
     }
+
+    .tool-icon {
+        display: none !important;
+    }
+    
 }
 
 @media only screen and (max-width: 320px) {
@@ -2265,6 +2274,10 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
 
     .twitter-booster {
         margin-left: 0px !important;
+    }
+
+    .tool-icon {
+        display: none !important;
     }
 }
 
