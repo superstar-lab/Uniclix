@@ -7,6 +7,7 @@ import ManageRouter from '../routes/ManageRouter';
 import channelSelector from '../selectors/channels';
 import { setTwitterChannel } from '../actions/channels';
 import Loader from './Loader';
+import { filterFacebookProfiles } from '../utils/helpers';
 
 const MasterPage = ({channels, selectedChannel, selectChannel, accessLevel}) => {
     const hasChannel = typeof(selectedChannel.username) !== 'undefined'; 
@@ -41,7 +42,7 @@ const mapStateToProps = (state) => {
   const unselectedGlobalChannels = { selected: 0, provider: undefined };
   const selectedGlobalChannel = { selected: 1, provider: undefined };
 
-  const channels = channelSelector(state.channels.list, unselectedGlobalChannels);
+  const channels = filterFacebookProfiles(channelSelector(state.channels.list, unselectedGlobalChannels));
   const selectedChannel = channelSelector(state.channels.list, selectedGlobalChannel);
 
   return {
