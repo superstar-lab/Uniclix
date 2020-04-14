@@ -37,11 +37,6 @@ export const momentToDate = (momentObj) => {
     // of the offset to cancel the timezone.
     if (isSafari()) {
         let offset = momentObj.format('Z');
-        if (offset.indexOf('-') !== -1) {
-            offset = offset.replace('-', '+')
-        } else {
-            offset = offset.replace('+', '-')
-        }
 
         formattedDate += offset;
     }
