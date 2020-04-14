@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { isSafari } from '../utils/helpers';
 
 function clearNumber(value = '') {
@@ -36,7 +37,9 @@ export const momentToDate = (momentObj) => {
     // when the date is created as above. I'm changing the orientation
     // of the offset to cancel the timezone.
     if (isSafari()) {
-        let offset = momentObj.format('Z');
+        // We get the local timezone and insert it into the formatted date
+        // to make Safari think that that's the local time
+        const offset = moment().format('Z');
 
         formattedDate += offset;
     }
