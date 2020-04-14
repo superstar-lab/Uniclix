@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Profiler } from 'react';
 import moment from "moment";
 import timeFormats from './timeFormats';
 
@@ -85,4 +85,24 @@ export function isOwner(accessLevel) {
 
 export function isOwnerOrAdmin(accessLevel) {
     return accessLevel === 'owner' || accessLevel === 'admin';
+}
+
+export function filterFacebookProfiles(channels) {
+    return channels.filter(channel => {
+        if (channel.type === 'facebook') {
+            // From facebook we only want the pages
+            return channel.details.account_type !== 'profile';
+        }
+
+        // We want to retrieve all the channels that are not
+        // facebook profiles
+        return true;
+    });
+}
+
+export function isSafari() {
+    return navigator.vendor && navigator.vendor.indexOf('Apple') > -1 &&
+        navigator.userAgent &&
+        navigator.userAgent.indexOf('CriOS') == -1 &&
+        navigator.userAgent.indexOf('FxiOS') == -1;
 }

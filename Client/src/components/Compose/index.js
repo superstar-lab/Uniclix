@@ -5,6 +5,7 @@ import { Select } from 'antd';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
+import { filterFacebookProfiles } from '../../utils/helpers';
 import { setPost, setPostedArticle } from "../../actions/posts";
 import { startSetChannels } from "../../actions/channels";
 import {
@@ -153,7 +154,7 @@ class Compose extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const channels = state.channels.list;
+  const channels = filterFacebookProfiles(state.channels.list);
 
   return {
     channels,

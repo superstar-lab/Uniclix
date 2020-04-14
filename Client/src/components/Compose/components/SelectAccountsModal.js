@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { updatePublishChannels, setShowSelectAccount } from "../../../actions/composer";
+import { filterFacebookProfiles } from '../../../utils/helpers';
 
 class SelectAccountsModal extends React.Component {
 
@@ -125,6 +126,6 @@ class SelectAccountsModal extends React.Component {
 
 }
 
-const mapStateToProps = (state) => ({ accounts: state.channels.list });
+const mapStateToProps = (state) => ({ accounts: filterFacebookProfiles(state.channels.list) });
 
 export default connect(mapStateToProps, { updatePublishChannels, setShowSelectAccount })(SelectAccountsModal);
