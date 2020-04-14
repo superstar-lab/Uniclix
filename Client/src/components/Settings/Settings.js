@@ -5,6 +5,7 @@ import { setGlobalChannel } from '../../actions/channels';
 import { connect } from "react-redux";
 import { settingsMenus } from '../../config/menuItems';
 import VerticalMenu from '../Menus/VerticalMenu';
+import { filterFacebookProfiles } from '../../utils/helpers';
 
 const Settings = ({ channels, selectedChannel, selectChannel, accessLevel }) => (
     <div className="body-wrap">
@@ -30,7 +31,7 @@ const mapStateToProps = (state) => {
     const unselectedGlobalChannels = { selected: 0, provider: undefined };
     const selectedGlobalChannel = { selected: 1, provider: undefined };
 
-    const channels = channelSelector(state.channels.list, unselectedGlobalChannels);
+    const channels = filterFacebookProfiles(channelSelector(state.channels.list, unselectedGlobalChannels));
     const selectedChannel = channelSelector(state.channels.list, selectedGlobalChannel);
 
     return {
