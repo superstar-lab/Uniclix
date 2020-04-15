@@ -1088,6 +1088,7 @@ a:link {
 
 .react-autosuggest__container {
   position: relative;
+  margin-top: 20px;
 }
 
 .react-autosuggest__input {
@@ -1118,7 +1119,7 @@ a:link {
   position: absolute;
   top: 31px;
   width: 280px;
-  height: 200px;
+  height: 100px;
   overflow: auto;
   left: 0;
   right: 0;

@@ -1858,6 +1858,30 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
         text-align:center;
     }
 
+    .tools {
+        padding: 34px 43px !important;
+    }
+
+    .twitter-booster {
+        margin-left: 0px !important;
+    }
+
+    .twitter-boost-title {
+        font-size: 30px !important;
+    }
+
+    .sub-title {
+        font-size: 25px !important;
+    }
+
+    .left-side-social {
+        display: none !important;
+    }
+
+    .under-spacing {
+        font-size: 12px !important;
+    }
+
     .intro-section .draft-section{
         text-align:center;
     }
@@ -1997,9 +2021,52 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
     .home-image5 {
         right: -39px !important;
     } 
+    .home-subtitle {
+        font-size: 18px;
+        line-height: 20px !important;
+    }
+    #home-banner h1 {
+        line-height: 55px !important;
+    }
+
+    .home-image4 {
+        left: -20px !important;
+    }
+
+    .tool-icon {
+        display: none !important;
+    }
 }
 
 @media only screen and (max-width: 425px) {
+    .home-subtitle {
+        font-size: 18px;
+        line-height: 20px !important;
+    }
+
+    .tools {
+        padding: 34px 43px !important;
+    }
+
+    .twitter-boost-title {
+        font-size: 30px !important;
+    }
+
+    .sub-title {
+        font-size: 25px !important;
+    }
+
+    .under-spacing {
+        font-size: 12px !important;
+    }
+
+    #home-banner h1 {
+        line-height: 55px !important;
+    }
+
+    .left-side-social {
+        display: none !important;
+    }
 
     .collaborate-section .container, .people-talking .container{
         display: flex;
@@ -2149,6 +2216,19 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
     .twitter-booster4 {
         right: -57px !important;
     }
+
+    .home-image4 {
+        left: -20px !important;
+    }
+
+    .twitter-booster {
+        margin-left: 0px !important;
+    }
+
+    .tool-icon {
+        display: none !important;
+    }
+    
 }
 
 @media only screen and (max-width: 320px) {
@@ -2157,6 +2237,47 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
     }
     .twitter-booster1 {
         right: -56px;
+    }
+
+    .tools {
+        padding: 34px 43px !important;
+    }
+
+    .twitter-boost-title {
+        font-size: 30px !important;
+    }
+
+    .home-subtitle {
+        font-size: 18px;
+        line-height: 20px !important;
+    }
+
+    #home-banner h1 {
+        line-height: 55px !important;
+    }
+
+    .left-side-social {
+        display: none !important;
+    }
+
+    .under-spacing {
+        font-size: 12px !important;
+    }
+
+    .sub-title {
+        font-size: 25px !important;
+    }
+
+    .home-image4 {
+        left: -20px !important;
+    }
+
+    .twitter-booster {
+        margin-left: 0px !important;
+    }
+
+    .tool-icon {
+        display: none !important;
     }
 }
 
@@ -2204,7 +2325,6 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
     font-size: 20px;
     text-align: center;
     color: #909090;
-    margin-top:-20px;
 }
 
 .point-pink-color {
@@ -2308,6 +2428,7 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
 
 .under-spacing {
     margin-bottom: 10px;
+    font-size: 17px;
 }
 
 .about {
@@ -2339,6 +2460,7 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
 .sub-title {
     font-weight: 900;
     margin-top: 116px;
+    font-size: 35px;
 }
 
 .pink-line {
@@ -2411,3 +2533,5 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
 
     color: #363636;
 }
+
+

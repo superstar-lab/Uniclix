@@ -14,7 +14,7 @@ Publish & schedule posts for multiple social media networks & accounts with a co
 
 @section('content')
 
-@include('frontend.includes.projects_menu')
+<!-- @include('frontend.includes.projects_menu') -->
 
 <div class="product-pages">
     <div class="p-first-section">

@@ -77,7 +77,7 @@ Grow your community on Twitter by targeting the right audience. Think of our Boo
         <div class="container">
             <div class="home-features mt100">
                 @foreach($items as $item)
-                    <div class="col-md-4 col-xs-12">
+                    <div class="col-md-4 col-xs-4">
                         <div class="vertical-image" id="{{$item['id']}}">
                             <div class="under-spacing"><img id="{{$item['image_id']}}" src="{{ asset($item['image']) }}" class="img-responsive" /></div>
                             <div class="under-spacing"><label id="{{$item['label_id']}}" style="color: #909090">{{$item['label']}}</label></div>

@@ -87,7 +87,8 @@ class StreamItems extends Component {
       isClosed: false
 
     };
-
+    this.textSearch = React.createRef();
+    this.textInput = React.createRef();
     this.onDragEnd = this.onDragEnd.bind(this);
   }
   
@@ -285,6 +286,11 @@ class StreamItems extends Component {
   handleSearchInputChange = (event) => {
     try {
         const value = event.target.value;
+        if(!!value){
+          this.textInput.current.style.background = '#2D86DA';
+        } else {
+          this.textInput.current.style.background = '#909090';
+        }
         this.setState(() => (
             { searchTerm: value }
         ));

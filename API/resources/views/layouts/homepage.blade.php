@@ -81,7 +81,7 @@
                 [
                     "name" => "Social Media Manager",
                     "description" => "Centralize, manage and grow your social media accounts.",
-                    "url" => route('products.social_listening'),
+                    "url" => route('homepage.index'),
                     "active" => Request::is("social-listening-tool") ? 'active' : '',
                     "id" => "social_listening"
                 ],
