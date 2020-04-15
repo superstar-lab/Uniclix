@@ -180,7 +180,7 @@ export class LoginPage extends React.Component{
         return (
              <div className="login-container">
                 <div className="logo">
-                    <img src="/images/uniclix.png" />
+                    <span className="minimalist-logo">Uniclix.</span>
                 </div>
                 {this.state.loading && <LoaderWithOverlay />}
                 <div className="col-md-7 col-xs-12 text-center">
