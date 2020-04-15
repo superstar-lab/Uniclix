@@ -32,9 +32,15 @@ class SelectAccountsModal extends React.Component {
 
   getSelectedMedia = () => {
     const { accounts, selectedAccounts } = this.props;
-    const selectedAccount = accounts.filter(({ id }) => selectedAccounts.has(id));
+    let selectedAccount = accounts.filter(({ id }) => selectedAccounts.has(id));
 
-    return selectedAccount[0].type;
+    if (selectedAccount[0]) {
+      return selectedAccount[0].type
+    } else {
+      selectedAccount = accounts.find(( { selected } ) => selected === 1);
+
+      return selectedAccount.type;
+    }
   }
 
   // This will determine the accounts that are going to be shown in the list

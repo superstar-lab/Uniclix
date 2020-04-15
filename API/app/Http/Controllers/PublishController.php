@@ -169,42 +169,51 @@ class PublishController extends Controller
                     $account_count = count($posts->where("channel_id", $channel['id']));
                     $posts_approved = $posts->first();
                     $item_post = $posts->where("channel_id", $channel['id'])->first();
-                    $item_approved_post = $posts->where("channel_id", $channel['id'])->where("approved", 0)->first();
-                    $scheduledPost = $item_post->update($postData);
-                    if ($posts_approved->approved == 0) {
-                        if($account_count < $channelsCount){
-                            if($posts->where("channel_id", $channel['id'])->where("approved", 0)->count() > 0){
-                                $scheduledPost = $item_approved_post->update($postData);
-                            } else {
-                                $scheduledPost = $channel->scheduledPosts()->create($postData);
-                            }   
-                        } else {
-                            foreach($posts as $post) {
-                                if($channel['id'] == $post->channel_id){
-                                $item_approved_post->update($postData);
+                    // This is for when we are adding new channels to the post
+                    // $item_post not being set means that the channel is new and we need to
+                    // create a new post in the data base for that channel
+                    if (isset($item_post)) {
+                        $item_approved_post = $posts->where("channel_id", $channel['id'])->where("approved", 0)->first();
+                        $scheduledPost = $item_post->update($postData);
+                        if ($posts_approved->approved == 0) {
+                            if($account_count < $channelsCount){
+                                if($posts->where("channel_id", $channel['id'])->where("approved", 0)->count() > 0){
+                                    $scheduledPost = $item_approved_post->update($postData);
                                 } else {
-                                    $post->delete();
+                                    $scheduledPost = $channel->scheduledPosts()->create($postData);
                                 }
-                            }                            
-                        }
-                    } else if ($this->user->hasPublishPermission($channel)) {
-                        if($account_count < $channelsCount){
-                            if($posts->where("channel_id", $channel['id'])->count() > 0){
-                                $scheduledPost = $item_post->update($postData);
                             } else {
-                                $scheduledPost = $channel->scheduledPosts()->create($postData);
-                            }   
-                        } else {
-                            foreach($posts as $post) {
-                                if($channel['id'] == $post->channel_id){
-                                $item_post->update($postData);
-                                } else {
-                                    $post->delete();
+                                foreach($posts as $post) {
+                                    if($channel['id'] == $post->channel_id){
+                                    $item_approved_post->update($postData);
+                                    } else {
+                                        $post->delete();
+                                    }
                                 }
-                            }                            
+                            }
+                        } else if ($this->user->hasPublishPermission($channel)) {
+                            if($account_count < $channelsCount){
+                                if($posts->where("channel_id", $channel['id'])->count() > 0){
+                                    $scheduledPost = $item_post->update($postData);
+                                } else {
+                                    $scheduledPost = $channel->scheduledPosts()->create($postData);
+                                }
+                            } else {
+                                foreach($posts as $post) {
+                                    if($channel['id'] == $post->channel_id){
+                                    $item_post->update($postData);
+                                    } else {
+                                        $post->delete();
+                                    }
+                                }
+                            }
+                        } else {
+                            return response()->json(["error" => "You don't have permission to perform this action."], 401);
                         }
                     } else {
-                        return response()->json(["error" => "You don't have permission to perform this action."], 401);
+                        // Here we create the post when there is not one
+                        // for the current channel
+                        $scheduledPost = $channel->scheduledPosts()->create($postData);
                     }
                 } else {
                     $scheduledPost = $channel->scheduledPosts()->create($postData);

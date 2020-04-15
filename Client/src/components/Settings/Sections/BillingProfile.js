@@ -186,7 +186,7 @@ class BillingProfile extends React.Component {
             roleBilling,
             showFreeTrialEndedModal
         } = this.state;
-        const { profile } = this.props;
+        const { profile, freeTrialEnded } = this.props;
 
         return (
             <div>
@@ -270,6 +270,12 @@ class BillingProfile extends React.Component {
 
                         {allPlans.length > 0 ?
                             <div className="container billing-top">
+                                {
+                                    freeTrialEnded && <div className="free-trial-end-msg">
+                                        <strong>You don't have an active subscription</strong>
+                                        <span>To access your project again, please subscribe. Otherwise, your account will be permanently deleted soon.</span>
+                                    </div>
+                                }
                                 <div className="montly-annual text-right">
                                     <span className="billing-toggle">monthly billing</span>
                                     <label className="label">
@@ -348,7 +354,13 @@ class BillingProfile extends React.Component {
                             <div className="billing-bottom-container">
                                 <div className="bottom-title">Enterprise</div>
                                 <div className="billing-profile-content">Contact us to get a custom plan that fits your needs
-                                    <button className="billing-profile-button" onClick={() => window.location.href='mailto:Info@uniclixapp.com'}>Contact us</button>
+                                    <a
+                                        className="billing-profile-button"
+                                        href="mailto:info@uniclixapp.com"
+                                        target="_blank"
+                                    >
+                                        Contact us
+                                    </a>
                                 </div>
                             </div>
                         </div>

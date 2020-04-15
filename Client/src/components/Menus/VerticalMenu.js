@@ -143,124 +143,22 @@ class MenuItems extends React.Component {
     }
 }
 
-class SupportSection extends React.Component {
-    state = {
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-        open: false,
-    }
+const SupportSection = () => {
 
-    openModal = () => {
-        this.setState({ open: true });
-    }
-    closeModal = () => {
-        this.setState({ open: false });
-    }
-    onSubmit = (e) => {
-        e.preventDefault();
-        supportEmail({
-            ...this.state
-        }).then((response) => {
-            this.resetState();
-            this.closeModal();
-            toastContainer.success('', "Success", { closeButton: true });
-        }).catch((error) => {
-            this.setState(() => ({
-                error: "Something went wrong.",
-                loading: false
-            }));
-        });
-    }
-
-    onFieldChange = (e) => {
-        const id = e.target.id;
-        let state = Object.assign({}, this.state);
-        state[id] = e.target.value;
-        this.setState(() => (state));
-    };
-
-    resetState() {
-        this.state.name = "";
-        this.state.email = "";
-        this.state.subject = "";
-        this.state.message = "";
-    }
-
-    render() {
-        return (
-            <div className="support">
-                <ToastContainer
-                    ref={ref => toastContainer = ref}
-                    className="toast-top-right"
-                />
-                <div className="support-section" role="button" onClick={this.openModal}>
-                    <div className="button">
-                        <i className="fa fa-comment"></i>
-                        Support
-                    </div>
+    return (
+        <div className="support">
+            <a
+                className="support-section"
+                href="mailto:info@uniclixapp.com"
+                target="_blank"
+            >
+                <div className="button">
+                    <i className="fa fa-comment"></i>
+                    Support
                 </div>
-                <Popup
-                    open={this.state.open}
-                    closeOnDocumentClick
-                    onClose={this.closeModal}
-                >
-                    <div className="modal">
-                        <a className="close" onClick={this.closeModal}>
-                            &times;
-                    </a>
-                        <div className="content">
-                            <form onSubmit={(e) => this.onSubmit(e)}>
-                                <div className="form-group">
-                                    <div className="column-container">
-                                        <div className="col-12 form-field">
-                                            <label htmlFor="name">Full Name</label>
-                                            <input type="text"
-                                                className="form-control whiteBg"
-                                                onChange={(e) => this.onFieldChange(e)}
-                                                id="name"
-                                                value={this.state.name} />
-                                        </div>
-
-                                        <div className="col-12 form-field">
-                                            <label htmlFor="email">Email addresse</label>
-                                            <input type="email"
-                                                className="form-control whiteBg"
-                                                id="email"
-                                                onChange={(e) => this.onFieldChange(e)}
-                                                value={this.state.email} />
-                                        </div>
-                                        <div className="col-12 form-field">
-                                            <label htmlFor="subject">Subject</label>
-                                            <input type="text"
-                                                className="form-control whiteBg"
-                                                value={this.state.subject}
-                                                onChange={(e) => this.onFieldChange(e)}
-                                                name="website"
-                                                id="subject" />
-                                        </div>
-                                        <div className="col-12 form-field">
-                                            <label htmlFor="message">Message</label>
-                                            <textarea
-                                                className="form-control whiteBg"
-                                                value={this.state.message}
-                                                onChange={(e) => this.onFieldChange(e)}
-                                                name="message" id="message"></textarea>
-                                        </div>
-                                        <div className="col-12">
-                                            <button className="magento-btn">Send</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </Popup>
-            </div>
-        );
-    }
+            </a>
+        </div>
+    );
 }
 
 export default VerticalMenu;

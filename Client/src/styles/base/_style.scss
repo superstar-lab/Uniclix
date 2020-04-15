@@ -4726,6 +4726,15 @@ button.default-white-btn:hover {
   font-weight: 700;
 }
 
+.free-trial-end-msg {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(255, 239, 194);
+  padding: 20px;
+  margin-bottom: 20px;
+  border-left: 5px solid rgb(255, 213, 94);
+}
+
 .pricing-plans {
   display: flex;
   justify-content: space-between;
