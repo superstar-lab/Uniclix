@@ -445,7 +445,7 @@ class Middleware extends React.Component {
             <div className="login-container">
                 { middleware && middleware !== 'loading' && (
                     <div className="logo">
-                        <img src="/images/uniclix.png" />
+                        <span className="minimalist-logo">Uniclix.</span>
                     </div>)
                 }
 

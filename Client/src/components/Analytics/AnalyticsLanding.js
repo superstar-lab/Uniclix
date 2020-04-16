@@ -1,6 +1,7 @@
 import React from 'react';
 import 'react-dates/initialize';
 import { connect } from "react-redux";
+import { notification } from 'antd';
 
 import AnalyticsContext from './AnalyticsContext';
 import { startSetChannels } from "../../actions/channels";
@@ -48,6 +49,11 @@ class AnalyticsLanding extends React.Component {
     componentDidMount() {
         // This will be erased once Linkedin analytics is done
         if (this.state.selectedSocialMedia === 'linkedin') {
+            notification.warning({
+                message: 'Heads up!',
+                description: "We don't support LinkedIn Analytics currently. You can still use Facebook and Twitter though!",
+                duration: 10
+            });
             if (this.socialMediasSelectorOptions.length) {
                 const socialMediaToRedirectIndex = this.socialMediasSelectorOptions.findIndex(
                     sm => sm !== 'linkedin'
@@ -57,6 +63,8 @@ class AnalyticsLanding extends React.Component {
                 } else {
                     this.props.history.push('/scheduled/posts');
                 }
+            } else {
+                this.props.history.push('/scheduled/posts');
             }
         }
     }

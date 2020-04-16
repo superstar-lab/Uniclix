@@ -26,9 +26,7 @@ class TopMenu extends React.Component {
         return (
             <div className="navbar-wrap">
                 <div className="navbar-uniclix">
-                    <a href={backendUrl} className="brand">
-                        <img src="/images/uniclix.png" />
-                    </a>
+                    <span className="minimalist-logo">Uniclix.</span>
                     <ul className="top-menu">
                         <li>
                         <NavLink to="/scheduled" activeclassname="active" className="first-nav-item">
