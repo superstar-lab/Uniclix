@@ -68,7 +68,13 @@ class ScheduledController extends Controller
     {
         $from_date = $request->input('from_date');
         $to_date = $request->input('to_date');
-        $posts = $this->user->getAllScheduledPosts($from_date, $to_date);
+        $accessLevel = $this->user->getAccessLevel();
+        if($accessLevel == "owner"){
+            $posts = $this->user->getAllScheduledPosts($from_date, $to_date);
+        } else {
+            $posts = $this->user->getMemberScheduledPosts($from_date, $to_date);
+        }
+        
 
         foreach ($posts as $post) {
             $post->payload = unserialize($post->payload);

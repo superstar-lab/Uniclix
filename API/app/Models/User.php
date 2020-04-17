@@ -292,6 +292,27 @@ class User extends Authenticatable
         }
     }
 
+    public function getMemberScheduledPosts($from_date = null, $to_date = null)
+    {
+        $id = $this->id;
+        
+        if($from_date == null || $to_date == null){
+            return ScheduledPost::with('category')->select('scheduled_posts.*')
+            ->orderBy('scheduled_at', 'asc')->leftJoin('team_user_channels', 'scheduled_posts.channel_id', '=', 'team_user_channels.channel_id')
+            ->where("approved", 1)
+            ->where("team_user_channels.member_id", $id)
+            ->get();
+        } else {
+            return ScheduledPost::with('category')->select('scheduled_posts.*')
+            ->orderBy('scheduled_at', 'asc')->leftJoin('team_user_channels', 'scheduled_posts.channel_id', '=', 'team_user_channels.channel_id')
+            ->where("approved", 1)
+            ->whereDate('scheduled_at', '>=', $from_date)
+            ->whereDate('scheduled_at', '<=', $to_date)
+            ->where("team_user_channels.member_id", $id)
+            ->get();
+        }
+    }
+
     public function getAllUnapprovedPosts()
     {
         return ScheduledPost::with('category')

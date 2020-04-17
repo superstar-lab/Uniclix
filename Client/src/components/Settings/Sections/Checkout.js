@@ -50,6 +50,7 @@ class Checkout extends React.Component {
     editCardSetting: false,
     editCardInfo: false,
     deleteCard: false,
+    customerId: '',
     form: {
       cardnumber: '',
       cvc: '',
@@ -181,7 +182,7 @@ class Checkout extends React.Component {
         ...form
       }
     })
-  };
+  }
 
   activeYears = () => {
     const todayDate = new Date();
@@ -278,13 +279,18 @@ class Checkout extends React.Component {
       address_zip: this.state.form.postal,
       address_line1: this.state.form.address_line1
     }, (status, response) => {
-
+      response.plan = this.props.billingPeriod === "annually" ? this.props.planName + "_annual" : this.props.planName;
+      response.trialDays = 0;
+      response.created = new Date().getTime();
+      response.subType = "main"
+      response.couponCode = this.props.billingPeriod === "annually" ? this.state.couponCode : '';
       if (status === 200) {
         addSubscription(response).then(response => {
           this.props.startSetChannels().then(res => {
             this.props.startSetProfile().then(res => {
               this.setState({
-                loading: true
+                loading: true,
+                customerId: response.customer_id,
               });
             });
           })
@@ -308,7 +314,7 @@ class Checkout extends React.Component {
 
   deleteCard = () => {
     this.setLoading(true);
-    deleteSubscription().then(response => {
+    deleteSubscription(this.state.customerId).then(response => {
       this.props.startSetProfile();
       this.setLoading(true);
       this.setState({

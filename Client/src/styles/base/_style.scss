@@ -5362,8 +5362,8 @@ table.compare-plans-table {
 }
 
 section.pricing {
-  background: #007bff;
-  background: linear-gradient(to right, #0062e6, #33aeff);
+  
+  
 }
 
 .pricing .card {
@@ -5853,4 +5853,38 @@ section.pricing {
 .checkbox {
     width: 25px !important;
     margin-top: 1px !important;
+}
+
+.payment-info {
+    margin-left: 30px !important;
+    padding: 25px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+    width: 67%;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.payment-info-edit {
+  background: #2d86da;
+  color: white;
+  border-radius: 30px;
+  border: 1px;
+  padding: 5px 25px 7px 25px;
+  margin-top: -5px;
+}
+
+.payment-detail {
+  width: 70%;
+  margin-left: 30px;
+  padding: 30px;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  margin-bottom: 30px;
+}
+
+.confirm-button {
+  margin-top: 50px;
 }

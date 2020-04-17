@@ -157,6 +157,49 @@ class BillingController extends Controller
         }
     }
 
+    public function updateSubscription(Request $request)
+    {
+        $token = $request->input('token');
+        $plan = $token['plan'];
+        $trialDays = $token['trialDays'];
+        $subType = $token['subType'];
+        $id = $token['id'];
+        $couponCode = $token['couponCode'];
+        $user = $this->user;
+
+        try {
+
+            if($trialDays != "0"){
+                $user->newSubscription($subType, $plan)->trialDays($trialDays)->create($id);
+            } else {
+                $user->newSubscription($subType, $plan)->withCoupon($couponCode)->create($id);
+            }
+
+            $roleName = explode("_", $plan)[0];
+
+            if($subType == "main"){
+                $role = Role::where("name", $roleName)->first();
+                if (!$role) return response()->json(["error" => "Plan not found"], 404);
+
+                $user->role_id = $role->id;
+                $user->save();
+            }
+            elseif($subType == "addon"){
+
+                $roleAddon = RoleAddon::where("name", $plan)->first();
+                if (!$roleAddon) return response()->json(["error" => "Addon not found"], 404);
+
+                $user->roleAddons()->attach($roleAddon->id);
+
+                return response()->json(["success" => true], 200);
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 500);
+        }
+
+    }
+
     public function changePlan(Request $request)
     {
         $plan = $request->input('plan');

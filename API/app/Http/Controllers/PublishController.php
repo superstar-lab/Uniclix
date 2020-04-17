@@ -174,7 +174,7 @@ class PublishController extends Controller
                     // create a new post in the data base for that channel
                     if (isset($item_post)) {
                         $item_approved_post = $posts->where("channel_id", $channel['id'])->where("approved", 0)->first();
-                        $scheduledPost = $item_post->update($postData);
+
                         if ($posts_approved->approved == 0) {
                             if($account_count < $channelsCount){
                                 if($posts->where("channel_id", $channel['id'])->where("approved", 0)->count() > 0){

@@ -3,10 +3,20 @@ import { connect } from 'react-redux';
 import { startSetProfile } from "../../../actions/profile";
 import { changePlan, getPlanData } from '../../../requests/billing';
 import Checkout from './Checkout';
+import { isValid } from 'cc-validate';
 import Loader, { LoaderWithOverlay } from '../../Loader';
 import Modal from 'react-modal';
 import FunctionModal from '../../Modal';
-import { cancelSubscription, resumeSubscription } from '../../../requests/billing';
+
+import { cancelSubscription, resumeSubscription, createSubscription, updateSubscription } from '../../../requests/billing';
+import Picker from 'react-month-picker';
+import { Select } from 'antd';
+import Countries from "../../../fixtures/country";
+import { stripePublishableKey } from '../../../config/api';
+import { startAddTwitterChannel, startSetChannels } from "../../../actions/channels";
+
+
+const Option = Select.Option;
 
 class BillingProfile extends React.Component {
     constructor (props) {
@@ -28,7 +38,29 @@ class BillingProfile extends React.Component {
             subscriptionStatus: false,
             forbidden: false,
             message: '',
-            showFreeTrialEndedModal: props.freeTrialEnded
+            showFreeTrialEndedModal: props.freeTrialEnded,
+            cardBrand: '',
+            lastNumber: '',
+            payInfoEdit: false,
+            validClaas: "",
+            validClaasCvv: "",
+            form: {
+              cardnumber: '',
+              cvc: '',
+              exp_month: '',
+              exp_year: '',
+              exp_date: '',
+              name: '',
+              last_name: '',
+              address_line1: '',
+              address_city: '',
+              postal: ''
+          },
+          countries: [],
+          openCountry: false,
+          locations: [],
+          location: "",
+          couponCode: '',
         }
     }
 
@@ -40,7 +72,27 @@ class BillingProfile extends React.Component {
                 planName: this.props.profile.role.name,
             });
         });
+        this.setState({
+            cardBrand: this.props.profile.user.card_brand,
+            lastNumber: this.props.profile.user.card_last_four,
+            countries: Countries,
+        });
+        this.activeYears();
+        this.loadStripe();
     };
+
+    handleAMonthChange = (value, text) => {
+        let valueTxt = text + " / " + value
+    
+        this.setState({
+          form: {
+            ...this.state.form,
+            exp_date: valueTxt || 'N/A',
+            exp_month: text,
+            exp_year: value
+          }
+        })
+      }
 
     onCheckout = (plan) => {
         this.setState(() => ({
@@ -144,6 +196,7 @@ class BillingProfile extends React.Component {
         this.setState(() => ({
             planChange: planName,
             planName: planName,
+            payInfoEdit: false,
         }));
     };
 
@@ -162,16 +215,157 @@ class BillingProfile extends React.Component {
 
     setPlanCancel = (cancel = true) => {
         this.setState(() => ({
-            planCancel: cancel
+            planCancel: cancel,
+            payInfoEdit: false,
         }));
     };
 
     setPlanResume = (resume = true) => {
         this.setState(() => ({
-            planResume: resume
+            planResume: resume,
+            payInfoEdit: false,
         }));
     };
 
+    onPayInfoEdit = () => {
+        this.setState({
+            payInfoEdit: true,
+        });
+    }
+    
+    
+    checkIfValidCC = (val) => {
+        let patern = new RegExp("^[0-9_ ]*$");
+        if (patern.test(val) && val.length < 20) {
+          let newval = '';
+          val = val.replace(/\s/g, '');
+          for (var i = 0; i < val.length; i++) {
+            if (i % 4 == 0 && i > 0)
+              newval = newval.concat(' ');
+            newval = newval.concat(val[i]);
+          }
+    
+          this.setState({
+            form: {
+              ...this.state.form,
+              cardnumber: newval
+            }
+          })
+          let result = isValid(newval);
+          this.setState({
+            validClaas: result.isValid ? '' : "error"
+          })
+        }
+    }
+    
+    
+    activeYears = () => {
+        const todayDate = new Date();
+        const year = todayDate.getFullYear();
+        let activeYears = []
+        for (let y = 1; y < 11; y++) {
+          activeYears.push(year + y)
+        }
+        this.setState({
+          years: activeYears,
+          loading: false
+        })
+    }
+
+    handleClickMonthBox = (e) => {
+        this.refs.pickAMonth.show()
+    }
+    
+    handleClickMonthBoxHidde = (e) => {
+        this.refs.pickAMonth.hidden()
+    }
+
+    ValidateCvv = (e) => {
+        let value = e.target.value;
+        let cvv = value * 1;
+        if (!isNaN(cvv) && value.length < 5) {
+            var myRe = /^[0-9]{3,4}?$/;
+            var myArray = myRe.exec(cvv);
+            this.setState({
+                validClaasCvv: cvv != myArray ? '' : "error",
+                form: {
+                    ...this.state.form,
+                    cvc: value
+                }
+            });
+        }
+    }
+        
+    onFieldChange = (e) => {
+        const id = e.target.name;
+        let form = Object.assign({}, this.state.form);
+        form[id] = e.target.value;
+        this.setState({
+            form: {
+            ...form
+            }
+        })
+    }
+
+    setLocation = (val) => {
+        this.setState({ 
+            location: val
+        })
+    }
+
+    loadStripe = () => {
+        if (!window.document.getElementById('stripe-script')) {
+            var s = window.document.createElement("script");
+            s.id = "stripe-script";
+            s.type = "text/javascript";
+            s.src = "https://js.stripe.com/v2/";
+            s.onload = () => {
+            window['Stripe'].setPublishableKey(stripePublishableKey);
+            }
+            window.document.body.appendChild(s);
+        }
+    }
+      
+    onConfirmChange = () => {
+        this.setState({
+            loading: true,
+        });
+
+        window.Stripe.card.createToken({
+            number: this.state.form.cardnumber,
+            exp_month: this.state.form.exp_month,
+            exp_year: this.state.form.exp_year,
+            cvc: this.state.form.cvc,
+            address_city: this.state.form.address_city,
+            address_zip: this.state.form.postal,
+            address_line1: this.state.form.address_line1
+            }, (status, response) => {
+            response.plan = this.state.billingPeriod === "annually" ? this.state.planName + "_annual" : this.state.planName;
+            response.trialDays = 0;
+            response.created = new Date().getTime();
+            response.subType = "main"
+            response.couponCode = this.state.billingPeriod === "annually" ? this.state.couponCode : '';
+            if (status === 200) {
+                updateSubscription(response).then(response => {
+                this.props.startSetChannels().then(res => {
+                    this.props.startSetProfile().then(res => {
+                    this.setState({
+                        loading: false,
+                        payInfoEdit: false,
+                    });
+                    window.location.reload();
+                    });
+                })
+                });
+            } else {
+                this.setState({
+                loading: true,
+                message: ""
+                });
+            }
+        });
+    }
+    
     render() {
         const {
             allPlans,
@@ -184,9 +378,24 @@ class BillingProfile extends React.Component {
             selectedPlan,
             billingPeriod,
             roleBilling,
-            showFreeTrialEndedModal
+            showFreeTrialEndedModal,
+            cardBrand,
+            lastNumber,
+            validClaas,
+            form, 
+			years,
+            countries,
+            payInfoEdit
         } = this.state;
         const { profile, freeTrialEnded } = this.props;
+        const todayDate = new Date();
+        const minumumYear = todayDate.getFullYear();
+        const minumumMonth = todayDate.getMonth();
+        let pickerLang = {
+			months: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+			, from: 'From', to: 'To'
+        }
+        , mvalue = { year: minumumYear, month: minumumMonth + 1 }
 
         return (
             <div>
@@ -350,6 +559,135 @@ class BillingProfile extends React.Component {
                                 </section>
                             </div> : <Loader />
                         }
+                    {!payInfoEdit && this.props.profile.subscription.activeSubscription &&
+                        <div className="payment-info">
+                            <div className="row">
+                                <div className="col-md-3 col-sm-4"><b>Payment Info:</b></div>
+                                <div className="col-md-2 col-sm-2"><b>{cardBrand}</b></div>
+                                <div className="col-md-3 col-sm-4"> *****{lastNumber}</div>
+                                <div className="col-md-4 col-sm-3">
+                                    <button className="payment-info-edit" onClick={() => this.onPayInfoEdit()}>Edit</button>    
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    
+                    {!!payInfoEdit &&
+
+                        <div className="payment-detail">
+                        <div className="section-header__second-row">
+                            <h3>Payment details</h3>
+                        </div>
+                        <div className="card-inputs form-field row">
+                            <div className="col-12 col-md-6">
+                            <input className={'form-control whiteBg ' + validClaas}
+                                onChange={(e) => this.checkIfValidCC(e.target.value)}
+                                type="tel"
+                                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                                size="19"
+                                maxLength="19"
+                                value={form.cardnumber} placeholder="Card number" />
+                            </div>
+                            <div className="col-12 col-md-3">
+                            <Picker
+                                ref="pickAMonth"
+                                years={years}
+                                value={mvalue}
+                                lang={pickerLang.months}
+                                onChange={this.handleAMonthChange}
+                                onDismiss={this.handleAMonthDissmis}
+                            >
+                                <input className="form-control whiteBg"
+                                type="tel"
+                                onChange={(e) => this.onDateChange(e)}
+                                value={form.exp_date}
+                                onClick={this.handleClickMonthBox}
+                                onFocus={this.handleClickMonthBox}
+                                onBlur={this.handleClickMonthBoxHidde}
+                                name="exp_date"
+                                autoComplete={"off"}
+                                autoComplete="new-password"
+                                maxLength="9"
+                                placeholder="Expiry date" />
+                            </Picker>
+                            </div>
+                            <div className="col-12 col-md-3">
+                            <input className="form-control whiteBg"
+                                onChange={(e) => this.ValidateCvv(e)}
+                                value={form.cvc}
+                                name="cvc"
+                                placeholder="CVV" />
+                                <img className="cvv-image" src="/images/cvv-image.svg"/>
+                            </div>
+                        </div>
+                        <div className="section-header__second-row">
+                            <h3>Billing information</h3>
+                        </div>
+                    
+                        <div className="row">
+                            <div className="form-field col-12 col-md-6 mb1">
+                                <input className={'form-control whiteBg '}
+                                onChange={(e) => this.onFieldChange(e)}
+                                value={form.name}
+                                name="name"
+                                placeholder="Name" />
+                            </div>
+                            <div className="form-field col-12 col-md-6 mb1">
+                            <input className={'form-control whiteBg '}
+                                onChange={(e) => this.onFieldChange(e)}
+                                value={form.last_name}
+                                name="last_name"
+                                placeholder="Last Name" />
+                            </div>
+                            <div className="form-field col-12 col-md-6 mb1">
+                            <input className={'form-control whiteBg '}
+                                onChange={(e) => this.onFieldChange(e)}
+                                value={form.address_line1}
+                                name="address_line1"
+                                placeholder="Address" />
+                            </div>
+                            <div className="form-field col-12 col-md-6 mb1">
+                            <input className={'form-control whiteBg '}
+                                onChange={(e) => this.onFieldChange(e)}
+                                value={form.address_city}
+                                name="address_city"
+                                placeholder="City" />
+                            </div>
+                            <div className="form-field col-12 col-md-6 mb1 form-field form-country">
+                            <Select
+                                size="default"
+                                onChange={(value) => this.setLocation(value)}
+                                showSearch
+                                style={{ width: '100%' }}
+                                placeholder="Select a country"
+                                optionFilterProp="children"
+                                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                            >
+                                {!!countries &&
+                                countries.map((item) => (
+                                <Option value={item}>{item}</Option>
+                                ))
+                                }
+                            </Select>
+                            </div>
+                            <div className="form-field col-12 col-md-6 mb1">
+                            <input className={'form-control whiteBg '}
+                                onChange={(e) => this.onFieldChange(e)}
+                                value={form.postal}
+                                name="postal"
+                                placeholder="Zip Code" />
+                            </div>
+                        </div>
+                        <div className="confirm-button">
+                        {
+                            form.cardnumber != "" ?
+                                <button className="btn-blue" onClick={() => this.onConfirmChange()}>Confirm changes</button>
+                                :
+                                <button className="btn-blue disabled-btn">Confirm changes</button>
+                        }
+                        </div>
+                    </div>
+                    }
                         <div>
                             <div className="billing-bottom-container">
                                 <div className="bottom-title">Enterprise</div>
@@ -366,7 +704,7 @@ class BillingProfile extends React.Component {
                         </div>
                     </div>
                 }
-                </div>
+            </div>
         );
     }
 }
@@ -378,6 +716,9 @@ const mapStateToProps = (state) => {
     };
 };
 const mapDispatchToProps = (dispatch) => ({
-    startSetProfile: () => dispatch(startSetProfile())
+    startSetProfile: () => dispatch(startSetProfile()),
+    startAddTwitterChannel: (accessToken, accessTokenSecret) => dispatch(startAddTwitterChannel(accessToken, accessTokenSecret)),
+    startSetChannels: () => dispatch(startSetChannels()),
+  
 });
 export default connect(mapStateToProps, mapDispatchToProps)(BillingProfile);
