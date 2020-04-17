@@ -7,7 +7,8 @@ import { isValid } from 'cc-validate';
 import Loader, { LoaderWithOverlay } from '../../Loader';
 import Modal from 'react-modal';
 import FunctionModal from '../../Modal';
-
+import { getCookie } from '../../../utils/helpers';
+import { PRICING_COOKIE_KEY } from '../../../utils/constants';
 import { cancelSubscription, resumeSubscription, createSubscription, updateSubscription } from '../../../requests/billing';
 import Picker from 'react-month-picker';
 import { Select } from 'antd';
@@ -65,10 +66,12 @@ class BillingProfile extends React.Component {
     }
 
     componentDidMount() {
+        const pricingCookie = getCookie(PRICING_COOKIE_KEY);
+
         getPlanData().then(response => {
             this.setState({
                 allPlans: response.allPlans,
-                roleBilling: this.props.profile.role.name,
+                roleBilling: pricingCookie ? pricingCookie : this.props.profile.role.name,
                 planName: this.props.profile.role.name,
             });
         });

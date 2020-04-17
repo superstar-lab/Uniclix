@@ -17,7 +17,8 @@ import channelSelector, { findAccounts } from "../selectors/channels";
 import { fbFields, fbScope } from "./FacebookButton";
 import { destroyChannel } from "../requests/channels";
 import Loader, { LoaderWithOverlay } from './Loader';
-import { getParameterByName } from "../utils/helpers";
+import { getParameterByName, getCookie } from "../utils/helpers";
+import { PRICING_COOKIE_KEY } from '../utils/constants';
 import Checkout from "./Settings/Sections/Checkout";
 import ChannelItems from "./Accounts/ChannelItems";
 import {getPages, savePages} from "../requests/linkedin/channels";
@@ -141,6 +142,13 @@ class Middleware extends React.Component {
         this.props.startSetProfile().then(() => {
             this.setState(() => ({ loading: false }));
             this.props.setMiddleware(false);
+
+            // If the cookie is present, we want to redirect the
+            // user to the billing page as soon as he add his accounts
+            const pricingCookie = getCookie(PRICING_COOKIE_KEY);
+            if (pricingCookie) {
+                this.props.history.push('/settings/billing');
+            }
         });
     };
 

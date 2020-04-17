@@ -2,6 +2,8 @@ import React from 'react';
 import {connect} from "react-redux";
 import TwitterLogin  from "react-twitter-auth";
 import FacebookButton from './FacebookButton';
+import { setCookie } from '../utils/helpers';
+import { PRICING_COOKIE_KEY } from '../utils/constants';
 import {startLogin, initLogin} from "../actions/auth";
 import { setAccessLevel } from '../actions/profile';
 import {startSetChannels} from "../actions/channels";
@@ -27,6 +29,15 @@ export class LoginPage extends React.Component{
 
     constructor(props) {
         super(props);
+
+        // We want to create a cookie if the user gets get through the pricing page
+        // to save the selected plan
+        const queryParams = new URLSearchParams(this.props.location.search);
+        const plan = queryParams.get('selectedPlan')
+
+        if (plan) {
+            setCookie(PRICING_COOKIE_KEY, plan.toLowerCase());
+        }
     }
 
     onFailure = (response) => {

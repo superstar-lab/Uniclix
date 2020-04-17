@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 class CongratsPayment extends React.Component {
 
@@ -9,7 +10,9 @@ class CongratsPayment extends React.Component {
                     <img src="/images/congrats-img.svg" />
                 </div>
                 <div className="block-center">
-                    <a href="/settings/manage-account"><button className="btn-blue">Go back to accounts</button></a>
+                    <NavLink to="/settings/manage-account">
+                        <button className="btn-blue">Go back to accounts</button>
+                    </NavLink>
                 </div>
             </div>
         );

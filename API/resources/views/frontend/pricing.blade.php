@@ -54,7 +54,7 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
     <div class="tab-panels" style="margin-top: 7%;">
         <section id="marzen" class="tab-panel">
             <div class="container">
-                <div class="montly-annual text-right">
+                <div class="montly-annual text-left">
                     <span class="billing-toggle">monthly billing</span>
                     <label class="label">
                     <div class="toggle">
@@ -67,7 +67,7 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                     </label>
                     <span class="billing-toggle">annual billing</span>
                 </div>
-                <div class="text-right mb30" style="color:#2D86DA;font-style: italic;">save up to 20%</div>
+                <div class="text-left mb30" style="color:#2D86DA;font-style: italic; margin-left: 188px;">save up to 20%</div>
                 <div class="twitter-booster1" style="top: 110%;z-index:-1;"><img src="{{ asset('images/pricing-image.svg') }}" class="img-responsive laptop-img" /></div>
                 <div class="pricing-plans">
                     @foreach($paidPlans as $plan)
@@ -89,7 +89,7 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                                 @if($plan["Name"] == "Basic")
                                 <a class="btn plan-price-btn" href="{{config('frontendclient.client_url')}}?register">Start 14 days free trial</a>
                                 @else
-                                <a class="btn plan-price-btn" href="{{config('frontendclient.client_url')}}?register">Sign up</a>
+                                <a class="btn plan-price-btn" href="{{config('frontendclient.client_url')}}?register&selectedPlan={{$plan["Name"]}}">Sign up</a>
                                 @endif
                                 <div class="plan-see-more">or <a href="#compareplans">see more features</a></div>
                             </div>

@@ -15,6 +15,8 @@ import { Select } from 'antd';
 import ReactTooltip from 'react-tooltip';
 import { Typography } from '@material-ui/core';
 import Modal from 'react-modal';
+import { PRICING_COOKIE_KEY } from '../../../utils/constants';
+import { getCookie, eraseCookie } from '../../../utils/helpers';
 
 const Option = Select.Option;
 
@@ -228,6 +230,12 @@ class Checkout extends React.Component {
 
       if (status === 200) {
         this.onToken(response)
+        const pricingCookie = getCookie(PRICING_COOKIE_KEY);
+
+        // If the purchase is successful, we delete the cookie
+        if (pricingCookie) {
+          eraseCookie(PRICING_COOKIE_KEY);
+        }
       } else {
         this.setState({
           loading: true,
