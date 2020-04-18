@@ -1,7 +1,7 @@
 export const membersMenuItems = [
     {
         id: 'twitter-booster_manage_posts',
-        displayName: 'Manage Posts',
+        displayName: 'Manage posts',
         uri: '/scheduled',
         icon: 'pencil'
     }
@@ -10,13 +10,13 @@ export const membersMenuItems = [
 export const getMenuItems = (socialMedia) => ([
   {
       id: 'twitter-booster_manage_posts',
-      displayName: 'Manage Posts',
+      displayName: 'Manage posts',
       uri: '/scheduled',
       icon: 'pencil'
   },
   {
       id: 'twitter-booster_monitor_activity',
-      displayName: 'Monitor Activity',
+      displayName: 'Monitor activity',
       uri: '/monitor-activity',
       icon: 'desktop'
   },
@@ -34,7 +34,7 @@ export const getMenuItems = (socialMedia) => ([
   },
   {
       id: 'twitter-booster_manage_accounts',
-      displayName: 'Manage Accounts',
+      displayName: 'Accounts',
       uri: '/settings/manage-account',
       icon: 'list'
   },

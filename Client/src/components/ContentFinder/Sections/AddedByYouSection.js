@@ -38,7 +38,7 @@ class AddedByYouSection extends React.Component {
     return (
       <div className="topics-added-by-you">
         <Input
-          placeholder="Search interests"
+          placeholder="Add keywords"
           value={inputValue}
           onChange={this.onInputChange}
           onPressEnter={this.onAddTopic}

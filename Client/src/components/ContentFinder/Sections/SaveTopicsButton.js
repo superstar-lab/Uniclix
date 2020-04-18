@@ -33,7 +33,7 @@ class SaveTopicsButton extends React.Component {
         onClick={() => this.onTopicsSave(false)}
         disabled={!selectedTopics.length}
       >
-          Show me posts to share
+          Find Content
       </button>
     );
   }

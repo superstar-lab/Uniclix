@@ -134,27 +134,25 @@ class BillingProfile extends React.Component {
                 if (error.response.status === 432) {
                     FunctionModal({
                         type: 'confirm',
-                        title: 'Social Media accounts limit',
+                        title: 'You are over the limit of accounts permitted for this plan',
                         content: (
                             <div>
-                                <div>The current amount of accounts that you have is beyond the limit permited of accounts in the plan that you want to switch to.</div>
-                                <div>Please delete a few to be able to downgrade your plan</div>
+                                <div>Please delete social media accounts to downgrade your plan.</div>
                             </div>
                         ),
-                        okText: "Ok, let's go to accounts",
+                        okText: "Go to accounts",
                         onOk: this.limitAccountsReachedOnOk
                     })
                 } else if (error.response.status === 433) {
                     FunctionModal({
                         type: 'confirm',
-                        title: 'Team Members limit',
+                        title: 'You are over the limit of team members permitted for this plan',
                         content: (
                             <div>
-                                <div>The current amount of team members that you have is beyond the limit permited of members in the plan that you want to switch to.</div>
-                                <div>Please delete a few to be able to downgrade your plan</div>
+                                <div>Please delete team members to downgrade your plan.</div>
                             </div>
                         ),
-                        okText: "Ok, let's go to team",
+                        okText: "Go to team",
                         onOk: this.limitMembersReachedOnOk
                     })
                 }
@@ -439,8 +437,7 @@ class BillingProfile extends React.Component {
                             className="billing-profile-modal"
                             isOpen={!!planChange}
                             >
-                                <div className="modal-title">{`You are about to change to ${planChange}`}</div>
-                                <div className="modal-contents">{`Do you wish to proceed with this change?`}</div>
+                                <div className="modal-title">{`Do you want to change your subscription to the ${planChange} plan?`}</div>
                                 <div style={{float:'right'}}>
                                     <button onClick={() => this.setPlanChange(false)} className="cancelBtn" >No</button>
                                     <button onClick={() => {this.setPlanChange(false);this.onPlanClick(planChange)}} className="cancelBtn" >Yes</button>

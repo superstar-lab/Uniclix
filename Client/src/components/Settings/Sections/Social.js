@@ -158,7 +158,6 @@ class Social extends React.Component {
                             type="confirm"
                             isOpen={!!action.id}
                             title="Do you wish to delete this account?"
-                            message="To confirm your decision, please click one of the buttons below"
                             onOk={() => {
                                 if (action.type === 'delete') {
                                     this.remove(action.id);

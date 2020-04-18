@@ -114,8 +114,7 @@ class Billing extends React.Component {
                 />
                 <SweetAlert
                     show={!!this.state.planChange}
-                    title={`You are about to change to ${this.state.planChange}`}
-                    text="Do you wish to proceed with this change?"
+                    title={`Do you want to change your subscription to the ${this.state.planChange} plan?`}
                     showCancelButton
                     type="info"
                     confirmButtonText="Yes"
