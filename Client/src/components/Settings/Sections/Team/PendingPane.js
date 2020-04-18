@@ -51,7 +51,7 @@ class PendingPane extends React.Component {
     ) : (
       <div className="no-pendings">
         <img src="/images/alone.svg" />
-        <div className="text">You are all set! There are no pending approvals at this time.</div>
+        <div className="text">You are all set! There are no pending members at this time.</div>
       </div>
     );
   }

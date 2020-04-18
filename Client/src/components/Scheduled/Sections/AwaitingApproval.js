@@ -43,7 +43,7 @@ class AwaitingApproval extends React.Component {
           ) : (
             <div className="no-pendings">
               <img src="/images/alone.svg" />
-              <div className="text">No posts wating for approval</div>
+              <div className="text">You are all set! There are no pending approvals at this time.</div>
             </div>
           )
         }

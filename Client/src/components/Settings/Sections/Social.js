@@ -188,7 +188,7 @@ class Social extends React.Component {
                                     </div>
 
                                     <div className="mt-2">
-                                        <h3>Linked Accounts</h3>
+                                        <h3>Linked accounts</h3>
                                     </div>
 
                                 </div>

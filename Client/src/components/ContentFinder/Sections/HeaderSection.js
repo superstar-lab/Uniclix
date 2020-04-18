@@ -14,7 +14,11 @@ class HeaderSection extends React.Component {
       <div className={`header ${!showTopics ? 'articles' : ''}`}>
         <h2>Content Finder</h2>
         <div className="description-container">
-          <div className="description">Selecting at least 3 keywords of your interest</div>
+          {
+            showTopics ?
+              <div className="description">Selecting at least 3 keywords of your interest</div> :
+              <div className="description">Articles based on your keywords</div>
+          }
           {
             !showTopics && (
               <div
