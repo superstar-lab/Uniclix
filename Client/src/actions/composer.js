@@ -14,6 +14,11 @@ export const setComposerForArticle = (postData) => ({
     postData
 });
 
+export const setComposerForMonitorActivity = (postData) => ({
+    type: 'SET_COMPOSER_FOR_MONITOR_ACTIVITY',
+    postData
+});
+
 export const closeModal = () => ({
     type: 'CLOSE_MODAL'
 });

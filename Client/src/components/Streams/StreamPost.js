@@ -1,5 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import moment from 'moment';
 import Modal from 'react-modal';
 import Popup from "reactjs-popup";
 import ReactTooltip from 'react-tooltip';
@@ -14,8 +15,7 @@ import TwitterInfoCard from './TwitterInfoCard';
 import TwitterReplies from './TwitterReplies';
 import FacebookInfoCard from './FacebookInfoCard';
 import channelSelector from '../../selectors/channels';
-import { setComposerModal } from "../../actions/composer";
-import { setPost } from '../../actions/posts';
+import { setComposerForMonitorActivity } from "../../actions/composer";
 import Loader from "../../components/Loader";
 
 
@@ -95,7 +95,7 @@ class StreamPost extends React.Component {
     handlePostSchedule = (close) => {
         if (typeof close !== "undefined") close();
 
-        const { attachmentData, media, setPost, text, setComposerModal } = this.props;
+        const { attachmentData, media, text, setComposerForMonitorActivity, timezone } = this.props;
         const images = media.splice(0, 3);
         let url = typeof (attachmentData) !== "undefined" && typeof (attachmentData.targetUrl) !== "undefined" ? attachmentData.targetUrl : "";
         let content = text;
@@ -105,13 +105,12 @@ class StreamPost extends React.Component {
             content += " " + url;
         }
 
-        setComposerModal(true);
-        setPost(
-            {
-                content: content,
-                images: typeof (images) !== "undefined" ? images.map((image) => image.src) : [],
-                type: 'store'
-            });
+        setComposerForMonitorActivity({
+            content: content,
+            pictures: typeof (images) !== "undefined" ? images.map((image) => image.src) : [],
+            selectedTimezone: timezone,
+            date: moment().tz(timezone).format('YYYY-MM-DDTHH:mmZ')
+        });
     };
 
     handleEmail = (close) => {
@@ -316,13 +315,13 @@ const StylesButton = withStyles(theme => ({
 const mapStateToProps = (state) => {
     const twitterChannels = channelSelector(state.channels.list, { selected: undefined, provider: "twitter" });
     return {
-        twitterChannel: twitterChannels.length > 0 ? twitterChannels[0] : false
+        twitterChannel: twitterChannels.length > 0 ? twitterChannels[0] : false,
+        timezone: state.profile.user.timezone
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    setPost: (post) => dispatch(setPost(post)),
-    setComposerModal: (modal) => dispatch(setComposerModal(modal))
+    setComposerForMonitorActivity: (modal) => dispatch(setComposerForMonitorActivity(modal))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StreamPost);

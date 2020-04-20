@@ -37,3 +37,8 @@ export const setAccessLevel = (accessLevel) => ({
     type: 'SET_ACCESS_LEVEL',
     accessLevel
 });
+
+export const setTimezone = (selectedTimezone) => ({
+    type: 'SET_TIMEZONE',
+    selectedTimezone
+})

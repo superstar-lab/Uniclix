@@ -33,6 +33,7 @@
     <link href="{{asset('font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/bootstrap/bootstrap.min.css') }}" rel="stylesheet">
     @stack('styles')
+    @yield('scripts')
     <link href="{{ asset('css/frontend.css') }}" rel="stylesheet">
     <link href="{{ asset('css/projects.css') }}" rel="stylesheet">
     <link href="{{ asset('css/helper.css') }}" rel="stylesheet">

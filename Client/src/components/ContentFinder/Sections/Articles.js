@@ -77,12 +77,13 @@ class Articles extends React.Component {
     };
 
     openComposer = ({title = "", image = "", source = "", description = "", articleId = ""}) => {
+        const { profile: { user: { timezone } } } = this.props;
         this.props.setComposerForArticle({
             content: `${title} ${source}`,
             pictures: image ? [image] : [],
             articleId,
-            date: moment().format('YYYY-MM-DDTHH:mmZ'),
-            selectedTimezone: moment.tz.guess()
+            date: moment().tz(timezone).format('YYYY-MM-DDTHH:mmZ'),
+            selectedTimezone: timezone
         });
     }
 

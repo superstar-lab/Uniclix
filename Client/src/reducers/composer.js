@@ -33,6 +33,7 @@ export default (state = defaultState, action) => {
 				type: 'edit',
 				isOpen: true
 			};
+		case 'SET_COMPOSER_FOR_MONITOR_ACTIVITY':
 		case 'SET_COMPOSER_FOR_ARTICLE':
 			const { postData: articleData } = action;
 			return {

@@ -16,6 +16,10 @@ export default (state = profileInitialState, action) => {
             return { ...state };
         case 'SET_ACCESS_LEVEL':
             return { ...state, accessLevel: action.accessLevel };
+        case 'SET_TIMEZONE':
+            const { user } = state;
+            user.timezone = action.selectedTimezone;
+            return { ...state, user: { ...user } };
         default:
             return state;    
     }

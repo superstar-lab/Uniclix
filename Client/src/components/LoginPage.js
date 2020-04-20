@@ -33,10 +33,11 @@ export class LoginPage extends React.Component{
         // We want to create a cookie if the user gets get through the pricing page
         // to save the selected plan
         const queryParams = new URLSearchParams(this.props.location.search);
-        const plan = queryParams.get('selectedPlan')
+        const plan = queryParams.get('selectedPlan');
+        const billingType = queryParams.get('billingType');
 
         if (plan) {
-            setCookie(PRICING_COOKIE_KEY, plan.toLowerCase());
+            setCookie(PRICING_COOKIE_KEY, `${plan.toLowerCase()}:${billingType}`);
         }
     }
 

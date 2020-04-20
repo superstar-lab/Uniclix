@@ -11,6 +11,38 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
 {{config('app.url')}}/images/tg-image-2.png
 @endsection
 
+@section('scripts')
+    <script>
+        $(() => {
+            const toggle = $('#toggleMonthlyYearly')
+
+            const modifyHref = (checked = false) => {
+                const links = $('.plan-price-btn');
+                links.each((i) => {
+                    if (checked) {
+                        links[i].href = links[i].href.replace('monthly', 'annually')
+                    } else {
+                        links[i].href = links[i].href.replace('annually', 'monthly')
+                    }
+                })
+            }
+
+            toggle.click(e => {
+                const $toggle = $(toggle);
+
+                if ($toggle.is( ':checked' )) {
+                    $toggle.attr('checked', 'checked')
+                    modifyHref(true)
+                } else {
+                    $toggle.removeAttr('checked')
+                    modifyHref()
+                }
+
+            })
+        })
+    </script>
+@endsection
+
 @section('content')
 <div id="page-banner">
     <div class="container">
@@ -87,9 +119,9 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                             </div>
                             <div class="plan-button-container">
                                 @if($plan["Name"] == "Basic")
-                                <a class="btn plan-price-btn" href="{{config('frontendclient.client_url')}}?register">Start 14 days free trial</a>
+                                <a class="btn plan-price-btn" href="{{config('frontendclient.client_url')}}?register&selectedPlan={{$plan["Name"]}}&billingType=annually">Start 14 days free trial</a>
                                 @else
-                                <a class="btn plan-price-btn" href="{{config('frontendclient.client_url')}}?register&selectedPlan={{$plan["Name"]}}">Sign up</a>
+                                <a class="btn plan-price-btn" href="{{config('frontendclient.client_url')}}?register&selectedPlan={{$plan["Name"]}}&billingType=annually">Sign up</a>
                                 @endif
                                 <div class="plan-see-more">or <a href="#compareplans">see more features</a></div>
                             </div>
@@ -263,7 +295,7 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
 
                                 @foreach($allPlans as $plan)
                                 <th class="table-title-bottom">
-                                    <a class="btn plan-price-btn" style="margin: 12px 12px;" data-url="{{config('frontendclient.client_url')}}" data-addon="" data-plan="{{strtolower($plan['Name'])}}" data-period="annually" href="{{config('frontendclient.client_url')}}?register&plan={{strtolower($plan['Name'])}}&period=annually">Get Started</a>
+                                    <a class="btn plan-price-btn" style="margin: 12px 12px;" data-url="{{config('frontendclient.client_url')}}" data-addon="" data-plan="{{strtolower($plan['Name'])}}" data-period="annually" href="{{config('frontendclient.client_url')}}?register&selectedPlan={{$plan["Name"]}}&billingType=annually">Get Started</a>
                                 </th>
                                 @endforeach
                                 

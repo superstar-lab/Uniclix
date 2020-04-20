@@ -11,6 +11,8 @@ import { getStreams, setRefreshRate, selectTab, positionTab, addTab, deleteTab, 
 import StreamItems from "./StreamItems";
 import StreamInitiator from "./StreamInitiator";
 import Loader from "../Loader";
+import Compose from './../Compose';
+
 const { Option } = Select;
 
 const tabsClassNames = {
@@ -349,7 +351,7 @@ class StreamTabs extends Component {
         return (
             <div>
                 <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
-
+                <Compose />
                 {!this.state.streamMaker && <button onClick={this.toggleStreamMaker} className="streammaker-btn">+</button>}
 
                 {this.state.loading && <Loader />}

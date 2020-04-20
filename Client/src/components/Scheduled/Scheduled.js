@@ -9,13 +9,13 @@ import { updateTimeZone } from '../../requests/profile';
 import { setComposerModal } from '../../actions/composer';
 import { isOwnerOrAdmin } from '../../utils/helpers';
 import { unapprovedPosts } from '../../requests/channels';
+import { setTimezone } from '../../actions/profile';
 
 import ScheduledPosts from './Sections/ScheduledPosts';
 import TimezoneSelector from './components/TimezoneSelector';
 import AwaitingApproval from './Sections/AwaitingApproval';
 import AwaitingApprovalTabTitle from './components/AwaitingApprovalTabTitle';
 import Loader from '../Loader';
-import Modal from 'react-modal';
 
 const { TabPane } = Tabs;
 
@@ -68,6 +68,7 @@ class Scheduled extends React.Component {
     updateTimeZone({ timezone })
       .then(() => {
         this.setState({ selectedTimezone: timezone, isLoading: false });
+        this.props.setTimezone(timezone);
         notification.success({
           message: 'Done!',
           description: 'The timezone has been changed'
@@ -172,4 +173,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setComposerModal })(Scheduled);
+export default connect(mapStateToProps, { setComposerModal, setTimezone })(Scheduled);

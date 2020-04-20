@@ -67,12 +67,14 @@ class BillingProfile extends React.Component {
 
     componentDidMount() {
         const pricingCookie = getCookie(PRICING_COOKIE_KEY);
+        const cookieParts = pricingCookie ? pricingCookie.split(':') : undefined;
 
         getPlanData().then(response => {
             this.setState({
                 allPlans: response.allPlans,
-                roleBilling: pricingCookie ? pricingCookie : this.props.profile.role.name,
+                roleBilling: cookieParts ? cookieParts[0] : this.props.profile.role.name,
                 planName: this.props.profile.role.name,
+                billingPeriod: cookieParts ? cookieParts[1] : this.state.billingPeriod
             });
         });
         this.setState({
