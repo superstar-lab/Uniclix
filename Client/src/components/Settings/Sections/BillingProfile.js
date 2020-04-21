@@ -9,6 +9,7 @@ import Modal from 'react-modal';
 import FunctionModal from '../../Modal';
 import { getCookie } from '../../../utils/helpers';
 import { PRICING_COOKIE_KEY } from '../../../utils/constants';
+
 import { cancelSubscription, resumeSubscription, createSubscription, updateSubscription } from '../../../requests/billing';
 import Picker from 'react-month-picker';
 import { Select } from 'antd';
@@ -73,8 +74,8 @@ class BillingProfile extends React.Component {
             this.setState({
                 allPlans: response.allPlans,
                 roleBilling: cookieParts ? cookieParts[0] : this.props.profile.role.name,
-                planName: this.props.profile.role.name,
-                billingPeriod: cookieParts ? cookieParts[1] : this.state.billingPeriod
+                billingPeriod: cookieParts ? cookieParts[1] : this.state.billingPeriod,
+                planName: this.props.profile.role.name.charAt(0).toUpperCase(),
             });
         });
         this.setState({
@@ -343,7 +344,7 @@ class BillingProfile extends React.Component {
             address_zip: this.state.form.postal,
             address_line1: this.state.form.address_line1
             }, (status, response) => {
-            response.plan = this.state.billingPeriod === "annually" ? this.state.planName + "_annual" : this.state.planName;
+            response.plan = this.state.billingPeriod === "annually" ? this.state.planName.charAt(0).toLowerCase() + "_annual" : this.state.planName.charAt(0).toLowerCase();
             response.trialDays = 0;
             response.created = new Date().getTime();
             response.subType = "main"
@@ -415,7 +416,7 @@ class BillingProfile extends React.Component {
                 </Modal>
                 {
                 onAddCard ?
-                    <Checkout planName={planName} plan={selectedPlan} billingPeriod={billingPeriod} onChangePlan={() => this.setState({onAddCard: false})} onChangePeriod={() => this.setBillingPeriod()} />
+                    <Checkout planName={planName.charAt(0).toLowerCase()} plan={selectedPlan} billingPeriod={billingPeriod} onChangePlan={() => this.setState({onAddCard: false})} onChangePeriod={() => this.setBillingPeriod()} />
                     :
                     <div>
                         {!!planConfirm && 
@@ -535,20 +536,20 @@ class BillingProfile extends React.Component {
                                                         
                                                         {
                                                             !profile.subscription.activeSubscription ?
-                                                            <button className={`btn billing-btn active`} onClick={() => {this.setState({selectedPlan: plan}); this.setPlanConfirm(plan["Name"].toLowerCase())}}>Confirm order</button>
+                                                            <button className={`btn billing-btn active`} onClick={() => {this.setState({selectedPlan: plan}); this.setPlanConfirm(plan["Name"])}}>Confirm order</button>
                                                             :                                                        
                                                             (plan["Name"].toLowerCase() == roleBilling ?
                                                                 (profile.subscription.onGracePeriod ?
-                                                                    <button className={`btn billing-btn active`} onClick={() => this.setPlanResume(plan["Name"].toLowerCase())}>Resume plan</button>
+                                                                    <button className={`btn billing-btn active`} onClick={() => this.setPlanResume(plan["Name"])}>Resume plan</button>
                                                                 :
-                                                                    <button className={`btn billing-btn active`} onClick={() => this.setPlanCancel(plan["Name"].toLowerCase())}>Cancel Subscription</button>
+                                                                    <button className={`btn billing-btn active`} onClick={() => this.setPlanCancel(plan["Name"])}>Cancel Subscription</button>
                                                                 )
                                                             :
                                                                 // Separate the plans by price
                                                                 (plan["Monthly"] > allPlans.find(item => item["Name"] == roleBilling.charAt(0).toUpperCase() + roleBilling.slice(1))["Monthly"] ?
-                                                                    <button className="btn billing-btn" onClick={() => { this.setPlanChange(plan["Name"].toLowerCase()) }}>Upgrade</button>
+                                                                    <button className="btn billing-btn" onClick={() => { this.setPlanChange(plan["Name"]) }}>Upgrade</button>
                                                                 :
-                                                                    <button className="btn billing-btn" onClick={() => { this.setPlanChange(plan["Name"].toLowerCase()) }}>Downgrade</button>
+                                                                    <button className="btn billing-btn" onClick={() => { this.setPlanChange(plan["Name"]) }}>Downgrade</button>
                                                                 )
                                                             )
                                                         }
