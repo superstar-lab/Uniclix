@@ -19,7 +19,7 @@ Grow your community on Twitter by targeting the right audience. Think of our Boo
 @section('content')
 
 <div id="home-banner"></div>
-    <div class="container">
+    <div class="twitter-booster-page">
         <div class="left-side-social">
         <div class="spacing"><a target="_blank" href="https://web.facebook.com/UniClixApp/"><img src="{{ asset('images/facebook-icon.svg') }}" /></a></div>
         <div class="spacing"><a target="_blank" href="https://twitter.com/UniClix"><img src="{{ asset('images/twitter-icon.svg') }}" /></a></div>
@@ -37,7 +37,7 @@ Grow your community on Twitter by targeting the right audience. Think of our Boo
             <div class="button-layout">
                 <a class="btn theme-btn mt30" href="{{config('frontendclient.client_url')}}?register" target="_blank">Try 14 days for free</a>
             </div>
-            <div class="home-image3"><img id="main-booster" src="{{ asset('images/twitter-booster-image1.svg') }}" class="img-responsive laptop-img" /></div>
+            <div class="home-image3"><img id="main-booster" src="{{ asset('images/twitter-booster-image1.svg') }}" class="centered img-responsive laptop-img" /></div>
             <!-- <a href="/pricing" class="btn theme-btn mt30">Learn more</a> -->
         </div>
     </div>
@@ -151,13 +151,13 @@ Grow your community on Twitter by targeting the right audience. Think of our Boo
     <div class="learn-more intro-section">
         <div class="container">
             <div class="col-md-offset-3 col-md-8 twitter-booster" style="margin-top: 10%;">
-                <div class="twitter-boost-title">Learn more tools that will help you organize your social networks</div>
+                <div class="twitter-boost-title">We're more than a Twitter Booster tool, explore other features that will help you manage your social media</div>
                 <div class="tools">
                     <div class="tool-icon"><img src="{{ asset('images/twitter-booster-image9.svg') }}" class="img-responsive laptop-img" /></div>
                     <div class="twitter-boost-subtitle">Social Media Management Simplefied</div>
-                    <span class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum diam metus, tincidunt in sodales auctor, euismod ut purus.</span>
+                    <span class="description">Manage all of your social media accounts with just a couple of clix.</span>
                     <div style="margin-top: 15px;">
-                        <a href="{{route('products.twitter_growth')}}" class="learn-more-button">Learn more<img src="{{asset('images/arrow-icon.svg')}}"/></a>
+                        <a href="/" class="learn-more-button">Learn more<img src="{{asset('images/arrow-icon.svg')}}"/></a>
                     </div>
                 </div>
             </div>

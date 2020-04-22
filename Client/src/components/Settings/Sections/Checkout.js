@@ -507,7 +507,7 @@ class Checkout extends React.Component {
                                       <img src="/images/card-image.svg"/>
                                     </div>
                                     <div className="common-font col-12 col-md-8">
-                                      {card_type} ended in {this.state.form.exp_year}
+                                      {card_type} ended in {form.cardnumber.substr(form.cardnumber.length - 4)}
                                     </div>
                                     <div className="col-12 col-md-1" >
                                       <div className="edit-icon-spacing" data-for="edit" data-tip data-iscapture='true' data-event-off='click' onClick={() => this.setState({editCardInfo: true, endCardSetting: false})}>
@@ -533,7 +533,7 @@ class Checkout extends React.Component {
                                   <img src="/images/card-image.svg"/>
                                 </div>
                                 <div className="common-font col-12 col-md-9">
-                                  {card_type} ended in {this.state.form.exp_year}
+                                  {card_type} ended in {form.cardnumber.substr(form.cardnumber.length - 4)}
                                 </div>
                                 <div className="icon-spacing col-12 col-md-1">
                                   <i className="fa fa-check" aria-hidden="true" style={{color: '#2D86DA'}}></i>

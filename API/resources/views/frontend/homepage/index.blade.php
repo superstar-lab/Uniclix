@@ -175,7 +175,7 @@ Uniclix helps you centralize, manage and grow your social media accounts with ju
 <div class="learn-more intro-section">
     <div class="container">
         <div class="col-md-offset-3 col-md-8 twitter-booster">
-            <div class="twitter-boost-title">Learn more tools that will help you organize your social networks</div>
+            <div class="twitter-boost-title">We're more than a scheduling tool, explore other features that will help you grow your social network</div>
             <div class="tools">
                 <div class="twitter-boost-subtitle">Twitter Booster</div>
                 <span class="description">Grow your community on Twitter by targeting the right audience. 

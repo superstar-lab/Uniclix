@@ -69,17 +69,25 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
     <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked>
     
     <label for="tab1">
-        <div class="row">
-            <div class="col-md-3 col-xs-3"><div style="width: 23px;"><img src="{{ asset('images/twitter-booster-image9.svg') }}" /></div></div>
-            <div class="col-md-9 col-xs-9">Product Plan</div>
+        <div class="row pricing-buttons">
+            <div class="arrow-container">
+                <div>
+                    <img src="{{ asset('images/twitter-booster-image9.svg') }}" />
+                </div>
+            </div>
+            <div>Social Media Manager</div>
         </div>
     </label>
 
     <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">
     <label for="tab2">
-        <div class="row">
-            <div class="col-md-2 col-xs-2"><div style="width: 23px;"><img src="{{ asset('images/twitter-booster-image9.svg') }}" /></div></div>
-            <div class="col-md-10 col-xs-10">Twitter Booster</div>
+        <div class="row pricing-buttons">
+            <div class="arrow-container">
+                <div>
+                    <img src="{{ asset('images/twitter-booster-image9.svg') }}" />
+                </div>
+            </div>
+            <div>Twitter Booster</div>
         </div>
     </label>
 
@@ -108,7 +116,13 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                                 <h2 class="booster-title">{{$plan["Name"]}}</h2>
                             </div>
                             <div class="pricing-title">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam non mattis nisi. 
+                                @if($plan["Name"] == "Basic")
+                                    Ideal for getting started
+                                @elseif($plan["Name"] == "Premium")
+                                    Ideal for growing brands
+                                @else
+                                    Ideal for larger teams
+                                @endif
                             </div>
                             <div class="plan-price-container">
                                 <div>
@@ -128,7 +142,14 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                             <div class="plan-content-container">
                                 <div class="plan-items"><img src="{{asset('/images/check-icon.svg')}}"> {{$plan["Social Accounts"]}} social accounts</div>
                                 <div class="plan-items"><img src="{{asset('/images/check-icon.svg')}}"> {{$plan["Post Limitation"]}} posts</div>
-                                <div class="plan-items"><img src="{{asset('/images/check-icon.svg')}}"> {{$plan["Users"]}} user</div>
+                                <div class="plan-items"><img src="{{asset('/images/check-icon.svg')}}">
+                                    {{$plan["Users"]}}
+                                    @if($plan["Users"] == 1)
+                                        user
+                                    @else
+                                        users
+                                    @endif
+                                </div>
                             </div>
                             
                         </div>

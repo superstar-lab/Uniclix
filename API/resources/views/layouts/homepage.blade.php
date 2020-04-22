@@ -67,7 +67,7 @@
         ],
         "products" => [
             "name" => "Products",
-            "url" => route('products.publisher'),
+            "url" => '#',
             "id" => 'products',
             "active" => Request::is("social-media-calendar") || Request::is("content-curation-tool") || Request::is("social-listening-tool") || Request::is("social-media-analytics") || Request::is("twitter-followers-app")? 'active' : '',
             "submenu" => [

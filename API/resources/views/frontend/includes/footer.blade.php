@@ -24,7 +24,7 @@
                     <div class="footer-h">Products</div>
                     <ul class="footer-ul">
                         <li><a href="{{route('products.twitter_booster')}}" >Twitter Booster</a></li>
-                        <li><a href="{{route('products.management_tools')}}">Social Media </a></li>
+                        <li><a href="/">Social Media </a></li>
                     </ul>
                 </div>
             </div>

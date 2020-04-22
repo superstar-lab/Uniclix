@@ -432,6 +432,32 @@
     justify-content: flex-end;
 }
 
+.pricing-buttons.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 295px;
+    padding: 10px;
+}
+
+.pricing-buttons.row .arrow-container {
+    margin-right: 25px;
+}
+
+.twitter-booster-page .centered {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.twitter-booster-page .main-booster {
+    max-width: 85%;
+}
+
+.twitter-booster-page .intro-banner {
+    margin-left: 0;
+    margin-right: 0;
+}
+
 @media only screen and (max-width:990px){
     .p-first-section h1 {
         padding-top: 0px;
@@ -443,6 +469,9 @@
 }
 
 @media only screen and (max-width: 737px)  {
+    .pricing-buttons.row {
+        justify-content: flex-start;
+    }
     .p-container {
         padding: 0 10px;
     }

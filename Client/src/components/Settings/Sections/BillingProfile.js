@@ -7,7 +7,7 @@ import { isValid } from 'cc-validate';
 import Loader, { LoaderWithOverlay } from '../../Loader';
 import Modal from 'react-modal';
 import FunctionModal from '../../Modal';
-import { getCookie } from '../../../utils/helpers';
+import { getCookie, capitalize } from '../../../utils/helpers';
 import { PRICING_COOKIE_KEY } from '../../../utils/constants';
 
 import { cancelSubscription, resumeSubscription, createSubscription, updateSubscription } from '../../../requests/billing';
@@ -75,7 +75,7 @@ class BillingProfile extends React.Component {
                 allPlans: response.allPlans,
                 roleBilling: cookieParts ? cookieParts[0] : this.props.profile.role.name,
                 billingPeriod: cookieParts ? cookieParts[1] : this.state.billingPeriod,
-                planName: this.props.profile.role.name.charAt(0).toUpperCase(),
+                planName: this.props.profile.role.name,
             });
         });
         this.setState({
@@ -416,7 +416,7 @@ class BillingProfile extends React.Component {
                 </Modal>
                 {
                 onAddCard ?
-                    <Checkout planName={planName.charAt(0).toLowerCase()} plan={selectedPlan} billingPeriod={billingPeriod} onChangePlan={() => this.setState({onAddCard: false})} onChangePeriod={() => this.setBillingPeriod()} />
+                    <Checkout planName={planName} plan={selectedPlan} billingPeriod={billingPeriod} onChangePlan={() => this.setState({onAddCard: false})} onChangePeriod={() => this.setBillingPeriod()} />
                     :
                     <div>
                         {!!planConfirm && 
@@ -425,7 +425,7 @@ class BillingProfile extends React.Component {
                             className="billing-profile-modal"
                             isOpen={!!planConfirm}
                             >
-                                <div className="modal-title">{`You can order ${planConfirm}`}</div>
+                                <div className="modal-title">{`You can order ${capitalize(planConfirm)}`}</div>
                                 <div className="modal-contents">{`Do you wish to proceed with this confirm order?`}</div>
                                 <div style={{float:'right'}}>
                                     <button onClick={() => this.setPlanConfirm(false)} className="cancelBtn" >No</button>
@@ -440,7 +440,7 @@ class BillingProfile extends React.Component {
                             className="billing-profile-modal"
                             isOpen={!!planChange}
                             >
-                                <div className="modal-title">{`Do you want to change your subscription to the ${planChange} plan?`}</div>
+                                <div className="modal-title">{`Do you want to change your subscription to the ${capitalize(planChange)} plan?`}</div>
                                 <div style={{float:'right'}}>
                                     <button onClick={() => this.setPlanChange(false)} className="cancelBtn" >No</button>
                                     <button onClick={() => {this.setPlanChange(false);this.onPlanClick(planChange)}} className="cancelBtn" >Yes</button>
@@ -513,7 +513,7 @@ class BillingProfile extends React.Component {
                                             <div key={index} className="col-4 col-md-4 col-sm-12">
                                                 <div className={`card billing-body-c ${plan["Name"].toLowerCase() == roleBilling ? 'active' : ''}`}>
                                                     <div className="card-body">
-                                                        <h6 className="card-selected text-center">{plan["Name"].toLowerCase() == roleBilling ? 'Selected plan' : ''}</h6>
+                                                        <h6 className="card-selected text-center">{plan["Name"].toLowerCase() == roleBilling ? 'Current plan' : ''}</h6>
                                                         <h5 className="card-title text-muted text-uppercase text-center">{plan["Name"]}</h5>
                                                         {this.state.billingPeriod === "annually" ?
                                                             <h6 className="card-price text-center">${plan['Annual Billing']}<span className="period">/annual</span></h6>
@@ -522,7 +522,12 @@ class BillingProfile extends React.Component {
                                                         }
                                                         <ul className="fa-ul ">
                                                             <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Social Accounts"]} social accounts </li>
-                                                            <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Users"]} user</li>
+                                                            <li>
+                                                                <span className="fa-li">
+                                                                    <i className="fa fa-check"></i>
+                                                                </span>
+                                                                {`${plan["Users"]} ${plan["Users"] > 1 ? 'users' : 'user'}`}
+                                                            </li>
                                                             <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Post Limitation"]} post</li>
                                                             <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Schedule and Publish"] != true ? '' : 'manage and schedule posts'}</li>
                                                             {plan["Content Curation"] == true ? <li><span className="fa-li"><i className="fa fa-check"></i></span>Content Curation</li> : ''}
@@ -536,20 +541,20 @@ class BillingProfile extends React.Component {
                                                         
                                                         {
                                                             !profile.subscription.activeSubscription ?
-                                                            <button className={`btn billing-btn active`} onClick={() => {this.setState({selectedPlan: plan}); this.setPlanConfirm(plan["Name"])}}>Confirm order</button>
+                                                            <button className={`btn billing-btn active`} onClick={() => {this.setState({selectedPlan: plan}); this.onPlanClick(plan["Name"].toLowerCase())}}>Sign up</button>
                                                             :                                                        
                                                             (plan["Name"].toLowerCase() == roleBilling ?
                                                                 (profile.subscription.onGracePeriod ?
-                                                                    <button className={`btn billing-btn active`} onClick={() => this.setPlanResume(plan["Name"])}>Resume plan</button>
+                                                                    <button className={`btn billing-btn active`} onClick={() => this.setPlanResume(plan["Name"].toLowerCase())}>Resume plan</button>
                                                                 :
-                                                                    <button className={`btn billing-btn active`} onClick={() => this.setPlanCancel(plan["Name"])}>Cancel Subscription</button>
+                                                                    <button className={`btn billing-btn active`} onClick={() => this.setPlanCancel(plan["Name"].toLowerCase())}>Cancel Subscription</button>
                                                                 )
                                                             :
                                                                 // Separate the plans by price
                                                                 (plan["Monthly"] > allPlans.find(item => item["Name"] == roleBilling.charAt(0).toUpperCase() + roleBilling.slice(1))["Monthly"] ?
-                                                                    <button className="btn billing-btn" onClick={() => { this.setPlanChange(plan["Name"]) }}>Upgrade</button>
+                                                                    <button className="btn billing-btn" onClick={() => { this.setPlanChange(plan["Name"].toLowerCase()) }}>Upgrade</button>
                                                                 :
-                                                                    <button className="btn billing-btn" onClick={() => { this.setPlanChange(plan["Name"]) }}>Downgrade</button>
+                                                                    <button className="btn billing-btn" onClick={() => { this.setPlanChange(plan["Name"].toLowerCase()) }}>Downgrade</button>
                                                                 )
                                                             )
                                                         }
