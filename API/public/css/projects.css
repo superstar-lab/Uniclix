@@ -449,7 +449,7 @@
     margin-left: auto;
 }
 
-.twitter-booster-page .main-booster {
+.twitter-booster-page #main-booster {
     max-width: 85%;
 }
 
