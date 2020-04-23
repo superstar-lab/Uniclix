@@ -181,7 +181,7 @@ Uniclix helps you centralize, manage and grow your social media accounts with ju
                 <span class="description">Grow your community on Twitter by targeting the right audience. 
             Think of our Booster tool as a matchmaker that connects you with people most interested in what you have to offer.</span>
                 <div style="margin-top: 15px;">
-                    <a href="{{route('products.twitter_growth')}}" class="learn-more-button">Learn more<img src="{{asset('images/arrow-icon.svg')}}"/></a>
+                    <a href="{{route('products.twitter_booster')}}" class="learn-more-button">Learn more<img src="{{asset('images/arrow-icon.svg')}}"/></a>
                 </div>
             </div>
         </div>

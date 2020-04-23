@@ -786,6 +786,13 @@ $blue: lighten(rgb(4,159,217), 5%);
 	color: #363636;
 	display: flex;
 	margin-top: 20px;
+	display: flex;
+	justify-content: space-between;
+
+	.button-holder {
+		min-width: 145px;
+		height: 40px;
+	}
 }
 
 .billing-profile-button {

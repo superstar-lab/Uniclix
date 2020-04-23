@@ -699,14 +699,19 @@ class BillingProfile extends React.Component {
                         <div>
                             <div className="billing-bottom-container">
                                 <div className="bottom-title">Enterprise</div>
-                                <div className="billing-profile-content">Contact us to get a custom plan that fits your needs
-                                    <a
-                                        className="billing-profile-button"
-                                        href="mailto:info@uniclixapp.com"
-                                        target="_blank"
-                                    >
-                                        Contact us
-                                    </a>
+                                <div className="billing-profile-content">
+                                    <div>
+                                        Contact us to get a custom plan that fits your needs
+                                    </div>
+                                    <div className="button-holder">
+                                        <a
+                                            className="billing-profile-button"
+                                            href="mailto:info@uniclixapp.com"
+                                            target="_blank"
+                                        >
+                                            Contact us
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
