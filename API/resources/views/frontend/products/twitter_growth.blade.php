@@ -35,7 +35,13 @@ Grow your community on Twitter by targeting the right audience. Think of our Boo
                     <div>Target your audience<span class="point-pink-color">&nbsp;.&nbsp;</span>Clean-up inactives<span class="point-pink-color">&nbsp;.&nbsp;</span>Track performance</div>
                 </div>
             <div class="button-layout">
-                <a class="btn theme-btn mt30" href="{{config('frontendclient.client_url')}}?register" target="_blank">Try 14 days for free</a>
+                <a
+                    class="btn theme-btn mt30"
+                    href="https://twitter.uniclixapp.com/?register&addon=twitter_growth&redirect=twitter-booster&period=monthly&addontrial=true"
+                    target="_blank"
+                >
+                    Try 3 days for free
+                </a>
             </div>
             <div class="home-image3"><img id="main-booster" src="{{ asset('images/twitter-booster-image1.svg') }}" class="centered img-responsive laptop-img" /></div>
             <!-- <a href="/pricing" class="btn theme-btn mt30">Learn more</a> -->
@@ -95,10 +101,22 @@ Grow your community on Twitter by targeting the right audience. Think of our Boo
                             <div class="col-md-5">
                                 <div class="row" style="margin-top: 10px">
                                     <div class="col-md-4 register-button">
-                                        <a style="text-decoration: none;color: white;" href="{{config('frontendclient.client_url')}}?register" target="_blank">Sign up</a>
+                                        <a
+                                            style="text-decoration: none;color: white;"
+                                            href="https://twitter.uniclixapp.com/?register&addon=twitter_growth&redirect=twitter-booster&period=monthly"
+                                            target="_blank"
+                                        >
+                                            Sign up
+                                        </a>
                                     </div>
                                     <div class="col-md-7 col-md-offset-1 trial-button">
-                                        <a style="text-decoration: none;color: #2D86DA;" href="{{config('frontendclient.client_url')}}?register" target="_blank">Try 14 days for free</a>
+                                        <a
+                                            style="text-decoration: none;color: #2D86DA;"
+                                            href="https://twitter.uniclixapp.com/?register&addon=twitter_growth&redirect=twitter-booster&period=monthly&addontrial=true"
+                                            target="_blank"
+                                        >
+                                            Try 3 days for free
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -165,7 +183,7 @@ Grow your community on Twitter by targeting the right audience. Think of our Boo
     </div>
 </div>
 
-@include('frontend.includes.readytostart')
+@include('frontend.includes.readytostarttwitter')
 @include('frontend.includes.footer')
 
 @endsection

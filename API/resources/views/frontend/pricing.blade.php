@@ -327,6 +327,7 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                     </div>
                 </div>
             </div>
+            @include('frontend.includes.readytostart')
         </section>
         <section id="rauchbier" class="tab-panel">
             <div class="container" style="width: 70%;">
@@ -356,13 +357,14 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
                             <div class="plan-button-container" style="border:none;width: 80%;">
                                 <a class="btn plan-price-btn" data-url="{{config('frontendclient.client_url')}}" 
                                 data-addon="{{strtolower($addon['name'])}}" data-plan="" data-period="monthly" 
-                                href="{{config('frontendclient.client_url')}}?register">Start 14 days free trial</a>
+                                href="https://twitter.uniclixapp.com/?register&addon=twitter_growth&redirect=twitter-booster&period=monthly&addontrial=true">Start 3 days free trial</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="twitter-booster1" style="top: 110%;z-index:-1;"><img src="{{ asset('images/pricing-image.svg') }}" class="img-responsive laptop-img" /></div>
+            @include('frontend.includes.readytostarttwitter')
         </section>
     </div>
 
@@ -413,7 +415,6 @@ $(document).ready(function(){
     });
 })
 </script>
-@include('frontend.includes.readytostart')
 @include('frontend.includes.footer')
 
 @endsection
