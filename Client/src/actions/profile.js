@@ -22,3 +22,23 @@ export const startSetProfile = () => {
             });
     };
 };
+
+export const addTopic = (topic) => ({
+    type: 'ADD_TOPIC',
+    topic
+});
+
+export const removeTopic = (topic) => ({
+    type: 'REMOVE_TOPIC',
+    topic
+});
+
+export const setAccessLevel = (accessLevel) => ({
+    type: 'SET_ACCESS_LEVEL',
+    accessLevel
+});
+
+export const setTimezone = (selectedTimezone) => ({
+    type: 'SET_TIMEZONE',
+    selectedTimezone
+})

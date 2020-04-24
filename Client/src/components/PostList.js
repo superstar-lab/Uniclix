@@ -99,20 +99,20 @@ export const PostList = ({
                                     <div key={post.id} className={`item-row schedule-row ${type}`}
                                         style={{ borderColor: post.category ? post.category.color : '' }}
                                     >
-                                        <div className="row"
-                                            onClick={() => {
-                                                setComposerModal(true);
-                                                setPost(
-                                                    {
-                                                        id: post.id,
-                                                        content: post.content,
-                                                        images: typeof (post.payload.images) !== "undefined" ? post.payload.images.map((image) => image.absolutePath) : [],
-                                                        scheduled_at: post.scheduled_at,
-                                                        scheduled_at_original: post.scheduled_at_original,
-                                                        type: type !== 'past-scheduled' ? 'edit' : 'store'
-                                                    });
-                                            }} >
-                                            <div className="col-xs-12 col-md-4">
+                                        <div className="row">
+                                            <div className="col-xs-12 col-md-4"
+                                                onClick={() => {
+                                                    setComposerModal(true);
+                                                    setPost(
+                                                        {
+                                                            id: post.id,
+                                                            content: post.content,
+                                                            images: typeof (post.payload.images) !== "undefined" ? post.payload.images.map((image) => image.absolutePath) : [],
+                                                            scheduled_at: post.scheduled_at,
+                                                            scheduled_at_original: post.scheduled_at_original,
+                                                            type: type !== 'past-scheduled' ? 'edit' : 'store'
+                                                        });
+                                                }}>
                                                 <div className="post-info pull-left">
                                                     {!!(typeof (post.payload.images) !== "undefined") && post.payload.images.map((image, index) => (
                                                         <img key={index} src={image.absolutePath} />
@@ -171,7 +171,7 @@ export const PostList = ({
                     </div>
                 </div>
             }
-        </div>
+        </div >
     );
 }
 const mapDispatchToProps = (dispatch) => ({

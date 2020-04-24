@@ -58,7 +58,7 @@ class StreamsFeedController extends Controller{
 
         if(!$channelId) return;
 
-        $channel = $this->getChannel($channelId);
+        $channel = $this->user->getChannel($channelId);
 
         if(!$channel) return;
 

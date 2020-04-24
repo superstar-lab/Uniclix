@@ -49,6 +49,14 @@ class PagesController extends Controller
         $addon = RoleAddon::first();
     	return view('frontend.pricing', compact('allPlans', 'paidPlans', 'addon'));
     }
+    
+    public function affiliate()
+    {   
+        $allPlans = Role::formattedForDisplay();
+        $paidPlans = Role::where("name", "!=", "free")->formattedForDisplay();
+        $addon = RoleAddon::first();
+    	return view('frontend.pricing', compact('allPlans', 'paidPlans', 'addon'));
+    }
 
      /**
      *

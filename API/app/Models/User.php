@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 use Carbon\Carbon;
+use App\Models\Facebook\Channel as FacebookChannel;
 
 class User extends Authenticatable
 {
@@ -87,28 +88,25 @@ class User extends Authenticatable
 
         $selectedChannel = $this->selectedChannel();
         $selectedTwitterChannel = $this->selectedTwitterChannel();
-
+        
         if($channels = $this->channels()->get()){
 
             return collect($channels)->map(function($channel) use ($selectedChannel, $selectedTwitterChannel) {
-
-                    $channel->details = @$channel->details;
-                    $channel->selected = $selectedChannel && $selectedChannel->id == $channel->id ? 1 : 0;
-                    if($channel->details){
-                        if($channel->details->account_type != "page" && $channel->type != "linkedin"){
-                            $avatar = @$channel->details->getAvatar();
-                        }
-                        $channel->details->payload = @unserialize($channel->details->payload);
-                        $channel->details->selected = $channel->type == "twitter" && $selectedTwitterChannel->channel_id == $channel->id ? 1 : $channel->details->selected;
-                        $channel->avatar = @$avatar ? @$avatar : @$channel->details->payload->avatar;
-                        $channel->name = @$channel->details->payload->name;
-                        $channel->username = @$channel->details->payload->nickname;
+                $channel->details = @$channel->details;
+                $channel->selected = $selectedChannel && $selectedChannel->id == $channel->id ? 1 : 0;
+                if($channel->details){
+                    if($channel->details->account_type != "page" && $channel->type != "linkedin"){
+                        $avatar = @$channel->details->getAvatar();
                     }
-
-                    return $channel;
-                });
+                    $channel->details->payload = @unserialize($channel->details->payload);
+                    $channel->details->selected = $channel->type == "twitter" && $selectedTwitterChannel->channel_id == $channel->id ? 1 : $channel->details->selected;
+                    $channel->avatar = @$avatar ? @$avatar : @$channel->details->payload->avatar;
+                    $channel->name = @$channel->details->payload->name;
+                    $channel->username = @$channel->details->payload->nickname;
+                }
+                return $channel;
+            });
         }
-
         return [];
     }
 
@@ -116,40 +114,39 @@ class User extends Authenticatable
         $selectedChannel = $this->selectedChannel();
         $selectedTwitterChannel = $this->selectedTwitterChannel();
         if($channels = $this->memberChannels()->get()){
-
             return collect($channels)->map(function($channel) use ($markSelected, $selectedChannel, $selectedTwitterChannel){
-                    $permissionLevel = $channel->role;
-                    $teamId = $channel->team_id;
-                    $approverId = $channel->approver_id;
+                        $permissionLevel = $channel->role;
+                        $teamId = $channel->team_id;
+                        $approverId = $channel->approver_id;
+                        $channel = $channel->channel;
+                        $channel->details = @$channel->details;
+                        $channel->permissionLevel = $permissionLevel;
+                        $channel->teamId = $teamId;
+                        $channel->approverId = $approverId;
+                        $channel->selected = $selectedChannel && $selectedChannel->id == $channel->id ? 1 : 0;
 
-                    $channel = $channel->channel;
-                    $channel->details = @$channel->details;
-                    $channel->permissionLevel = $permissionLevel;
-                    $channel->teamId = $teamId;
-                    $channel->approverId = $approverId;
-                    $channel->selected = $selectedChannel && $selectedChannel->id == $channel->id ? 1 : 0;
+                        if($markSelected) $channel->selected = 1;
 
-                    if($markSelected) $channel->selected = 1;
-
-                    if($channel->details){
-                        if($channel->details->account_type != "page" && $channel->type != "linkedin"){
-                            $avatar = @$channel->details->getAvatar();
+                        if($channel->details){
+                            if($channel->details->account_type != "page" && $channel->type != "linkedin"){
+                                $avatar = @$channel->details->getAvatar();
+                            }
+                            $channel->details->payload = @unserialize($channel->details->payload);
+                            $channel->avatar = @$avatar ? @$avatar : @$channel->details->payload->avatar;
+                            $channel->name = @$channel->details->payload->name;
+                            $channel->username = @$channel->details->payload->nickname;
+                            $channel->details->selected = $channel->type == "twitter" && $selectedTwitterChannel->channel_id == $channel->id ? 1 : $channel->details->selected;
                         }
-                        $channel->details->payload = @unserialize($channel->details->payload);
-                        $channel->avatar = @$avatar ? @$avatar : @$channel->details->payload->avatar;
-                        $channel->name = @$channel->details->payload->name;
-                        $channel->username = @$channel->details->payload->nickname;
-                        $channel->details->selected = $channel->type == "twitter" && $selectedTwitterChannel->channel_id == $channel->id ? 1 : $channel->details->selected;
-                    }
 
-                    return $channel;
-                });
+                        return $channel;
+                    });
         }
 
         return [];
     }
 
     public function allFormattedChannels(){
+
         return $this->formattedChannels()->merge($this->formattedMemberChannels());
     }
 
@@ -265,5 +262,97 @@ class User extends Authenticatable
     public function isOld($hours)
     {
         return strtotime($this->created_at) <= strtotime(Carbon::now()->subHours($hours));
+    }
+
+    public function getAllPosts()
+    {
+        return ScheduledPost::with('category')
+            ->orderBy('scheduled_at', 'asc')
+            ->get();
+    }
+
+    public function getAllScheduledPosts($from_date = null, $to_date = null)
+    {
+        $id = $this->id;
+        
+        if($from_date == null || $to_date == null){
+            return ScheduledPost::with('category')->select('scheduled_posts.*')
+            ->orderBy('scheduled_at', 'asc')->leftJoin('channels', 'scheduled_posts.channel_id', '=', 'channels.id')
+            ->where("approved", 1)
+            ->where("user_id", $id)
+            ->get();
+        } else {
+            return ScheduledPost::with('category')->select('scheduled_posts.*')
+            ->orderBy('scheduled_at', 'asc')->leftJoin('channels', 'scheduled_posts.channel_id', '=', 'channels.id')
+            ->where("approved", 1)
+            ->whereDate('scheduled_at', '>=', $from_date)
+            ->whereDate('scheduled_at', '<=', $to_date)
+            ->where("user_id", $id)
+            ->get();
+        }
+    }
+
+    public function getMemberScheduledPosts($from_date = null, $to_date = null)
+    {
+        $id = $this->id;
+        
+        if($from_date == null || $to_date == null){
+            return ScheduledPost::with('category')->select('scheduled_posts.*')
+            ->orderBy('scheduled_at', 'asc')->leftJoin('team_user_channels', 'scheduled_posts.channel_id', '=', 'team_user_channels.channel_id')
+            ->where("approved", 1)
+            ->where("team_user_channels.member_id", $id)
+            ->get();
+        } else {
+            return ScheduledPost::with('category')->select('scheduled_posts.*')
+            ->orderBy('scheduled_at', 'asc')->leftJoin('team_user_channels', 'scheduled_posts.channel_id', '=', 'team_user_channels.channel_id')
+            ->where("approved", 1)
+            ->whereDate('scheduled_at', '>=', $from_date)
+            ->whereDate('scheduled_at', '<=', $to_date)
+            ->where("team_user_channels.member_id", $id)
+            ->get();
+        }
+    }
+
+    public function getAllUnapprovedPosts()
+    {
+        return ScheduledPost::with('category')
+            ->where("approved", 0)
+            ->where('posted', 0)
+            ->orderBy('scheduled_at', 'asc')
+            ->get();
+    }
+    
+    public function getRemainDate($user_id)
+    {
+        $selectedUser = $this->where('id', $user_id)->first();
+        $trial_ends_at = $selectedUser['trial_ends_at'];
+        return $trial_ends_at;
+    }
+
+    public function countChannels()
+    {
+        // We need to filter the facebook profile accounts from the counting
+        $facebookChannels = $this->hasMany(FacebookChannel::class)->where('parent_id', '!=', null)->count();
+        $restOfChannels = $this->hasMany(Channel::class)->where('type', '!=', 'facebook')->count();
+        return $facebookChannels + $restOfChannels;
+    }
+
+    // Function that let us know if the user is an member, admin or owner
+    public function getAccessLevel()
+    {
+        $team = '';
+        try {
+            $team = TeamUser::where('member_id', $this->id)->first();
+        } catch(\Exception $error) {
+
+        }
+
+        // If the user is not in the table, we assume it is an owner.
+        // If it's in the table, we check the value
+        return $team
+            ? $team->is_admin
+                ? 'admin'
+                : 'member'
+            : 'owner';
     }
 }

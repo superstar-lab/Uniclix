@@ -6,7 +6,7 @@ import AnalyticsContext from '../AnalyticsContext';
 
 import TweetsTable from './Cards/TweetsTable';
 import TwitterOverviewCard from './TwitterOverviewCard';
-import ChartsSection from '../Sections/ChartsSection';
+import TwitterChartsSection from './TwitterChartsSection';
 
 class TwitterAnalyticsBoard extends React.Component {
     static propTypes = {
@@ -44,7 +44,7 @@ class TwitterAnalyticsBoard extends React.Component {
                                 </div>
                                 <div className="col-md-3 col-xs-12">
                                     <TwitterOverviewCard
-                                        title="Engagements"
+                                        title="Following"
                                         type="followingCount"
                                         icon="chart"
                                         selectedAccount={selectedAccount}
@@ -53,7 +53,7 @@ class TwitterAnalyticsBoard extends React.Component {
                                 </div>
                                 <div className="col-md-3 col-xs-12">
                                     <TwitterOverviewCard
-                                        title="Impressions"
+                                        title="Likes"
                                         type="totalLikesCount"
                                         icon="eye"
                                         selectedAccount={selectedAccount}
@@ -61,7 +61,7 @@ class TwitterAnalyticsBoard extends React.Component {
                                     />
                                 </div>
                             </div>
-                            <ChartsSection selectedAccount={selectedAccount} socialMedia="twitter" />
+                            <TwitterChartsSection selectedAccount={selectedAccount} socialMedia="twitter" />
                             <div className="row mb20">
                                 <div className="col-xs-12">
                                     <TweetsTable

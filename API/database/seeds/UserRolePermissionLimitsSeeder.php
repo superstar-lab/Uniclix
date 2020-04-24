@@ -23,46 +23,25 @@ class UserRolePermissionLimitsSeeder extends Seeder
 
         DB::table("roles")->insert([
             [
-                "name" => "free",
-                "trial_days" => 0,
-                "description" => "Free features",
-                "monthly_price" => 0,
-                "annual_price" => 0,
-            ],
-            [
                 "name" => "basic",
                 "trial_days" => 30,
                 "description" => "Basic features",
-                "monthly_price" => 10,
-                "annual_price" => 100,
-            ],
-            [
-                "name" => "plus",
-                "trial_days" => 30,
-                "description" => "Plus features",
-                "monthly_price" => 15,
+                "monthly_price" => 14.99,
                 "annual_price" => 150,
             ],
             [
                 "name" => "premium",
                 "trial_days" => 30,
                 "description" => "Premium features",
-                "monthly_price" => 50,
-                "annual_price" => 500,
+                "monthly_price" => 29.99,
+                "annual_price" => 299,
             ],
             [
                 "name" => "pro",
                 "trial_days" => 30,
                 "description" => "Pro features",
-                "monthly_price" => 90,
-                "annual_price" => 900,
-            ],
-            [
-                "name" => "agency",
-                "trial_days" => 30,
-                "description" => "Agency features",
-                "monthly_price" => 180,
-                "annual_price" => 1800,
+                "monthly_price" => 59,
+                "annual_price" => 599,
             ],
         ]);
 
@@ -171,16 +150,12 @@ class UserRolePermissionLimitsSeeder extends Seeder
             ],
         ]);
 
-        $free = Role::where("name", "free")->first();
         $basic = Role::where("name", "basic")->first();
-        $plus = Role::where("name", "plus")->first();
         $premium = Role::where("name", "premium")->first();
         $pro = Role::where("name", "pro")->first();
-        $agency = Role::where("name", "agency")->first();
 
         $twitterGrowth = RoleAddon::where("name", "twitter_growth")->first();
 
-        $freePerm = Permission::whereIn("name", ["articles", "compose", "scheduling", "analytics", "accounts"])->pluck("id");
         $basicPlusPermissions = Permission::whereIn("name", [
             "articles",
             "compose",
@@ -216,7 +191,8 @@ class UserRolePermissionLimitsSeeder extends Seeder
             "mentions"])->pluck("id");
 
         $twitterGrowthPerm = Permission::whereIn("name",
-            ["manage",
+            [
+                "manage",
                 "manage-dashboard",
                 "manage-reply",
                 "manage-fans",
@@ -230,26 +206,14 @@ class UserRolePermissionLimitsSeeder extends Seeder
                 "manage-whitelist",
                 "manage-blacklist"])->pluck("id");
 
-        $free->permissions()->attach($freePerm);
         $basic->permissions()->attach($basicPlusPermissions);
-        $plus->permissions()->attach($basicPlusPermissions);
         $premium->permissions()->attach($allPermissions);
         $pro->permissions()->attach($allPermissions);
-        $agency->permissions()->attach($allPermissions);
 
         $twitterGrowth->permissions()->attach($twitterGrowthPerm);
 
-        $free->roleLimit()->create([
-            "account_limit" => 2,
-            "accounts_per_platform" => 2,
-            "team_accounts" => 1,
-            "posts_per_account" => 10,
-            "twitter_daily_follows" => 100,
-            "twitter_daily_unfollows" => 100,
-        ]);
-
         $basic->roleLimit()->create([
-            "account_limit" => 6,
+            "account_limit" => 5,
             "accounts_per_platform" => 6,
             "team_accounts" => 1,
             "posts_per_account" => 99999,
@@ -257,36 +221,18 @@ class UserRolePermissionLimitsSeeder extends Seeder
             "twitter_daily_unfollows" => 500,
         ]);
 
-        $plus->roleLimit()->create([
-            "account_limit" => 10,
-            "accounts_per_platform" => 10,
-            "team_accounts" => 1,
-            "posts_per_account" => 99999,
-            "twitter_daily_follows" => 500,
-            "twitter_daily_unfollows" => 500,
-        ]);
-
         $premium->roleLimit()->create([
-            "account_limit" => 25,
+            "account_limit" => 20,
             "accounts_per_platform" => 25,
-            "team_accounts" => 2,
+            "team_accounts" => 3,
             "posts_per_account" => 99999,
             "twitter_daily_follows" => 500,
             "twitter_daily_unfollows" => 500,
         ]);
 
         $pro->roleLimit()->create([
-            "account_limit" => 50,
+            "account_limit" => 40,
             "accounts_per_platform" => 50,
-            "team_accounts" => 6,
-            "posts_per_account" => 99999,
-            "twitter_daily_follows" => 500,
-            "twitter_daily_unfollows" => 500,
-        ]);
-
-        $agency->roleLimit()->create([
-            "account_limit" => 100,
-            "accounts_per_platform" => 100,
             "team_accounts" => 6,
             "posts_per_account" => 99999,
             "twitter_daily_follows" => 500,

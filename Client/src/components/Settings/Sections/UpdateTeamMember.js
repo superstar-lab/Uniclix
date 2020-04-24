@@ -176,7 +176,7 @@ class UpdateTeamMember extends React.Component {
                 </Modal>
 
                 <div className="modal-header-container">
-                    <h3>Add new team member</h3>
+                    <h3>Add a new team member</h3>
                 </div>
                 {this.state.loading && <LoaderWithOverlay />}
                 <div className="modal-body">

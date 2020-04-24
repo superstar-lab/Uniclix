@@ -2,7 +2,10 @@ import React from 'react';
 import {connect} from "react-redux";
 import TwitterLogin  from "react-twitter-auth";
 import FacebookButton from './FacebookButton';
+import { setCookie } from '../utils/helpers';
+import { PRICING_COOKIE_KEY } from '../utils/constants';
 import {startLogin, initLogin} from "../actions/auth";
+import { setAccessLevel } from '../actions/profile';
 import {startSetChannels} from "../actions/channels";
 import {startSetProfile} from "../actions/profile";
 import {twitterRequestTokenUrl, twitterAccessTokenUrl, backendUrl, facebookAppId, linkedinAppId, pinterestAppId} from "../config/api";
@@ -26,6 +29,16 @@ export class LoginPage extends React.Component{
 
     constructor(props) {
         super(props);
+
+        // We want to create a cookie if the user gets get through the pricing page
+        // to save the selected plan
+        const queryParams = new URLSearchParams(this.props.location.search);
+        const plan = queryParams.get('selectedPlan');
+        const billingType = queryParams.get('billingType');
+
+        if (plan) {
+            setCookie(PRICING_COOKIE_KEY, `${plan.toLowerCase()}:${billingType}`);
+        }
     }
 
     onFailure = (response) => {
@@ -157,6 +170,7 @@ export class LoginPage extends React.Component{
         
         loginUser(data).then(response => {
             if(typeof response.accessToken !== "undefined") {
+                this.props.setAccessLevel(response.token.accessLevel);
                 this.performLogin(response.accessToken);
             }
         }).catch(e => {
@@ -178,7 +192,7 @@ export class LoginPage extends React.Component{
         return (
              <div className="login-container">
                 <div className="logo">
-                    <img src="/images/uniclix.png" />
+                    <span className="minimalist-logo">Uniclix.</span>
                 </div>
                 {this.state.loading && <LoaderWithOverlay />}
                 <div className="col-md-7 col-xs-12 text-center">
@@ -241,7 +255,8 @@ const mapDispatchToProps = (dispatch) => ({
     initLogin: (token) => dispatch(initLogin(token)),
     startLogin: (body, network) => dispatch(startLogin(body, network)),
     startSetProfile: () => dispatch(startSetProfile()),
-    startSetChannels: () => dispatch(startSetChannels())
+    startSetChannels: () => dispatch(startSetChannels()),
+    setAccessLevel: (accessLevel) => dispatch(setAccessLevel(accessLevel))
 });
 
 export default connect(undefined, mapDispatchToProps)(LoginPage);

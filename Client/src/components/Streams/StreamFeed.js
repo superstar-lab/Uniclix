@@ -39,8 +39,8 @@ class StreamFeed extends React.Component{
         const {streamItem} = this.props;
         this.setState(() => ({loading: true}));
         getStreamFeed(streamItem.type, streamItem.network, streamItem.channel_id, streamItem.search_query, "").then((response) => {
-            
             const items = typeof response["data"] !== "undefined" ? response["data"] : response;
+
             let data = items.length ? items[items.length - 1] : "";
             let nextPage = data && typeof(data.id) !== "undefined" ? data.id : "";
             if(typeof(response["paging"]) !== "undefined" 
@@ -67,7 +67,6 @@ class StreamFeed extends React.Component{
             if(errorStatus === 401){
                 error = e.response.data.message;
             }
-            
             this.setState(() => ({loading: false, error, errorStatus}));  
         });
     };
@@ -80,37 +79,60 @@ class StreamFeed extends React.Component{
         }));
     };
 
-    updateItem = (currentItem, type = "twitterDefault") => {
-
+    updateItem = (currentItem, type = "twitterDefault", kind = "") => {
         let items = [];
         if(type == "delete"){
             items = this.state.items.filter(item => item.id !== currentItem.id);
         }else{
+            
             items = this.state.items.map(item => {
-
-                if(type == "twitterDefault" && item.id == currentItem.id){
-                    return currentItem;
-                }
-
-                if(type == "twitterFollowers" && typeof item.status !== "undefined" && item.id == currentItem.id){
-                    item.status = currentItem;
+                
+                if(kind == "twitterLike" && !!item.id && item.id == currentItem.id){
+                    if(type == "twitterDefault"){
+                        item.favorite_count += 1;
+                    } else {
+                        item.status.favorite_count += 1;
+                    }
                     return item;
                 }
 
-                if(type == "facebookLike" && typeof item.id !== "undefined" && item.id == currentItem.id){
+                if(kind == "twitterUnlike" && !!item.id && item.id == currentItem.id){
+                    if(type == "twitterDefault"){
+                        item.favorite_count -= 1;
+                    } else {
+                        item.status.favorite_count -= 1;
+                    }
+                    return item;
+                }
+
+                if(kind == "twitterRetweets" && !!item.id && item.id == currentItem.id){
+                    if(type == "twitterDefault"){
+                        item.retweet_count += 1;
+                    } else {
+                        item.status.retweet_count += 1;
+                    }
+                    return item;
+                }
+
+                if(type == "facebookLike" && !!item.id && item.id == currentItem.id){
                     item.likes.summary.has_liked = true;
                     item.likes.summary.total_count += 1;
                     return item;
                 }
 
-                if(type == "facebookUnlike" && typeof item.id !== "undefined" && item.id == currentItem.id){
+                if(type == "facebookUnlike" && !!item.id && item.id == currentItem.id){
                     item.likes.summary.has_liked = false;
                     item.likes.summary.total_count -= 1;
                     return item;
                 }
 
-                if(type == "facebookMessage" && typeof item.id !== "undefined" && item.id == currentItem.id){
+                if(type == "facebookMessage" && !!item.id && item.id == currentItem.id){
                     return currentItem;
+                }
+
+                if(type == "facebookComment" && !!item.id && item.id == currentItem.id){
+                    item.comments.summary.total_count += 1;
+                    return item;
                 }
 
                 return item;
@@ -201,7 +223,7 @@ class StreamFeed extends React.Component{
                                 updateItem={this.updateItem} 
                                 channel={channel}
                                 reload={reload}
-                                selectedTab={selectedTab} 
+                                selectedTab={selectedTab}
                             />
 
                     )) : this.state.loading ? 

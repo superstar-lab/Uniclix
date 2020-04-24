@@ -143,12 +143,17 @@ class DraftEditor extends React.Component{
 
                 {inclusive &&
                     <div className="modal-header">
-                        <button type="button" id="closeModal" onClick={toggle} className="close fa fa-times-circle" data-dismiss="modal"></button>
+                        <button
+                            id="closeModal"
+                            onClick={toggle}
+                            className="close fa fa-times-circle"
+                            data-dismiss="modal">
+                        </button>
                         <h4>Editing</h4>
                     </div>
                 }
 
-                <div className="modal-body">
+                <div className="draft-body">
                     <form id="draft_form">
                         <div>
                             <div className="editor" onClick={this.focus}>
@@ -190,16 +195,15 @@ class DraftEditor extends React.Component{
                     </form>
                 </div>
                 <div className="editor-icons">
+                    {this.state.showEmojiIcon && <EmojiSelect />}
                     {this.state.showImagesIcon && 
                         (   this.state.imageLimit <= this.state.pictures.length ?
                             <i className="fa fa-image upload-images disabled-btn"></i>
                             :
-                            <i onClick={this.onImageIconClick} className="fa fa-image upload-images"></i>
+                            <i onClick={this.onImageIconClick} className="fa fa-image upload-images" style={{color: '#2D86DA'}}></i>
                         )
                     }
                     {/* <i className="fa fa-map-marker add-location"></i> */}
-                    {this.state.showEmojiIcon && <EmojiSelect />}
-                    {this.state.showHashtagsIcon && <i onClick={this.onHashIconClick} className="fa fa-hashtag add-hashtag"></i>}
                 </div>
 
                 {inclusive && 

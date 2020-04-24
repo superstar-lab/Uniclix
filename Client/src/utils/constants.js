@@ -27,3 +27,5 @@ export const MONTHS_FINISH_DATE = {
   10: 30,
   11: 31
 }
+
+export const PRICING_COOKIE_KEY = 'plan_from_pricing';

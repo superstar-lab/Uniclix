@@ -5,6 +5,7 @@ import { withRouter } from "react-router";
 import { backendUrl } from "../../config/api";
 import { setComposerModal } from "../../actions/composer";
 import { startLogout } from "../../actions/auth";
+import { isOwner } from '../../utils/helpers';
 
 class TopMenu extends React.Component {
 
@@ -25,9 +26,7 @@ class TopMenu extends React.Component {
         return (
             <div className="navbar-wrap">
                 <div className="navbar-uniclix">
-                    <a href={backendUrl} className="brand">
-                        <img src="/images/uniclix.png" />
-                    </a>
+                    <span className="minimalist-logo">Uniclix.</span>
                     <ul className="top-menu">
                         <li>
                         <NavLink to="/scheduled" activeclassname="active" className="first-nav-item">
@@ -76,20 +75,28 @@ class TopMenu extends React.Component {
                     </div>
                 </div>
                 {!!profile.subscription ?
-                (!profile.subscription.activeSubscription ?
-                    <div className="top-alert">
-                        <span>
-                            You have {profile.role.trial_days} days remaining on your Twitter Booster trial.
-                        </span>
-                        Add your billing information now to start your subscription.
-                        <button
-                            className="btn-text-pink"
-                            onClick={() => props.history.push('/settings/manage-account')}>
-                                Start subscription
-                        </button>
-                    </div>
-                    : ""
-                ) : ""
+                (!profile.subscription.activeSubscription && isOwner(profile.accessLevel) ?
+                    (
+                        profile.remain_date > 0 ?
+                        <div className="top-alert">
+                            <span>
+                                You have {profile.remain_date} days remaining on your Uniclix trial.
+                            </span>
+                            Add your billing information now to start your subscription.
+                            <button
+                                className="btn-text-pink"
+                                onClick={() => props.history.push('/settings/billing')}>
+                                    Start subscription
+                            </button>
+                        </div>
+                        :
+                        ""
+                    )
+                    :
+                    ""
+                ) 
+                :
+                ""
             }
             </div>
         );

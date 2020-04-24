@@ -51,6 +51,7 @@
 .product-pages h1 {
     font-size: 54px;
     line-height: 68px;
+    text-align: center;
 }
 .product-pages h2 {
     font-size: 34px;
@@ -101,13 +102,12 @@
 #page-banner {
     padding-top: 110px;
     overflow: hidden;
-    background-image: url(../images/banner-bg.png);
-    background-repeat: no-repeat;
-    background-color: #458eeb;
+    
 }
 .billing-toggle {
     font-size: 16px;
     font-weight: 700;
+    color: #2D86DA;
 }
 .pricing-plans {
     display: flex;
@@ -116,29 +116,38 @@
 }
 .plan {
     flex: 1 1 auto;
-    margin: 5px;
+    margin: 10px;
 }
 .plan-name-container {
-    padding: 40px 0;
+    padding: 27px 0;
 }
 .plan-name {
     font-size: 20px;
     font-weight:700;
 }
 .plan-price-container {
-    padding: 20px 0;
-    border-top: 1px solid #ebebeb;
-    border-bottom: 1px solid #ebebeb;
+    padding: 40px 0;
 }
 .plan-price {
-    font-size:34px;
-    font-weight: 700;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 40px;
+    line-height: 32px;
+    text-align: center;
+    color: #2D86DA;
 }
 .billed-period {
-    font-size: 16px;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 32px;
+    text-align: center;
+    color: #3F3D56;
 }
 .plan-content-container {
-    padding: 40px 10px;
+    padding: 27px 35px;
 }
 .plan-items {
     padding: 8px 0;
@@ -147,27 +156,39 @@
 }
 .plan-button-container {
     padding: 0px 10px 50px 10px;
+    margin-top: -27px;
+    border-bottom: 1px solid #CCCCCC;
 }
 .plan-see-more {
-    font-size: 16px;
     padding-top: 20px;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 32px;
+    color: #363636;
 }
 .plan-see-more a {
-    color: #489FD7;
-    text-decoration: none;
+    color: darkgray;
 }
 .plan-shadow {
-    -webkit-box-shadow: 0px 0px 20px 1px rgba(235,235,235,1);
--moz-box-shadow: 0px 0px 20px 1px rgba(235,235,235,1);
-box-shadow: 0px 0px 20px 1px rgba(235,235,235,1);
+    background: #FFFFFF;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
 }
 .plan-price-btn {
-    background: #b358b3;
-    color: #fff;
+    margin-top: 34px;
+    width: 77%;
+    background: #2D86DA;
     border-radius: 30px;
-    font-size: 16px;
-    width: 100%;
+    font-family: Rubik;
+    font-style: normal;
     font-weight: 500;
+    font-size: 16px;
+    line-height: 23px;
+    text-align: center;
+    letter-spacing: 0.436364px;
+    color: #FFFFFF;
 }
 .color-theme-btn {
     background: #b358b3;
@@ -191,15 +212,32 @@ box-shadow: 0px 0px 20px 1px rgba(235,235,235,1);
 }
 .compare-plans-container {
     margin-top: 100px;
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 45px;
+    line-height: 53px;
+    text-align: center;
+    color: #363636;
 }
 .compare-plans-table th{
    padding: 15px;
    text-align: center;
+   border-bottom: 1px solid #D6D8E0;
+   border-left: 1px solid #D6D8E0;
 }
 .compare-plans-table tr td {
     padding: 20px 10px;
-    font-size: 20px;
-    font-weight: 700;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+    text-align: center;
+
+    color: #363636;
+
+    border-left: 1px solid #D6D8E0;
+    border-bottom: 1px solid #D6D8E0;
 }
 .grey-tr {
     background-color: #F1F2F4;
@@ -216,6 +254,7 @@ box-shadow: 0px 0px 20px 1px rgba(235,235,235,1);
     z-index: 1;
     margin-top: -5px;
     padding: 30px 0;
+    box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15);
     display:none;
 }
 #products:hover .projects-navbar{
@@ -223,23 +262,43 @@ box-shadow: 0px 0px 20px 1px rgba(235,235,235,1);
 }
 .projects-navbar-container {
     display: flex;
+    margin-left: 20%;
+    width: 80%;
 }
 .projects-menu-item {
-    padding-right: 15px;
+    padding-right: 20px;
     flex: 1 1 0;
 }
 .projects-menu-item h5 {
-    font-size: 20px;
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 25px;
+    line-height: 45px;
+    color: #363636;
 }
 .projects-menu-item p {
-    font-size: 16px;
-    font-family: "Quicksand";
-    color: #2B2B2B;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 32px;
+    color: #909090;
 }
 .projects-menu-item a {
     text-decoration: none;
-    color: #489FD7;
+    color: white;
     font-size: 16px;
+    background: #2D86DA;
+    padding: 7px 20px;
+    border-radius: 30px;
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 16px;
+    text-align: center;
+    letter-spacing: 0.436364px;
 }
 /*
  CSS for the main interaction
@@ -270,29 +329,35 @@ box-shadow: 0px 0px 20px 1px rgba(235,235,235,1);
   position: relative;
   display: inline-block;
   padding: 15px 60px;
-  border: 1px solid transparent;
-  border-bottom: 0;
-  margin-bottom: 0px;
   cursor: pointer;
   font-weight: 700;
   font-size: 20px;
-  background: #F0F0F0;
+  background: #FFFFFF;
+  border: 1px solid #D8D8D8;
+  box-sizing: border-box;
+  border-radius: 6px;
+  margin-left: 1%;
+  padding: 2% 4%;
+  margin-right: 1%;
 }
 
 .tabset > input:checked + label {
-  border-color: #F0F0F0;
-  border-bottom: 1px solid #fff;
-  margin-bottom: -1px;
-  background: #ffffff;
+    background: #EAF3FB;
+    border: 1px solid #2D86DA;
+    box-sizing: border-box;
+    border-radius: 6px;
+    padding: 2% 4%;
+    margin-right: 1%;
 }
 
 .tab-panel {
-  padding: 30px 0;
-  border-top: 1px solid #F0F0F0;
+  /* padding: 30px 0;
+  border-top: 1px solid #F0F0F0; */
 }
 
 .tabset {
   text-align: center;
+  margin-top: 7%;
 }
 
 .label {
@@ -332,7 +397,6 @@ box-shadow: 0px 0px 20px 1px rgba(235,235,235,1);
   left: 0;
   height: 100%;
   width: 200%;
-  background: #b358b3;
   transform: translate3d(-100%, 0, 0);
   transition: transform 0.05s linear 0.17s;
 }
@@ -344,7 +408,7 @@ box-shadow: 0px 0px 20px 1px rgba(235,235,235,1);
 .indicator {
   height: 100%;
   width: 200%;
-  background: white;
+  background: #2D86DA;
   border-radius: 13px;
   transform: translate3d(-75%, 0, 0);
   transition: transform 0.35s cubic-bezier(0.85, 0.05, 0.18, 1.35);
@@ -368,6 +432,32 @@ box-shadow: 0px 0px 20px 1px rgba(235,235,235,1);
     justify-content: flex-end;
 }
 
+.pricing-buttons.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 295px;
+    padding: 10px;
+}
+
+.pricing-buttons.row .arrow-container {
+    margin-right: 25px;
+}
+
+.twitter-booster-page .centered {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.twitter-booster-page #main-booster {
+    max-width: 85%;
+}
+
+.twitter-booster-page .intro-banner {
+    margin-left: 0;
+    margin-right: 0;
+}
+
 @media only screen and (max-width:990px){
     .p-first-section h1 {
         padding-top: 0px;
@@ -379,6 +469,9 @@ box-shadow: 0px 0px 20px 1px rgba(235,235,235,1);
 }
 
 @media only screen and (max-width: 737px)  {
+    .pricing-buttons.row {
+        justify-content: flex-start;
+    }
     .p-container {
         padding: 0 10px;
     }
@@ -459,7 +552,7 @@ box-shadow: 0px 0px 20px 1px rgba(235,235,235,1);
         height: 580px;
     }
     #page-banner {
-        display:none;
+        /* display:none; */
     }
     .content {
         margin-top:0;
@@ -477,6 +570,44 @@ box-shadow: 0px 0px 20px 1px rgba(235,235,235,1);
     }
 }
 
+.pricing-title {
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    padding: 0 21px;
+    text-align: center;
+    color: #909090;
+}
 
+.compare-plans-table-container {
+    background: #FFFFFF;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    margin-top: 6%;
+    margin-bottom: 8%;
+}
+.table-title {
+    padding-left: 20px !important;
+    text-align: left !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-size: 18px !important;
+    color: #363636 !important;
+    border-left: none !important;
+    width: 30%;
+}
 
+.table-title-bottom {
+    border-bottom: none !important;
+}
 
+.booster-sub-title {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 32px;
+    text-align: center;
+    color: #3F3D56;
+}

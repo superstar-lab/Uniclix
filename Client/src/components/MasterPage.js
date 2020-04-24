@@ -1,20 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import VerticalMenu from './Menus/VerticalMenu';
-import getMenuItems from '../config/menuItems';
+import { getMenuItems, membersMenuItems } from '../config/menuItems';
+import { isOwnerOrAdmin } from '../utils/helpers';
 import ManageRouter from '../routes/ManageRouter';
 import channelSelector from '../selectors/channels';
 import { setTwitterChannel } from '../actions/channels';
-import SocialAccountsPrompt from './SocialAccountsPrompt';
+import Loader from './Loader';
+import { filterFacebookProfiles } from '../utils/helpers';
 
-const MasterPage = ({channels, selectedChannel, selectChannel}) => { 
+const MasterPage = ({channels, selectedChannel, selectChannel, accessLevel}) => {
     const hasChannel = typeof(selectedChannel.username) !== 'undefined'; 
     return (
       <div className="body-wrap">
           {!!hasChannel ? 
             <div>
-              <VerticalMenu 
-                menuItems={getMenuItems(selectedChannel.type)} 
+              <VerticalMenu
+                menuItems={
+                  isOwnerOrAdmin(accessLevel) ?
+                    getMenuItems(selectedChannel.type) :
+                    membersMenuItems
+                }
                 channels={channels} 
                 selectedChannel={selectedChannel}
                 selectChannel={selectChannel}
@@ -25,15 +31,7 @@ const MasterPage = ({channels, selectedChannel, selectChannel}) => {
                 </div>
               </div>
             </div> :
-            <div className="mt100">
-              <SocialAccountsPrompt 
-                image = "/images/connect_twitter_accounts.svg"
-                title = "Prove the impact of your social media initiatives"
-                description = "Track your social growth, and get meaningful stats"
-                buttonTitle = "Connect your Twitter Account"
-                buttonLink = "/accounts/twitter"
-              />
-            </div>
+            <Loader fullscreen />
           }
 
       </div>  
@@ -44,12 +42,13 @@ const mapStateToProps = (state) => {
   const unselectedGlobalChannels = { selected: 0, provider: undefined };
   const selectedGlobalChannel = { selected: 1, provider: undefined };
 
-  const channels = channelSelector(state.channels.list, unselectedGlobalChannels);
+  const channels = filterFacebookProfiles(channelSelector(state.channels.list, unselectedGlobalChannels));
   const selectedChannel = channelSelector(state.channels.list, selectedGlobalChannel);
 
   return {
     channels,
-    selectedChannel: selectedChannel.length ? selectedChannel[0] : {}
+    selectedChannel: selectedChannel.length ? selectedChannel[0] : {},
+    accessLevel: state.profile.accessLevel
   };
 };
 

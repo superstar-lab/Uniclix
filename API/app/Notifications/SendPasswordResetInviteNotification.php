@@ -64,7 +64,7 @@ class SendPasswordResetInviteNotification extends Notification
 
         return (new MailMessage)
             ->subject('You have been added to a Uniclix Team')
-            ->line('You are receiving this email because '.$this->user->name.' invited you to their team.')
+            ->line('You are receiving this email because '.$this->user->name.' invited you to their team on Uniclix.')
             ->action('Create Password', url(config('app.url').route('password.reset', $this->token, false)))
             ->line(Lang::getFromJson('This password reset link will expire in :count minutes.', ['count' => config('auth.passwords.users.expire')]))
             ->line('If you already have a password, no further action is required.');

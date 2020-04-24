@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
@@ -24,11 +24,11 @@ class ProfileController extends Controller
         });
     }
 
-
     public function profile()
     {
         $topics = $this->user->topics;
         $locations = $this->user->locations;
+        $user_id = $this->user->id;
         $role = $this->user->role()->with("permissions")->first();
         $roleAddons = $this->user->roleAddons()->with("permissions")->get();
         $currentPLan = $this->user->role_id;
@@ -38,19 +38,30 @@ class ProfileController extends Controller
         $addonTrial = $this->user->roleAddons()->where("trial_ends_at", ">", Carbon::now())->whereNotNull("trial_ends_at")->exists();
         $activeAddon = $this->user->subscribed('addon') || $addonTrial;
         $addonOnGracePeriod = $this->user->subscribed('addon') ? $this->user->subscription('addon')->onGracePeriod() : false;
+        $trial_ends_at = strtotime($this->user->getRemainDate($user_id));
+        $current_date = Carbon::now()->timestamp;
+        // We need to send this in here too to get it saved in the localStorage
+        $accessLevel = $this->user->getAccessLevel();
 
+        if($trial_ends_at >= $current_date){
+            $remain_date = intval(($trial_ends_at - $current_date) / 86400) + 1;
+        } else {
+            $remain_date = 0;
+        }
+        
+        
         $subscription = [
             "currentPlan" => $currentPLan,
             "activeSubscription" => $activeSubscription,
             "onGracePeriod" => $onGracePeriod,
-            "annual" => $activeSubscription ? strrpos($this->user->subscription("main")->stripe_plan, "annual") !== false : false
+            "annual" => $activeSubscription ? strrpos($this->user->subscription("main")->stripe_plan, "annual") !== false : false,
         ];
 
         $addon = [
             "addon" => $addon,
             "activeAddon" => $activeAddon,
             "addonOnGracePeriod" => $addonOnGracePeriod,
-            "addonTrial" => $addonTrial
+            "addonTrial" => $addonTrial,
         ];
 
         return response()->json([
@@ -58,25 +69,27 @@ class ProfileController extends Controller
             "topics" => $topics,
             "locations" => $locations,
             "role" => $role,
+            "accessLevel" => $accessLevel,
             "roleAddons" => $roleAddons,
             "subscription" => $subscription,
-            "addon" => $addon
+            "addon" => $addon,
+            "remain_date" => $remain_date
         ]);
     }
 
     public function update(Request $request)
     {
-        try{
+        try {
             $user = $this->user;
             $data = $request->input('data');
 
-            foreach($data as $key => $value){
+            foreach ($data as $key => $value) {
 
-                if($key == "topics" || $key == "locations"){
+                if ($key == "topics" || $key == "locations") {
                     continue;
                 }
 
-                if($key == "reason"){
+                if ($key == "reason") {
                     $key = "usage_reason";
                 }
 
@@ -85,18 +98,18 @@ class ProfileController extends Controller
 
             $user->save();
 
-            if(array_key_exists("organization_name", $data)){
+            if (array_key_exists("organization_name", $data)) {
                 $user->teams()->updateOrCreate(
                     ['user_id' => $user->id],
                     ['name' => $data["organization_name"]]
                 );
             }
 
-            if(array_key_exists("topics", $data)){
+            if (array_key_exists("topics", $data)) {
                 $user->topics()->delete();
-                collect($data["topics"])->map(function($topic) use ($user){
+                collect($data["topics"])->map(function ($topic) use ($user) {
                     $user->topics()->create([
-                        'topic' => $topic
+                        'topic' => $topic,
                     ]);
                 });
 
@@ -104,28 +117,44 @@ class ProfileController extends Controller
                 multiRequest(route('articles.sync'), $topics);
             }
 
-
-            if(array_key_exists("locations", $data)){
+            if (array_key_exists("locations", $data)) {
                 $user->locations()->delete();
-                collect($data["locations"])->map(function($location) use ($user){
+                collect($data["locations"])->map(function ($location) use ($user) {
 
                     $location = [
                         'label' => $location['label'],
-                        'location' => $location['location']
+                        'location' => $location['location'],
                     ];
 
                     $user->locations()->create([
-                        'location' => json_encode($location)
+                        'location' => json_encode($location),
                     ]);
                 });
             }
 
-
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
 
             return getErrorResponse($e, $this->selectedChannel);
         }
 
         return response()->json(['message' => 'Profile updated successfully.']);
+    }
+
+    public function updateTimeZone(Request $request)
+    {
+        try {
+            $user = $this->user;
+            $data = $request->input('timezone');
+
+            $user->timezone = $data;
+
+            $user->save();
+
+        } catch (\Exception $e) {
+
+            return getErrorResponse($e, $this->selectedChannel);
+        }
+
+        return response()->json(['message' => 'Timezone updated successfully.']);
     }
 }

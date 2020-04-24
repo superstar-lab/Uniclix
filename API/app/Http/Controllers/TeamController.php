@@ -73,19 +73,20 @@ class TeamController extends Controller
 
         $name = $request->input('name');
         $email = $request->input('email');
-        $admin = $request->input('admin');
+        $admin = $request->input('isAdmin');
         $teamId = $request->input('teamId');
         $assignedChannels = $request->input('assignedChannels');
 
         if(!$teamId || $teamId == 'false'){
             $team = $user->teams()->first();
-
+            
             if(!$team){
                 $team = $user->teams()->create([
                     "name" => $user->organization_name ? $user->organization_name : "My Organization" 
                 ]);
             }
         }else{
+            
             $team = Team::find($teamId);
 
             if(!$team) return response()->json(["error" => "Team not found."], 404);
@@ -103,9 +104,15 @@ class TeamController extends Controller
             $member = User::create([
                 "email" => $email,
                 "name" => $name,
-                "role_id" => 1
+                "role_id" => 1,
+                "timezone" => $user->timezone
             ]);
 
+            $user_register = User::where('email', $email)->first();
+            $created_at = strtotime($user_register['created_at']);
+            $trial_ends_at = date("Y-m-d h:i:s", $created_at + 14 * 86400);
+            User::where('email', $email)->update(['trial_ends_at' => $trial_ends_at]);
+            
         }else{
             $member->name = $name;
             $member->email = $email;
@@ -114,14 +121,18 @@ class TeamController extends Controller
 
         if($teamMember = $team->members()->where("member_id", $member->id)
         ->orWhere("owner_id", $member->id)->first()){
+            
             $teamMember->is_admin = $admin ? 1 : 0;
             $teamMember->save();
         }else{
+            
             $teamMember = $team->members()->create([
                 "member_id" => $member->id,
                 "owner_id" => $user->id,
-                "is_admin" => $admin ? 1 : 0
+                "is_admin" => $admin ? 1 : 0,
+                "is_pending" => 1,
             ]);
+            
 
             $token = Password::getRepository()->create($member);
             $member->notify(new SendPasswordResetInviteNotification($token, $user));
@@ -164,5 +175,26 @@ class TeamController extends Controller
         $team->channels()->where("member_id", $memberId)->delete();
 
         return response()->json(["message" => "Member removed successfuly."]);
+    }
+
+    public function getMembersByPending(Request $request) {
+        $user = $this->user;
+        $teamId = $request->input("teamId");
+
+        if(!$teamId || $teamId == 'false') return [];
+        $team = Team::find($teamId);
+        $members = $team
+            ->members()
+            ->where([['team_id', '=', $teamId],['is_pending', '=', 1]])
+            ->with("details")
+            ->orderBy("created_at", "DESC")
+            ->get();
+
+        return collect($members)->map(function($member){
+            $member->assignedChannels = $member->formattedChannels(true);
+            return $member;
+        });
+
+        return $members;
     }
 }

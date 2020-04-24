@@ -94,25 +94,25 @@ class SelectChannelsModal extends React.Component{
                         <ul>
                             {!!twitterChannels.length &&
                                 <li onClick={this.toggleTwitterSelect} className={this.state.twitterSelect && 'selected'}>
-                                 <i className="fa fa-twitter twitter_color"> </i> <p>Twitter</p>
+                                 <i className="fab fa-twitter twitter_color"> </i> <p>Twitter</p>
                                 </li>
                             }
 
                             {!!facebookChannels.length &&
                                 <li onClick={this.toggleFacebookSelect} className={this.state.facebookSelect && 'selected'}>
-                                <i className="fa fa-facebook facebook_color"> </i> Facebook
+                                <i className="fab fa-facebook facebook_color"> </i> Facebook
                                 </li>
                             }
 
                             {!!linkedinChannels.length &&
                                 <li onClick={this.toggleLinkedinSelect} className={this.state.linkedinSelect && 'selected'}>
-                                <i className="fa fa-linkedin linkedin_color"> </i> Linkedin
+                                <i className="fab fa-linkedin linkedin_color"> </i> Linkedin
                                 </li>
                             }
 
                             {!!pinterestChannels.length &&
                                 <li onClick={this.togglePinterestSelect} className={this.state.pinterestSelect && 'selected'}>
-                                <i className="fa fa-pinterest pinterest_color"> </i> Pinterest
+                                <i className="fab fa-pinterest pinterest_color"> </i> Pinterest
                                 </li>
                             }
                             

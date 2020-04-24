@@ -50,13 +50,13 @@ const TwitterDefaultFeed = ({feedItem, setImages, channel, updateItem, reload, s
             return {src: file.media_url_https, type: file.type, source}
         });
 
-        const postData = {profileImg, username, text, date, media, setImages, statusId, sharedStatus, networkType, channel, accountId};
+        const postData = {profileImg, username, text, date, media, setImages, statusId, sharedStatus, networkType, channel, accountId, feedItem, updateItem};
 
         return (
             <StreamPost {...postData} reload={reload} selectedTab={selectedTab} >
                 <TwitterActions 
                     updateItem={updateItem} 
-                    channel={channel} 
+                    channel={channel}
                     feedItem={feedItem}
                     type="twitterDefault"
                     postData={postData}
@@ -84,16 +84,16 @@ const TwitterFollowersFeed = ({feedItem, setImages, channel, updateItem, reload,
             return {src: file.media_url_https, type: file.type, source}
         });
 
-        const postData = {profileImg, username, text, date, media, setImages, statusId, networkType, channel, accountId};
+        const postData = {profileImg, username, text, date, media, setImages, statusId, networkType, channel, accountId, updateItem};
 
         return(
             <div>
             {typeof feedItem.status != "undefined" && 
-                <StreamPost {...postData} reload={reload} selectedTab={selectedTab} >
+                <StreamPost {...postData} reload={reload} selectedTab={selectedTab} feedItem={feedItem.status} >
                     <TwitterActions 
                         updateItem={updateItem} 
                         channel={channel} 
-                        feedItem={feedItem.status}
+                        feedItem={feedItem}
                         type="twitterFollowers"
                         postData={postData}
                         />
@@ -178,10 +178,10 @@ const FacebookPostsFeed = ({feedItem, setImages, channel, updateItem, reload, se
         attachmentData.media = media;
 
         const statusId = feedItem.id;
-        const postData = {profileImg, username, text, attachmentData, date, media, setImages, statusId, networkType, channel, accountId};
+        const postData = {profileImg, username, text, attachmentData, date, media, setImages, statusId, networkType, channel, accountId, feedItem, updateItem};
 
         return (
-            <StreamPost {...postData} reload={reload} selectedTab={selectedTab} >
+            <StreamPost {...postData} reload={reload} type="facebook" selectedTab={selectedTab} >
                 <div>
                     <FacebookActions 
                         updateItem={updateItem} 

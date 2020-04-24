@@ -8,6 +8,8 @@ use Laravel\Socialite\Facades\Socialite;
 use Carbon\Carbon;
 use App\Models\Facebook\Channel;
 use App\Models\Channel as GlobalChannel;
+use App\Exceptions\FacebookException as FacebookException;
+use GuzzleHttp\Exception\ClientException as ClientException;
 
 class ChannelController extends Controller
 {
@@ -15,11 +17,20 @@ class ChannelController extends Controller
     public function add(Request $request){
         
         $user = auth()->user();
-        if($user->channels()->count() >= $user->getLimit("account_limit")) return response()->json(["error" => "You have exceeded the account limit for this plan."], 403);
+        // if($user->countChannels() >= $user->getLimit("account_limit")) return response()->json(["error" => "You have exceeded the account limit for this plan."], 403);
 
         $accessToken = $request->input("access_token");
         $accessToken = exchangeFBToken($accessToken)->getValue();
-        $credentials = Socialite::driver("facebook")->userFromToken($accessToken);
+
+        $credentials = null;
+        try {
+            $credentials = Socialite::driver("facebook")->userFromToken($accessToken);
+        } catch (ClientException $e) {
+            $error = json_decode($e->getResponse()->getBody()->getContents())->error;
+            $code = $error->code;
+            $message = $error->message;
+            throw new FacebookException($message, $code);
+        }
 
         if(is_object($credentials) && !isset($credentials->error)){
 
@@ -63,34 +74,43 @@ class ChannelController extends Controller
 
 
     public function getAccounts(){
-        $user = auth()->user();
-        $channel = $user->selectedFacebookChannel();
-        $response = collect($channel->getPages());
+        try {
+            $user = auth()->user();
+            $channel = $user->selectedFacebookChannel();
+            $response = collect($channel->getPages());
 
-        $pages = [];
-        if(isset($response["data"])){
-            $pages = collect($response["data"])->map(function($page){
-                $page["token"] = @$page["access_token"];
-                $page["avatar"] = @$page["picture"]["data"]["url"];
+            $pages = [];
+            if(isset($response["data"])){
+                $pages = collect($response["data"])->map(function($page){
+                    $page["token"] = @$page["access_token"];
+                    $page["avatar"] = @$page["picture"]["data"]["url"];
+                    $page["type"] = "page";
 
-                return $page;
-            });
+                    return $page;
+                });
+            }
+
+            $response = collect($channel->getGroups());
+            $groups = [];
+            if(isset($response["data"])){
+                $groups = collect($response["data"])->map(function($group) use ($channel){
+                    $group["token"] = @$channel->access_token;
+                    $group["avatar"] = @$group["picture"]["data"]["url"];
+                    $group["type"] = "group";
+
+                    return $group;
+                });
+            }
+
+            $results = collect($pages)->merge(collect($groups));
+
+            return $results;
+        } catch (ClientException $e) {
+            $error = json_decode($e->getResponse()->getBody()->getContents())->error;
+            $code = $error->code;
+            $message = $error->message;
+            throw new FacebookException($message, $code);
         }
-
-        $response = collect($channel->getGroups());
-        $groups = [];
-        if(isset($response["data"])){
-            $groups = collect($response["data"])->map(function($group) use ($channel){
-                $group["token"] = @$channel->access_token;
-                $group["avatar"] = @$group["picture"]["data"]["url"];
-
-                return $group;
-            });
-        }
-
-        $results = collect($pages)->merge(collect($groups));
-
-        return $results;
     }
 
     public function saveAccounts(Request $request){
@@ -102,7 +122,9 @@ class ChannelController extends Controller
     
             if(!$accounts) return;
             
-            if($user->channels()->count() + count($accounts) > $user->getLimit("account_limit")) return response()->json(["error" => "You have exceeded the account limit for this plan."], 403);
+            if($user->countChannels() + count($accounts) > $user->getLimit("account_limit")) {
+                return response()->json(["message" => "limit of accounts exceded"], 432);
+            }
             
             $accountData = [];
             foreach($accounts as $account){
@@ -120,7 +142,7 @@ class ChannelController extends Controller
                         "access_token" => $account["token"],
                         "parent_id" => $channel->id,
                         "payload" => serialize((object) $account),
-                        "account_type" => $account["token"] == "group" ? "group" : "page"
+                        "account_type" => $account["type"]
                     ]);
 
                     $newChannel->select();

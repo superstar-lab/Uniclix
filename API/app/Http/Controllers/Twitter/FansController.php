@@ -15,8 +15,8 @@ class FansController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->user = auth()->user();
-
-            if(!$this->user->hasPermission("manage-fans")) return response()->json(["error" => "You need to upgrade to unlock this feature."], 403);
+            $user_id = $this->user->id;
+            if(!$this->user->hasPermission("manage-fans", $user_id)) return response()->json(["error" => "You need to upgrade to unlock this feature."], 403);
             $this->selectedChannel = $this->user->selectedTwitterChannel();
             return $next($request);
         });

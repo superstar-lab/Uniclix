@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { setMiddleware } from '../actions/middleware';
 import TwitterLogin from 'react-twitter-auth';
+import Modal from './Modal';
 import SelectAccountsModal from './Accounts/SelectAccountsModal';
 import { startSetChannels, startAddFacebookChannel, startAddLinkedinChannel, startAddPinterestChannel, startAddTwitterChannel } from "../actions/channels";
 import { startSetProfile } from "../actions/profile";
@@ -16,12 +17,11 @@ import channelSelector, { findAccounts } from "../selectors/channels";
 import { fbFields, fbScope } from "./FacebookButton";
 import { destroyChannel } from "../requests/channels";
 import Loader, { LoaderWithOverlay } from './Loader';
-import { getParameterByName } from "../utils/helpers";
+import { getParameterByName, getCookie } from "../utils/helpers";
+import { PRICING_COOKIE_KEY } from '../utils/constants';
 import Checkout from "./Settings/Sections/Checkout";
 import ChannelItems from "./Accounts/ChannelItems";
 import {getPages, savePages} from "../requests/linkedin/channels";
-
-
 
 class Middleware extends React.Component {
     state = {
@@ -63,12 +63,16 @@ class Middleware extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.profile.subscription !== this.props.profile.subscription || prevProps.profile.addon !== this.props.profile.addon) {
+        if (
+            prevProps.profile.subscription !== this.props.profile.subscription ||
+            prevProps.profile.addon !== this.props.profile.addon
+        ) {
             if ((this.state.plan || this.state.addon) && !this.props.profile.subscription.activeSubscription && !this.props.profile.addon.activeAddon && !this.state.addonTrial) {
                 this.props.setMiddleware("billing");
                 return;
             } else {
-                if (this.props.channels.length < 1) {
+                // We don't want to show the modal when the app is still fetching the channels
+                if (this.props.channels.length < 1 && !this.props.channelsLoading) {
                     this.props.setMiddleware("channels");
                     return;
                 }
@@ -138,6 +142,13 @@ class Middleware extends React.Component {
         this.props.startSetProfile().then(() => {
             this.setState(() => ({ loading: false }));
             this.props.setMiddleware(false);
+
+            // If the cookie is present, we want to redirect the
+            // user to the billing page as soon as he add his accounts
+            const pricingCookie = getCookie(PRICING_COOKIE_KEY);
+            if (pricingCookie) {
+                this.props.history.push('/settings/billing');
+            }
         });
     };
 
@@ -151,10 +162,18 @@ class Middleware extends React.Component {
                         this.setState(() => ({ loading: false, addAccounts: "twitter" }));
                     }).catch(error => {
                         this.setState(() => ({ loading: false }));
-                        if (error.response.status === 403) {
-                            this.setForbidden(true);
+                        if (error.response.status === 409) {
+                            Modal({
+                                type: 'error',
+                                title: 'Error',
+                                content: 'This account is currently being used by other Uniclix users, please contact our helpdesk support for additional details'
+                            });
                         } else {
-                            this.setError("Something went wrong!");
+                            Modal({
+                                type: 'error',
+                                title: 'Error',
+                                content: 'Something went wrong!'
+                            });
                         }
                     });
             });
@@ -166,7 +185,6 @@ class Middleware extends React.Component {
         try {
             this.setState(() => ({ loading: true }));
             if (response) {
-                this.setState(() => ({ loading: false }));
                 this.props.startAddFacebookChannel(response.accessToken)
                     .then(() => {
                         this.setState(() => ({ loading: true }));
@@ -189,10 +207,17 @@ class Middleware extends React.Component {
                         }
 
                         if (error.response.status === 409) {
-                            this.setError("This facebook account is already registered from another uniclix account.");
-                        }
-                        else {
-                            this.setError("Something went wrong!");
+                            Modal({
+                                type: 'error',
+                                title: 'Error',
+                                content: 'This account is currently being used by other Uniclix users, please contact our helpdesk support for additional details'
+                            });
+                        } else {
+                            Modal({
+                                type: 'error',
+                                title: 'Error',
+                                content: 'Something went wrong!'
+                            });
                         }
                     });
             }
@@ -254,22 +279,31 @@ class Middleware extends React.Component {
         try {
             this.setState(() => ({ loading: true }));
             this.props.startAddLinkedinChannel(response.accessToken).then(() => {
-                this.setState(() => ({ loading: false, addAccounts: "linkedin" }));
+                this.setState(() => ({ addAccounts: "linkedin" }));
                 getPages().then((response) =>{
                     if(response.length){
                         this.setState(() => ({
                             bussinesPages: response,
                             bussinesModal: true,
-                            addAccounts: "linkedin"
+                            addAccounts: "linkedin",
+                            loading: false
                         }));
                     }
                 });
             }).catch(error => {
                 this.setState(() => ({ loading: false }));
-                if (error.response.status === 403) {
-                    this.setForbidden(true);
+                if (error.response.status === 409) {
+                    Modal({
+                        type: 'error',
+                        title: 'Error',
+                        content: 'This account is currently being used by other Uniclix users, please contact our helpdesk support for additional details'
+                    });
                 } else {
-                    this.setError("Something went wrong!");
+                    Modal({
+                        type: 'error',
+                        title: 'Error',
+                        content: 'Something went wrong!'
+                    });
                 }
             });
         } catch (e) {
@@ -389,9 +423,21 @@ class Middleware extends React.Component {
         this.setState({addAccounts: ""})
     }
 
+    getAccountsForModal = () => {
+        const { channels } = this.props;
+        const { bussinesPages } = this.state;
+
+        // first we get the facebook channels that are already registered
+        const facebookChannels = channels.filter(channel => channel.type === 'facebook');
+        const filteredAccounts = bussinesPages
+            .filter(page => facebookChannels.findIndex(fb => fb.details.original_id === page.id) === -1);
+
+        return filteredAccounts;
+    };
+
     render() {
         const { middleware, channels } = this.props;
-        const { loading, allPlans, addon, addonTrial, addAccounts, bussinesModal, bussinesPages } = this.state;
+        const { loading, allPlans, addon, addonTrial, addAccounts, bussinesModal } = this.state;
         let planParam = getParameterByName("plan", this.props.location.search);
         let planData = allPlans.filter(plan => plan["Name"].toLowerCase() === planParam);
         planData = planData.length > 0 ? planData[0] : false;
@@ -405,18 +451,20 @@ class Middleware extends React.Component {
         let countLinkedLinkedinAcc = channels.length  > 0 ? channels.filter(item => item.type == 'linkedin').length : 0
         return (
             <div className="login-container">
-                <div className="logo">
-                    <img src="/images/uniclix.png" />
-                </div>
-                
-                {this.state.loading && <LoaderWithOverlay />}
+                { middleware && middleware !== 'loading' && (
+                    <div className="logo">
+                        <span className="minimalist-logo">Uniclix.</span>
+                    </div>)
+                }
+
                 <div className="col-md-7 col-xs-12 text-center">
                     <div className="col-xs-12 text-center">
                         <SelectAccountsModal 
-                            isOpen={bussinesModal} 
-                            accounts={bussinesPages}
+                            isOpen={bussinesModal}
+                            accounts={this.getAccountsForModal()}
                             onSave={this.onBussinesPagesSave}
                             error={this.state.error}
+                            closeModal={this.togglebussinesModal}
                         />
                         {middleware !== "channels" && middleware !== "billing" && <Loader />}
                         {loading && <LoaderWithOverlay />}
@@ -444,6 +492,7 @@ class Middleware extends React.Component {
                                 </div>
                                 :
                                 <div>
+                                    {loading && <LoaderWithOverlay />}
                                     <div className="header-title">
                                         {middleware !== "loading" && <h2>Connect your accounts</h2>}
                                         <h5>Click one of the buttons below to get started:</h5>
@@ -588,8 +637,7 @@ class Middleware extends React.Component {
 
                 }
                 </div>
-                <div className="col-md-5 middleware-side">
-                </div>
+                { middleware && middleware !== 'loading' && <div className="col-md-5 middleware-side"></div> }
             </div>
         );
     }
@@ -604,7 +652,8 @@ const mapStateToProps = (state) => {
         middleware: state.middleware.step,
         channels: state.channels.list,
         profile: state.profile,
-        selectedChannel
+        selectedChannel,
+        channelsLoading: state.channels.loading
     }
 };
 

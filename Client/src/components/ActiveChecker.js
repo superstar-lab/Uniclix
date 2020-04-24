@@ -201,7 +201,7 @@ class ActiveChecker extends React.Component{
             <div className="active-checker">
                 {this.props.channels.length > 0 && 
                 <Modal
-                isOpen={!!this.state.active == false && !this.state.loading && !this.state.channelsLoading}
+                isOpen={!!this.state.active == false && !this.state.loading && !this.props.channelsLoading}
                 ariaHideApp={false}
                 >       
 

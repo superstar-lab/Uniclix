@@ -15,10 +15,12 @@ use Illuminate\Http\Request;
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/profile', 'ProfileController@update');
+    Route::post('/update-timezone', 'ProfileController@updateTimeZone');
     Route::get('/profile', 'ProfileController@profile');
 
     Route::get('/team', 'TeamController@getTeams');
     Route::get('/team/members', 'TeamController@getMembers');
+    Route::get('/team/members/pending/', 'TeamController@getMembersByPending');
     Route::post('/team/members/update', 'TeamController@addOrUpdate');
     Route::post('/team/members/remove', 'TeamController@remove');
 
@@ -30,6 +32,9 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/billing/subscription/create', 'BillingController@createSubscription');
     Route::post('/billing/subscription/cancel', 'BillingController@cancelSubscription');
     Route::post('/billing/subscription/resume', 'BillingController@resumeSubscription');
+    Route::post('/billing/subscription/delete', 'BillingController@deleteSubscription');
+    Route::post('/billing/subscription/add', 'BillingController@addSubscription');
+    Route::post('/billing/subscription/update', 'BillingController@updateSubscription');
 
     Route::get('/channels', 'ChannelController@channels');
     Route::patch('/channels/select/{id}', 'ChannelController@select');
@@ -154,6 +159,9 @@ Route::prefix("linkedin")->group(function () {
         Route::get('channels/pages', 'Linkedin\ChannelController@getPages');
         Route::post('channels/pages/save', 'Linkedin\ChannelController@savePages');
         Route::get('insights/page/{type}', 'Linkedin\AnalyticsController@pageInsightsByType');
+        
+        Route::post('streams/scheduled', 'Linkedin\StreamsFeedController@scheduled');
+        Route::post('streams/{type}', 'Linkedin\StreamsFeedController@index');
     });
 });
 

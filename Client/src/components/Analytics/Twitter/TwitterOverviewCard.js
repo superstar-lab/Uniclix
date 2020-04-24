@@ -9,6 +9,7 @@ class TwitterOverviewCard extends React.Component {
         title: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired,
         icon: PropTypes.string.isRequired,
+        setForbidden: PropTypes.func.isRequired
     };
 
     state = {

@@ -42,10 +42,12 @@
 @import "./modal";
 @import "./layout";
 @import "./tab";
+@import "./monitor";
 
 /*Nav top bar ============*/
 .navbar-wrap {
     .navbar-uniclix {
+        position: fixed;
         z-index: 999;
         top: 0;
         width: 100%;
@@ -193,7 +195,7 @@
                 }
             }
 
-            &.open {
+            &:hover {
                 background: $primary_blue;
 
                 .current-profile {
@@ -220,6 +222,8 @@
     background: #E0E2E9;
     width: 100%;
     z-index: 1000;
+    position: absolute;
+    top: 55px;
 
     span {
         font-weight: bold;
@@ -239,13 +243,14 @@
 
     &.new-accounts {
         color: $primary_blue;
+        font-size: 17px;
     }
 
     .col-price {
         display: table-cell;
 
         &:last-child {
-            text-align: right;
+            
             vertical-align: bottom;
         }
 
@@ -644,186 +649,6 @@
 //     height: 25px;
 // }
 
-// Events calendar
-.rbc-month-row {
-    overflow: visible;
-}
-
-.rbc-day-slot .rbc-event {
-    border: 0;
-    border-left: 10px solid;
-}
-
-.rbc-time-view {
-    .rbc-timeslot-group {
-        min-height: 65px;
-    }
-}
-
-.rbc-event {
-    border-left: 8px solid;
-    background-color: #fff;
-    position: relative;
-
-    .card-event-calendar {
-        span {
-            font-size: 16px;
-            color: $primary_black;
-            line-height: 24px;
-            white-space: nowrap;
-        }
-
-        h2 {
-            font-size: 12px;
-            white-space: normal;
-            margin: 1% 0;
-            color: $primary_black;
-        }
-    }
-
-    .open-event {
-        color: $primary_black;
-        flex-direction: column;
-        position: absolute;
-        top: 0;
-        left: 0;
-        background: #fff;
-        width: 0;
-        min-height: 0;
-        padding: 10px;
-        opacity: 0;
-        transition: linear 0.1s;
-        display: flex;
-    }
-
-    &.rbc-selected {
-        background-color: #fff;
-        overflow: visible;
-        z-index: 999;
-        min-width: 210px;
-
-        .open-event {
-            min-width: 210px;
-            width: 365px;
-            max-width: 365px;
-            min-height: 100%;
-            padding: 10px;
-            opacity: 1;
-        }
-
-        .event-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-
-            label {
-                padding: 5px;
-                background-color: #0073B1;
-                border-radius: 4px;
-                color: #fff;
-                font-family: Rubik;
-                font-style: normal;
-                font-weight: 500;
-                font-size: 14px;
-                line-height: 16px;
-            }
-
-            .event-action {
-                display: flex;
-                flex-wrap: nowrap;
-
-                a {
-                    margin: 0 3px;
-                }
-            }
-        }
-
-        span {
-            font-family: Rubik;
-            font-style: normal;
-            font-weight: normal;
-            font-size: 18px;
-            line-height: 24px;
-            letter-spacing: 0.137298px;
-            color: #363636;
-        }
-
-        p {
-            font-family: Rubik;
-            font-style: normal;
-            font-weight: 300;
-            font-size: 14px;
-            line-height: 20px;
-            letter-spacing: 0.130517px;
-            color: #363636;
-            padding: 15px;
-        }
-    }
-
-    .rbc-event-label {
-        display: none;
-    }
-}
-
-.calendar-events-head {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 0;
-
-    .calendar-navigation {
-        display: flex;
-        align-items: center;
-
-        button {
-            border: 0;
-            outline: 0;
-            color: #2D86DA;
-            font-size: 20px;
-            background: transparent;
-
-            &:hover {
-                background-color: rgba(0, 0, 0, 0.1);
-            }
-        }
-
-        span {
-            color: #000000;
-            font-size: 14px;
-            margin: 0 15px;
-            font-weight: 500;
-        }
-    }
-
-    .calendar-view {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-
-        label {
-            padding-right: 10px;
-            white-space: nowrap;
-        }
-
-        select {
-            width: auto;
-        }
-    }
-}
-
-.rbc-time-content {
-    overflow: visible;
-}
-
-.rbc-time-view,
-.rbc-month-view {
-    border: 0;
-    border-top: 1px solid #DDD;
-}
-
-.rbc-toolbar {
-    display: none !important;
-}
-
 .modal-dialog {
     .modal-content {
         padding: 15px;
@@ -889,16 +714,6 @@
                     }
                 }
             }
-
-            .add-new-channel {
-                background: #2D86DA;
-                border: none;
-
-                i {
-                    color: #fff;
-                    font-size: 12px;
-                }
-            }
         }
 
         .draft_editor_container {
@@ -911,9 +726,10 @@
 
 .time-zone {
     div {
-        margin-top: -50px;
+        margin-top: -55px;
         display: flex;
         align-items: center;
+        max-width: 287px;
 
         label {
             float: left;
@@ -930,6 +746,16 @@
         display: flex;
     }
 }
-.small-input{
-    max-width: 132px;
+
+.minimalist-logo {
+    margin-top: 20px;
+    margin-left: 65px;
+    font-family: sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 35px;
+    line-height: 30px;
+    letter-spacing: 0.27968px;
+    color: #363636;
+    float: left;
 }

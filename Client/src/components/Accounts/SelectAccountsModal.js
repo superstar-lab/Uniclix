@@ -20,7 +20,7 @@ class SelectAccountsModal extends React.Component{
     };
 
     render(){
-        const {isOpen, accounts, onSave, error} = this.props;
+        const {isOpen, accounts, onSave, error, closeModal} = this.props;
         return (
             <Modal
             isOpen={isOpen}
@@ -32,10 +32,19 @@ class SelectAccountsModal extends React.Component{
                     Select Accounts
                 </div>
 
+                <div className="close-icon" onClick={closeModal}>
+                    <img src="/images/monitor-icons/close.svg" />
+                </div>
+
                 <div className="center-inline p10 m10-top">
                     <div className="form-group center-inline account-items-wrapper top-border">
                         {accounts.map(account => (
-                            <AccountItem key={account.id} account={account} removeAccount = {this.removeAccount} addAccount={this.addAccount} />
+                            <AccountItem
+                                key={account.id}
+                                account={account}
+                                removeAccount={this.removeAccount}
+                                addAccount={this.addAccount}
+                            />
                         ))}
                     </div>
                 </div>

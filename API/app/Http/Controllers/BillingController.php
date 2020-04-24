@@ -69,6 +69,7 @@ class BillingController extends Controller
         $trialDays = $token['trialDays'];
         $subType = $token['subType'];
         $id = $token['id'];
+        $couponCode = $token['couponCode'];
         $user = $this->user;
 
         try {
@@ -76,7 +77,7 @@ class BillingController extends Controller
             if($trialDays != "0"){
                 $user->newSubscription($subType, $plan)->trialDays($trialDays)->create($id);
             } else {
-                $user->newSubscription($subType, $plan)->create($id);
+                $user->newSubscription($subType, $plan)->withCoupon($couponCode)->create($id);
             }
 
             $roleName = explode("_", $plan)[0];
@@ -117,6 +118,32 @@ class BillingController extends Controller
         }
     }
 
+    public function deleteSubscription()
+    {
+        try {
+            $user = $this->user;
+
+            //$user->deletePaymentMethods();
+            
+            return response()->json(["success" => true], 200);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => "Something went wrong!"], 404);
+        }
+    }
+
+    public function addSubscription(Request $request)
+    {
+        try {
+            $token = $request->input('token');
+            $id = $token['id'];
+            $user = $this->user;
+            //$user->createSetupIntent();
+            return response()->json(["success" => true], 200);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => "Something went wrong!"], 404);
+        }
+    }
+
     public function resumeSubscription(Request $request)
     {
         try {
@@ -130,20 +157,70 @@ class BillingController extends Controller
         }
     }
 
+    public function updateSubscription(Request $request)
+    {
+        $token = $request->input('token');
+        $plan = $token['plan'];
+        $trialDays = $token['trialDays'];
+        $subType = $token['subType'];
+        $id = $token['id'];
+        $couponCode = $token['couponCode'];
+        $user = $this->user;
+
+        try {
+
+            if($trialDays != "0"){
+                $user->newSubscription($subType, $plan)->trialDays($trialDays)->create($id);
+            } else {
+                $user->newSubscription($subType, $plan)->withCoupon($couponCode)->create($id);
+            }
+
+            $roleName = explode("_", $plan)[0];
+
+            if($subType == "main"){
+                $role = Role::where("name", $roleName)->first();
+                if (!$role) return response()->json(["error" => "Plan not found"], 404);
+
+                $user->role_id = $role->id;
+                $user->save();
+            }
+            elseif($subType == "addon"){
+
+                $roleAddon = RoleAddon::where("name", $plan)->first();
+                if (!$roleAddon) return response()->json(["error" => "Addon not found"], 404);
+
+                $user->roleAddons()->attach($roleAddon->id);
+
+                return response()->json(["success" => true], 200);
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 500);
+        }
+
+    }
+
     public function changePlan(Request $request)
     {
-
         $plan = $request->input('plan');
         $roleName = explode("_", $plan)[0];
         $role = Role::where("name", $roleName)->first();
+        $user = $this->user;
+        $current_role_name = $this->user->role->name;
+        $channels_count = $user->countChannels();
         if(!$role) return response()->json(["error" => "Plan not found"], 404);
 
-        $user = $this->user;
-        if($user->channels()->count() > $role->roleLimit->account_limit) 
-            return response()->json(["error" => "Please delete some social accounts to correspond to the limits of your new plan.", "redirect" => "/accounts"], 403);
-
-        if($user->teamMembers()->count() + 1 > $role->roleLimit->team_accounts) 
-            return response()->json(["error" => 'Please delete some team accounts to correspond to the limits of your new plan.', "redirect" => "/settings/team"], 403);
+        if($current_role_name == 'premium'){
+            if($channels_count > $role->roleLimit->account_limit) 
+            return response()->json(["message" => "more than 5 accounts", "accounts" => 5], 432);
+            if($user->teamMembers()->count() + 1 > $role->roleLimit->team_accounts) 
+            return response()->json(["message" => 'team members limit'], 433);
+        } else if($current_role_name == 'pro') {
+            if($channels_count > $role->roleLimit->account_limit) 
+            return response()->json(["message" => "more than 20 accounts", "accounts" => 20], 432);
+            if($user->teamMembers()->count() + 1 > $role->roleLimit->team_accounts) 
+            return response()->json(["message" => 'team members limit'], 433);
+        }
 
         if($plan !== 'free') $user->subscription('main')->swap($plan);
         else $user->subscription('main')->cancel();

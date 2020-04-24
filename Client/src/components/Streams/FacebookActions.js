@@ -1,18 +1,14 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import { ToastContainer } from "react-toastr";
 import Modal from 'react-modal';
-import Popup from "reactjs-popup";
 import Loader from 'react-loader-spinner';
-import DraftEditor from '../DraftEditor';
 import {abbrNum} from '../../utils/numberFormatter';
-import {like, unlike, comment, deletePost} from '../../requests/facebook/channels';
+import {like, unlike, comment} from '../../requests/facebook/channels';
 import FacebookPost from './FacebookPost';
-import {setComposerModal} from "../../actions/composer";
-import {setPost} from '../../actions/posts';
-
-
-let toastContainer;
+import StreamLoader from "../../components/Loader";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import StreamPost from './StreamPost';
+import DraftEditor from '../DraftEditor';
 
 class FacebookActions extends React.Component{
 
@@ -22,7 +18,8 @@ class FacebookActions extends React.Component{
         pictures: [],
         comment: false,
         loading: false,
-        postBox: false
+        postBox: false,
+        letterCount: 0,
     }
 
     componentDidMount(){
@@ -41,10 +38,12 @@ class FacebookActions extends React.Component{
     likePost = () => {
         const {feedItem, channel, updateItem} = this.props;
         const {liked} = this.state;
+        this.setState(() => ({loading: true}));
         if(liked) return;
         this.setState(() => ({liked: true}));
 
         like(feedItem.id, channel.id).then((response) => {
+            this.setState(() => ({loading: false}));
             if(typeof response !== "undefined"){
                 updateItem(feedItem, "facebookLike");
             }
@@ -54,10 +53,12 @@ class FacebookActions extends React.Component{
     unlikePost = () => {
         const {feedItem, channel, updateItem} = this.props;
         const {liked} = this.state;
+        this.setState(() => ({loading: true}));
         if(!liked) return;
         this.setState(() => ({liked: false}));
 
         unlike(feedItem.id, channel.id).then((response) => {
+            this.setState(() => ({loading: false}));
             if(typeof response !== "undefined"){
                 updateItem(feedItem, "facebookUnlike");
             }
@@ -67,19 +68,34 @@ class FacebookActions extends React.Component{
     commentPost = () => {
 
         this.setState(() => ({
-            comment: false,
             loading: true
         }));
 
-        const {feedItem, channel} = this.props;
+        const {feedItem, channel, updateItem} = this.props;
         const {content, pictures} = this.state;
 
         let image = pictures.length ? pictures[0] : "";
 
         comment(feedItem.id, channel.id, content, image).then((response) => {
+            this.setState(() => ({
+                comment: false
+            }));
+
             if(typeof(response.success) !== "undefined") {
-                
-                toastContainer.success("Message posted.", "Success", {closeButton: true});            
+                const {feedItem} = this.props;
+                toast(
+                    <div>
+                        <span className="toast-icon">
+                            <i className="fa fa-check" style={{color: '#2D86DA'}}></i>
+                        </span>
+                        Your comment has been posted!
+                    </div>, 
+                    {
+                        containerId: feedItem.id,
+                        className: "toast-body",
+                    }
+                );
+                updateItem(feedItem, "facebookComment");            
                 this.setState(() => ({
                     content: "",
                     pictures: [],
@@ -90,12 +106,36 @@ class FacebookActions extends React.Component{
                     comment: true,
                     loading: false
                 }));
-                toastContainer.error("Something went wrong.", "Error", {closeButton: true});
+                const {feedItem} = this.props;
+                toast(
+                    <div>
+                        <span className="toast-icon">
+                            <i className="fa fa-exclamation" style={{color: 'white'}}></i>
+                        </span>
+                        Your comment has been failed!
+                    </div>, 
+                    {
+                        containerId: feedItem.id,
+                        className: "toast-error",
+                    }
+                );
             }
 
 
         }).catch(e => {
-            toastContainer.error("Something went wrong.", "Error", {closeButton: true});
+            const {feedItem} = this.props;
+                toast(
+                    <div>
+                        <span className="toast-icon">
+                            <i className="fa fa-exclamation" style={{color: 'white'}}></i>
+                        </span>
+                        Your comment has been failed!
+                    </div>, 
+                    {
+                        containerId: feedItem.id,
+                        className: "toast-error",
+                    }
+                );
             this.setState(() => ({
                 comment: true,
                 loading: false
@@ -105,13 +145,14 @@ class FacebookActions extends React.Component{
 
     updateContent = (content = "") => {
         this.setState(() => ({
-            content
+            content: content,
+            letterCount: content.length
         }));
     };
 
     updatePictures = (pictures = []) => {
         this.setState(() => ({
-            pictures
+            pictures: pictures
         }));
     };
 
@@ -127,51 +168,6 @@ class FacebookActions extends React.Component{
         return
     };
 
-    handlePostDelete = () => {
-        const {feedItem, channel, updateItem} = this.props;
-
-        this.setState(() => ({
-            loading: true
-        }));
-
-        deletePost(channel.id, feedItem.id).then((response) => {
-            if(typeof response !== "undefined"){
-                updateItem(feedItem, "delete");
-            }
-
-            this.setState(() => ({
-                loading: false
-            }));
-        }).catch(e => {
-            this.setState(() => ({
-                loading: false
-            }));
-        });
-    };
-
-    handlePostSchedule = (close) => {
-
-        if(typeof close !== "undefined") close();
-        
-        const {postData, setPost, setComposerModal} = this.props;
-        const images = postData.media.splice(0, 3);
-        let url = typeof(postData.attachmentData) !== "undefined" && typeof(postData.attachmentData.targetUrl) !== "undefined" ? postData.attachmentData.targetUrl : "";
-        let content = postData.text;
-
-        if(url && content.indexOf("http") == -1){
-            url = decodeURIComponent(url.substring(url.indexOf("u=h") + 2, url.indexOf("h=") - 1));
-            content += " "+url;
-        } 
-
-        setComposerModal(true); 
-        setPost(
-            {
-             content: content, 
-             images: typeof(images) !== "undefined" ? images.map((image) => image.src): [],
-             type: 'store'
-            });
-    };
-
     toggleComment = () => {
         this.setState(() => ({
             comment: !this.state.comment
@@ -184,17 +180,37 @@ class FacebookActions extends React.Component{
         }),  () => {
             
             if(message == "success"){
-                toastContainer.success("Message posted.", "Success", {closeButton: true});
+                const {feedItem} = this.props;
+                toast(
+                    <div>
+                        <span className="toast-icon">
+                            <i className="fa fa-check" style={{color: '#2D86DA'}}></i>
+                        </span>
+                        Your sharing has been posted!
+                    </div>, 
+                    {
+                        containerId: feedItem.id,
+                        className: "toast-body",
+                    }
+                );
             }
 
             if(message == "error"){
-                toastContainer.error("Something went wrong.", "Error", {closeButton: true});
+                const {feedItem} = this.props;
+                toast(
+                    <div>
+                        <span className="toast-icon">
+                            <i className="fa fa-exclamation" style={{color: 'white'}}></i>
+                        </span>
+                        Your sharing has been failed!
+                    </div>, 
+                    {
+                        containerId: feedItem.id,
+                        className: "toast-error",
+                    }
+                );
             }
         });
-    };
-
-    onEnterKey = () => {
-        this.commentPost();
     };
 
     render(){
@@ -205,12 +221,14 @@ class FacebookActions extends React.Component{
         const commentPost = comment ? 'acted' : '';
         const likesCount = feedItem.likes.summary.total_count > 0 ? abbrNum(feedItem.likes.summary.total_count) : '';
         const commentsCount = feedItem.comments.summary.total_count > 0 ? abbrNum(feedItem.comments.summary.total_count) : '';
-
+        
         return (
             <div className="fb-actions-container">
-                <ToastContainer
-                    ref={ref => toastContainer = ref}
-                    className="toast-top-right"
+                <ToastContainer 
+                    enableMultiContainer 
+                    containerId={feedItem.id} 
+                    position={toast.POSITION.TOP_RIGHT}
+                    hideProgressBar={true}
                 />
 
                 {this.state.postBox &&
@@ -223,67 +241,68 @@ class FacebookActions extends React.Component{
                     </Modal>
                 }
 
+                {this.state.loading && <StreamLoader />}
                 <div className="stream-action-icons">
+                    <img className="action-icon-button" onClick={this.togglePostBox} src="images/monitor-icons/back-small.svg"></img>                    
                     <span>
-                        <i onClick={() => this.toggleLike()} className={`fa fa-thumbs-up ${likedPost}`}></i>
-                        <span className={`status-counter ${likedPost} `}> {likesCount}</span>
-                    </span>
-                    <span>
-                    <i onClick={() => this.toggleComment()} className={`fa fa fa-comment ${commentPost}`}></i>
+                        <img className="action-facebook-icon-button" onClick={() => this.toggleComment()} src="images/monitor-icons/conversations.svg" />
                         <span className={`status-counter ${commentPost}`}> {commentsCount}</span>
                     </span>
-                
-                    <i onClick={this.togglePostBox} className="fa fa-share"></i>
-
-                    <Popup
-                    trigger={<i className="fa fa-ellipsis-v" aria-hidden="true"></i>}
-                    on="click"
-                    position="top center"
-                    arrow={true}
-                    closeOnDocumentClick={true}
-                    >
-                    {
-                    close => ( 
-                        <div className="t-action-menu menu-with-icons">
-                            <a href={`mailto:?Subject=I'd like to share this story with you&Body=${postData.text}`}>
-                                <i className={`fa fa-envelope`}></i>&nbsp;Email
-                            </a>
-                            <button onClick={() => this.handlePostSchedule(close)}>
-                                <i className={`fa fa-clock-o`}></i>Schedule
-                            </button>
-                            {feedItem.from.id === channel.details.payload.id &&
-                                (
-                                this.state.loading  ? 
-                                <button className="disabled-btn">
-                                    <i className={`fa fa-circle-o-notch fa-spin`}></i>Delete
-                                </button>
-                                :
-                                <button onClick={this.handlePostDelete}>
-                                    <i className={`fa fa-trash`}></i>Delete
-                                </button>
-                                )
-                            }
-                        </div>
-                    )}
-                    </Popup>
-                    
+                    <span>
+                        <img className="action-icon-button" onClick={() => this.toggleLike()} src="images/monitor-icons/heart-contact-small.svg"/>
+                        <span className={`status-counter ${likedPost} `}> {likesCount}</span>
+                    </span>
                 </div>
                 <div>
-                    {   comment &&
-                        <div>
-                            <DraftEditor 
-                                content={this.state.content}
-                                pictures={this.state.pictures}
-                                onChange={this.updateContent}
-                                onImagesChange={this.updatePictures}
-                                showEmojiIcon={false}
-                                placeholderText="Write a comment..."
-                                imageLimit={1}
-                                onEnterKey={this.onEnterKey}
-                                network="facebook"
-                            /> 
-                            <div className="under-txt">Press ENTER to submit</div>
-                        </div>
+                    {comment &&
+                        <Modal
+                        ariaHideApp={false}
+                        className="t-reply-modal"
+                        isOpen={this.state.comment}
+                        >
+                            <div className="t-reply-container">
+                                <div className="t-reply-heading">
+                                <h3>Comment</h3>
+                                    <i onClick={this.toggleComment} className="fa fa-close link-cursor"></i>
+                                </div>
+                                <div className="t-reply-body">
+                                    <StreamPost {...postData} type="twitterReply" />
+                                </div>
+                                <div className="t-reply-footer">
+                                    <div className="t-reply-profile">
+                                        <span className="pull-left profile-img-container">
+                                            <img src={channel.avatar} style={{width: 52}}/>
+                                            <i className={`fab fa-${channel.type} ${channel.type}_bg smallIcon`}></i>
+                                        </span>
+                                        <p>
+                                            <span className="font-shape">
+                                                {channel.name.charAt(0).toUpperCase() + channel.name.slice(1)}&nbsp;&nbsp;
+                                            </span>
+                                            replying to @{postData.username}
+                                        </p>
+                                    </div>
+                                    <DraftEditor 
+                                        content={this.state.content}
+                                        pictures={this.state.pictures}
+                                        onChange={this.updateContent}
+                                        placeholderText="Write a comment..."
+                                        onImagesChange={this.updatePictures}
+                                        imageLimit={1}
+                                        network="facebook"
+                                    />
+                                    <p className={`letter-count pull-left ${this.state.letterCount > 250 ? 'red-txt' : ''}`}>{250 - this.state.letterCount} characters left</p>
+                                    <div className="t-reply-actions">
+                                        <button onClick={this.toggleComment} className="cancelBtn" >Cancel</button>
+                                        {this.state.letterCount < 1 || this.state.letterCount > 250 ?
+                                            <button className="doneBtn disabled-btn" >Send</button> :
+                                            !this.state.loading ? 
+                                            <button onClick={this.commentPost} className="doneBtn" >Send</button> :
+                                            <button className="doneBtn" ><i className="fa fa-circle-o-notch fa-spin"></i> Sending</button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </Modal>
                     }
                     {this.state.loading && 
                         <div className="flex-center-h full-width">
@@ -297,9 +316,4 @@ class FacebookActions extends React.Component{
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    setPost: (post) => dispatch(setPost(post)),
-    setComposerModal: (modal) => dispatch(setComposerModal(modal))
-});
-
-export default connect(undefined, mapDispatchToProps)(FacebookActions);
+export default FacebookActions;

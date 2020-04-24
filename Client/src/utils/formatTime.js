@@ -1,3 +1,5 @@
+import moment from 'moment';
+import { isSafari } from '../utils/helpers';
 
 function clearNumber(value = '') {
     return value.replace(/\D+/g, '')
@@ -24,4 +26,23 @@ export default (value) => {
         return hour
     }
 
+}
+
+// This help us to create a date object maintaining the timezon configured
+// in the moment object.
+export const momentToDate = (momentObj) => {
+    let formattedDate = momentObj.format("YYYY-MM-DDTHH:mm:ss");
+
+    // Safari always takes the timezone from the local machine, even
+    // when the date is created as above. I'm changing the orientation
+    // of the offset to cancel the timezone.
+    if (isSafari()) {
+        // We get the local timezone and insert it into the formatted date
+        // to make Safari think that that's the local time
+        const offset = moment().format('Z');
+
+        formattedDate += offset;
+    }
+
+    return new Date(formattedDate);
 }

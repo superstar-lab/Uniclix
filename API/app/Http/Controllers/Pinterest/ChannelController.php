@@ -14,7 +14,7 @@ class ChannelController extends Controller
     public function add(Request $request){
         
         $user = auth()->user();
-        if($user->channels()->count() >= $user->getLimit("account_limit")) return response()->json(["error" => "You have exceeded the account limit for this plan."], 403);
+        if($user->countChannels() >= $user->getLimit("account_limit")) return response()->json(["error" => "You have exceeded the account limit for this plan."], 403);
         $accessToken = $request->input("access_token");
        
 

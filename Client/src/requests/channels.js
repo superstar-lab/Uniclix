@@ -53,8 +53,8 @@ export const unapprovedPosts = (page = 1) => {
         });
 };
 
-export const scheduledPosts = (page = 1, to_date = null, from_date = null) => {
-    return axios.get(`${apiUrl}/scheduled/posts?page=${page}&to_date=${to_date}&from_date=${from_date}`)
+export const scheduledPosts = (from_date = null, to_date = null) => {
+    return axios.get(`${apiUrl}/scheduled/posts?from_date=${from_date}&to_date=${to_date}`)
         .then((response) => {
             return response.data;
         });
@@ -78,5 +78,8 @@ export const getCategories = () => {
     return axios.get(`${apiUrl}/post/category`)
         .then((response) => {
             return response.data;
+        })
+        .catch(() => {
+            getCategories();
         });
 };

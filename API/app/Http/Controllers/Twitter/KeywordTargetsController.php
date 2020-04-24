@@ -16,8 +16,9 @@ class KeywordTargetsController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->user = auth()->user();
+            $user_id = $this->user->id;
             $this->title = "KEYWORD TARGETS";
-            if(!$this->user->hasPermission("manage-keyword-targets")) return response()->json(["error" => "You need to upgrade to unlock this feature."], 403);
+            if(!$this->user->hasPermission("manage-keyword-targets", $user_id)) return response()->json(["error" => "You need to upgrade to unlock this feature."], 403);
             $this->selectedChannel = $this->user->selectedTwitterChannel();
             return $next($request);
         });

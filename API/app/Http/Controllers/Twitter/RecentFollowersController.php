@@ -15,7 +15,8 @@ class RecentFollowersController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->user = auth()->user();
-            if(!$this->user->hasPermission("manage-recent-followers")) return response()->json(["error" => "You need to upgrade to unlock this feature."], 403);
+            $user_id = $this->user->id;
+            if(!$this->user->hasPermission("manage-recent-followers", $user_id)) return response()->json(["error" => "You need to upgrade to unlock this feature."], 403);
             $this->selectedChannel = $this->user->selectedTwitterChannel();
             return $next($request);
         });

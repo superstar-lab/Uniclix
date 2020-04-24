@@ -1,6 +1,7 @@
 import React from 'react';
 import 'react-dates/initialize';
 import { connect } from "react-redux";
+import { notification } from 'antd';
 
 import AnalyticsContext from './AnalyticsContext';
 import { startSetChannels } from "../../actions/channels";
@@ -10,6 +11,10 @@ import AnalyticsRouter from '../../routes/AnalyticsRouter';
 import UpgradeAlert from '../UpgradeAlert';
 import AccountSelector from '../../components/AccountSelector';
 import SocialMediaSelector from '../../components/SocialMediaSelector';
+
+const ACCOUNT_SELECTOR_FILTERS = {
+    'facebook': (account) => account.details.account_type === 'page'
+};
 
 class AnalyticsLanding extends React.Component {
 
@@ -21,18 +26,13 @@ class AnalyticsLanding extends React.Component {
         const pathParts = this.props.location.pathname.split('/');
         // We get which social media is willing to be viewed by geting it from the URL
         const selectedSocialMedia = pathParts[pathParts.length -1];
-        // We want a backup in case that the globally selected account and the social media
-        // (changed with the selector) don't match.
-        let selectedChannelBackup = null;
+        const accountSelectorOptions = this.getAccountSelectorOptions(selectedSocialMedia);
 
-        props.allChannels.forEach(({ type, id }) => {
+        props.allChannels.forEach(({ type }) => {
             // Getting the options for the socialMedia dropdown
-            if (this.socialMediasSelectorOptions.indexOf(type) === -1) {
+            // Hiding linkedin for the moment
+            if (this.socialMediasSelectorOptions.indexOf(type) === -1 && type !== 'linkedin') {
                 this.socialMediasSelectorOptions.push(type);
-            }
-            // The first channel to match the social media gets saved
-            if ( selectedSocialMedia === type && !selectedChannelBackup) {
-                selectedChannelBackup = id;
             }
         });        
 
@@ -41,8 +41,31 @@ class AnalyticsLanding extends React.Component {
             forbidden: false,
             calendarChange: false,
             loading: props.channelsLoading,
-            selectedAccount: selectedChannelBackup ? selectedChannelBackup : props.selectedChannel.id,
+            selectedAccount: accountSelectorOptions[0] ? accountSelectorOptions[0].id : 0,
             selectedSocialMedia
+        }
+    }
+
+    componentDidMount() {
+        // This will be erased once Linkedin analytics is done
+        if (this.state.selectedSocialMedia === 'linkedin') {
+            notification.warning({
+                message: 'Heads up!',
+                description: "We don't support LinkedIn Analytics currently. You can still use Facebook and Twitter though!",
+                duration: 10
+            });
+            if (this.socialMediasSelectorOptions.length) {
+                const socialMediaToRedirectIndex = this.socialMediasSelectorOptions.findIndex(
+                    sm => sm !== 'linkedin'
+                );
+                if (socialMediaToRedirectIndex !== -1) {
+                    this.props.history.push(`/analytics/${this.socialMediasSelectorOptions[socialMediaToRedirectIndex]}`);
+                } else {
+                    this.props.history.push('/scheduled/posts');
+                }
+            } else {
+                this.props.history.push('/scheduled/posts');
+            }
         }
     }
 
@@ -67,6 +90,18 @@ class AnalyticsLanding extends React.Component {
         this.props.history.push(`/analytics/${value}`);
     };
 
+    getAccountSelectorOptions = (selectedSocialMedia) => {
+        const { allChannels } = this.props;
+        const socialMediaFilter = ACCOUNT_SELECTOR_FILTERS[selectedSocialMedia];
+        let options = allChannels.filter((account => account.type === selectedSocialMedia));
+
+        if (socialMediaFilter) {
+            options = options.filter(socialMediaFilter);
+        }
+
+        return options;
+    };
+
     render() {
         const { selectedAccount, selectedSocialMedia } = this.state;
 
@@ -79,7 +114,7 @@ class AnalyticsLanding extends React.Component {
                             <div className="section-header mb-20">
                                 <h1 className="page-title">Analytics</h1>
                                 <div className="section-header__first-row">
-                                    <h3>Twitter Overview</h3>
+                                    <h3>{`${selectedSocialMedia} Overview`}</h3>
                                     <div className="dropdown-selectors">
                                         <SocialMediaSelector
                                             socialMedias={this.socialMediasSelectorOptions}
@@ -90,6 +125,7 @@ class AnalyticsLanding extends React.Component {
                                             socialMedia={selectedSocialMedia}
                                             onChange={this.onAccountChange}
                                             value={selectedAccount}
+                                            accounts={this.getAccountSelectorOptions(selectedSocialMedia)}
                                         />
                                     </div>
                                 </div>

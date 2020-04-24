@@ -1,28 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from "react-redux";
 import channelSelector from "../../../selectors/channels";
 import { startSetChannels } from "../../../actions/channels";
 import 'react-dates/initialize';
-import Tabs from '../../Tabs';
+import StreamTabs from '../../Streams/StreamTabs';
 
 class MonitorActivity extends React.Component {
-   
+
     render() {
         return (
             <div>
-                <div className="section-header no-border mb-40">
-                    <div className="section-header__first-row">
-                        <h2>Monitor Activity</h2>
-                    </div>
+                <div className="section-header no-border mb-40">                        
+                    <h2>Monitor Activity</h2>                            
                 </div>
-                <Tabs>
-                    <div label="New Tab">
-                        Tweets from people you follow.
-                    </div>
-                    <div label="+">
-                        add new account( show tweets from another account )
-                    </div>
-                </Tabs>
+                <div>
+                    <StreamTabs />
+                </div>
             </div>
         );
     }
@@ -43,3 +36,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MonitorActivity);
+

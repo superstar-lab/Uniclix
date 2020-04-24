@@ -19,9 +19,9 @@ class ArticlesController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->user = auth()->user();
-
+            $user_id = $this->user->id;
             if($this->user){
-               if(!$this->user->hasPermission("articles")) return response()->json(["error" => "You need to upgrade to unlock this feature."], 403);
+               if(!$this->user->hasPermission("articles", $user_id)) return response()->json(["error" => "You need to upgrade to unlock this feature."], 403);
                $this->selectedChannel = $this->user->selectedChannel(); 
             }
             

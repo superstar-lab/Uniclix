@@ -114,8 +114,7 @@ class Billing extends React.Component {
                 />
                 <SweetAlert
                     show={!!this.state.planChange}
-                    title={`You are about to change to ${this.state.planChange}`}
-                    text="Do you wish to proceed with this change?"
+                    title={`Do you want to change your subscription to the ${this.state.planChange} plan?`}
                     showCancelButton
                     type="info"
                     confirmButtonText="Yes"
@@ -162,7 +161,12 @@ class Billing extends React.Component {
                                                 <div className="container">
                                                     <ul className="fa-ul ">
                                                         <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Social Accounts"]} social accounts </li>
-                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Users"]} user</li>
+                                                        <li>
+                                                            <span className="fa-li">
+                                                                <i className="fa fa-check"></i>
+                                                            </span>
+                                                            {`${plan["Users"]} ${plan["Users"] > 1 ? 'users' : 'user'}`}
+                                                        </li>
                                                         <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Post Limitation"]} post</li>
                                                         <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Schedule and Publish"] != true ? 'manage and schedule posts' : ''}</li>
                                                         <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Mentions"]} track mentions</li>

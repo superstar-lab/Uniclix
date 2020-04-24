@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { connect } from "react-redux";
 import { startLogin, initLogin } from "../actions/auth";
 import { startSetChannels } from "../actions/channels";
@@ -14,7 +15,8 @@ export class RegisterPage extends React.Component {
         email: "",
         password: "",
         confirmPassword: "",
-        error: ""
+        error: "",
+        checkboxVal: false,
     }
 
 
@@ -35,7 +37,8 @@ export class RegisterPage extends React.Component {
             name: this.state.name,
             email: this.state.email,
             password: this.state.password,
-            password_confirmation: this.state.confirmPassword
+            password_confirmation: this.state.confirmPassword,
+            timezone: moment.tz.guess()
         };
 
         registerUser(data).then(response => {
@@ -62,6 +65,12 @@ export class RegisterPage extends React.Component {
             ...input
         });
     };
+    onCheckboxChange = (e) => {
+        let checkboxVal = this.state.checkboxVal;
+        this.setState({
+            checkboxVal: !checkboxVal,
+        });
+    }
     render() {
 
         return (
@@ -103,8 +112,11 @@ export class RegisterPage extends React.Component {
                     />
                 </div>
 
-                <p className="inline-txt">I agree with Uniclix <a href={`${backendUrl}/privacy-policy`} target="_blank" className="btn btn-link"> Terms of Services</a></p>
-                {this.state.email && this.state.password && this.state.name && this.state.confirmPassword ?
+                <p className="inline-txt">
+                    <input type="checkbox" value="true" onChange={this.onCheckboxChange} className="checkbox"/>
+                    I agree with Uniclix <a href={`${backendUrl}/privacy-policy`} target="_blank" className="btn btn-link"> Terms of Services</a>
+                </p>
+                {this.state.email && this.state.password && this.state.name && this.state.confirmPassword && this.state.checkboxVal?
                     <button type="submit" onClick={this.onRegisterSubmit} className="btn magento-btn full-width">Sign up</button> :
                     <button type="submit" className="btn magento-btn full-width disabled-btn" disabled>Sign up</button>
                 }

@@ -254,7 +254,7 @@ a:link {
 .login-container .logo {
   width: 100px;
   position: absolute;
-  top: 10px;
+  top: 30px;
   left: 10px;
 }
 
@@ -336,10 +336,6 @@ a:link {
 
 .account-info {
   width: 100%;
-}
-
-.account-info p {
-  max-width: 250px !important;
 }
 
 .box-container>button,
@@ -592,12 +588,12 @@ a:link {
 
 .dndTabBarAfter {
   display: none;
-  background-color: #485576 !important;
+  background-color: #F5F7FB !important;
   border-bottom: 1px solid #485576 !important;
 }
 
 .dndTab {
-  background: #485576 !important;
+  background: #F5F7FB !important;
   border: none !important;
   border-bottom: none !important;
   display: flex;
@@ -606,7 +602,7 @@ a:link {
 
 .dndTabBefore,
 .dndTabAfter {
-  background: #485576 !important;
+  background: #F5F7FB !important;
   border: none !important;
   box-shadow: none !important;
   border-top: none !important;
@@ -615,44 +611,49 @@ a:link {
 .rdTabActive,
 .rdTabActive .dndTabAfter,
 .rdTabActive .dndTabBefore {
-  background: #5b6684 !important;
-  border: none !important;
+  background: #F5F7FB !important;
+  border-bottom: 3px #2D86DA solid !important;
 }
 
 .dndTabTitle,
 .rdTabCloseIcon {
-  color: #858ea4 !important;
+  color: #363636 !important;
   height: auto !important;
   margin-top: 0px !important;
   margin-bottom: 0px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.129174px;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  
 }
 
 .rdTabCloseIcon {
   text-shadow: none !important;
   opacity: 1 !important;
   color: #485576 !important;
-  background: #858ea4 !important;
-  font-size: 1rem !important;
+  font-size: 1.5rem !important;
   font-weight: bold;
-  width: 10px !important;
-  right: 10px !important;
+  width: 15px !important;
+  right: 15px !important;
+  border-radius: 100%;
 }
 
 .rdTabActive .dndTabTitle {
-  color: #ffffff !important;
+  color: #363636 !important;
+  font-weight: bold;
 }
 
 .rdTabActive .rdTabCloseIcon {
-  background: white !important;
+  background: #F5F7FB !important;
 }
 
 .rdTabCloseIcon.hover {
-  background: white !important;
+  background: darkgrey !important;
 }
 
 .dndTabBefore {
@@ -671,17 +672,17 @@ a:link {
 .rdTabAddButton {
   text-shadow: none !important;
   font-weight: light;
-  color: white !important;
-  border: 1px solid #858ea4 !important;
-  border-radius: 100%;
+  color: #363636 !important;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 6px;
 }
 
 .rdTabAddButton:hover {
-  color: white !important;
-  border: 1px solid white !important;
+  color: #363636 !important;
+  background-color: darkgrey;
+  border-radius: 100%;
 }
 
 .trash-btn {
@@ -728,6 +729,7 @@ a:link {
   border: none;
   font-weight: bold;
   color: #d83e7f;
+  margin-left: -5px;
 }
 
 .auth-switch-btn {
@@ -833,13 +835,18 @@ a:link {
 
 .stream-feed,
 .stream-maker.stream-size .stream-feed {
-  height: 73.7vh;
+  height: calc(100vh - 10px);
+  background: #EAF3FB;
+  padding: 14px;
+  padding-top: 0;
   overflow: auto;
   overflow-x: hidden;
 }
 
 .stream-action-icons .status-counter {
-  margin-left: 5px;
+  margin-left: 10px;
+  font-size: 14px;
+  line-height: 22px;
 }
 
 .stream-action-icons>span {
@@ -850,14 +857,14 @@ a:link {
 
 .stream-action-icons>span>.fa,
 .stream-action-icons>.fa {
-  border: 1px solid #c5c5c5;
   border-radius: 100%;
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
   padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #2D86DA;
 }
 
 .stream-action-icons {
@@ -865,6 +872,7 @@ a:link {
   justify-content: space-between;
   align-items: center;
   margin-top: 15px;
+  margin-right: 20%;
   color: #485576;
   font-size: 1.4rem;
   cursor: pointer;
@@ -876,10 +884,6 @@ a:link {
 
 .stream-action-icons .fa.acted {
   border: 1px solid #25a2f0 !important;
-}
-
-.stream-action-icons .status-counter {
-  font-size: 12px;
 }
 
 .stream-action-icons .acted:hover {
@@ -911,16 +915,22 @@ a:link {
 }
 
 .stream-feed-container {
-  width: 100%;
-  background: white;
-  padding: 16px;
-  margin-bottom: 2px;
+  width: 100%;  
+  padding: 23px;
+  margin-bottom: 14px;
+  background: #F5F7FB;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
+  border-radius: 6px;
+  margin-top: -14px;
 }
 
 .stream-feed-container .username {
-  color: #485576;
-  font-weight: light;
-  letter-spacing: 0.5px;
+  color: #363636;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: 0.130517px;
 }
 
 .stream-feed-container .post-info img,
@@ -941,7 +951,12 @@ a:link {
 
 .stream-feed-container .post-info img,
 .stream-feed-container .post-info .profile-info .post-date {
-  color: #777;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  color: #909090;
+  letter-spacing: 0.130517px;
 }
 
 .stream-feed-container .post-info img {
@@ -951,10 +966,15 @@ a:link {
 
 .stream-feed-container .post-content {
   margin: 10px 0;
-  color: #666;
   word-break: break-word;
   white-space: pre-wrap;
   cursor: text;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  letter-spacing: 0.130517px;
+  color: #363636;
 }
 
 .stream-feed-container.fb-conversations:hover {
@@ -965,13 +985,17 @@ a:link {
 }
 
 .stream-user {
-  color: #c5c5c5;
+  color: #363636;
+  margin-left: 10px;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.130517px;
 }
 
 .stream-title {
   background: white;
-  border-top: 3px solid #4267b2;
-  border-bottom: 2px solid #f1f1f1;
   margin: 0;
   font-size: 1.6rem;
   color: #485576;
@@ -1064,11 +1088,12 @@ a:link {
 
 .react-autosuggest__container {
   position: relative;
+  margin-top: 20px;
 }
 
 .react-autosuggest__input {
   width: 280px;
-  height: 30px;
+  height: 40px;
   padding: 10px 20px !important;
   font-weight: 300;
   font-size: 16px;
@@ -1094,7 +1119,7 @@ a:link {
   position: absolute;
   top: 31px;
   width: 280px;
-  height: 200px;
+  height: 100px;
   overflow: auto;
   left: 0;
   right: 0;
@@ -1229,8 +1254,20 @@ a:link {
 }
 
 .stream-title .text-cursor {
+  
+  color: #363636;
+  width: 102px;
+  overflow: hidden;
+  display: inline-block;
+  margin: 0 0px 0 6px;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 17px;
+  line-height: 16px;
+  vertical-align: sub;
 }
 
 .text-cursor {
@@ -1374,10 +1411,11 @@ button.streammaker-btn:hover {
 }
 
 .link-preview {
-  display: flex;
   background: #efefef;
   max-height: 220px;
+  display: contents;
   overflow: hidden;
+  text-align: center;
 }
 
 .link-preview .link-img img {
@@ -1402,13 +1440,17 @@ button.streammaker-btn:hover {
 
 .shared-status {
   padding: 10px;
-  border: 1px solid #ddd;
 }
 
 .shared-status .status-type {
   display: block;
   margin: 0 0 10px;
-  color: #777;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  letter-spacing: 0.130517px;
+  color: #363636;
 }
 
 .ReactModalPortal .ReactModal__Overlay {
@@ -1416,7 +1458,6 @@ button.streammaker-btn:hover {
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  overflow: auto;
   background: rgba(0, 0, 0, 0.5) !important;
 }
 
@@ -1486,6 +1527,66 @@ button.streammaker-btn:hover {
   overflow: hidden;
   width: 1000px;
   max-width: 1000px;
+
+  .compose-header {
+    width: 95%;
+    display: flex;
+    align-items: center;
+
+    .add-new-channel {
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #ccc;
+      border-radius: 100%;
+      width: 34px;
+      height: 34px;
+    }
+
+    .channel-item {
+      margin-left: 5px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      border: 1px solid #ccc;
+      border-radius: 100%;
+      width: 34px;
+      height: 34px;
+
+      img {
+        width: 100%;
+        border-radius: 100%;
+      }
+
+      .smallIcon {
+        left: -5px;
+        top: 0px;
+      }
+
+      .remove-overlay {
+        background: red;
+        width: 100%;
+        height: 100%;
+        opacity: 0.4;
+        display: none;
+        color: white;
+        text-align: center;
+        border-radius: 100%;
+        padding: 8px;
+      }
+
+      &:hover > .remove-overlay {
+        display: block;
+      }
+
+      &:hover > img {
+        display: none;
+      }
+    }
+  }
 }
 
 .modal-no-bg {
@@ -2023,103 +2124,17 @@ button.streammaker-btn:hover {
   }
 }
 
-.item-list {
-  overflow: visible;
+.schedule-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 10px solid #0073B1;
+  border-radius: 6px 0px 0px 6px;
 
-  .schedule-row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    border-left: 10px solid #0073B1;
-    border-radius: 6px 0px 0px 6px;
-    cursor: pointer;
-
-    .item-actions {
-      padding-left: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: auto;
-      position: relative;
-      overflow: visible;
-
-      div {
-        float: right;
-        width: 30px;
-        height: 24px;
-        display: block;
-
-        ul {
-          position: absolute;
-          right: 0;
-          z-index: 999;
-          width: 190px;
-          display: none;
-          background: #FFFFFF;
-          box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.05);
-          border-radius: 8px;
-          top: 88%;
-          padding: 10px 0;
-
-          li {
-            padding: 12px 25px;
-
-            a {
-              font-family: Rubik;
-              font-style: normal;
-              font-weight: 500;
-              font-size: 16px;
-              line-height: 16px;
-              letter-spacing: 0.436364px;
-              color: #363636;
-            }
-          }
-        }
-
-        i {
-          color: #2D86DA;
-          font-size: 20px;
-          padding: 5px 0;
-          display: block;
-        }
-
-        &:hover {
-          ul {
-            display: block;
-          }
-        }
-      }
-
-      li {
-        margin-top: 0 !important;
-      }
-    }
-
-    .post-info {
-      display: flex;
-      align-items: center;
-
-      img {
-        max-width: 120px !important;
-        height: auto;
-        margin: 0;
-      }
-
-      .content-event {
-        padding: 0 10px;
-      }
-    }
-
-    h4 {
-      font-family: Lato;
-      font-weight: normal;
-      font-size: 14px;
-      line-height: 22px;
-      letter-spacing: 0.130517px;
-      color: #363636;
-    }
+  .item-actions li {
+    margin-top: 0 !important;
   }
 }
 
@@ -2161,19 +2176,6 @@ button.streammaker-btn:hover {
       }
     }
   }
-}
-
-.category-post {
-  padding: 5px;
-  background-color: #0073B1;
-  border-radius: 4px;
-  color: #fff;
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 16px;
-
 }
 
 .item-row {
@@ -2300,7 +2302,7 @@ button.streammaker-btn:hover {
 
 .item-row .draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu {
   background: transparent;
-  color: #2d86da;
+  color: #2D86DA;
 }
 
 .item-row .draftJsEmojiPlugin__emojiSelectButton__3sPol:hover,
@@ -2321,11 +2323,6 @@ button.streammaker-btn:hover {
 .item-row:hover .profile-info .stats-info {
   display: none;
 }
-
-// /
-// .item-row .profile-info .item-actions {
-//   display: block;
-// }
 
 .item-row .user-action {
   width: 30px;
@@ -2494,6 +2491,29 @@ button.streammaker-btn:hover {
   color: white;
 }
 
+.publish-btn {
+  background-color: #2D86DA;
+}
+
+.secondary-btn {
+  background-color: transparent;
+  color: #2D86DA;
+  border: none;
+  font-weight: 500;
+}
+
+.buttons-section {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  .right {
+    width: 220px;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
 .publish-group {
   border-radius: 20px;
   float: left;
@@ -2529,10 +2549,44 @@ button.streammaker-btn:hover {
   overflow-y: auto;
 }
 
-.popup-content {
-  width: auto !important;
-  padding: 0 !important;
+.ant-calendar-picker-container,
+.ant-time-picker-panel {
+  font-family: Rubik;
 }
+
+.draft_editor_container {
+  position: relative;
+
+  .draft-body {
+    min-height: 158px;
+  }
+
+  .editor-icons {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
+}
+
+.draft-body {
+  padding: 10px;
+  position: relative;
+
+  .fileContainer {
+    justify-content: flex-start;
+    display: flex;
+    flex-direction: row;
+
+    .uploadPicturesWrapper {
+      width: auto !important;
+      
+      .uploadPictureContainer {
+        width: 50px;
+      }
+    }
+  }
+}
+
 
 .popup-content .SingleDatePicker_picker {
   position: static;
@@ -2633,13 +2687,16 @@ button.streammaker-btn:hover {
 
 .letter-count {
   float: right;
-  font-size: 16px;
-  font-family: open-sansBold;
-  color: #ccc;
   vertical-align: middle;
   height: 100%;
   padding: 5px;
-  margin: 0;
+  margin-left: 15px;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  letter-spacing: 0.130517px;
+  color: #909090;
 }
 
 .DateInput__small {
@@ -2690,20 +2747,17 @@ button.streammaker-btn:hover {
   opacity: 0;
 }
 
-.ReactModalPortal {
+.ReactModalPortal .ReactModal__Overlay {
+  transition: opacity 300ms ease-in-out;
+  background: rgba(0, 0, 0, 0.15);
   overflow: auto;
 
-  .ReactModal__Overlay {
-    transition: opacity 300ms ease-in-out;
-    background: rgba(0, 0, 0, 0.15);
+  &--after-open {
+    opacity: 1;
+  }
 
-    &--after-open {
-      opacity: 1;
-    }
-
-    &--before-close {
-      opacity: 0;
-    }
+  &--before-close {
+    opacity: 0;
   }
 }
 
@@ -2737,7 +2791,7 @@ button.streammaker-btn:hover {
 }
 
 .compose-dialog {
-  max-width: 100%;
+  max-width: 520px;
 }
 
 .item-row .bottom-info {
@@ -2922,14 +2976,17 @@ button.streammaker-btn:hover {
   width: 100%;
   outline: none;
   background: white;
-  color: #485576;
-  font-family: open-sansBold, Arial;
+  color: #515151;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
 }
 
 .t-action-menu>button:hover,
 .t-action-menu>a:hover {
-  background: #485576;
-  color: white;
+  background: #EAF3FB;
+  color: #515151;
 }
 
 .menu-with-icons>button,
@@ -3007,10 +3064,11 @@ button.streammaker-btn:hover {
 .t-reply-modal {
   width: 600px !important;
   margin: 10px;
-  background: #edfafe;
+  background: #F5F7FB;
   outline: none;
   overflow: auto;
   max-height: 95vh;
+  border-radius: 8px;
 }
 
 .t-reply-body-container {
@@ -3018,12 +3076,19 @@ button.streammaker-btn:hover {
   overflow: auto;
 }
 
+.t-reply-body {
+  background: #F5F7FB;
+  margin-top:14px;
+}
+
 .t-reply-heading {
-  background: white;
+  background: #F5F7FB;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
+  padding: 15px 0px 15px 0px;
+  margin-left: 25px;
+  margin-right: 25px;
   font-size: 20px;
   color: #555;
   border-bottom: 1px solid #e4e4e4;
@@ -3034,8 +3099,9 @@ button.streammaker-btn:hover {
 }
 
 .t-reply-footer {
-  background: #edfafe;
+  background: #F5F7FB;
   padding: 15px;
+  margin-top: -15px;
 }
 
 .t-reply-footer .DraftEditor-root {
@@ -3044,6 +3110,8 @@ button.streammaker-btn:hover {
 
 .t-reply-footer .draft_editor_container {
   background: white;
+  margin: 0px 15px 0px 15px;
+  border-radius: 0px 0px 8px 8px;
 }
 
 .t-reply-actions button {
@@ -3061,6 +3129,10 @@ button.streammaker-btn:hover {
   justify-content: flex-start;
   align-items: center;
   color: #999;
+  background: white;
+  padding: 17px 17px 0px 17px;
+  margin: 0px 15px 0px 15px;
+  border-radius: 8px 8px 0px 0px;
 }
 
 .t-reply-profile img {
@@ -3081,20 +3153,256 @@ button.cancelBtn {
   background: none;
   border: none;
   font-weight: bold;
-  color: #5a94c5;
+  color: #2D86DA;
   padding: 10px 20px;
   font-size: 16px;
   outline: none;
+  text-decoration: none;
 }
 
 button.doneBtn {
   border: none;
-  background: #337ab7;
+  background: #2D86DA;;
   color: white;
-  border-radius: 5px;
+  border-radius: 30px;
   font-weight: bold;
   padding: 10px 20px;
   outline: none;
+  margin-right: 15px;
+  width: 140px;
+}
+
+.content-finder {
+  font-family: Rubik;
+  color: #363636;
+
+  .header {
+    margin-bottom: 50px;
+
+    &.articles {
+      margin-bottom: 15px;
+    }
+
+    .description-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 30px;
+
+      .description {
+        font-size: 1em;
+      }
+
+      .toggle-keywords {
+        color: #2D86DA;
+        font-size: 0.9em;
+        cursor: pointer;
+      }
+    }
+
+    .seperator {
+      margin: 10px 0 20px;
+    }
+  }
+
+  .sub-title {
+    font-size: 1.2em;
+    font-weight: 500;
+  }
+
+  .seperator {
+    margin: 50px 0;
+  }
+
+  .btn-blue {
+    width: 400px;
+  }
+
+  .topics-added-by-you {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 50px;
+
+    .topics {
+      width: 100%;
+      margin-top: 30px;
+    }
+
+    .message-container {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .title {
+        font-size: 1.6em;
+        font-weight: 500;
+        margin-bottom: 20px;
+      }
+
+      .description {
+        margin: 0;
+        width: 490px;
+        text-align: center;
+        font-size: 1.1em;
+      }
+    }
+
+
+    .keyword-item {
+      i {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .topics-added-by-you,
+  .added-by-user {
+    .keyword-item {
+      font-size: 0.8em;
+      background-color:rgba(216, 62, 126, 0.15);
+      padding: 6px 6px;
+    }
+  }
+
+  .options-container {
+    display: flex;
+    justify-content: flex-end;
+
+    .search-bar {
+      width: 100%;
+
+      // Overriding some ANTD styles
+      .ant-select-selection--multiple .ant-select-selection__choice {
+        background-color: rgba(216,62,127, 0.15);
+        color: #D83E7F;
+        font-weight: 500;
+        font-family: Rubik;
+      }
+    }
+
+    .icons {
+      display: flex;
+
+      div {
+        margin: 0 15px;
+      }
+    }
+  }
+
+  .articles-container {
+    margin-top: 50px;
+  }
+
+  .card-display {
+    .card-content {
+      .card-body {
+        background-color: #FFF;
+        padding: 20px;
+        height: 185px;
+        border-radius: 0 0 25px 25px;
+        position: relative;
+
+        .card-title {
+          font-size: 1.1em;
+        }
+
+        .card-text {
+          font-size: 0.9em;
+        }
+
+        .page {
+          position: absolute;
+          bottom: 20px;
+        }
+      }
+    }
+
+    .image-container {
+      position: relative;
+
+      &:hover > .img-overlay {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .topic-label {
+        position: absolute;
+        color: #D83E7F;
+        z-index: 2;
+        bottom: 20px;
+        right: 20px;
+        padding: 1px 15px;
+        background-color: #FFF;
+        font-weight: 500;
+        border-radius: 5px;
+      }
+
+      &:hover > .topic-label {
+        display: none;
+      }
+
+      .img-overlay {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        display: none;
+        background-color: rgba(255, 255, 255, 0.8);
+        top: 0;
+        left: 0;
+        border-radius: 25px 25px 0 0;
+
+        .icons {
+          display: flex;
+          width: 250px;
+          justify-content: space-around;
+
+          div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            height: 200px;
+            width: 100px;
+            cursor: pointer;
+
+            .svg-container {
+              height: 100px;
+              border-radius: 50px;
+
+              img {
+                height: 35px;
+              }
+            }
+
+            .action-label {
+              display: none;
+              position: absolute;
+              bottom: 0;
+              height: 40px;
+              text-align: center;
+              background-color: #0E4F8C;
+              color: #FFF;
+              border-radius: 10px;
+            }
+          }
+
+          div:hover > .svg-container {
+            background-color: rgba(45, 134, 218, 0.12);
+          }
+
+          div:hover > .action-label {
+            display: flex;
+          }
+        }
+      }
+    }
+  }
 }
 
 .keyword-item {
@@ -3102,7 +3410,7 @@ button.doneBtn {
   color: #d83e7f;
   font-size: 1.4rem;
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: 500;
   border-radius: 6px;
   background: #fff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
@@ -3214,6 +3522,17 @@ button.doneBtn {
   margin: 0 auto;
 }
 
+.ReactModal__Content.ReactModal__Content--after-open.account-select-modal {
+  position: relative !important;
+
+  .close-icon {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+  }
+}
+
 .account-select-modal {
   width: 500px !important;
   max-width: 500px !important;
@@ -3311,6 +3630,7 @@ button.doneBtn {
   height: 300px;
   object-fit: cover;
   border: 1px solid #dfdfdf;
+  border-radius: 25px 25px 0 0;
 }
 
 .article-share {
@@ -3756,6 +4076,8 @@ aside .btn-group {
 
 .plan-content-description {
   font-weight: bold;
+  font-size: large;
+  margin-top: 20px;
 }
 
 .plan-content>p {
@@ -3935,6 +4257,16 @@ aside .btn-group {
   z-index: 9999;
 }
 
+.fullscreen {
+  background-color: rgba(0, 0, 0, 0.30);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 99999;
+  height: 100%;
+}
+
 .lds-ripple {
   z-index: 1001;
   width: 64px;
@@ -4100,7 +4432,7 @@ aside .btn-group {
 }
 
 .easygrey-bg {
-  background: #f8f8f8;
+  background-color: #F5F7FB !important;
   overflow: hidden;
 }
 
@@ -4303,11 +4635,12 @@ aside .btn-group {
 }
 
 .t-reply-container.f-post-container {
-  background: white;
+  background: #F5F7FB;
 }
 
 .f-post-container .DraftEditor-root {
   height: auto;
+  margin: 22px;
 }
 
 .bg-heading {
@@ -4392,6 +4725,15 @@ button.default-white-btn:hover {
 .billing-toggle {
   font-size: 16px;
   font-weight: 700;
+}
+
+.free-trial-end-msg {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(255, 239, 194);
+  padding: 20px;
+  margin-bottom: 20px;
+  border-left: 5px solid rgb(255, 213, 94);
 }
 
 .pricing-plans {
@@ -5020,8 +5362,8 @@ table.compare-plans-table {
 }
 
 section.pricing {
-  background: #007bff;
-  background: linear-gradient(to right, #0062e6, #33aeff);
+  
+  
 }
 
 .pricing .card {
@@ -5096,7 +5438,7 @@ section.pricing {
 .billing-body-c {
   position: relative;
   width: 100%;
-  min-height: 500px;
+  min-height: 873px;
   background: #ffffff;
   box-sizing: border-box;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
@@ -5250,10 +5592,6 @@ section.pricing {
   position: relative;
   z-index: 9;
 
-  &.open-country {
-    z-index: 99;
-  }
-
   .country-list {
     background: $white;
     width: 100%;
@@ -5271,78 +5609,282 @@ section.pricing {
   }
 }
 
+.category-post {
+  padding: 5px;
+  background-color: #0073B1;
+  border-radius: 4px;
+  color: #fff;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  margin: 0;
+}
+
+.header-posts-table {
+  margin-top: 3rem;
+
+  h4 {
+    font-family: Rubik;
+    font-size: 14px;
+    line-height: 14px;
+    letter-spacing: 0.130517px;
+    color: #000000;
+  }
+}
+
+.item-list {
+  &.shadow-box {
+    overflow: visible;
+  }
+
+  .schedule-row {
+
+    &,
+    h4 {
+      font-family: Lato;
+      font-size: 14px;
+      line-height: 18px;
+      letter-spacing: 0.130517px;
+      color: #363636;
+    }
+
+    h4 {
+      margin: 0;
+    }
+
+    .post-info {
+
+      img {
+        margin-left: 0;
+        max-width: 120px !important;
+      }
+
+      span {
+        padding: 15px 5px 15px 15px;
+        display: inline-block;
+      }
+    }
+
+    .item-actions {
+      overflow: visible;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      div {
+        i {
+          display: inline-block;
+          padding: 0 15px;
+          cursor: pointer;
+        }
+
+        ul {
+          display: none;
+          position: absolute;
+          right: 0;
+          top: 100%;
+          background: #FFFFFF;
+          box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.05);
+          border-radius: 8px;
+          min-width: 200px;
+          padding: 10px 20px;
+          z-index: 9999;
+        }
+
+        &:hover ul {
+          display: block;
+        }
+
+        li {
+          padding: 10px 0;
+
+          a {
+            font-family: Rubik;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 16px;
+            letter-spacing: 0.436364px;
+            color: #363636;
+          }
+        }
+      }
+    }
+  }
+}
+
 .compose-body {
   .group-field {
-    margin: 10px 0px 20px 0;
+    margin-bottom: 20px;
+  }
 
-    label {
-      margin-bottom: 10px;
-      font-family: Rubik;
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 14px;
-      letter-spacing: 0.130517px;
-      color: #363636;
-    }
-
-    input,
-    select {
-      border: none;
-      background: #FFFFFF;
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
-      border-radius: 8px;
-    }
-
+  .time-schedule-fields {
     .row {
-      margin: 0 -8px;
-      align-items: flex-end;
+      justify-content: flex-end;
       display: flex;
+      margin: 0 -4px;
 
       >div {
-        padding: 0 8px;
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
+        padding: 0 4px;
+        position: relative;
+
+        .uc-calendar {
+          position: absolute;
+          left: 0;
+          top: 100%;
+          padding: 0 5px;
+
+          .SingleDatePicker {
+            float: left;
+            width: 100%;
+            .SingleDatePicker_picker {
+              top: 8px !important;
+            }
+          }
+        }
       }
     }
 
+
     .checkbox-inline {
-      margin-bottom: 8px;
       font-family: Rubik;
       font-size: 14px;
       line-height: 14px;
       letter-spacing: 0.130517px;
       color: #363636;
+      padding-left: 25px;
+
+      &::after {
+        font-family: fontawesome;
+        content: '\f0c8';
+        font-size: 20px;
+        line-height: 34px;
+        text-align: center;
+        letter-spacing: 0.228406px;
+        color: #2D86DA;
+        position: absolute;
+        left: 0;
+        top: -8px;
+        width: 20px;
+        height: 20px;
+        pointer-events: none;
+      }
 
       input {
-        width: 18px;
-        height: 18px;
-        top: -1px;
         margin: 0;
         left: 0;
+        width: 20px;
+        height: 20px;
+      }
+
+      input:checked~&::after {
+        content: '\f14a';
       }
     }
   }
+}
+.action-icon-button:hover {
+  border-radius: 50px;
+  border: 1px solid darkgrey;
+  padding: 1px;
+}
 
-  .uc-calendar {
-    position: relative;
-    height: 0;
+.action-facebook-icon-button {
+  width: 22px;
+}
 
-    .SingleDatePicker {
-      float: left;
-    }
+.action-facebook-icon-button:hover {
+  border-radius: 50px;
+  border: 1px solid darkgrey;
+  padding: 1px;
+}
 
-    .SingleDatePicker_picker {
-      top: 6px !important;
-    }
-  }
+.action-twitter-icon-button {
+  width: 28px;
+}
 
-  .default-button {
-    background: #2D86DA;
-    border-radius: 30px;
-    font-family: Rubik;
-    font-weight: 500;
+.action-twitter-icon-button:hover {
+  border-radius: 50px;
+  border: 1px solid darkgrey;
+  padding: 1px;
+}
+
+.modal-content1{
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
     font-size: 16px;
-    line-height: 16px;
-    letter-spacing: 0.436364px;
-    color: #FFFFFF;
-    padding: 12px 30px;
+    letter-spacing: 0.130517px;
+    color: #363636;
+    margin: 0px 0px 20px 24px;
+}
+
+.cancelBtn1{
+  font-weight: 700;
+  color : #2D86DA;
+  text-decoration: none;
+  padding: 10px 20px;
+}
+
+.custom-modal {
+	width: 407px !important;
+  margin: 10px;
+  background: #F5F7FB;
+  outline: none;
+  overflow: auto;
+  max-height: 95vh;
+	border-radius: 8px;
+  padding: 15px;
+
+  .modalBtn {
+    font-weight: 700;
+    color : #2D86DA;
+    text-decoration: none;
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
   }
+}
+
+.checkbox {
+    width: 25px !important;
+    margin-top: 1px !important;
+}
+
+.payment-info {
+    margin-left: 30px !important;
+    padding: 25px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+    width: 67%;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.payment-info-edit {
+  background: #2d86da;
+  color: white;
+  border-radius: 30px;
+  border: 1px;
+  padding: 5px 25px 7px 25px;
+  margin-top: -5px;
+}
+
+.payment-detail {
+  width: 70%;
+  margin-left: 30px;
+  padding: 30px;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  margin-bottom: 30px;
+}
+
+.confirm-button {
+  margin-top: 50px;
 }

@@ -242,7 +242,7 @@ trait FacebookTrait
 
     public function pageLikes($period='day', $since=null, $until=null){
         $fb = $this->setAsCurrentUser();
-        $response = $fb->get("/{$this->original_id}/insights/page_fans?since={$since}&until={$until}&period={$period}");
+        $response = $fb->get("/{$this->original_id}/insights/?metric=page_fans&since={$since}&until={$until}&period={$period}");
 
         return $response->getDecodedBody();
     }
@@ -251,6 +251,14 @@ trait FacebookTrait
     {
         $fb = $this->setAsCurrentUser();
         $response = $fb->get("/{$this->original_id}/insights/page_fan_adds_unique/{$period}");
+
+        return $response->getDecodedBody();
+    }
+
+    public function pageNewUniqueLikes($period = 'day', $since = null, $until = null)
+    {
+        $fb = $this->setAsCurrentUser();
+        $response = $fb->get("/{$this->original_id}/insights/?metric=page_fan_adds_unique&since={$since}&until={$until}&period={$period}");
 
         return $response->getDecodedBody();
     }
@@ -536,6 +544,7 @@ trait FacebookTrait
 
             $text = $scheduledPost->content;
             $link = findUrlInText($text);
+            $post = [];
 
             if($link){
                 $text = str_replace($link, "", $text);
@@ -565,7 +574,6 @@ trait FacebookTrait
 
             $scheduledPost->posted = 0;
             $scheduledPost->status = -1;
-            $scheduledPost->save();
 
             throw $e;
         }

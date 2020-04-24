@@ -28,3 +28,10 @@ export const removeMember = (data) => {
                 return response.data;
             });
 };
+
+export const getPendingMembers = (teamId) => {
+    return axios.get(`${apiUrl}/team/members/pending?teamId=${teamId}`)
+            .then((response) => {
+                return response.data;
+            });
+}

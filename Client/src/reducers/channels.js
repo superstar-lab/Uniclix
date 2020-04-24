@@ -1,5 +1,5 @@
 const channelsInitialState = {
-    list: {},
+    list: [],
     loading: false
 }
 

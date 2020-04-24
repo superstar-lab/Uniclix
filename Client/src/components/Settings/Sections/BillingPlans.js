@@ -4,7 +4,6 @@ import { startSetProfile } from "../../../actions/profile";
 import { changePlan, getPlanData } from '../../../requests/billing';
 import UpgradeAlert from '../../UpgradeAlert';
 import SweetAlert from "sweetalert2-react";
-import Checkout from './Checkout';
 import Loader, { LoaderWithOverlay } from '../../Loader';
 class BillingPlans extends React.Component {
     state = {
@@ -55,11 +54,9 @@ class BillingPlans extends React.Component {
 
     setRole = (role) => {
         let item = role.toLowerCase();
-        console.log(item)
         this.setState({
             roleBilling: item
         });
-        console.log(this.state.roleBilling, 'role');
     }
     setForbidden = (forbidden = false) => {
         this.setState(() => ({
@@ -95,7 +92,6 @@ class BillingPlans extends React.Component {
 
         let planData = allPlans.filter(plan => plan["Name"].toLowerCase() === profile.role.name);
         planData = planData.length > 0 ? planData[0] : false;
-        console.log('plan ', allPlans)
         let planName = "";
         if (planData) {
             planName = this.state.billingPeriod === "annually" ? planData["Name"].toLowerCase() + "_annual" : planData["Name"].toLowerCase();
@@ -162,7 +158,12 @@ class BillingPlans extends React.Component {
                                                 <div className="container">
                                                     <ul className="fa-ul ">
                                                         <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Social Accounts"]} social accounts </li>
-                                                        <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Users"]} user</li>
+                                                        <li>
+                                                            <span className="fa-li">
+                                                                <i className="fa fa-check"></i>
+                                                            </span>
+                                                            {`${plan["Users"]} ${plan["Users"] > 1 ? 'users' : 'user'}`}
+                                                        </li>
                                                         <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Post Limitation"]} post</li>
                                                         <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Schedule and Publish"] != true ? 'manage and schedule posts' : ''}</li>
                                                         <li><span className="fa-li"><i className="fa fa-check"></i></span>{plan["Mentions"]} track mentions</li>
