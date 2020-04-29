@@ -12,7 +12,7 @@ const FunctionModal = ({ type, ...props }) => {
   });
 }
 
-export const Modal = ({ title, message, onOk, onCancel, className, isOpen }) => {
+export const Modal = ({ title, message, onOk, onCancel, className, isOpen, okText = 'Yes' }) => {
   return (
     <ReactModal
       ariaHideApp={false}
@@ -23,7 +23,7 @@ export const Modal = ({ title, message, onOk, onCancel, className, isOpen }) => 
       <div className="modal-content1">{message}</div>
       <div style={{float:'right'}}>
         { !!onCancel && <button onClick={onCancel} className="modalBtn" >No</button>}
-        <button onClick={onOk} className="modalBtn" >Yes</button>
+        <button onClick={onOk} className="modalBtn">{ okText }</button>
       </div>
     </ReactModal>
   );
