@@ -145,14 +145,23 @@ class Articles extends React.Component {
         }));
     };
 
+    filterArticles() {
+        const { articles } = this.state;
+        const { filterTopics } = this.props;
+
+        return articles
+            .filter(({ topic }) => filterTopics.indexOf(topic.toUpperCase()) !== -1);
+    }
+
     render() {
         const { articles, loading, page, last_page } = this.state;
         const { filterTopics } = this.props;
+        const filteredArticles = !filterTopics.length ? articles : this.filterArticles();
 
         return (
             <div className="articles-container">
                 {
-                    !!articles.length && !filterTopics.length && articles.map((article, index) => (
+                    !!filteredArticles.length && filteredArticles.map((article, index) => (
                             <div key={index}>
                             <Article
                                 key={index}
@@ -164,20 +173,6 @@ class Articles extends React.Component {
                     ))
                 }
                 {
-                    !!articles.length && !!filterTopics.length && articles
-                        .filter(({ topic }) => filterTopics.indexOf(topic) !== -1)
-                        .map((article, index) => (
-                            <div key={index}>
-                                <Article
-                                    key={index}
-                                    article={article}
-                                    setPost={this.props.setPost}
-                                    toggleComposer={this.openComposer}
-                                />
-                            </div>
-                        ))
-                }
-                {
                     loading && (
                         <div>
                             <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3"><ArticleLoader /></div>
@@ -187,7 +182,21 @@ class Articles extends React.Component {
                     )
                 }
                 {
-                    !!articles.length && page < last_page && <BottomScrollListener onBottom={this.loadArticles} />
+                    !!filteredArticles.length && page < last_page && <BottomScrollListener onBottom={this.loadArticles} />
+                }
+                {
+                    !loading && (!filteredArticles.length || !articles.length) && (
+                        <div className="no-pendings">
+                            <img src="/images/alone.svg" />
+                            <div className="text">
+                                {
+                                    articles.length ?
+                                        'There are no result for selected filter. Please remove it to see all the articles.' :
+                                        'There are no articles for selected topics. Please select other topics.'
+                                }
+                            </div>
+                        </div>
+                    )
                 }
             </div>
         );
