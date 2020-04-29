@@ -39,7 +39,7 @@ class ContentFinderLanding extends React.Component {
   setArticlesView = (value) => this.setState({ articlesView: value });
 
   setFilterTopic = (topic) => {
-    this.setState({ filterTopics: [ ...this.state.filterTopics, topic ] });
+    this.setState({ filterTopics: [ ...this.state.filterTopics, topic.toUpperCase() ] });
   }
 
   deleteFilterTopic = (topic) => {
