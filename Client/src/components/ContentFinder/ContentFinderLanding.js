@@ -50,6 +50,12 @@ class ContentFinderLanding extends React.Component {
     this.setState({ filterTopics: [ ...filterTopics ] })
   };
 
+  resetTopics = () => {
+    this.setState({
+      filterTopics: []
+    });
+  }
+
   render() {
     const { selectedTopics } = this.props;
     const { isLoading, showTopics, filterTopics } = this.state;
@@ -79,6 +85,7 @@ class ContentFinderLanding extends React.Component {
               <SaveTopicsButton
                 setLoading={this.setLoadingState}
                 selectedTopics={selectedTopics}
+                resetTopics={this.resetTopics}
               />
             </React.Fragment>
           )

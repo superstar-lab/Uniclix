@@ -6,11 +6,12 @@ import { updateProfile } from '../../../requests/profile';
 class SaveTopicsButton extends React.Component {
   static propTypes = {
     setLoading: PropTypes.func.isRequired,
-    selectedTopics: PropTypes.array.isRequired
+    selectedTopics: PropTypes.array.isRequired,
+    resetTopics: PropTypes.func.isRequired
   };
 
   onTopicsSave = () => {
-    const { setLoading, selectedTopics } = this.props;
+    const { setLoading, selectedTopics, resetTopics } = this.props;
 
     setLoading(true);
 
@@ -18,6 +19,7 @@ class SaveTopicsButton extends React.Component {
         topics: selectedTopics
     }).then((response) => {
         setLoading(false, false);
+        resetTopics();
     }).catch((error) => {
         console.log(error);
         setLoading(false);
