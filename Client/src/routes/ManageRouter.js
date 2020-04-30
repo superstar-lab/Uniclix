@@ -10,7 +10,6 @@ import InactiveFollowing from '../components/TwitterBooster/Sections/InactiveFol
 import Following from '../components/TwitterBooster/Sections/Following';
 import WhiteList from '../components/TwitterBooster/Sections/WhiteList';
 import BlackList from '../components/TwitterBooster/Sections/BlackList';
-import Checkout from '../components/Accounts/Checkout';
 import AnalyticsLanding from '../components/Analytics/AnalyticsLanding';
 import ScheduledRouter from '../routes/ScheduledRouter';
 import ContentFinderLanding from '../components/ContentFinder/ContentFinderLanding';
@@ -24,7 +23,6 @@ const ManageRouter = () => (
             <Route path={'/scheduled/'} component={ScheduledRouter} />
             {/*Obsolete routes. Still there to avoid breaking things but will be changed in the future*/}
             <Route path={`/twitter-booster/account-targets`} component={AccountTargets} />
-            <Route path={`/twitter-booster/checkout`} component={Checkout} />
             <Route path={`/twitter-booster/fans`} component={Fans} />
             <Route path={`/twitter-booster/non-followers`} component={NonFollowers} />
             <Route path={`/twitter-booster/recent-followers`} component={RecentFollowers} />

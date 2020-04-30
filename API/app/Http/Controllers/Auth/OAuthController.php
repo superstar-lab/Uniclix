@@ -73,10 +73,13 @@ class OAuthController extends Controller
         $password = $request->input('password');
 
         $user = User::where('email', $email)->first();
-        $user_id = User::where('email', $email)->first()->id;
-        TeamUser::where('member_id', $user_id)->update(['is_pending' => 0]);
 
         if(!$user || !Hash::check($password, $user->password)) return response()->json(["error" => "Incorrect email or password."], 404);
+
+        $user_id = $user->id;
+        // is our way to activate invited users
+        TeamUser::where('member_id', $user_id)->update(['is_pending' => 0]);
+
         $token = $user->createToken("Password Token");
 
         //The UI needs this value before the portal gets loaded

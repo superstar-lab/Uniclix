@@ -15,6 +15,7 @@ import { Select } from 'antd';
 import ReactTooltip from 'react-tooltip';
 import { Typography } from '@material-ui/core';
 import Modal from 'react-modal';
+import { Modal as OurModal } from '../../Modal';
 import { PRICING_COOKIE_KEY } from '../../../utils/constants';
 import { getCookie, eraseCookie } from '../../../utils/helpers';
 
@@ -236,10 +237,10 @@ class Checkout extends React.Component {
         if (pricingCookie) {
           eraseCookie(PRICING_COOKIE_KEY);
         }
-      } else {
+      } else if (status === 402) {
         this.setState({
-          loading: true,
-          message: ""
+          stripeError: 'The card number is incorrect. Please change it and try again.',
+          loading: true
         });
       }
     });
@@ -351,7 +352,7 @@ class Checkout extends React.Component {
 
   render() {
     const { validClaas, form, years, loading, 
-      orderFinished, countries, newAccounts, actualUsers, openCountry, location, planTitle, setStart, endCardSetting, editCardSetting, editCardInfo, deleteCard } = this.state
+      orderFinished, countries, newAccounts, actualUsers, openCountry, location, planTitle, setStart, endCardSetting, editCardSetting, editCardInfo, deleteCard, stripeError } = this.state
     const { plan, billingPeriod, onChangePlan, onChangePeriod } = this.props;
     const todayDate = new Date();
     const minumumYear = todayDate.getFullYear();
@@ -384,7 +385,13 @@ class Checkout extends React.Component {
             {orderFinished ?
               <CongratsPayment /> :
               <div>
-
+                <OurModal
+                  title="Error"
+                  message={stripeError}
+                  isOpen={!!stripeError}
+                  onOk={() => this.setState({ stripeError: '' })}
+                  okText="Ok"
+                />
                 <SweetAlert
                   show={!!this.state.error}
                   title={`Error`}
@@ -507,7 +514,7 @@ class Checkout extends React.Component {
                                       <img src="/images/card-image.svg"/>
                                     </div>
                                     <div className="common-font col-12 col-md-8">
-                                      {card_type} ended in {form.cardnumber.substr(form.cardnumber.length - 4)}
+                                      {card_type} ended in {this.state.form.exp_year}
                                     </div>
                                     <div className="col-12 col-md-1" >
                                       <div className="edit-icon-spacing" data-for="edit" data-tip data-iscapture='true' data-event-off='click' onClick={() => this.setState({editCardInfo: true, endCardSetting: false})}>
@@ -533,7 +540,7 @@ class Checkout extends React.Component {
                                   <img src="/images/card-image.svg"/>
                                 </div>
                                 <div className="common-font col-12 col-md-9">
-                                  {card_type} ended in {form.cardnumber.substr(form.cardnumber.length - 4)}
+                                  {card_type} ended in {this.state.form.exp_year}
                                 </div>
                                 <div className="icon-spacing col-12 col-md-1">
                                   <i className="fa fa-check" aria-hidden="true" style={{color: '#2D86DA'}}></i>

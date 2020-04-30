@@ -39,7 +39,7 @@ class ContentFinderLanding extends React.Component {
   setArticlesView = (value) => this.setState({ articlesView: value });
 
   setFilterTopic = (topic) => {
-    this.setState({ filterTopics: [ ...this.state.filterTopics, topic ] });
+    this.setState({ filterTopics: [ ...this.state.filterTopics, topic.toUpperCase() ] });
   }
 
   deleteFilterTopic = (topic) => {
@@ -49,6 +49,12 @@ class ContentFinderLanding extends React.Component {
     filterTopics.splice(topicIndex, 1);
     this.setState({ filterTopics: [ ...filterTopics ] })
   };
+
+  resetTopics = () => {
+    this.setState({
+      filterTopics: []
+    });
+  }
 
   render() {
     const { selectedTopics } = this.props;
@@ -79,6 +85,7 @@ class ContentFinderLanding extends React.Component {
               <SaveTopicsButton
                 setLoading={this.setLoadingState}
                 selectedTopics={selectedTopics}
+                resetTopics={this.resetTopics}
               />
             </React.Fragment>
           )
