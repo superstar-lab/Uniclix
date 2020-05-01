@@ -256,9 +256,9 @@ class Checkout extends React.Component {
       this.props.startSetChannels().then(res => {
         this.props.startSetProfile().then(res => {
           this.setState({
-            loading: true,
-            orderFinished: true
+            loading: true
           });
+          this.props.navigateToCongrats(this.props.planName);
         });
       })
     }).catch(e => {
@@ -352,7 +352,7 @@ class Checkout extends React.Component {
 
   render() {
     const { validClaas, form, years, loading, 
-      orderFinished, countries, newAccounts, actualUsers, openCountry, location, planTitle, setStart, endCardSetting, editCardSetting, editCardInfo, deleteCard, stripeError } = this.state
+      countries, newAccounts, actualUsers, openCountry, location, planTitle, setStart, endCardSetting, editCardSetting, editCardInfo, deleteCard, stripeError } = this.state
     const { plan, billingPeriod, onChangePlan, onChangePeriod } = this.props;
     const todayDate = new Date();
     const minumumYear = todayDate.getFullYear();
@@ -382,335 +382,332 @@ class Checkout extends React.Component {
       <div className="main-container">
         {!loading ? <LoaderWithOverlay /> :
           <div>
-            {orderFinished ?
-              <CongratsPayment /> :
-              <div>
-                <OurModal
-                  title="Error"
-                  message={stripeError}
-                  isOpen={!!stripeError}
-                  onOk={() => this.setState({ stripeError: '' })}
-                  okText="Ok"
-                />
-                <SweetAlert
-                  show={!!this.state.error}
-                  title={`Error`}
-                  text={this.state.error}
-                  type="error"
-                  confirmButtonText="Ok"
-                  cancelButtonText="No"
-                  onConfirm={() => {
-                    this.setError("");
-                  }}
-                />
-                {!!deleteCard && 
-                  <Modal
-                  ariaHideApp={false}
-                  className="billing-profile-modal"
-                  isOpen={!!deleteCard}
-                  >
-                    <div className="modal-title">{`Are you sure you want to delete this payment method?`}</div>
-                    <div className="modal-contents">{`If you delete your payment method, your subscription will not renew automatically and you could loose access to your accounts.`}</div>
-                    <div style={{float:'right'}}>
-                        <button onClick={() => this.setDeleteCard(false)} className="cancelBtn" >Cancel</button>
-                        <button onClick={() => {this.deleteCard();this.setDeleteCard(false);}} className="cancelBtn" >Yes, delete it</button>
-                    </div>
-                  </Modal>
-                }
-
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="section-header no-border">
-                      <div className="section-header__first-row">
-                        <h2>Checkout</h2>
-                      </div>
-                      <p>Review your order summary and enter your payment information to complete the purchase</p>
-                    </div>
+            <div>
+              <OurModal
+                title="Error"
+                message={stripeError}
+                isOpen={!!stripeError}
+                onOk={() => this.setState({ stripeError: '' })}
+                okText="Ok"
+              />
+              <SweetAlert
+                show={!!this.state.error}
+                title={`Error`}
+                text={this.state.error}
+                type="error"
+                confirmButtonText="Ok"
+                cancelButtonText="No"
+                onConfirm={() => {
+                  this.setError("");
+                }}
+              />
+              {!!deleteCard && 
+                <Modal
+                ariaHideApp={false}
+                className="billing-profile-modal"
+                isOpen={!!deleteCard}
+                >
+                  <div className="modal-title">{`Are you sure you want to delete this payment method?`}</div>
+                  <div className="modal-contents">{`If you delete your payment method, your subscription will not renew automatically and you could loose access to your accounts.`}</div>
+                  <div style={{float:'right'}}>
+                      <button onClick={() => this.setDeleteCard(false)} className="cancelBtn" >Cancel</button>
+                      <button onClick={() => {this.deleteCard();this.setDeleteCard(false);}} className="cancelBtn" >Yes, delete it</button>
                   </div>
-                </div>
+                </Modal>
+              }
 
-
-                <div className="row ">
-                  <div className="col-md-7">
-
-                    <div className="section-header__second-row">
-                      <h3>Payment details</h3>
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="section-header no-border">
+                    <div className="section-header__first-row">
+                      <h2>Checkout</h2>
                     </div>
-                    {
-                      setStart && !endCardSetting?
-                        <div className="card-selector row" onClick={() =>this.setState({setStart: false})}>
-                            <div className="card-image col-12 col-md-2">
-                              <img src="/images/card-image.svg"/>
-                            </div>
-                            <div className="common-font col-12 col-md-9">
-                              Add a new payment method
-                            </div>
-                            <div className="icon-spacing col-12 col-md-1">
-                              <i className="fa fa-chevron-right" aria-hidden="true" style={{color: '#2D86DA'}}></i>
-                            </div>
-                        </div>
-                      :
-                        (
-                          endCardSetting ?
-                            (
-                              editCardSetting?
-                                (
-                                  editCardInfo?
-                                  <div>
-                                    <div className="card-inputs form-field row">
-                                      <div className="col-12 col-md-6">
-                                        <input className={'form-control whiteBg ' + validClaas}
-                                          onChange={(e) => this.checkIfValidCC(e.target.value)}
-                                          type="tel"
-                                          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                                          size="19"
-                                          maxLength="19"
-                                          value={form.cardnumber} placeholder="Card number" />
-                                      </div>
-                                      <div className="col-12 col-md-3">
-                                        <Picker
-                                          ref="pickAMonth"
-                                          years={years}
-                                          value={mvalue}
-                                          lang={pickerLang.months}
-                                          onChange={this.handleAMonthChange}
-                                          onDismiss={this.handleAMonthDissmis}
-                                        >
-                                          <input className="form-control whiteBg"
-                                            type="tel"
-                                            onChange={(e) => this.onDateChange(e)}
-                                            value={form.exp_date}
-                                            onClick={this.handleClickMonthBox}
-                                            onFocus={this.handleClickMonthBox}
-                                            onBlur={this.handleClickMonthBoxHidde}
-                                            name="exp_date"
-                                            autoComplete={"off"}
-                                            autoComplete="new-password"
-                                            maxLength="9"
-                                            placeholder="Expiry date" />
-                                        </Picker>
-                                      </div>
-                                      <div className="col-12 col-md-3">
-                                        <input className="form-control whiteBg"
-                                          onChange={(e) => this.ValidateCvv(e)}
-                                          value={form.cvc}
-                                          name="cvc"
-                                          placeholder="CVV" />
-                                          <img className="cvv-image" src="/images/cvv-image.svg"/>
-                                      </div>
-                                    </div>
-                                    <div>
-                                      {
-                                        form.cardnumber == "" ?
-                                        <button className="save-card-button disabled-btn">Save card</button>
-                                      :
-                                        <button className="save-card-button" onClick={(e) => this.saveCardInfo(e)}>Save card</button>
-                                      }
-                                    </div>
-                                  </div>
-                                :
-                                  <div className="card-save-result row">
-                                    <div className="card-image col-12 col-md-2">
-                                      <img src="/images/card-image.svg"/>
-                                    </div>
-                                    <div className="common-font col-12 col-md-8">
-                                      {card_type} ended in {this.state.form.exp_year}
-                                    </div>
-                                    <div className="col-12 col-md-1" >
-                                      <div className="edit-icon-spacing" data-for="edit" data-tip data-iscapture='true' data-event-off='click' onClick={() => this.setState({editCardInfo: true, endCardSetting: false})}>
-                                        <img src="/images/pencil.svg"/>
-                                      </div>
-                                      <ReactTooltip className="stream-menu-tooltip" place="bottom" type="info" effect="solid" globalEventOff='click' id="edit">
-                                        <Typography className="stream-menu-tooltip-label">Edit</Typography>
-                                      </ReactTooltip>
-                                    </div>
-                                    <div className="col-12 col-md-1">
-                                      <div className="edit-icon-spacing" data-for="delete" data-tip data-iscapture='true' data-event-off='click' onClick={() => this.setDeleteCard()}>
-                                        <img src="/images/trash.svg"/>
-                                      </div>
-                                      <ReactTooltip className="stream-menu-tooltip" place="bottom" type="info" effect="solid" globalEventOff='click' id="delete">
-                                        <Typography className="stream-menu-tooltip-label">Delete</Typography>
-                                      </ReactTooltip>
-                                    </div>
-                                  </div>  
-                                )
-                            :
-                              <div className="card-save-result row" onClick={() =>this.setState({editCardSetting: true, editCardInfo: false})}>
-                                <div className="card-image col-12 col-md-2">
-                                  <img src="/images/card-image.svg"/>
-                                </div>
-                                <div className="common-font col-12 col-md-9">
-                                  {card_type} ended in {this.state.form.exp_year}
-                                </div>
-                                <div className="icon-spacing col-12 col-md-1">
-                                  <i className="fa fa-check" aria-hidden="true" style={{color: '#2D86DA'}}></i>
-                                </div>
-                              </div>
-                            )
-                          :
-                            <div>
-                              <div className="card-inputs form-field row">
-                                <div className="col-12 col-md-6">
-                                  <input className={'form-control whiteBg ' + validClaas}
-                                    onChange={(e) => this.checkIfValidCC(e.target.value)}
-                                    type="tel"
-                                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                                    size="19"
-                                    maxLength="19"
-                                    value={form.cardnumber} placeholder="Card number" />
-                                </div>
-                                <div className="col-12 col-md-3">
-                                  <Picker
-                                    ref="pickAMonth"
-                                    years={years}
-                                    value={mvalue}
-                                    lang={pickerLang.months}
-                                    onChange={this.handleAMonthChange}
-                                    onDismiss={this.handleAMonthDissmis}
-                                  >
-                                    <input className="form-control whiteBg"
-                                      type="tel"
-                                      onChange={(e) => this.onDateChange(e)}
-                                      value={form.exp_date}
-                                      onClick={this.handleClickMonthBox}
-                                      onFocus={this.handleClickMonthBox}
-                                      onBlur={this.handleClickMonthBoxHidde}
-                                      name="exp_date"
-                                      autoComplete={"off"}
-                                      autoComplete="new-password"
-                                      maxLength="9"
-                                      placeholder="Expiry date" />
-                                  </Picker>
-                                </div>
-                                <div className="col-12 col-md-3">
-                                  <input className="form-control whiteBg"
-                                    onChange={(e) => this.ValidateCvv(e)}
-                                    value={form.cvc}
-                                    name="cvc"
-                                    placeholder="CVV" />
-                                    <img className="cvv-image" src="/images/cvv-image.svg"/>
-                                </div>
-                              </div>
-                              <div>
-                                {
-                                  form.cardnumber == "" ?
-                                  <button className="save-card-button disabled-btn">Save card</button>
-                                :
-                                  <button className="save-card-button" onClick={(e) => this.saveCardInfo(e)}>Save card</button>
-                                }
-                              </div>
-                            </div>
-                        )
-                    }
-                    <div className="section-header__second-row">
-                      <h3>Billing information</h3>
-                    </div>
-                    <div>
-                      <p>Send receipt to my email
-                          <label className="switch round">
-                          <input type="checkbox" defaultChecked='checked' onChange={(e) => this.activateDm(e)} />
-                          <span className="slider round"></span>
-                          <p className={"off"}>Off</p>
-                          <p className={"on"}>On</p>
-                        </label>
-                      </p>
-                    </div>
-                    <div className="row">
-                      <div className="form-field col-12 col-md-6 mb1">
-                        <input className={'form-control whiteBg '}
-                          onChange={(e) => this.onFieldChange(e)}
-                          value={form.name}
-                          name="name"
-                          placeholder="Name" />
-                      </div>
-                      <div className="form-field col-12 col-md-6 mb1">
-                        <input className={'form-control whiteBg '}
-                          onChange={(e) => this.onFieldChange(e)}
-                          value={form.last_name}
-                          name="last_name"
-                          placeholder="Last Name" />
-                      </div>
-                      <div className="form-field col-12 col-md-6 mb1">
-                        <input className={'form-control whiteBg '}
-                          onChange={(e) => this.onFieldChange(e)}
-                          value={form.address_line1}
-                          name="address_line1"
-                          placeholder="Address" />
-                      </div>
-                      <div className="form-field col-12 col-md-6 mb1">
-                        <input className={'form-control whiteBg '}
-                          onChange={(e) => this.onFieldChange(e)}
-                          value={form.address_city}
-                          name="address_city"
-                          placeholder="City" />
-                      </div>
-                      <div className="form-field col-12 col-md-6 mb1 form-field form-country">
-                        <Select
-                          size="default"
-                          onChange={(value) => this.setLocation(value)}
-                          showSearch
-                          style={{ width: '100%' }}
-                          placeholder="Select a country"
-                          optionFilterProp="children"
-                          filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                        >
-                          {!!countries &&
-                            countries.map((item) => (
-                            <Option value={item}>{item}</Option>
-                            ))
-                          }
-                        </Select>
-                      </div>
-                      <div className="form-field col-12 col-md-6 mb1">
-                        <input className={'form-control whiteBg '}
-                          onChange={(e) => this.onFieldChange(e)}
-                          value={form.postal}
-                          name="postal"
-                          placeholder="Zip Code" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="col-md-5">
-                    <div className=" plan-info-container">
-                      <h3>Order summary</h3>
-
-                      <div className="plan-content table">
-                          <div className="row-price">
-                            <div className="col-price">
-                              <p className="plan-content-description">{planTitle}</p>
-                              <p className="price">${billingPeriod === "annually" ? plan['Annual Billing'] : plan["Monthly"]}</p>
-                              <button className="btn-text-pink" onClick={() => onChangePlan() }>Change</button>
-                            </div>
-                          </div>
-                          <br />
-                      </div>
-                      <div className="order-total table">
-                        <div className="row-price">
-                          <div className="col-price">
-                            <p className="plan-content-description">TOTAL</p>
-                            <p className="plan-content-accounts">{billingPeriod === "annually" ? 'Annually' : 'Monthly'}</p>
-                            <button className="btn-text-pink" onClick={() => onChangePeriod()}>Switch to {billingPeriod === "annually" ? 'monthly' : 'yearly'}</button>
-                          </div>
-                          <div className="currency-label">
-                            <p>${Math.round((billingPeriod === "annually" ? plan['Annual Billing'] : plan["Monthly"]) * 100.0) / 100.0}</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="discount-cnt">
-                        <input className="discount" placeholder="Add discount code" onChange={(e) => this.setCouponCode(e)}/>
-                      </div>
-                      {
-                        form.cardnumber != "" ?
-                        <button className="btn-blue" onClick={(e) => this.ConfirmOrder(e)}>Confirm order</button>
-                        :
-                        <button className="btn-blue disabled-btn">Confirm order</button>
-                      }
-                    </div>
+                    <p>Review your order summary and enter your payment information to complete the purchase</p>
                   </div>
                 </div>
               </div>
-            }
+
+
+              <div className="row ">
+                <div className="col-md-7">
+
+                  <div className="section-header__second-row">
+                    <h3>Payment details</h3>
+                  </div>
+                  {
+                    setStart && !endCardSetting?
+                      <div className="card-selector row" onClick={() =>this.setState({setStart: false})}>
+                          <div className="card-image col-12 col-md-2">
+                            <img src="/images/card-image.svg"/>
+                          </div>
+                          <div className="common-font col-12 col-md-9">
+                            Add a new payment method
+                          </div>
+                          <div className="icon-spacing col-12 col-md-1">
+                            <i className="fa fa-chevron-right" aria-hidden="true" style={{color: '#2D86DA'}}></i>
+                          </div>
+                      </div>
+                    :
+                      (
+                        endCardSetting ?
+                          (
+                            editCardSetting?
+                              (
+                                editCardInfo?
+                                <div>
+                                  <div className="card-inputs form-field row">
+                                    <div className="col-12 col-md-6">
+                                      <input className={'form-control whiteBg ' + validClaas}
+                                        onChange={(e) => this.checkIfValidCC(e.target.value)}
+                                        type="tel"
+                                        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                                        size="19"
+                                        maxLength="19"
+                                        value={form.cardnumber} placeholder="Card number" />
+                                    </div>
+                                    <div className="col-12 col-md-3">
+                                      <Picker
+                                        ref="pickAMonth"
+                                        years={years}
+                                        value={mvalue}
+                                        lang={pickerLang.months}
+                                        onChange={this.handleAMonthChange}
+                                        onDismiss={this.handleAMonthDissmis}
+                                      >
+                                        <input className="form-control whiteBg"
+                                          type="tel"
+                                          onChange={(e) => this.onDateChange(e)}
+                                          value={form.exp_date}
+                                          onClick={this.handleClickMonthBox}
+                                          onFocus={this.handleClickMonthBox}
+                                          onBlur={this.handleClickMonthBoxHidde}
+                                          name="exp_date"
+                                          autoComplete={"off"}
+                                          autoComplete="new-password"
+                                          maxLength="9"
+                                          placeholder="Expiry date" />
+                                      </Picker>
+                                    </div>
+                                    <div className="col-12 col-md-3">
+                                      <input className="form-control whiteBg"
+                                        onChange={(e) => this.ValidateCvv(e)}
+                                        value={form.cvc}
+                                        name="cvc"
+                                        placeholder="CVV" />
+                                        <img className="cvv-image" src="/images/cvv-image.svg"/>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    {
+                                      form.cardnumber == "" ?
+                                      <button className="save-card-button disabled-btn">Save card</button>
+                                    :
+                                      <button className="save-card-button" onClick={(e) => this.saveCardInfo(e)}>Save card</button>
+                                    }
+                                  </div>
+                                </div>
+                              :
+                                <div className="card-save-result row">
+                                  <div className="card-image col-12 col-md-2">
+                                    <img src="/images/card-image.svg"/>
+                                  </div>
+                                  <div className="common-font col-12 col-md-8">
+                                    {card_type} ended in {this.state.form.exp_year}
+                                  </div>
+                                  <div className="col-12 col-md-1" >
+                                    <div className="edit-icon-spacing" data-for="edit" data-tip data-iscapture='true' data-event-off='click' onClick={() => this.setState({editCardInfo: true, endCardSetting: false})}>
+                                      <img src="/images/pencil.svg"/>
+                                    </div>
+                                    <ReactTooltip className="stream-menu-tooltip" place="bottom" type="info" effect="solid" globalEventOff='click' id="edit">
+                                      <Typography className="stream-menu-tooltip-label">Edit</Typography>
+                                    </ReactTooltip>
+                                  </div>
+                                  <div className="col-12 col-md-1">
+                                    <div className="edit-icon-spacing" data-for="delete" data-tip data-iscapture='true' data-event-off='click' onClick={() => this.setDeleteCard()}>
+                                      <img src="/images/trash.svg"/>
+                                    </div>
+                                    <ReactTooltip className="stream-menu-tooltip" place="bottom" type="info" effect="solid" globalEventOff='click' id="delete">
+                                      <Typography className="stream-menu-tooltip-label">Delete</Typography>
+                                    </ReactTooltip>
+                                  </div>
+                                </div>  
+                              )
+                          :
+                            <div className="card-save-result row" onClick={() =>this.setState({editCardSetting: true, editCardInfo: false})}>
+                              <div className="card-image col-12 col-md-2">
+                                <img src="/images/card-image.svg"/>
+                              </div>
+                              <div className="common-font col-12 col-md-9">
+                                {card_type} ended in {this.state.form.exp_year}
+                              </div>
+                              <div className="icon-spacing col-12 col-md-1">
+                                <i className="fa fa-check" aria-hidden="true" style={{color: '#2D86DA'}}></i>
+                              </div>
+                            </div>
+                          )
+                        :
+                          <div>
+                            <div className="card-inputs form-field row">
+                              <div className="col-12 col-md-6">
+                                <input className={'form-control whiteBg ' + validClaas}
+                                  onChange={(e) => this.checkIfValidCC(e.target.value)}
+                                  type="tel"
+                                  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                                  size="19"
+                                  maxLength="19"
+                                  value={form.cardnumber} placeholder="Card number" />
+                              </div>
+                              <div className="col-12 col-md-3">
+                                <Picker
+                                  ref="pickAMonth"
+                                  years={years}
+                                  value={mvalue}
+                                  lang={pickerLang.months}
+                                  onChange={this.handleAMonthChange}
+                                  onDismiss={this.handleAMonthDissmis}
+                                >
+                                  <input className="form-control whiteBg"
+                                    type="tel"
+                                    onChange={(e) => this.onDateChange(e)}
+                                    value={form.exp_date}
+                                    onClick={this.handleClickMonthBox}
+                                    onFocus={this.handleClickMonthBox}
+                                    onBlur={this.handleClickMonthBoxHidde}
+                                    name="exp_date"
+                                    autoComplete={"off"}
+                                    autoComplete="new-password"
+                                    maxLength="9"
+                                    placeholder="Expiry date" />
+                                </Picker>
+                              </div>
+                              <div className="col-12 col-md-3">
+                                <input className="form-control whiteBg"
+                                  onChange={(e) => this.ValidateCvv(e)}
+                                  value={form.cvc}
+                                  name="cvc"
+                                  placeholder="CVV" />
+                                  <img className="cvv-image" src="/images/cvv-image.svg"/>
+                              </div>
+                            </div>
+                            <div>
+                              {
+                                form.cardnumber == "" ?
+                                <button className="save-card-button disabled-btn">Save card</button>
+                              :
+                                <button className="save-card-button" onClick={(e) => this.saveCardInfo(e)}>Save card</button>
+                              }
+                            </div>
+                          </div>
+                      )
+                  }
+                  <div className="section-header__second-row">
+                    <h3>Billing information</h3>
+                  </div>
+                  <div>
+                    <p>Send receipt to my email
+                        <label className="switch round">
+                        <input type="checkbox" defaultChecked='checked' onChange={(e) => this.activateDm(e)} />
+                        <span className="slider round"></span>
+                        <p className={"off"}>Off</p>
+                        <p className={"on"}>On</p>
+                      </label>
+                    </p>
+                  </div>
+                  <div className="row">
+                    <div className="form-field col-12 col-md-6 mb1">
+                      <input className={'form-control whiteBg '}
+                        onChange={(e) => this.onFieldChange(e)}
+                        value={form.name}
+                        name="name"
+                        placeholder="Name" />
+                    </div>
+                    <div className="form-field col-12 col-md-6 mb1">
+                      <input className={'form-control whiteBg '}
+                        onChange={(e) => this.onFieldChange(e)}
+                        value={form.last_name}
+                        name="last_name"
+                        placeholder="Last Name" />
+                    </div>
+                    <div className="form-field col-12 col-md-6 mb1">
+                      <input className={'form-control whiteBg '}
+                        onChange={(e) => this.onFieldChange(e)}
+                        value={form.address_line1}
+                        name="address_line1"
+                        placeholder="Address" />
+                    </div>
+                    <div className="form-field col-12 col-md-6 mb1">
+                      <input className={'form-control whiteBg '}
+                        onChange={(e) => this.onFieldChange(e)}
+                        value={form.address_city}
+                        name="address_city"
+                        placeholder="City" />
+                    </div>
+                    <div className="form-field col-12 col-md-6 mb1 form-field form-country">
+                      <Select
+                        size="default"
+                        onChange={(value) => this.setLocation(value)}
+                        showSearch
+                        style={{ width: '100%' }}
+                        placeholder="Select a country"
+                        optionFilterProp="children"
+                        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                      >
+                        {!!countries &&
+                          countries.map((item) => (
+                          <Option value={item}>{item}</Option>
+                          ))
+                        }
+                      </Select>
+                    </div>
+                    <div className="form-field col-12 col-md-6 mb1">
+                      <input className={'form-control whiteBg '}
+                        onChange={(e) => this.onFieldChange(e)}
+                        value={form.postal}
+                        name="postal"
+                        placeholder="Zip Code" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-5">
+                  <div className=" plan-info-container">
+                    <h3>Order summary</h3>
+
+                    <div className="plan-content table">
+                        <div className="row-price">
+                          <div className="col-price">
+                            <p className="plan-content-description">{planTitle}</p>
+                            <p className="price">${billingPeriod === "annually" ? plan['Annual Billing'] : plan["Monthly"]}</p>
+                            <button className="btn-text-pink" onClick={() => onChangePlan() }>Change</button>
+                          </div>
+                        </div>
+                        <br />
+                    </div>
+                    <div className="order-total table">
+                      <div className="row-price">
+                        <div className="col-price">
+                          <p className="plan-content-description">TOTAL</p>
+                          <p className="plan-content-accounts">{billingPeriod === "annually" ? 'Annually' : 'Monthly'}</p>
+                          <button className="btn-text-pink" onClick={() => onChangePeriod()}>Switch to {billingPeriod === "annually" ? 'monthly' : 'yearly'}</button>
+                        </div>
+                        <div className="currency-label">
+                          <p>${Math.round((billingPeriod === "annually" ? plan['Annual Billing'] : plan["Monthly"]) * 100.0) / 100.0}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="discount-cnt">
+                      <input className="discount" placeholder="Add discount code" onChange={(e) => this.setCouponCode(e)}/>
+                    </div>
+                    {
+                      form.cardnumber != "" ?
+                      <button className="btn-blue" onClick={(e) => this.ConfirmOrder(e)}>Confirm order</button>
+                      :
+                      <button className="btn-blue disabled-btn">Confirm order</button>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         }
       </div >
