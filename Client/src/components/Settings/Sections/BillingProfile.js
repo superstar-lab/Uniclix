@@ -63,6 +63,7 @@ class BillingProfile extends React.Component {
           locations: [],
           location: "",
           couponCode: '',
+          feedback: '',
         }
     }
 
@@ -176,7 +177,8 @@ class BillingProfile extends React.Component {
 
     cancelPlan = () => {
         this.setLoading(true);
-        cancelSubscription().then(response => {
+        const feedback = this.state.feedback;
+        cancelSubscription(feedback).then(response => {
           this.props.startSetProfile();
           this.setLoading(false);
         });
@@ -311,6 +313,14 @@ class BillingProfile extends React.Component {
         })
     }
 
+    onFeedBack = (e) => {
+        const feedback = e.target.value;
+        console.log(feedback);
+        this.setState({
+            feedback: feedback,
+        });
+    }
+
     setLocation = (val) => {
         this.setState({ 
             location: val
@@ -344,7 +354,8 @@ class BillingProfile extends React.Component {
             address_zip: this.state.form.postal,
             address_line1: this.state.form.address_line1
             }, (status, response) => {
-            response.plan = this.state.billingPeriod === "annually" ? this.state.planName.charAt(0).toLowerCase() + "_annual" : this.state.planName.charAt(0).toLowerCase();
+                
+            response.plan = this.state.billingPeriod === "annually" ? this.state.planName + "_annual" : this.state.planName;
             response.trialDays = 0;
             response.created = new Date().getTime();
             response.subType = "main"
@@ -393,7 +404,8 @@ class BillingProfile extends React.Component {
             form, 
 			years,
             countries,
-            payInfoEdit
+            payInfoEdit,
+            feedback,
         } = this.state;
         const { profile, freeTrialEnded } = this.props;
         const todayDate = new Date();
@@ -480,11 +492,14 @@ class BillingProfile extends React.Component {
                             className="billing-profile-modal"
                             isOpen={!!planCancel}
                             >
-                                <div className="modal-title">{`Are you sure you want to cancel your subscription?`}</div>
-                                <div className="modal-contents">{`All the accounts and members linked will be lost`}</div>
+                                <div className="modal-title">{`We are sorry to see you go away!`}</div>
+                                <div className="modal-contents">{`Please let us know why you’re canceling your account. If there’s anything we could do to make your experience better, here is the place to let us know? Your feedback is very important to us.`}</div>
+                                <div className="spacing-left"><b>{`Thank you for giving Uniclix a try`}</b></div><br/>
+                                <div className="spacing-left"><b>{`Why are you canceling your account?`}</b></div>
+                                <div className="modal-contents"><textarea id="feedback" rows="4" cols="45" value={feedback} onChange={(e) => this.onFeedBack(e)}></textarea></div>
                                 <div style={{float:'right'}}>
                                     <button onClick={() => this.setPlanCancel(false)} className="cancelBtn" >Cancel</button>
-                                    <button onClick={() => {this.cancelPlan();this.setPlanCancel(false);}} className="cancelBtn" >Yes, cancel it</button>
+                                    <button onClick={() => {this.cancelPlan();this.setPlanCancel(false);}} className="cancelBtn" >Cancel Subscription</button>
                                 </div>
                             </Modal>
                         }

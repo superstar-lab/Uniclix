@@ -43,8 +43,8 @@ export const getPlanData = () => {
         });
 }
 
-export const cancelSubscription = () => {
-    return axios.post(`${apiUrl}/billing/subscription/cancel`)
+export const cancelSubscription = (feedback) => {
+    return axios.post(`${apiUrl}/billing/subscription/cancel`, {feedback})
         .then((response) => {
             return response.data;
         });

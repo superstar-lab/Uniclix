@@ -21,6 +21,9 @@ class CreateUsersTable extends Migration
             $table->string('password')->nullable();
             $table->boolean('banned')->default(0);
             $table->integer('role_id')->unsigned();
+            $table->integer('cancel_status')->unsigned();
+            $table->string('billing_method');
+            $table->string('feedback');
             $table->rememberToken();
             $table->timestamps();
         });

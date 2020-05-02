@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\RoleAddon;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\FeedbackSendMail;
+use Exception;
 
 class BillingController extends Controller
 {
@@ -80,13 +83,24 @@ class BillingController extends Controller
                 $user->newSubscription($subType, $plan)->withCoupon($couponCode)->create($id);
             }
 
-            $roleName = explode("_", $plan)[0];
+            $roles = explode("_", $plan);
+            $roleName = '';
+            $rolePeriod = '';
+            if(count($roles) > 1){
+                $roleName = $roles[0];
+                $rolePeriod = 'annually';
+            } else {
+                $roleName = $roles[0];
+                $rolePeriod = 'monthly';
+            }
 
             if($subType == "main"){
                 $role = Role::where("name", $roleName)->first();
                 if (!$role) return response()->json(["error" => "Plan not found"], 404);
 
                 $user->role_id = $role->id;
+                $user->billing_method = $rolePeriod;
+                $user->cancel_status = 0;
                 $user->save();
             }
             elseif($subType == "addon"){
@@ -105,12 +119,26 @@ class BillingController extends Controller
 
     }
 
-    public function cancelSubscription()
+    public function cancelSubscription(Request $request)
     {
         try {
+
+            $feedback = $request->input('feedback');
             $user = $this->user;
 
+            Mail::raw($feedback, function($message)
+            {
+                $user = $this->user;
+                $message->subject('Feedback');
+                $message->from( $user->email, 'Uniclix');
+                $message->to('info@uniclixapp.com');
+            });
+
+            $user->cancel_status = 1;
+            $user->feedback = $feedback;
+            
             $user->subscription('main')->cancel();
+            $user->save();
 
             return response()->json(["success" => true], 200);
         } catch (\Throwable $th) {
@@ -150,6 +178,8 @@ class BillingController extends Controller
             $user = $this->user;
 
             $user->subscription($request->input('type'))->resume();
+            $user->cancel_status = 0;
+            $user->save();
 
             return response()->json(["success" => true], 200);
         } catch (\Throwable $th) {
@@ -175,13 +205,23 @@ class BillingController extends Controller
                 $user->newSubscription($subType, $plan)->withCoupon($couponCode)->create($id);
             }
 
-            $roleName = explode("_", $plan)[0];
+            $roles = explode("_", $plan);
+            $roleName = '';
+            $rolePeriod = '';
+            if(count($roles) > 1){
+                $roleName = $roles[0];
+                $rolePeriod = 'annually';
+            } else {
+                $roleName = $roles[0];
+                $rolePeriod = 'monthly';
+            }
 
             if($subType == "main"){
                 $role = Role::where("name", $roleName)->first();
                 if (!$role) return response()->json(["error" => "Plan not found"], 404);
 
                 $user->role_id = $role->id;
+                $user->billing_method = $rolePeriod;
                 $user->save();
             }
             elseif($subType == "addon"){

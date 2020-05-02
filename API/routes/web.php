@@ -33,6 +33,7 @@ Route::prefix("admin")->middleware(["auth:admin"])->group(function(){
 });
 
 Route::get('/', ['as' => 'homepage.index', 'uses' => 'PagesController@index']);
+Route::get('/admin', ['as' => 'homepage.admin', 'uses' => 'PagesController@admin']);
 Route::get('/upgrade', ['as' => 'upgrade', 'uses' => 'PagesController@upgrade']);
 Route::get('/education', ['as' => 'education', 'uses' => 'PagesController@education']);
 Route::get('/pricing', ['as' => 'pricing', 'uses' => 'PagesController@pricing']);

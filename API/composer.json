@@ -24,7 +24,8 @@
         "monolog/monolog": "^1.23",
         "sammyk/laravel-facebook-sdk": "^3.5",
         "socialiteproviders/pinterest": "^3.0",
-        "thujohn/twitter": "^2.2"
+        "thujohn/twitter": "^2.2",
+        "yajra/laravel-datatables": "1.5"
     },
     "require-dev": {
         "filp/whoops": "^2.0",
