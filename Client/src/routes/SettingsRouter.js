@@ -5,6 +5,7 @@ import BillingProfile from '../components/Settings/Sections/BillingProfile';
 import Social from '../components/Settings/Sections/Social';
 import BillingPlans from '../components/Settings/Sections/BillingPlans';
 import Team from '../components/Settings/Sections/Team';
+import CongratsPayment from '../components/Settings/Sections/CongratsPayment';
 
 const SettingsRouter = () => (
     <div>
@@ -14,6 +15,9 @@ const SettingsRouter = () => (
             <Route path={`/settings/profile`} component={Profile} />
             <Route path={`/settings/team`} component={Team} />
             <Route path={`/settings/billing`} exact={true} component={BillingProfile} />
+            <Route path={`/settings/billing/thank-you-basic`} exact={true} component={CongratsPayment} />
+            <Route path={`/settings/billing/thank-you-premium`} exact={true} component={CongratsPayment} />
+            <Route path={`/settings/billing/thank-you-pro`} exact={true} component={CongratsPayment} />
             <Route path={`/settings/manage-account`} exact={true} component={Social} />
             <Route path={`/settings/billing/plans`} component={BillingPlans} />
         </Switch>

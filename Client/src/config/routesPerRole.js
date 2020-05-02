@@ -24,7 +24,10 @@ const ADMIN_ROUTES = [
 const OWNER_ROUTES = [
   ...ADMIN_ROUTES,
   '/settings/billing',
-  '/settings/billing/plans'
+  '/settings/billing/plans',
+  '/settings/billing/thank-you-basic',
+  '/settings/billing/thank-you-premium',
+  '/settings/billing/thank-you-pro'
 ];
 
 const ROUTES = {

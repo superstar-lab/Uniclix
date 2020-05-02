@@ -370,6 +370,10 @@ class BillingProfile extends React.Component {
         });
     }
     
+    navigateToCongrats = (plan) => {
+        this.props.history.push(`/settings/billing/thank-you-${plan.toLowerCase()}`);
+    }
+
     render() {
         const {
             allPlans,
@@ -416,7 +420,14 @@ class BillingProfile extends React.Component {
                 </Modal>
                 {
                 onAddCard ?
-                    <Checkout planName={planName} plan={selectedPlan} billingPeriod={billingPeriod} onChangePlan={() => this.setState({onAddCard: false})} onChangePeriod={() => this.setBillingPeriod()} />
+                    <Checkout
+                        planName={planName}
+                        plan={selectedPlan}
+                        billingPeriod={billingPeriod}
+                        onChangePlan={() => this.setState({onAddCard: false})}
+                        onChangePeriod={() => this.setBillingPeriod()}
+                        navigateToCongrats={this.navigateToCongrats}
+                    />
                     :
                     <div>
                         {!!planConfirm && 
