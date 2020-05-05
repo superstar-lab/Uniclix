@@ -140,7 +140,7 @@
                                             <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
                                             <div style="color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
                                                 <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 14px; color: #555555;">
-                                                    <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Hi, </span></p>
+                                                    <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Hi, {{$user}}</span></p>
                                                     <p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;">My name is Lumi and I wanted to welcome you to the UniClix blog. We will share weekly content pertaining to social media management. Welcome!</span></p>
                                                     <p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;">Additionally, you can check out our social media management tool, Uniclix.</span></p>
                                                     <p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;"><strong>Here’s how Uniclix works:</strong> </span></p>

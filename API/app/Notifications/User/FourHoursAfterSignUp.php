@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class UserFirstSignUp extends Notification implements ShouldQueue
+class FourHoursAfterSignUp extends Notification implements ShouldQueue
 {
     use Queueable;
     protected $username;
@@ -43,7 +43,7 @@ class UserFirstSignUp extends Notification implements ShouldQueue
     {
         $user = $this->username;
         return (new MailMessage)
-                ->view('emails.user.signupfirst', [ 'user' => $user ])
+                ->view('emails.user.four_hours_after_signup', [ 'user' => $user ])
                 ->subject('Welcome to Uniclix!');
     }
 
