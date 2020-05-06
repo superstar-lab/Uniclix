@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class OneDayAfterSignUp extends Notification implements ShouldQueue
+class TwentyEightHoursAfterSignUp extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -30,8 +30,8 @@ class OneDayAfterSignUp extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            $this->user->isOld(24)
-            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\OneDayAfterSignUp")
+            $this->user->isOld(28)
+            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\TwentyEightHoursAfterSignUp")
         ) {
             return ['database', 'mail'];
         } else {
@@ -48,7 +48,7 @@ class OneDayAfterSignUp extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->view('emails.user.one_day_after_signup')
+            ->view('emails.user.twentyeight_hours_after_signup')
             ->from('info@uniclixapp.com')
             ->subject('Schedule your UniClix free demo - no strings attached');
     }

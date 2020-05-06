@@ -21,6 +21,7 @@ use App\Notifications\User\UserSignUp;
 use App\Notifications\User\UserFirstSignUp;
 use App\Notifications\User\FourHoursAfterSignUp;
 use App\Notifications\User\TwoHoursAfterSignUp;
+use App\Notifications\User\TwentyEightHoursAfterSignUp;
 use App\Notifications\User\NoPostScheduledAfterTenDays;
 use App\Notifications\User\NoPostScheduledAfterThreeDays;
 use App\Notifications\User\TwitterBoosterAfterFiveDays;
@@ -68,6 +69,7 @@ class Notifier extends Command
                 $user->notify(new AfterTwelveHours($user));
                 $user->notify(new FiveHoursAfterSignUp($user));
                 $user->notify(new OneDayAfterSignUp($user));
+                $user->notify(new TwentyEightHoursAfterSignUp($user));
                 $user->notify(new AfterFourtyEightHours($user));
                 $user->notify(new AfterTenDays($user));
                 $user->notify(new AfterThirtyDays($user));
