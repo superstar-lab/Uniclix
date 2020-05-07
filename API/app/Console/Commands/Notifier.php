@@ -29,6 +29,7 @@ use App\Notifications\User\TwitterBoosterAfterThirtyFiveDays;
 use App\Notifications\User\AfterThreeDays;
 use App\Notifications\User\AfterFourDays;
 use App\Notifications\User\AfterFiveDays;
+use App\Notifications\User\AfterSixDays;
 
 class Notifier extends Command
 {
@@ -88,6 +89,7 @@ class Notifier extends Command
                 $user->notify(new AfterThreeDays($user));
                 $user->notify(new AfterFourDays($user));
                 $user->notify(new AfterFiveDays($user));
+                $user->notify(new AfterSixDays($user));
             }
         }
 

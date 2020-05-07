@@ -31,8 +31,8 @@ class AfterFiveDays extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            $this->user->isOld(5 * 24)
-            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterFiveDaysAfterSignUp")
+            $this->user->isOld(6 * 24)
+            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterSixDaysAfterSignUp")
         ) {
             return ['database', 'mail'];
         } else {
@@ -50,9 +50,9 @@ class AfterFiveDays extends Notification implements ShouldQueue
     {
         $user = $this->username;
         return (new MailMessage)
-            ->view('emails.user.after_five_days', [ 'user' => $user])
+            ->view('emails.user.after_six_days', [ 'user' => $user])
             ->from('info@uniclixapp.com')
-            ->subject('Have you tried the Publisher tool by UniClix?');
+            ->subject('Have you tried the content finder tool by UniClix?');
     }
 
     /**
