@@ -27,6 +27,8 @@ use App\Notifications\User\NoPostScheduledAfterThreeDays;
 use App\Notifications\User\TwitterBoosterAfterFiveDays;
 use App\Notifications\User\TwitterBoosterAfterThirtyFiveDays;
 use App\Notifications\User\AfterThreeDays;
+use App\Notifications\User\AfterFourDays;
+use App\Notifications\User\AfterFiveDays;
 
 class Notifier extends Command
 {
@@ -84,6 +86,8 @@ class Notifier extends Command
                 $user->notify(new TwitterBoosterAfterFiveDays($user));
                 $user->notify(new TwitterBoosterAfterThirtyFiveDays($user));
                 $user->notify(new AfterThreeDays($user));
+                $user->notify(new AfterFourDays($user));
+                $user->notify(new AfterFiveDays($user));
             }
         }
 

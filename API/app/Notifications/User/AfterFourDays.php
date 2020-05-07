@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class AfterThreeDays extends Notification implements ShouldQueue
+class AfterFourDays extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -31,8 +31,8 @@ class AfterThreeDays extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            $this->user->isOld(3 * 24)
-            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterThreeDaysAfterSignUp")
+            $this->user->isOld(4 * 24)
+            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterFourDaysAfterSignUp")
         ) {
             return ['database', 'mail'];
         } else {
@@ -50,9 +50,9 @@ class AfterThreeDays extends Notification implements ShouldQueue
     {
         $user = $this->username;
         return (new MailMessage)
-            ->view('emails.user.after_three_days', [ 'user' => $user])
+            ->view('emails.user.after_four_days', [ 'user' => $user])
             ->from('info@uniclixapp.com')
-            ->subject('Scheduling an appointment with you for Uniclix');
+            ->subject('Create Your First Post with UniClix ');
     }
 
     /**
