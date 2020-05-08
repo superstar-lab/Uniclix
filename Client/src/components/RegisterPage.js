@@ -44,9 +44,16 @@ export class RegisterPage extends React.Component {
         registerUser(data).then(response => {
             if (typeof response.accessToken !== "undefined") {
                 this.performLogin(response.accessToken);
-                if (window.ga) {
-                    const tracker = ga.getAll()[0];
-                    tracker.send('event', 'account', 'click', 'Sign Up');
+                if (gtag) {
+                    gtag(
+                        'event',
+                        'click',
+                        {
+                            'event_category' : 'account',
+                            'event_label' : 'Sign Up',
+                            'value': 1
+                        }
+                    );
                 }
             }
         }).catch(e => {
