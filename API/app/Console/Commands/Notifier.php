@@ -30,6 +30,8 @@ use App\Notifications\User\AfterThreeDays;
 use App\Notifications\User\AfterFourDays;
 use App\Notifications\User\AfterFiveDays;
 use App\Notifications\User\AfterSixDays;
+use App\Notifications\User\AfterSevenDaysSecond;
+
 
 class Notifier extends Command
 {
@@ -90,6 +92,7 @@ class Notifier extends Command
                 $user->notify(new AfterFourDays($user));
                 $user->notify(new AfterFiveDays($user));
                 $user->notify(new AfterSixDays($user));
+                $user->notify(new AfterSevenDaysSecond($user));
             }
         }
 

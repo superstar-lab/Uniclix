@@ -7,16 +7,18 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class AfterSixDays extends Notification implements ShouldQueue
+class AfterSevenDaysSecond extends Notification implements ShouldQueue
 {
     use Queueable;
+
+    private $user;
+    public $tries = 3;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    protected $user;
     public function __construct($user)
     {
         $this->user = $user;
@@ -31,8 +33,9 @@ class AfterSixDays extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            $this->user->isOld(6 * 24)
-            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterSixDaysAfterSignUp")
+            $this->user->isOld(7 * 24 + 12)
+            && $this->user->channels->count() <=2
+            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterSevenDaysSecond")
         ) {
             return ['database', 'mail'];
         } else {
@@ -48,11 +51,10 @@ class AfterSixDays extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $user = $this->user->name;
+        $username = $this->user->name;
         return (new MailMessage)
-            ->view('emails.user.after_six_days', [ 'user' => $user])
-            ->from('info@uniclixapp.com')
-            ->subject('Have you tried the content finder tool by UniClix?');
+            ->view('emails.user.after_seven_days_second', [ 'user' => $username])
+            ->subject('Let’s get this party started - fire up the Uniclix Social Media Growth Engine');
     }
 
     /**

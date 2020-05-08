@@ -10,16 +10,16 @@ use Illuminate\Notifications\Messages\MailMessage;
 class UserFirstSignUp extends Notification implements ShouldQueue
 {
     use Queueable;
-    protected $username;
+    protected $user;
     public $tries = 3;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($username)
+    public function __construct($user)
     {
-        $this->username = $username;
+        $this->user = $user;
     }
 
     /**
@@ -41,7 +41,7 @@ class UserFirstSignUp extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $user = $this->username;
+        $user = $this->user->name;
         return (new MailMessage)
                 ->view('emails.user.signupfirst', [ 'user' => $user ])
                 ->subject('Welcome to Uniclix!');

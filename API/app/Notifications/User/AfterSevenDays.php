@@ -51,9 +51,10 @@ class AfterSevenDays extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        $username = $this->user->name;
         return (new MailMessage)
-            ->view('emails.user.depend_on_social_accounts')
-            ->subject('Getting started is easy!');
+            ->view('emails.user.after_seven_days', [ 'user' => $username])
+            ->subject('Already one week together!');
     }
 
     /**
