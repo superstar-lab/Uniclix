@@ -2534,4 +2534,12 @@ p, span { font-family: 'Open Sans', Arial, sans-serif; }
     color: #363636;
 }
 
-
+.admin-logout {
+    background: #438AF1;
+    padding: 10px 30px;
+    position: absolute;
+    top: 20px;
+    right: 26px;
+    border-radius: 7px;
+}
+    

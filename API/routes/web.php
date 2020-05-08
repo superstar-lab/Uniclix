@@ -23,7 +23,7 @@ Route::post(
 );
 
 Route::prefix("admin")->middleware(["auth:admin"])->group(function(){
-    Route::get('dashboard', ['as'=>'admin.dashboard', 'uses'=>'Admin\AdminController@dashboard']);
+    Route::get('dashboard', ['as' => 'homepage.admin', 'uses' => 'PagesController@admin']);    
     Route::get('post/create', ['as'=>'admin.post.create', 'uses'=>'Admin\AdminController@createPost']);
     Route::post('post/store', ['as'=>'post.store', 'uses'=>'Admin\AdminController@storePost']);
     Route::get('post/edit/{id}', ['as'=>'post.edit', 'uses'=>'Admin\AdminController@editPost']);
@@ -31,9 +31,7 @@ Route::prefix("admin")->middleware(["auth:admin"])->group(function(){
     Route::post('post/image/upload', ['as'=>'post.image.store', 'uses'=>'Admin\AdminController@uploadPostImage']);
     Route::post('post/delete/{id}',['as'=>'post.delete', 'uses'=>'Admin\AdminController@deletePost']);
 });
-
 Route::get('/', ['as' => 'homepage.index', 'uses' => 'PagesController@index']);
-Route::get('/admin', ['as' => 'homepage.admin', 'uses' => 'PagesController@admin']);
 Route::get('/upgrade', ['as' => 'upgrade', 'uses' => 'PagesController@upgrade']);
 Route::get('/education', ['as' => 'education', 'uses' => 'PagesController@education']);
 Route::get('/pricing', ['as' => 'pricing', 'uses' => 'PagesController@pricing']);

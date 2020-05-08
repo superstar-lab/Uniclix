@@ -59,7 +59,9 @@
 
 <body>
     <div class="container" style="margin-top: 90px;font-family: sans-serif;width:100%;">
-
+    <div class="admin-logout">
+        <a href="{{url('/login/admin')}}" style="color:white;text-decoration:none;">Log out</a>
+    </div>
         <table class="table table-bordered" id="users-table">
             <thead>
                 <tr>
@@ -86,7 +88,7 @@
             $('#users-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ url("admin") }}',
+                ajax: '{{ url("admin/dashboard") }}',
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex'
