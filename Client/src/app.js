@@ -12,11 +12,38 @@ import { setChannels, startSetChannels } from "./actions/channels";
 import { setMiddleware } from "./actions/middleware";
 import { startGeneral } from './actions/general';
 import 'antd/dist/antd.css';
+import { Helmet } from 'react-helmet';
+import { googleAnalyticsGtagID } from './config/api';
 
 const store = configStore();
 
 const Root = () => (
     <div>
+        <Helmet>
+            {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
+            {
+                googleAnalyticsGtagID ? (
+                    <script
+                        async
+                        src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsGtagID}`}
+                    >
+                    </script>
+                ) : null
+            }
+            {
+                googleAnalyticsGtagID ? (
+                    <script>
+                        {`
+                            window.dataLayer = window.dataLayer || [];
+                            function gtag(){dataLayer.push(arguments);}
+                            gtag('js', new Date());
+
+                            gtag('config', '${googleAnalyticsGtagID}');
+                        `}
+                    </script>
+                ) : null
+            }
+        </Helmet>
         <Provider store={store}>
             <AppRouter />
         </Provider>    
