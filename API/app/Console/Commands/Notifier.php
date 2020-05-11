@@ -9,6 +9,12 @@ use App\Models\Channel;
 use App\Notifications\User\AccountDisconnected;
 use App\Notifications\User\AfterFourteenDays;
 use App\Notifications\User\AfterSevenDays;
+use App\Notifications\User\AfterEightDays;
+use App\Notifications\User\AfterEightDaysSecond;
+use App\Notifications\User\AfterElevenDays;
+use App\Notifications\User\AfterTwelveDays;   
+use App\Notifications\User\AfterTwelveDaysSecond;
+use App\Notifications\User\AfterFifteenDays;       
 use App\Notifications\User\AfterThirtyOneDays;
 use App\Notifications\User\AfterTwelveHours;
 use App\Notifications\User\AfterFourtyEightHours;
@@ -70,6 +76,12 @@ class Notifier extends Command
         if ($users = User::all()) {
             foreach ($users as $user) {
                 $user->notify(new AfterFourteenDays($user));
+                $user->notify(new AfterFifteenDays($user));
+                $user->notify(new AfterEightDays($user));
+                $user->notify(new AfterEightDaysSecond($user));
+                $user->notify(new AfterElevenDays($user));
+                $user->notify(new AfterTwelveDays($user));
+                $user->notify(new AfterTwelveDaysSecond($user));
                 $user->notify(new AfterSevenDays($user));
                 $user->notify(new AfterThirtyOneDays($user));
                 $user->notify(new AfterTwelveHours($user));
