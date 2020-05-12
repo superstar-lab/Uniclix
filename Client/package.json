@@ -60,6 +60,7 @@
     "react-draggable-tab": "^0.10.1",
     "react-facebook-login": "^4.1.1",
     "react-geosuggest": "^2.8.0",
+    "react-helmet": "^6.0.0",
     "react-images": "^0.5.19",
     "react-images-browse": "^0.2.4",
     "react-infinite-scroller": "^1.2.4",
