@@ -33,9 +33,7 @@ class AfterSevenDays extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            $this->user->isOld(7 * 24)
-            && $this->user->channels->count() <=2
-            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterSevenDays")
+            !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterSevenDays")
         ) {
             return ['database', 'mail'];
         } else {

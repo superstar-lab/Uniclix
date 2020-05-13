@@ -31,8 +31,7 @@ class AfterSixDays extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            $this->user->isOld(6 * 24)
-            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterSixDaysAfterSignUp")
+            !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterSixDaysAfterSignUp")
         ) {
             return ['database', 'mail'];
         } else {

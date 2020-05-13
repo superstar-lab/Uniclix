@@ -31,8 +31,7 @@ class AfterThreeDays extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            $this->user->isOld(3 * 24)
-            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterThreeDaysAfterSignUp")
+            !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterThreeDaysAfterSignUp")
         ) {
             return ['database', 'mail'];
         } else {

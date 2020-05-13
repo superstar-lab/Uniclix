@@ -33,8 +33,7 @@ class AfterTwelveHours extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            $this->user->isOld(12)
-            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterTwelveHours")
+            !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterTwelveHours")
         ) {
             return ['database', 'mail'];
         } else {

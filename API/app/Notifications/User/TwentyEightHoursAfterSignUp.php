@@ -30,8 +30,7 @@ class TwentyEightHoursAfterSignUp extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            $this->user->isOld(28)
-            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\TwentyEightHoursAfterSignUp")
+            !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\TwentyEightHoursAfterSignUp")
         ) {
             return ['database', 'mail'];
         } else {

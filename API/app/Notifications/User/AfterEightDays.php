@@ -33,8 +33,7 @@ class AfterEightDays extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            $this->user->isOld(8 * 24)
-            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterEightDays")
+            !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterEightDays")
         ) {
             return ['database', 'mail'];
         } else {

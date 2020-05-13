@@ -16,10 +16,10 @@ class AfterFiveDays extends Notification implements ShouldQueue
      *
      * @return void
      */
-    protected $username;
-    public function __construct($username)
+    protected $user;
+    public function __construct($user)
     {
-        $this->username = $username;
+        $this->user = $user;
     }
 
     /**
@@ -31,8 +31,7 @@ class AfterFiveDays extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            $this->user->isOld(5 * 24)
-            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterFiveDaysAfterSignUp")
+           !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterFiveDays")
         ) {
             return ['database', 'mail'];
         } else {
@@ -48,7 +47,7 @@ class AfterFiveDays extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $user = $this->username;
+        $user = $this->user->name;
         return (new MailMessage)
             ->view('emails.user.after_five_days', [ 'user' => $user])
             ->from('info@uniclixapp.com')

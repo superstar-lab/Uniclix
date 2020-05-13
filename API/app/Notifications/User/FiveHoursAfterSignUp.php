@@ -33,8 +33,7 @@ class FiveHoursAfterSignUp extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            $this->user->isOld(5)
-            && !$this->user->subscribed('main')
+            !$this->user->subscribed('main')
             && !$this->user->subscribed('addon')
             && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\FiveHoursAfterSignUp")
         ) {

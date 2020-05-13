@@ -30,8 +30,7 @@ class OneDayAfterSignUp extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            $this->user->isOld(24)
-            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\OneDayAfterSignUp")
+            !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\OneDayAfterSignUp")
         ) {
             return ['database', 'mail'];
         } else {
