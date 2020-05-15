@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class AfterFourteenDays extends Notification implements ShouldQueue
+class AfterFifteenDays extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -33,7 +33,7 @@ class AfterFourteenDays extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterFourteenDays")
+           !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterFifteenDays")
         ) {
             return ['database', 'mail'];
         } else {
@@ -51,8 +51,8 @@ class AfterFourteenDays extends Notification implements ShouldQueue
     {
         $username = $this->user->name;
         return (new MailMessage)
-            ->view('emails.user.after_fourteen_days', [ 'user' => $username])
-            ->subject('Action Required! Your Trial Expires Today.');
+            ->view('emails.user.after_fifteen_days', [ 'user' => $username])
+            ->subject('Action Required! Your Trial Has Expired.');
     }
 
     /**
