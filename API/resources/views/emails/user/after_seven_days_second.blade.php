@@ -140,26 +140,18 @@
 											<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
 											<div style="color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
 												<div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 14px; color: #555555;">
-													<p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Hello, There</span></p>
-													<p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;">Hope you are enjoying UniClix social media management tool so far. If not, I'm here to help.</span></p>
-													<p style="font-size: 12px; line-height: 16px; margin-bottom: 30px;"><br /><span style="font-size: 14px;">Here are some features that can make it EXTREMELY easy for you to automate your social media work:</span></p>
-													<ul>
-														<b><li class="mail-label-li">Schedule posts</li></b>
-														<b><li class="mail-label-li">Auto curate content</li></b>
-														<b><li class="mail-label-li">Monitor conversations </li></b>
-														<b><li class="mail-label-li">Track analytics </li></b>
-														<b><li class="mail-label-li">Grow followers with Twitter Booster</li></b>
-													</ul>
+													<p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Hi {{$user}}</span></p>
+													<p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;">It's been one week since you joined Uniclix and you seem to be doing pretty well!</span></p>
+													
+                                                    <p style="font-size: 12px; line-height: 16px; margin-top: 30px;"><span style="font-size: 14px;">Just a quick heads-up that you are halfway through your 14-day trial period.</span></p>
 
-													<p style="font-size: 12px; line-height: 16px; margin-top: 30px;"><br /><span style="font-size: 14px;">If you would like a personal tutorial, I can offer a FREE 30 minute product demo. Schedule a demo using the link below.</span></p>
+                                                    <p style="font-size: 12px; line-height: 16px; margin-bottom: 30px;"><br /><span style="font-size: 14px;">You still have another 7 days to enjoy Uniclix for free, but we recommend that you <a href="{{config('app.url')}}" target="_blank" style="color:blue;">enter your payment information now</a> to avoid any service interruption at the end of your trial period.</span></p>
+                                                    
+													<p style="margin-top:20px;"><span style="font-size: 14px;">Cheers!</span></p>
 
-													<p style="font-size: 16px; line-height: 16px;"><a href="https://youtu.be/yrVfwgv4n8s" target="_blank" style="color:blue;">Book now</a></span></p>
+													<p style="margin-top:20px;"><span style="font-size: 14px;">- This is Lumi from UniClix</span></p>
 
-													<p style="font-size: 12px; line-height: 16px;margin-top:40px;"><span style="font-size: 14px;">Cheers!</span></p>
-
-													<p style="font-size: 12px; line-height: 16px;"><span style="font-size: 14px;">- Your pal Lumi from UniClix</span></p>
-
-													<p style="font-size: 12px; line-height: 16px;"><span style="font-size: 14px;">P.S. If you need ANY help getting started, just REPLY to this email and I will respond to you personally!</span></p>
+													<p style="margin-top:20px;line-height: 30px;"><span style="font-size: 14px;">P.S. If you need ANY help getting started, just REPLY to this email and I will respond to you personally!</span></p>
 
 												</div>
 											</div>

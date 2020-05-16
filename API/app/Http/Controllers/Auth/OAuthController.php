@@ -57,7 +57,71 @@ class OAuthController extends Controller
         $trial_ends_at = date("Y-m-d h:i:s", $created_at + 14 * 86400);
 
         \DB::table('users')->where('email', $email)->update(['trial_ends_at' => $trial_ends_at]);
-        // $user->notify(new \App\Notifications\User\UserSignUp());
+        
+        $user->notify(new \App\Notifications\User\UserSignUp());
+
+        $fourHours = $user->created_at->addMinutes(30);
+        $user->notify(new \App\Notifications\User\UserFirstSignUp());
+
+        $fourHours = $user->created_at->addMinutes(60 * 4);
+        $user->notify((new \App\Notifications\User\FourHoursAfterSignUp($user))->delay($fourHours));
+
+        $twoHours = $user->created_at->addMinutes(60 * 2);
+        $user->notify((new \App\Notifications\User\TwoHoursAfterSignUp($user))->delay($twoHours));
+
+        $oneDay = $user->created_at->addMinutes(60 * 24);
+        $user->notify((new \App\Notifications\User\OneDayAfterSignUp($user))->delay($oneDay));
+
+        $twentyeightHours = $user->created_at->addMinutes(60 * 28);
+        $user->notify((new \App\Notifications\User\TwentyEightHoursAfterSignUp($user))->delay($twentyeightHours));
+
+        $threeDays = $user->created_at->addMinutes(60 * 24 * 3);
+        $user->notify((new \App\Notifications\User\AfterThreeDays($user))->delay($threeDays));
+
+        $sixDays = $user->created_at->addMinutes(60 * 24 * 6);
+        $user->notify((new \App\Notifications\User\AfterThreeDays($user))->delay($sixDays));
+
+        $sixDaysSecond = $user->created_at->addMinutes(60 * 24 * 6 + 60 * 3);
+        $user->notify((new \App\Notifications\User\AfterSixDays($user))->delay($sixDaysSecond));
+
+        $tenDays = $user->created_at->addMinutes(60 * 24 * 9);
+        $user->notify((new \App\Notifications\User\AfterThreeDays($user))->delay($tenDays));
+
+        $fifteenDays = $user->created_at->addMinutes(60 * 24 * 15);
+        $user->notify((new \App\Notifications\User\AfterThreeDays($user))->delay($fifteenDays));
+
+        $fourDays = $user->created_at->addMinutes(60 * 24 * 4);
+        $user->notify((new \App\Notifications\User\AfterFourDays($user))->delay($fourDays));
+
+        $fiveDays = $user->created_at->addMinutes(60 * 24 * 5);
+        $user->notify((new \App\Notifications\User\AfterFiveDays($user))->delay($fiveDays));
+
+        $sevenDaysAM = $user->created_at->addMinutes(60 * 24 * 7);
+        $user->notify((new \App\Notifications\User\AfterSevenDays($user))->delay($sevenDaysAM));
+
+        $sevenDaysPM = $user->created_at->addMinutes(60 * 24 * 7 + 60 * 12);
+        $user->notify((new \App\Notifications\User\AfterSevenDaysSecond($user))->delay($sevenDaysPM));
+
+        $eightDaysAM = $user->created_at->addMinutes(60 * 24 * 8);
+        $user->notify((new \App\Notifications\User\AfterEightDays($user))->delay($eightDaysAM));
+
+        $eightDaysPM = $user->created_at->addMinutes(60 * 24 * 8 + 60 * 12);
+        $user->notify((new \App\Notifications\User\AfterEightDaysSecond($user))->delay($eightDaysPM));
+
+        $elevenDays = $user->created_at->addMinutes(60 * 24 * 11);
+        $user->notify((new \App\Notifications\User\AfterElevenDays($user))->delay($elevenDays));
+
+        $twelveDaysAM = $user->created_at->addMinutes(60 * 24 * 12);
+        $user->notify((new \App\Notifications\User\AfterTwelveDays($user))->delay($twelveDaysAM));
+
+        $twelveDaysPM = $user->created_at->addMinutes(60 * 24 * 12 + 60 * 12);
+        $user->notify((new \App\Notifications\User\AfterTwelveDaysSecond($user))->delay($twelveDaysPM));
+
+        $fourteenDays = $user->created_at->addMinutes(60 * 24 * 14);
+        $user->notify((new \App\Notifications\User\AfterFourteenDays($user))->delay($fourteenDays));
+
+        $fifteenDaysSecond = $user->created_at->addMinutes(60 * 24 * 15 + 60 * 3);
+        $user->notify((new \App\Notifications\User\AfterFifteenDays($user))->delay($fifteenDaysSecond)); 
 
         $token = $user->createToken("Password Token");
 
@@ -79,7 +143,7 @@ class OAuthController extends Controller
         $user_id = $user->id;
         // is our way to activate invited users
         TeamUser::where('member_id', $user_id)->update(['is_pending' => 0]);
-
+    
         $token = $user->createToken("Password Token");
 
         //The UI needs this value before the portal gets loaded

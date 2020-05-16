@@ -33,8 +33,7 @@ class TwitterBoosterAfterFiveDays extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            $this->user->isOld(5 * 24)
-            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\TwitterBoosterAfterFiveDays")
+            !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\TwitterBoosterAfterFiveDays")
         ) {
             return ['database', 'mail'];
         } else {

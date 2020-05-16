@@ -7,21 +7,19 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class AfterTwelveHours extends Notification implements ShouldQueue
+class TwoHoursAfterSignUp extends Notification implements ShouldQueue
 {
     use Queueable;
-
-    private $user;
+    protected $username;
     public $tries = 3;
-
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($username)
     {
-        $this->user = $user;
+        $this->username = $username;
     }
 
     /**
@@ -32,13 +30,7 @@ class AfterTwelveHours extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        if (
-            !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterTwelveHours")
-        ) {
-            return ['database', 'mail'];
-        } else {
-            return [];
-        }
+        return ['mail'];
     }
 
     /**
@@ -49,9 +41,10 @@ class AfterTwelveHours extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        $user = $this->username;
         return (new MailMessage)
-            ->view('emails.user.depend_on_social_accounts')
-            ->subject('Getting started is easy!');
+                ->view('emails.user.two_hours_after_signup', [ 'user' => $user ])
+                ->subject('Welcome aboard! Let’s get to it…');
     }
 
     /**

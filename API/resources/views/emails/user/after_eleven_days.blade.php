@@ -128,7 +128,7 @@
 				<td style="word-break: break-word; vertical-align: top;" valign="top">
 					<!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color:#FFFFFF"><![endif]-->
 					<div style="background-color:transparent;">
-						<div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 500px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+						<div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 600px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
 							<div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
 								<!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:500px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
 								<!--[if (mso)|(IE)]><td align="center" width="500" style="background-color:transparent;width:500px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
@@ -140,26 +140,17 @@
 											<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
 											<div style="color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
 												<div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 14px; color: #555555;">
-													<p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Hello, There</span></p>
-													<p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;">Hope you are enjoying UniClix social media management tool so far. If not, I'm here to help.</span></p>
-													<p style="font-size: 12px; line-height: 16px; margin-bottom: 30px;"><br /><span style="font-size: 14px;">Here are some features that can make it EXTREMELY easy for you to automate your social media work:</span></p>
-													<ul>
-														<b><li class="mail-label-li">Schedule posts</li></b>
-														<b><li class="mail-label-li">Auto curate content</li></b>
-														<b><li class="mail-label-li">Monitor conversations </li></b>
-														<b><li class="mail-label-li">Track analytics </li></b>
-														<b><li class="mail-label-li">Grow followers with Twitter Booster</li></b>
-													</ul>
+													<p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Hello {{$user}},</span></p>
+													<p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px; line-height: 22px;">Aww … Your FREE Uniclix trial expires in three days. We sincerely hope you enjoyed our social media growth engine and will become a long-term member.</span></p>
+													<p style="font-size: 12px; line-height: 16px; margin-bottom: 30px;"><br /><span style="font-size: 14px; line-height: 22px;">If you would like to learn how to get the best results from Uniclix, simply schedule a one on one tutorial with one of our customer support reps [<a href="https://calendly.com/uniclix/30min" target="_blank" style="color:blue;">Book</a> now]</span></p>
+													<p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px; color:#2c82c9"><b>No Risk… BIG Reward. Sign up now with Uniclix and watch growth happen</b></span></p>
+													<p style="font-size: 12px; line-height: 16px; margin-bottom: 30px;"><span style="font-size: 14px; line-height: 45px; color:#2c82c9"><b>See BIG results within the first 30 days of using the system!</b></span></p>
+													
+													<p style="margin-top:20px;"><span style="font-size: 14px;">Cheers! </span></p>
 
-													<p style="font-size: 12px; line-height: 16px; margin-top: 30px;"><br /><span style="font-size: 14px;">If you would like a personal tutorial, I can offer a FREE 30 minute product demo. Schedule a demo using the link below.</span></p>
+													<p style="margin-top:20px;"><span style="font-size: 14px;">- Your pal Lumi from UniClix</span></p>
 
-													<p style="font-size: 16px; line-height: 16px;"><a href="https://youtu.be/yrVfwgv4n8s" target="_blank" style="color:blue;">Book now</a></span></p>
-
-													<p style="font-size: 12px; line-height: 16px;margin-top:40px;"><span style="font-size: 14px;">Cheers!</span></p>
-
-													<p style="font-size: 12px; line-height: 16px;"><span style="font-size: 14px;">- Your pal Lumi from UniClix</span></p>
-
-													<p style="font-size: 12px; line-height: 16px;"><span style="font-size: 14px;">P.S. If you need ANY help getting started, just REPLY to this email and I will respond to you personally!</span></p>
+													<p style="margin-top:20px;"><span style="font-size: 14px; line-height: 22px;">P.S. If need ANY help getting started, just REPLY to this email and I will write you back personally!</span></p>
 
 												</div>
 											</div>

@@ -9,6 +9,12 @@ use App\Models\Channel;
 use App\Notifications\User\AccountDisconnected;
 use App\Notifications\User\AfterFourteenDays;
 use App\Notifications\User\AfterSevenDays;
+use App\Notifications\User\AfterEightDays;
+use App\Notifications\User\AfterEightDaysSecond;
+use App\Notifications\User\AfterElevenDays;
+use App\Notifications\User\AfterTwelveDays;   
+use App\Notifications\User\AfterTwelveDaysSecond;
+use App\Notifications\User\AfterFifteenDays;       
 use App\Notifications\User\AfterThirtyOneDays;
 use App\Notifications\User\AfterTwelveHours;
 use App\Notifications\User\AfterFourtyEightHours;
@@ -18,10 +24,20 @@ use App\Notifications\User\AfterTwentyDays;
 use App\Notifications\User\FiveHoursAfterSignUp;
 use App\Notifications\User\OneDayAfterSignUp;
 use App\Notifications\User\UserSignUp;
+use App\Notifications\User\UserFirstSignUp;
+use App\Notifications\User\FourHoursAfterSignUp;
+use App\Notifications\User\TwoHoursAfterSignUp;
+use App\Notifications\User\TwentyEightHoursAfterSignUp;
 use App\Notifications\User\NoPostScheduledAfterTenDays;
 use App\Notifications\User\NoPostScheduledAfterThreeDays;
 use App\Notifications\User\TwitterBoosterAfterFiveDays;
 use App\Notifications\User\TwitterBoosterAfterThirtyFiveDays;
+use App\Notifications\User\AfterThreeDays;
+use App\Notifications\User\AfterFourDays;
+use App\Notifications\User\AfterFiveDays;
+use App\Notifications\User\AfterSixDays;
+use App\Notifications\User\AfterSevenDaysSecond;
+
 
 class Notifier extends Command
 {
@@ -60,20 +76,35 @@ class Notifier extends Command
         if ($users = User::all()) {
             foreach ($users as $user) {
                 $user->notify(new AfterFourteenDays($user));
+                $user->notify(new AfterFifteenDays($user));
+                $user->notify(new AfterEightDays($user));
+                $user->notify(new AfterEightDaysSecond($user));
+                $user->notify(new AfterElevenDays($user));
+                $user->notify(new AfterTwelveDays($user));
+                $user->notify(new AfterTwelveDaysSecond($user));
                 $user->notify(new AfterSevenDays($user));
                 $user->notify(new AfterThirtyOneDays($user));
                 $user->notify(new AfterTwelveHours($user));
                 $user->notify(new FiveHoursAfterSignUp($user));
                 $user->notify(new OneDayAfterSignUp($user));
+                $user->notify(new TwentyEightHoursAfterSignUp($user));
                 $user->notify(new AfterFourtyEightHours($user));
                 $user->notify(new AfterTenDays($user));
                 $user->notify(new AfterThirtyDays($user));
                 $user->notify(new AfterTwentyDays($user));
                 $user->notify(new UserSignUp());
+                $user->notify(new UserFirstSignUp($user));
+                $user->notify(new TwoHoursAfterSignUp($user));
+                $user->notify(new FourHoursAfterSignUp($user));
                 $user->notify(new NoPostScheduledAfterThreeDays($user));
                 $user->notify(new NoPostScheduledAfterTenDays($user));
                 $user->notify(new TwitterBoosterAfterFiveDays($user));
                 $user->notify(new TwitterBoosterAfterThirtyFiveDays($user));
+                $user->notify(new AfterThreeDays($user));
+                $user->notify(new AfterFourDays($user));
+                $user->notify(new AfterFiveDays($user));
+                $user->notify(new AfterSixDays($user));
+                $user->notify(new AfterSevenDaysSecond($user));
             }
         }
 

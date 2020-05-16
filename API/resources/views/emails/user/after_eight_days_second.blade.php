@@ -132,7 +132,7 @@
 							<div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
 								<!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:500px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
 								<!--[if (mso)|(IE)]><td align="center" width="500" style="background-color:transparent;width:500px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
-								<div class="col num12" style="min-width: 320px; max-width: 500px; display: table-cell; vertical-align: top; width: 500px;">
+								<div class="col num12" style="min-width: 320px; max-width: 600px; display: table-cell; vertical-align: top; width: 500px;">
 									<div style="width:100% !important;">
 										<!--[if (!mso)&(!IE)]><!-->
 										<div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
@@ -140,26 +140,25 @@
 											<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
 											<div style="color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
 												<div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 14px; color: #555555;">
-													<p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Hello, There</span></p>
-													<p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;">Hope you are enjoying UniClix social media management tool so far. If not, I'm here to help.</span></p>
-													<p style="font-size: 12px; line-height: 16px; margin-bottom: 30px;"><br /><span style="font-size: 14px;">Here are some features that can make it EXTREMELY easy for you to automate your social media work:</span></p>
+													<p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;">Psst: We conducted research on the best time to post on social media, we thought to share some of the best practices with you.</span></p>
+													<p style="font-size: 12px; line-height: 16px; margin-bottom: 30px;"><br /><span style="font-size: 14px;"><b>Here's what you'll learn:</b></span></p>
 													<ul>
-														<b><li class="mail-label-li">Schedule posts</li></b>
-														<b><li class="mail-label-li">Auto curate content</li></b>
-														<b><li class="mail-label-li">Monitor conversations </li></b>
-														<b><li class="mail-label-li">Track analytics </li></b>
-														<b><li class="mail-label-li">Grow followers with Twitter Booster</li></b>
+														<li class="mail-label-li">Why post timing matters</li>
+														<li class="mail-label-li">What is the best time to post on Facebook, Twitter, and LinkedIn</li>
+														<li class="mail-label-li">How to schedule posts using social media publishing tools </li>
 													</ul>
 
-													<p style="font-size: 12px; line-height: 16px; margin-top: 30px;"><br /><span style="font-size: 14px;">If you would like a personal tutorial, I can offer a FREE 30 minute product demo. Schedule a demo using the link below.</span></p>
+													<p style="font-size: 12px; line-height: 16px; margin-top: 30px;"><br /><span style="font-size: 14px;">Blog post: <a href="https://blog.uniclixapp.com/the-best-time-to-post-on-social-media/" target="_blank" style="color:#1155cc;">The Best Time to Post on Social Media: Twitter, Facebook, and LinkedIn (2020)</a></span></p>
 
-													<p style="font-size: 16px; line-height: 16px;"><a href="https://youtu.be/yrVfwgv4n8s" target="_blank" style="color:blue;">Book now</a></span></p>
+                          							<p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;">Additionally, we have included a “<a href="https://drive.google.com/file/d/1ld044GmjbL6NTFekE5aesnaQFrShh95i/view" target="_blank" style="color:#1155cc;"><b>FREE TEMPLATE: Best Time to Post on Social Media</b></a>” you can access it here at any time.</span></p>
 
-													<p style="font-size: 12px; line-height: 16px;margin-top:40px;"><span style="font-size: 14px;">Cheers!</span></p>
+													<p style="font-size: 16px; line-height: 16px; margin-top: 30px;"><a href="{{config('app.url')}}" target="_blank" style="color:red;">Sign up now</a></span></p>
 
-													<p style="font-size: 12px; line-height: 16px;"><span style="font-size: 14px;">- Your pal Lumi from UniClix</span></p>
+													<p style="font-size: 12px; line-height: 16px;margin-top:30px;"><span style="font-size: 14px;">Cheers!</span></p>
 
-													<p style="font-size: 12px; line-height: 16px;"><span style="font-size: 14px;">P.S. If you need ANY help getting started, just REPLY to this email and I will respond to you personally!</span></p>
+													<p style="font-size: 12px; line-height: 16px;"><span style="font-size: 14px;">-  This is Lumi from UniClix</span></p>
+
+													<p style="font-size: 12px; line-height: 16px;"><span style="font-size: 14px;">If you're ready to take your social media game to the next level and need ANY help to get started, just REPLY to this email with your questions, and I will respond back personally!</span></p>
 
 												</div>
 											</div>

@@ -7,12 +7,9 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class AfterTwelveHours extends Notification implements ShouldQueue
+class TwentyEightHoursAfterSignUp extends Notification implements ShouldQueue
 {
     use Queueable;
-
-    private $user;
-    public $tries = 3;
 
     /**
      * Create a new notification instance.
@@ -33,7 +30,7 @@ class AfterTwelveHours extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\AfterTwelveHours")
+            !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\TwentyEightHoursAfterSignUp")
         ) {
             return ['database', 'mail'];
         } else {
@@ -50,8 +47,9 @@ class AfterTwelveHours extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->view('emails.user.depend_on_social_accounts')
-            ->subject('Getting started is easy!');
+            ->view('emails.user.twentyeight_hours_after_signup')
+            ->from('info@uniclixapp.com')
+            ->subject('Schedule your UniClix free demo - no strings attached');
     }
 
     /**

@@ -30,8 +30,7 @@ class OneDayAfterSignUp extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            $this->user->isOld(24)
-            && !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\OneDayAfterSignUp")
+            !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\OneDayAfterSignUp")
         ) {
             return ['database', 'mail'];
         } else {
@@ -49,7 +48,7 @@ class OneDayAfterSignUp extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->view('emails.user.one_day_after_signup')
-            ->from('lumi@uniclixapp.com')
+            ->from('info@uniclixapp.com')
             ->subject('Schedule your UniClix free demo - no strings attached');
     }
 

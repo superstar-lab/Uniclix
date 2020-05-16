@@ -28,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/admin/home';
 
     /**
      * Create a new controller instance.
@@ -38,7 +38,7 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-        $this->middleware('guest:admin')->except('logout');
+        
     }
 
     public function showAdminLoginForm()
@@ -55,8 +55,14 @@ class LoginController extends Controller
 
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
 
-            return redirect()->intended('/admin/dashboard');
+            return redirect()->to('/admin/dashboard');
         }
         return back()->withInput($request->only('email', 'remember'));
+    }
+
+    public function logout()
+    {
+        Auth::logout(); // log the user out of our application
+        return redirect()->to('/login/admin');
     }
 }
