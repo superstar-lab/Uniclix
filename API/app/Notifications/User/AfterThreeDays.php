@@ -16,10 +16,10 @@ class AfterThreeDays extends Notification implements ShouldQueue
      *
      * @return void
      */
-    protected $username;
-    public function __construct($username)
+    protected $user;
+    public function __construct($user)
     {
-        $this->username = $username;
+        $this->user = $user;
     }
 
     /**
@@ -47,7 +47,7 @@ class AfterThreeDays extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $user = $this->username;
+        $user = $this->user->name;
         return (new MailMessage)
             ->view('emails.user.after_three_days', [ 'user' => $user])
             ->from('info@uniclixapp.com')

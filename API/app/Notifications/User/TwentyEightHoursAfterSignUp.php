@@ -10,6 +10,8 @@ use Illuminate\Notifications\Messages\MailMessage;
 class TwentyEightHoursAfterSignUp extends Notification implements ShouldQueue
 {
     use Queueable;
+    protected $user;
+    public $tries = 3;  
 
     /**
      * Create a new notification instance.
@@ -46,8 +48,9 @@ class TwentyEightHoursAfterSignUp extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        $user = $this->user->name;
         return (new MailMessage)
-            ->view('emails.user.twentyeight_hours_after_signup')
+            ->view('emails.user.twentyeight_hours_after_signup', [ 'user' => $user ])
             ->from('info@uniclixapp.com')
             ->subject('Schedule your UniClix free demo - no strings attached');
     }

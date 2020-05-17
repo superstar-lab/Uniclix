@@ -58,11 +58,11 @@ class OAuthController extends Controller
 
         \DB::table('users')->where('email', $email)->update(['trial_ends_at' => $trial_ends_at]);
         
-        $user->notify(new \App\Notifications\User\UserSignUp());
+        // $user->notify(new \App\Notifications\User\UserSignUp());
 
-        $fourHours = $user->created_at->addMinutes(30);
-        $user->notify(new \App\Notifications\User\UserFirstSignUp());
-
+        $thirtyMinutes = $user->created_at->addMinutes(30);
+        $user->notify((new \App\Notifications\User\UserFirstSignUp($user))->delay($thirtyMinutes));
+ 
         $fourHours = $user->created_at->addMinutes(60 * 4);
         $user->notify((new \App\Notifications\User\FourHoursAfterSignUp($user))->delay($fourHours));
 
