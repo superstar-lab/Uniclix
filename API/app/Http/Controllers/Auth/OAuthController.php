@@ -10,6 +10,26 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use Mail;
+use App\Mail\UserFirstSignUp;
+use App\Mail\FourHoursAfterSignUp;
+use App\Mail\TwoHoursAfterSignUp;
+use App\Mail\OneDayAfterSignUp;
+use App\Mail\TwentyEightHoursAfterSignUp;
+use App\Mail\AfterThreeDays;
+use App\Mail\AfterSixDays;
+use App\Mail\AfterFourDays;
+use App\Mail\AfterFiveDays;
+use App\Mail\AfterSevenDays;
+use App\Mail\AfterSevenDaysSecond;
+use App\Mail\AfterEightDays;
+use App\Mail\AfterEightDaysSecond;
+use App\Mail\AfterElevenDays;
+use App\Mail\AfterTwelveDays;
+use App\Mail\AfterTwelveDaysSecond;
+use App\Mail\AfterFourteenDays;
+use App\Mail\AfterFifteenDays;
+
 
 class OAuthController extends Controller
 {
@@ -60,68 +80,25 @@ class OAuthController extends Controller
         
         // $user->notify(new \App\Notifications\User\UserSignUp());
 
-        $thirtyMinutes = $user->created_at->addMinutes(30);
-        $user->notify((new \App\Notifications\User\UserFirstSignUp($user))->delay($thirtyMinutes));
- 
-        $fourHours = $user->created_at->addMinutes(60 * 4);
-        $user->notify((new \App\Notifications\User\FourHoursAfterSignUp($user))->delay($fourHours));
 
-        $twoHours = $user->created_at->addMinutes(60 * 2);
-        $user->notify((new \App\Notifications\User\TwoHoursAfterSignUp($user))->delay($twoHours));
-
-        $oneDay = $user->created_at->addMinutes(60 * 24);
-        $user->notify((new \App\Notifications\User\OneDayAfterSignUp($user))->delay($oneDay));
-
-        $twentyeightHours = $user->created_at->addMinutes(60 * 28);
-        $user->notify((new \App\Notifications\User\TwentyEightHoursAfterSignUp($user))->delay($twentyeightHours));
-
-        $threeDays = $user->created_at->addMinutes(60 * 24 * 3);
-        $user->notify((new \App\Notifications\User\AfterThreeDays($user))->delay($threeDays));
-
-        $sixDays = $user->created_at->addMinutes(60 * 24 * 6);
-        $user->notify((new \App\Notifications\User\AfterThreeDays($user))->delay($sixDays));
-
-        $sixDaysSecond = $user->created_at->addMinutes(60 * 24 * 6 + 60 * 3);
-        $user->notify((new \App\Notifications\User\AfterSixDays($user))->delay($sixDaysSecond));
-
-        $tenDays = $user->created_at->addMinutes(60 * 24 * 9);
-        $user->notify((new \App\Notifications\User\AfterThreeDays($user))->delay($tenDays));
-
-        $fifteenDays = $user->created_at->addMinutes(60 * 24 * 15);
-        $user->notify((new \App\Notifications\User\AfterThreeDays($user))->delay($fifteenDays));
-
-        $fourDays = $user->created_at->addMinutes(60 * 24 * 4);
-        $user->notify((new \App\Notifications\User\AfterFourDays($user))->delay($fourDays));
-
-        $fiveDays = $user->created_at->addMinutes(60 * 24 * 5);
-        $user->notify((new \App\Notifications\User\AfterFiveDays($user))->delay($fiveDays));
-
-        $sevenDaysAM = $user->created_at->addMinutes(60 * 24 * 7);
-        $user->notify((new \App\Notifications\User\AfterSevenDays($user))->delay($sevenDaysAM));
-
-        $sevenDaysPM = $user->created_at->addMinutes(60 * 24 * 7 + 60 * 12);
-        $user->notify((new \App\Notifications\User\AfterSevenDaysSecond($user))->delay($sevenDaysPM));
-
-        $eightDaysAM = $user->created_at->addMinutes(60 * 24 * 8);
-        $user->notify((new \App\Notifications\User\AfterEightDays($user))->delay($eightDaysAM));
-
-        $eightDaysPM = $user->created_at->addMinutes(60 * 24 * 8 + 60 * 12);
-        $user->notify((new \App\Notifications\User\AfterEightDaysSecond($user))->delay($eightDaysPM));
-
-        $elevenDays = $user->created_at->addMinutes(60 * 24 * 11);
-        $user->notify((new \App\Notifications\User\AfterElevenDays($user))->delay($elevenDays));
-
-        $twelveDaysAM = $user->created_at->addMinutes(60 * 24 * 12);
-        $user->notify((new \App\Notifications\User\AfterTwelveDays($user))->delay($twelveDaysAM));
-
-        $twelveDaysPM = $user->created_at->addMinutes(60 * 24 * 12 + 60 * 12);
-        $user->notify((new \App\Notifications\User\AfterTwelveDaysSecond($user))->delay($twelveDaysPM));
-
-        $fourteenDays = $user->created_at->addMinutes(60 * 24 * 14);
-        $user->notify((new \App\Notifications\User\AfterFourteenDays($user))->delay($fourteenDays));
-
-        $fifteenDaysSecond = $user->created_at->addMinutes(60 * 24 * 15 + 60 * 3);
-        $user->notify((new \App\Notifications\User\AfterFifteenDays($user))->delay($fifteenDaysSecond)); 
+        Mail::to($email)->send(new UserFirstSignUp($user));
+        Mail::to($email)->send(new FourHoursAfterSignUp($user));
+        Mail::to($email)->send(new TwoHoursAfterSignUp($user));
+        Mail::to($email)->send(new OneDayAfterSignUp($user));
+        Mail::to($email)->send(new TwentyEightHoursAfterSignUp($user));
+        Mail::to($email)->send(new AfterThreeDays($user));
+        Mail::to($email)->send(new AfterSixDays($user));
+        Mail::to($email)->send(new AfterFourDays($user));
+        Mail::to($email)->send(new AfterFiveDays($user));
+        Mail::to($email)->send(new AfterSevenDays($user));
+        Mail::to($email)->send(new AfterSevenDaysSecond($user));
+        Mail::to($email)->send(new AfterEightDays($user));
+        Mail::to($email)->send(new AfterEightDaysSecond($user));
+        Mail::to($email)->send(new AfterElevenDays($user));
+        Mail::to($email)->send(new AfterTwelveDays($user));
+        Mail::to($email)->send(new AfterTwelveDaysSecond($user));
+        Mail::to($email)->send(new AfterFourteenDays($user));
+        Mail::to($email)->send(new AfterFifteenDays($user));
 
         $token = $user->createToken("Password Token");
 

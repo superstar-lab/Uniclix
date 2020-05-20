@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class OneDayAfterSignUp extends Mailable
+class FourHoursAfterSignUp extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -29,10 +29,9 @@ class OneDayAfterSignUp extends Mailable
     public function build()
     {
         $user = $this->user->name;
-        $delivery_time = $this->user->created_at->addDays(1);
-        return $this->view('emails.user.one_day_after_signup')
-                    ->from('info@uniclixapp.com')
-                    ->subject('Schedule your UniClix free demo - no strings attached')
+        $delivery_time = $this->user->created_at->addHours(4);
+        return $this->view('emails.user.four_hours_after_signup', [ 'user' => $user ])
+                    ->subject('Welcome to Uniclix!')
                     ->withSwiftMessage(function ($message) use ($delivery_time) {
                         $message->getHeaders()->addTextHeader('X-Mailgun-Deliver-By', $delivery_time->toRfc2822String());
                     });;
