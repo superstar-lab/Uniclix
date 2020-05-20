@@ -20,3 +20,5 @@ export const pinterestAppId = process.env.PINTEREST_APP_ID ? process.env.PINTERE
 
 export const stripePublishableKey = process.env.STRIPE_PUBLISHABLE_KEY ? process.env.STRIPE_PUBLISHABLE_KEY : "";
 
+export const googleAnalyticsGtagID = process.env.GOOGLE_ANALYTICS_GTAG_ID || '';
+

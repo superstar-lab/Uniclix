@@ -44,6 +44,17 @@ export class RegisterPage extends React.Component {
         registerUser(data).then(response => {
             if (typeof response.accessToken !== "undefined") {
                 this.performLogin(response.accessToken);
+                if (gtag) {
+                    gtag(
+                        'event',
+                        'click',
+                        {
+                            'event_category' : 'account',
+                            'event_label' : 'Sign Up',
+                            'value': 1
+                        }
+                    );
+                }
             }
         }).catch(e => {
             this.setState({ loading: false });

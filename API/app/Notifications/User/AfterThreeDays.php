@@ -47,7 +47,9 @@ class AfterThreeDays extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+
         $user = $this->user->name;
+
         return (new MailMessage)
             ->view('emails.user.after_three_days', [ 'user' => $user])
             ->from('info@uniclixapp.com')

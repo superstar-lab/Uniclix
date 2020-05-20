@@ -48,7 +48,7 @@ class FooterSection extends React.Component {
     const now = moment().tz(selectedTimezone);
 
     // We want to prevent the mmebers to post now
-    if (publishTime && isOwnerOrAdmin(accessLevel)) {
+    if (publishTime && isOwnerOrAdmin(accessLevel) && !postAtBestTime) {
       if (publishTime.isSameOrBefore(now)) {
         postNow = true;
       }

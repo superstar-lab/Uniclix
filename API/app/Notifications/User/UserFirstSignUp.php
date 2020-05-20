@@ -30,13 +30,7 @@ class UserFirstSignUp extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        if (
-            !\App\Models\Notification::existsForUser($this->user->id, "App\Notifications\User\UserFirstSignUp")
-        ) {
-            return ['database', 'mail'];
-        } else {
-            return [];
-        }
+        return ['mail'];
     }
 
     /**
