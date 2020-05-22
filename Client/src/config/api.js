@@ -22,3 +22,5 @@ export const stripePublishableKey = process.env.STRIPE_PUBLISHABLE_KEY ? process
 
 export const googleAnalyticsGtagID = process.env.GOOGLE_ANALYTICS_GTAG_ID || '';
 
+export const firstPromoterOriginURL = process.env.FIRST_PROMOTER_ORIGIN_URL || '';
+

@@ -38,12 +38,14 @@ export class RegisterPage extends React.Component {
             email: this.state.email,
             password: this.state.password,
             password_confirmation: this.state.confirmPassword,
-            timezone: moment.tz.guess()
+            timezone: moment.tz.guess(),
+            isInvited: this.props.isInvited ? 1 : 0
         };
 
         registerUser(data).then(response => {
             if (typeof response.accessToken !== "undefined") {
                 this.performLogin(response.accessToken);
+                // Gooogle analytics tracking
                 if (gtag) {
                     gtag(
                         'event',
@@ -53,6 +55,15 @@ export class RegisterPage extends React.Component {
                             'event_label' : 'Sign Up',
                             'value': 1
                         }
+                    );
+                }
+                // First Promoter call
+                if ($FPROM) {
+                    $FPROM.trackSignup(
+                        {
+                            uid: response.token.user_id
+                        },
+                        function(){console.log('Callback received!')}
                     );
                 }
             }
