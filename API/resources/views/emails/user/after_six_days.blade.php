@@ -93,7 +93,7 @@
                                           <table cellpadding="0" cellspacing="0" border="0" align="center" width="100%">
                                             <tbody><tr>
                                               <td class="bodyTitle" id="bodyText-4" style="font-family: 'Poppins', sans-serif; font-size: 14px; line-height: 24px; color: #6f6f6f;">
-                                                <p style="margin-top: 0px; margin-bottom: 0px; line-height: 24px;">Psst— All you need is five minutes a week to double your engagement and grow your following. Get content recommendations based on your topics of interest with a couple of clix and  save time digging on the internet. Schedule and publish posts of your interest in multiple social media channels at once.<br></p>
+                                                <p style="margin-top: 0px; margin-bottom: 0px; line-height: 24px;">Psst— All you need is a few minutes a week to double your engagement and grow your following. Get content recommendations based on your topics of interest with just a couple of clicks and save time digging on the internet. Schedule and publish posts on multiple social media channels at once. <br></p>
                                               </td>
                                             </tr>
                                           </tbody></table>
@@ -114,7 +114,7 @@
                       </tbody></table>
                       <!-- -->
                       <!-- -->
-                      <table align="center" border="0" bgcolor="#ffffff" class="mlContentTable mlContentTableDefault" cellpadding="0" cellspacing="0" width="640">
+                      <!-- <table align="center" border="0" bgcolor="#ffffff" class="mlContentTable mlContentTableDefault" cellpadding="0" cellspacing="0" width="640">
                         <tbody><tr>
                           <td class="mlContentTableCardTd">
                             <table align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" class="mlContentTable ml-default" style="width: 640px; min-width: 640px;" width="640">
@@ -125,8 +125,8 @@
                                       <td align="center" style="padding: 0px 40px;" class="mlContentOuter">
                                         <table cellpadding="0" cellspacing="0" border="0" align="center" width="100%">
                                           <tbody><tr>
-                                            <td align="center" id="imageBlock-6">
-                                              <img src="https://bucket.mlcdn.com/a/1658/1658152/images/b0cfe64c6ec95502b9fa1b6b63c8d1dee24b8d35.png" border="0" alt="" width="560" style="display: block;">
+                                            <td class="bodyTitle" id="bodyText-4" style="font-family: 'Poppins', sans-serif; font-size: 14px; line-height: 24px; color: #6f6f6f;">
+                                              <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;"><strong>Have you tried the Publisher tool by UniClix?</strong><br></p>
                                             </td>
                                           </tr>
                                         </tbody></table>
@@ -138,7 +138,7 @@
                             </tbody></table>
                           </td>
                         </tr>
-                      </tbody></table>
+                      </tbody></table> -->
                       <!-- -->
                       <!-- -->
                       <table align="center" border="0" bgcolor="#ffffff" class="mlContentTable mlContentTableDefault" cellpadding="0" cellspacing="0" width="640">
@@ -150,7 +150,7 @@
                                   <selector>
                                     <table cellpadding="0" cellspacing="0" border="0" align="center" width="640" style="width: 640px; min-width: 640px;" class="mlContentTable">
                                       <tbody><tr>
-                                        <td height="40" class="spacingHeight-40" style="line-height: 40px; min-height: 40px;"></td>
+                                        <!-- <td height="40" class="spacingHeight-40" style="line-height: 40px; min-height: 40px;"></td> -->
                                       </tr>
                                     </tbody></table>
                                     <table cellpadding="0" cellspacing="0" border="0" align="center" width="640" style="width: 640px; min-width: 640px;" class="mlContentTable">
@@ -161,10 +161,11 @@
                                               <td class="bodyTitle" id="bodyText-8" style="font-family: 'Poppins', sans-serif; font-size: 14px; line-height: 24px; color: #6f6f6f;">
                                                 <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;">Here are the top benefits of the <strong><em>content </em></strong>finder:</p>
                                                 <ul style="margin-top: 0px; margin-bottom: 10px;">
-                                                  <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Discover new content by leveraging our auto-curation::</strong> Create search streams by hashtag, location, or keyword to find compelling content and share it to your social media on the fly.</li>
+                                                  <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Discover new content by leveraging our auto-curation:</strong> Create search streams by hashtag, location, or keyword to find compelling content and share it to your social media on the fly.</li>
+                                                  <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Organize all of your content:</strong> Save time with pre-filtered content</li>
                                                   <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Find and schedule content as you surf:</strong> Instantly post or schedule compelling content from any webpage as you surf—without having to log in to your social accounts.</li>
-                                                  <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Balance your social media presence:</strong> publish consistently over all channels and throughout the month.</li>
-                                                  <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Improve your ROI:</strong> optimize your publications for maximum reach, engagement, and traffic.</li>
+                                                  <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Balance your social media presence:</strong> Publish consistently over all channels and throughout the month.</li>
+                                                  <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Improve your ROI:</strong> Optimize your publications for maximum reach, engagement, and traffic.</li>
                                                 </ul>
                                                 <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;"></p>
                                                 <p style="margin-top: 0px; margin-bottom: 0px; line-height: 24px;">Discovering the right content for your social media takes less than a minute with Uniclix. <br></p>
@@ -261,7 +262,6 @@
                                                 <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;">Cheers!</p>
                                                 <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;">- - This is Lumi from UniClix</p>
                                                 <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;">If you're ready to take your social media game to the next level and need ANY help to get started, just REPLY to this email with your questions, and I will respond back personally!</p>
-                                                <p style="margin-top: 0px; margin-bottom: 0px; line-height: 24px;"><a href="{{config('app.url')}}&amp;utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=have_you_tried_the_content_finder_tool_by_uniclix" data-link-id="334224130" target="_blank" style="word-break: break-word; font-family: 'Poppins', sans-serif; color: #09c269; text-decoration: underline;"><br>uniclixapp.com</a></p>
                                               </td>
                                             </tr>
                                           </tbody></table>

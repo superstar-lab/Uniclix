@@ -142,9 +142,9 @@
                                                 <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 14px; color: #555555;">
                                                     <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Hi,{{$user}}</span></p>
                                                     <p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;">Thank you so much for signing up!</span></p>
-                                                    <p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;">My name is Noli, I am the founder of Uniclix and I wanted to be the first to welcome you on board! </span></p>
+                                                    <p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;">My name is Noli, I am the founder of Uniclix and I wanted to be the first to welcome you on board!</span></p>
                                                     <p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;">Starting now, you can enjoy a <strong>15-day free trial</strong>, with no limits and no obligation!</span></p>
-                                                    <p style="font-size: 15px; line-height: 16px; ">We have put together a quick <a href="https://youtu.be/yrVfwgv4n8s" target="_blank" style="color:blue;">video tutorial</a>and a link to our <a href="https://blog.uniclixapp.com/" target="_blank" style="color:blue;">blog</a> to help you make the most of Uniclix. </p>
+                                                    <p style="font-size: 15px; line-height: 16px; ">We have put together a quick <a href="https://youtu.be/yrVfwgv4n8s" target="_blank" style="color:blue;">video tutorial</a>and a link to our <a href="https://blog.uniclixapp.com/" target="_blank" style="color:blue;">blog</a> to help you make the most of Uniclix.</p>
                                                     <p></p>
                                                     <p></p>
                                                     <p></p>

@@ -554,8 +554,8 @@
                                                                                     <table cellpadding="0" cellspacing="0" border="0" align="center" width="100%">
                                                                                         <tbody>
                                                                                             <tr>
-                                                                                                <td align="center" id="imageBlock-6">
-                                                                                                    <img src="https://bucket.mlcdn.com/a/1658/1658152/images/95052050ceacb01a7a747533bdef5451cdd1fdf4.jpeg" border="0" alt="" width="560" style="display: block;">
+                                                                                                <td class="bodyTitle" id="bodyText-4" style="font-family: 'Poppins', sans-serif; font-size: 14px; line-height: 24px; color: #6f6f6f;">
+                                                                                                    <p style="margin-top: 0px; margin-bottom: 0px; line-height: 24px;"><strong>We can help! <a href="https://youtu.be/yrVfwgv4n8s">Here is a tutorial</a> on how to setup your account and start scheduling your social media posts [need video]</strong><br></p>
                                                                                                 </td>
                                                                                             </tr>
                                                                                         </tbody>
@@ -600,11 +600,11 @@
                                                                                                     <td class="bodyTitle" id="bodyText-8" style="font-family: 'Poppins', sans-serif; font-size: 14px; line-height: 24px; color: #6f6f6f;">
                                                                                                         <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;">Here are the top benefits of a social media calendar:</p>
                                                                                                         <ul style="margin-top: 0px; margin-bottom: 10px;">
-                                                                                                            <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Save time:</strong> plan your content ahead and craft your posts in batches for more efficiency.</li>
-                                                                                                            <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Leverage important dates: </strong>engage your audience around key events that matter to them.</li>
-                                                                                                            <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Publish better content:</strong> follow a clear editorial line instead of posting on-the-go, you can also utilize Uniclix’ content finder to gather relevant content for you to share.</li>
-                                                                                                            <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Balance your social media presence: </strong>publish consistently over all channels and throughout the month.</li>
-                                                                                                            <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Improve your ROI: </strong>optimize your publications for maximum reach, engagement and traffic.</li>
+                                                                                                            <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Save time:</strong> Plan your content ahead and craft your posts in batches to increase efficiency.</li>
+                                                                                                            <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Leverage important dates: </strong>Engage your audience around key events that matter to them.</li>
+                                                                                                            <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Publish better content:</strong> Follow a clear editorial line instead of posting on-the-go, you can also utilize Uniclix’ content finder to gather relevant info to share.</li>
+                                                                                                            <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Balance your social media presence:</strong> Publish consistently over all channels and throughout the month.</li>
+                                                                                                            <li style="margin-top: 0px; margin-bottom: 5px;"><strong>Improve your ROI: </strong>Optimize your publications for maximum reach, engagement and traffic.</li>
                                                                                                         </ul>
                                                                                                         <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;"></p>
                                                                                                         <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;">Creating a social media calendar takes less than 60 seconds with Uniclix. </p>
@@ -667,7 +667,7 @@
                                                         <w:anchorlock/>
                                                         <center>
                                                         <![endif]-->
-                                                                                                                    <a class="mlContentButton" href="{{config('app.url')}}" data-link-id="334223632" target="_blank" style="font-weight: 400; font-family: 'Poppins', sans-serif; border-radius: 3px; color: #ffffff; display: inline-block; font-size: 14px; background-color: #2d8cff; line-height: 20px; padding: 15px 0 15px 0; text-align: center; text-decoration: none; width: 200px;">Sign up now</a>
+                                                                                                                    <a class="mlContentButton" href="{{config('app.url')}}" data-link-id="334223632" target="_blank" style="font-weight: 400; font-family: 'Poppins', sans-serif; border-radius: 3px; color: #ffffff; display: inline-block; font-size: 14px; background-color: #2d8cff; line-height: 20px; padding: 15px 0 15px 0; text-align: center; text-decoration: none; width: 200px;">Try it now</a>
                                                                                                                     <!--[if mso]>
                                                         </center>
                                                       </v:roundrect>
