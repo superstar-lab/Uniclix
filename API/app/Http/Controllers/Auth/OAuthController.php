@@ -67,7 +67,8 @@ class OAuthController extends Controller
             'email' => $request->input('email'),
             'role_id' => Role::first()->id,
             'password' => Hash::make($request->input('password')),
-            'timezone' => $request->input('timezone')
+            'timezone' => $request->input('timezone'),
+            'isInvited' => $request->input('isInvited')
         ]);
 
         $email = $request->input('email');

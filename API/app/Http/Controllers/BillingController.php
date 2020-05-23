@@ -77,10 +77,20 @@ class BillingController extends Controller
 
         try {
 
-            if($trialDays != "0"){
+            if ($trialDays != "0") {
                 $user->newSubscription($subType, $plan)->trialDays($trialDays)->create($id);
             } else {
-                $user->newSubscription($subType, $plan)->withCoupon($couponCode)->create($id);
+                // If the user was invited, we want to send the id in the metadata
+                // so first promoter can track it
+                if ($user->isInvited) {
+                    $user
+                        ->newSubscription($subType, $plan)
+                        ->withCoupon($couponCode)
+                        ->withMetadata(['fp_uid' => $user->id])
+                        ->create($id);
+                } else {
+                    $user->newSubscription($subType, $plan)->withCoupon($couponCode)->create($id);
+                }
             }
 
             $roles = explode("_", $plan);

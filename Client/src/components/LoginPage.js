@@ -24,7 +24,8 @@ export class LoginPage extends React.Component{
         email: "",
         password: "",
         confirmPassword: "",
-        error: ""
+        error: "",
+        isInvited: this.props.location.search.indexOf("fp_ref") != -1 ? true : false
     }
 
     constructor(props) {
@@ -223,7 +224,7 @@ export class LoginPage extends React.Component{
                                     }
                                 </div>
                                 :
-                                <RegisterPage register={this.state.register} />
+                                <RegisterPage register={this.state.register} isInvited={this.state.isInvited} />
                             }
 
 

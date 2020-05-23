@@ -224,7 +224,7 @@ class PagesController extends Controller
         $allPlans = Role::formattedForDisplay();
         $paidPlans = Role::where("name", "!=", "free")->formattedForDisplay();
         $addon = RoleAddon::first();
-    	return view('frontend.pricing', compact('allPlans', 'paidPlans', 'addon'));
+    	return view('frontend.affiliate', compact('allPlans', 'paidPlans', 'addon'));
     }
 
      /**
