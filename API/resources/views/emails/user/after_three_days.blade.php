@@ -553,9 +553,8 @@
                                                                                                         <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px; text-align: center;"></p>
                                                                                                         <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;">Hi&nbsp;{{$user}}<span class="redactor-component" data-redactor-type="variable-ml"></span></p>
                                                                                                         <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;">Are you available in the next few days?</p>
-                                                                                                        <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;">I really want to make sure we touch base in the coming days, because there are a few opportunities I've spotted in your account that I want to make sure you are aware of. </p>
-                                                                                                        <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;">I want to help you review these items, and other helpful improvements, as soon as possible.</p>
-                                                                                                        <p style="margin-top: 0px; margin-bottom: 0px; line-height: 24px;">Please let me know a date and time that works best for you. Alternatively, you can book an appointment with me online by clicking the link below. <br></p>
+                                                                                                        <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;">I spotted a few opportunities in your account and I would like to touch base in the coming days to help you make improvements. </p>
+                                                                                                        <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;">Please let me know a date and time that works best for you. Alternatively, you can book an appointment with me online by clicking the link below.</p>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                             </tbody>
@@ -614,7 +613,7 @@
                                                         <w:anchorlock/>
                                                         <center>
                                                         <![endif]-->
-                                                                                                                    <a class="mlContentButton" href="https://calendly.com/uniclix/30min?&amp;utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=scheduling_an_appointment_with_you_for_uniclix&amp;" data-link-id="334210540" target="_blank" style="font-weight: 400; font-family: 'Poppins', sans-serif; border-radius: 3px; color: #ffffff; display: inline-block; font-size: 14px; background-color: #2d8cff; line-height: 20px; padding: 15px 0 15px 0; text-align: center; text-decoration: none; width: 320px;">CLICK HERE - Book an Appointment</a>
+                                                                                                                    <a class="mlContentButton" href="https://calendly.com/uniclix/30min?&amp;utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=scheduling_an_appointment_with_you_for_uniclix&amp;" data-link-id="334210540" target="_blank" style="font-weight: 400; font-family: 'Poppins', sans-serif; border-radius: 3px; color: #ffffff; display: inline-block; font-size: 14px; background-color: #2d8cff; line-height: 20px; padding: 15px 0 15px 0; text-align: center; text-decoration: none; width: 320px;">BOOK NOW</a>
                                                                                                                     <!--[if mso]>
                                                         </center>
                                                       </v:roundrect>
@@ -705,7 +704,7 @@
                                     </table>
                                     <!-- -->
                                     <!-- -->
-                                    <table align="center" border="0" bgcolor="#ffffff" class="mlContentTable mlContentTableDefault" cellpadding="0" cellspacing="0" width="640">
+                                    <!-- <table align="center" border="0" bgcolor="#ffffff" class="mlContentTable mlContentTableDefault" cellpadding="0" cellspacing="0" width="640">
                                         <tbody>
                                             <tr>
                                                 <td class="mlContentTableCardTd">
@@ -737,10 +736,10 @@
                                                 </td>
                                             </tr>
                                         </tbody>
-                                    </table>
+                                    </table> -->
                                     <!-- -->
                                     <!-- -->
-                                    <table align="center" border="0" bgcolor="#ffffff" class="mlContentTable mlContentTableDefault" cellpadding="0" cellspacing="0" width="640">
+                                    <!-- <table align="center" border="0" bgcolor="#ffffff" class="mlContentTable mlContentTableDefault" cellpadding="0" cellspacing="0" width="640">
                                         <tbody>
                                             <tr>
                                                 <td class="mlContentTableCardTd">
@@ -779,10 +778,10 @@
                                                 </td>
                                             </tr>
                                         </tbody>
-                                    </table>
+                                    </table> -->
                                     <!-- -->
                                     <!-- -->
-                                    <table align="center" border="0" bgcolor="#ffffff" class="mlContentTable mlContentTableDefault" cellpadding="0" cellspacing="0" width="640">
+                                    <!-- <table align="center" border="0" bgcolor="#ffffff" class="mlContentTable mlContentTableDefault" cellpadding="0" cellspacing="0" width="640">
                                         <tbody>
                                             <tr>
                                                 <td class="mlContentTableCardTd">
@@ -821,7 +820,7 @@
                                                 </td>
                                             </tr>
                                         </tbody>
-                                    </table>
+                                    </table> -->
                                     <!-- -->
                                     <table align="center" border="0" bgcolor="#ffffff" class="mlContentTable mlContentTableFooterDefault" cellpadding="0" cellspacing="0" width="640">
                                         <tbody>

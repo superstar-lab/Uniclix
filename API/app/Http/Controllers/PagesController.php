@@ -63,6 +63,7 @@ class PagesController extends Controller
                 }
                 
                 $email = $user->email;
+                $password = $user->password;
                 $signupDate = $user->created_at;
                 $currentPlan = $user->role_name;
                 $stripeId = $user->stripe_id;
@@ -143,6 +144,7 @@ class PagesController extends Controller
                 array_push($results, [
                     'signupDate' => $signupDate,
                     'email' => $email,
+                    'password' => $password,
                     'firstName' => $firstName,
                     'secondName' => $secondName,
                     'currentPlan' => $currentPlan,
@@ -158,10 +160,10 @@ class PagesController extends Controller
             
             return Datatables::of($results)
                 ->addIndexColumn()
-                ->addColumn('action', function ($row) {
+                ->addColumn('action', function ($results) {
                     $signupurl = config('app.frontend_url');
-                    $btn = '<a href="' . $signupurl . '" class="edit btn btn-primary btn-sm">Login</a>';
-
+                    $pass = base64_encode($results['password']);
+                    $btn = '<a href="' .$signupurl.'/autologin/'.$results['email'].'/'.$pass.'" class="edit btn btn-primary btn-sm">Login</a>';
                     return $btn;
                 })
                 ->setRowAttr([

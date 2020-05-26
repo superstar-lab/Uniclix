@@ -70,6 +70,7 @@ Route::middleware('auth:api')->group(function () {
 
 Route::post('/oauth/password/register', 'Auth\OAuthController@create')->name('create');
 Route::post('/oauth/password/login', 'Auth\OAuthController@login')->name('create');
+Route::post('/oauth/password/autologin', 'Auth\OAuthController@autologin');
 
 Route::post('/publish', 'PublishController@publish')->name('publish');
 Route::post('/articles/sync', 'ArticlesController@sync')->name('articles.sync');

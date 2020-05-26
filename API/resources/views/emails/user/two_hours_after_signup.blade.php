@@ -578,7 +578,7 @@
                                                                                                                 </tr>
                                                                                                                 <tr>
                                                                                                                     <td align="left" class="bodyTitle" id="bodyText-4" style="font-family: 'Lato', Arial, Helvetica, sans-serif; font-size: 14px; line-height: 24px; color: #6f6f6f;">
-                                                                                                                        <p style="margin-top: 0px; margin-bottom: 0px; line-height: 24px; text-align: center;">Welcome to UniClix - the social media management platform made for small businesses and influencers. Uniclix offers the most affordable packages in the industry, while offering a competitive suite of features and direct customer support. Take advantage of the introductory offer</p>
+                                                                                                                        <p style="margin-top: 0px; margin-bottom: 0px; line-height: 24px; text-align: center;">UniClix is a social media management platform made for small businesses and influencers. We offer the most affordable packages in the industry, a robust suite of features and one on one customer support. Take advantage of the introductory offer.</p>
                                                                                                                     </td>
                                                                                                                 </tr>
                                                                                                                 <tr>
@@ -596,7 +596,7 @@
                                                                 <center style="color:#d35400;font-family:sans-serif; font-size:12px;font-weight:700;">Follow these steps to get your dashboard setup without breaking a sweat.</center>
                                                               </v:roundrect>
                                                             <![endif]-->
-                                                                                                                                        <a class="mlContentButton" href="{{config('app.url')}}" data-link-id="334209384" target="_blank" style="font-weight: 700; font-family: 'Lato', Arial, Helvetica, sans-serif; border: 2px solid #d35400; border-radius: 3px; color: #d35400; display: inline-block; font-size: 12px; background-color: #f5f5f5; line-height: 18px; padding: 13px 0 13px 0; text-align: center; text-decoration: none; width: 556px; mso-hide: all;">Follow these steps to get your dashboard setup without breaking a sweat.</a>
+                                                                                                                                        <a class="mlContentButton" href="{{config('app.url')}}" data-link-id="334209384" target="_blank" style="font-weight: 700; font-family: 'Lato', Arial, Helvetica, sans-serif; border: 2px solid #d35400; border-radius: 3px; color: #d35400; display: inline-block; font-size: 12px; background-color: #f5f5f5; line-height: 18px; padding: 13px 0 13px 0; text-align: center; text-decoration: none; width: 556px; mso-hide: all;">Follow these steps to set up your account.</a>
                                                                                                                                     </td>
                                                                                                                                 </tr>
                                                                                                                             </tbody>
@@ -697,11 +697,11 @@
                                                                                             <tbody>
                                                                                                 <tr>
                                                                                                     <td align="center">
-                                                                                                        <table cellpadding="0" cellspacing="0" border="0" align="left" width="267" style="width: 267px; min-width: 267px;" class="mlContentTable marginBottom">
+                                                                                                        <table cellpadding="0" cellspacing="0" border="0" align="right" width="267" style="width: 267px; min-width: 267px;" class="mlContentTable marginBottom">
                                                                                                             <tbody>
                                                                                                                 <tr>
                                                                                                                     <td align="center" id="imageBlock-8">
-                                                                                                                        <img src="https://bucket.mlcdn.com/a/1658/1658152/images/e5dba3154f1dda167224a5c2247c0409d1ae422f.png/70f8097cb2a6dbde1ec61aecbb5184991cb5a759.png" border="0" alt="" width="267" style="display: block;">
+                                                                                                                        <img src="https://lh5.googleusercontent.com/z5DpPn1NmdecQfVa-XvpqCD5kza6Bq0Vh-tvU7VWtIBE4s7_S7RhUpj_vFUA4pY9keQLbdPUmdjlHCfNS4QaDGA00BWBjqL2cDTEwmrCgCpG6CQQLgRXEJEHcvfVDasd-g" border="0" alt="" width="267" style="display: block;">
                                                                                                                     </td>
                                                                                                                 </tr>
                                                                                                             </tbody>
@@ -710,14 +710,14 @@
                                               </td>
                                               <td valign="top">
                                               <![endif]-->
-                                                                                                        <table cellpadding="0" cellspacing="0" border="0" align="right" width="267" style="width: 267px; min-width: 267px;" class="mlContentTable">
+                                                                                                        <table cellpadding="0" cellspacing="0" border="0" align="left" width="267" style="width: 267px; min-width: 267px;" class="mlContentTable">
                                                                                                             <tbody>
                                                                                                                 <tr>
                                                                                                                     <td align="center" valign="top" height="163" class="mlContentHeight">
                                                                                                                         <table cellpadding="0" cellspacing="0" border="0" align="center" width="100%">
                                                                                                                             <tbody>
                                                                                                                                 <tr>
-                                                                                                                                    <td align="center" class="bodyTitle" style="font-family: 'Lato', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: 700; line-height: 24px; color: #ec3642; text-transform: none; font-style: normal; text-decoration: none; text-align: left;">Add your social networks</td>
+                                                                                                                                    <td align="center" class="bodyTitle" style="font-family: 'Lato', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: 700; line-height: 24px; color: #ec3642; text-transform: none; font-style: normal; text-decoration: none; text-align: left;">Connect social networks</td>
                                                                                                                                 </tr>
                                                                                                                                 <tr>
                                                                                                                                     <td height="10"></td>
@@ -725,7 +725,92 @@
                                                                                                                                 <tr>
                                                                                                                                     <td align="left" class="bodyTitle" id="bodyText-8" style="font-family: 'Lato', Arial, Helvetica, sans-serif; font-size: 14px; line-height: 24px; color: #6f6f6f;">
                                                                                                                                         <p style="margin-top: 0px; margin-bottom: 10px; font-size: 14px; line-height: 24px; color: #6f6f6f;"></p>
-                                                                                                                                        <p style="margin-top: 0px; margin-bottom: 10px; font-size: 14px; line-height: 24px; color: #6f6f6f;">Add your social networks to the UniClix dashboard to start managing your social media all in one place. </p>
+                                                                                                                                        <p style="margin-top: 0px; margin-bottom: 10px; font-size: 14px; line-height: 24px; color: #6f6f6f;">Go to the Uniclix dashboard to connect your social media accounts and start managing your activity all in one place. </p>
+                                                                                                                                        <p style="margin-top: 0px; margin-bottom: 10px; font-size: 14px; line-height: 24px; color: #6f6f6f;"></p>
+                                                                                                                                        <p style="margin-top: 0px; margin-bottom: 0px; font-size: 14px; line-height: 24px; color: #6f6f6f;"></p>
+                                                                                                                                    </td>
+                                                                                                                                </tr>
+                                                                                                                            </tbody>
+                                                                                                                        </table>
+                                                                                                                    </td>
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                        <table cellpadding="0" cellspacing="0" border="0" align="center" width="640" style="width: 640px; min-width: 640px;" class="mlContentTable">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td height="20" class="spacingHeight-20" style="line-height: 20px; min-height: 20px;"></td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </selector>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- -->
+                                    <!-- -->
+                                    <table align="center" border="0" bgcolor="#ffffff" class="mlContentTable mlContentTableDefault" cellpadding="0" cellspacing="0" width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td class="mlContentTableCardTd">
+                                                    <table align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" class="mlContentTable ml-fullwidth" style="width: 640px; min-width: 640px;" width="640">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <selector>
+                                                                        <table cellpadding="0" cellspacing="0" border="0" align="center" width="640" style="width: 640px; min-width: 640px;" class="mlContentTable">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td height="20" class="spacingHeight-20" style="line-height: 20px; min-height: 20px;"></td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                        <table cellpadding="0" cellspacing="0" border="0" align="center" width="640" style="width: 640px; min-width: 640px;" class="mlContentTable">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td align="center" style="padding: 0px 40px;" class="mlContentOuter">
+                                                                                        <table cellpadding="0" cellspacing="0" border="0" align="center" width="100%">
+                                                                                            <tbody>
+                                                                                                <tr>
+                                                                                                    <td align="center">
+                                                                                                        <table cellpadding="0" cellspacing="0" border="0" align="left" width="267" style="width: 267px; min-width: 267px;" class="mlContentTable marginBottom">
+                                                                                                            <tbody>
+                                                                                                                <tr>
+                                                                                                                    <td align="center" id="imageBlock-10">
+                                                                                                                        <img src="https://lh6.googleusercontent.com/lJSUCfLkUwbXtVuuk_MPCtfx_IFRB3jLpQboz8HXe3wyv0nRA1-Un54lrAqu9IjyV-EUrBgTQqIKMhgL7D0CJ6s2qv9kR8t4byZiUiOgGW-A9v05typd6CfraQlj9Fc4VQ" border="0" alt="" width="267" style="display: block;">
+                                                                                                                    </td>
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                        <table cellpadding="0" cellspacing="0" border="0" align="right" width="267" style="width: 267px; min-width: 267px;" class="mlContentTable">
+                                                                                                            <tbody>
+                                                                                                                <tr>
+                                                                                                                    <td align="center" valign="top" height="177" class="mlContentHeight">
+                                                                                                                        <table cellspacing="0" cellpadding="0" border="0" align="center" width="100%">
+                                                                                                                            <tbody>
+                                                                                                                                <tr>
+                                                                                                                                    <td align="center" class="bodyTitle" style="font-family: 'Lato', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: 700; line-height: 24px; color: #ec3642; text-transform: none; font-style: normal; text-decoration: none; text-align: left;">Schedule posts</td>
+                                                                                                                                </tr>
+                                                                                                                                <tr>
+                                                                                                                                    <td height="10"></td>
+                                                                                                                                </tr>
+                                                                                                                                <tr>
+                                                                                                                                    <td align="left" class="bodyTitle" id="bodyText-10" style="font-family: 'Lato', Arial, Helvetica, sans-serif; font-size: 14px; line-height: 24px; color: #6f6f6f;">
+                                                                                                                                        <p style="margin-top: 0px; margin-bottom: 10px; font-size: 14px; line-height: 24px; color: #6f6f6f;"></p>
+                                                                                                                                        <p style="margin-top: 0px; margin-bottom: 10px; font-size: 14px; line-height: 24px; color: #6f6f6f;">Schedule and publish posts for multiple social media channels at once. Determine the best time of day to post in order to maximize your reach</p>
                                                                                                                                         <p style="margin-top: 0px; margin-bottom: 10px; font-size: 14px; line-height: 24px; color: #6f6f6f;"></p>
                                                                                                                                         <p style="margin-top: 0px; margin-bottom: 0px; font-size: 14px; line-height: 24px; color: #6f6f6f;"></p>
                                                                                                                                     </td>
@@ -789,93 +874,8 @@
                                                                                                         <table cellpadding="0" cellspacing="0" border="0" align="right" width="267" style="width: 267px; min-width: 267px;" class="mlContentTable marginBottom">
                                                                                                             <tbody>
                                                                                                                 <tr>
-                                                                                                                    <td align="center" id="imageBlock-10">
-                                                                                                                        <img src="https://bucket.mlcdn.com/a/1658/1658152/images/95052050ceacb01a7a747533bdef5451cdd1fdf4.jpeg/6e7556701582ac18f0a6d275fc2bf51bcc6ecbd1.jpeg" border="0" alt="" width="267" style="display: block;">
-                                                                                                                    </td>
-                                                                                                                </tr>
-                                                                                                            </tbody>
-                                                                                                        </table>
-                                                                                                        <table cellpadding="0" cellspacing="0" border="0" align="left" width="267" style="width: 267px; min-width: 267px;" class="mlContentTable">
-                                                                                                            <tbody>
-                                                                                                                <tr>
-                                                                                                                    <td align="center" valign="top" height="177" class="mlContentHeight">
-                                                                                                                        <table cellspacing="0" cellpadding="0" border="0" align="center" width="100%">
-                                                                                                                            <tbody>
-                                                                                                                                <tr>
-                                                                                                                                    <td align="center" class="bodyTitle" style="font-family: 'Lato', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: 700; line-height: 24px; color: #ec3642; text-transform: none; font-style: normal; text-decoration: none; text-align: left;">Schedule Posts</td>
-                                                                                                                                </tr>
-                                                                                                                                <tr>
-                                                                                                                                    <td height="10"></td>
-                                                                                                                                </tr>
-                                                                                                                                <tr>
-                                                                                                                                    <td align="left" class="bodyTitle" id="bodyText-10" style="font-family: 'Lato', Arial, Helvetica, sans-serif; font-size: 14px; line-height: 24px; color: #6f6f6f;">
-                                                                                                                                        <p style="margin-top: 0px; margin-bottom: 10px; font-size: 14px; line-height: 24px; color: #6f6f6f;"></p>
-                                                                                                                                        <p style="margin-top: 0px; margin-bottom: 10px; font-size: 14px; line-height: 24px; color: #6f6f6f;">Schedule and publish posts for multiple social media channels at once. Determine the best time of day to post to maximize your reach</p>
-                                                                                                                                        <p style="margin-top: 0px; margin-bottom: 10px; font-size: 14px; line-height: 24px; color: #6f6f6f;"></p>
-                                                                                                                                        <p style="margin-top: 0px; margin-bottom: 0px; font-size: 14px; line-height: 24px; color: #6f6f6f;"></p>
-                                                                                                                                    </td>
-                                                                                                                                </tr>
-                                                                                                                            </tbody>
-                                                                                                                        </table>
-                                                                                                                    </td>
-                                                                                                                </tr>
-                                                                                                            </tbody>
-                                                                                                        </table>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                            </tbody>
-                                                                                        </table>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                        <table cellpadding="0" cellspacing="0" border="0" align="center" width="640" style="width: 640px; min-width: 640px;" class="mlContentTable">
-                                                                            <tbody>
-                                                                                <tr>
-                                                                                    <td height="20" class="spacingHeight-20" style="line-height: 20px; min-height: 20px;"></td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </selector>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <!-- -->
-                                    <!-- -->
-                                    <table align="center" border="0" bgcolor="#ffffff" class="mlContentTable mlContentTableDefault" cellpadding="0" cellspacing="0" width="100%">
-                                        <tbody>
-                                            <tr>
-                                                <td class="mlContentTableCardTd">
-                                                    <table align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" class="mlContentTable ml-fullwidth" style="width: 640px; min-width: 640px;" width="640">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <selector>
-                                                                        <table cellpadding="0" cellspacing="0" border="0" align="center" width="640" style="width: 640px; min-width: 640px;" class="mlContentTable">
-                                                                            <tbody>
-                                                                                <tr>
-                                                                                    <td height="20" class="spacingHeight-20" style="line-height: 20px; min-height: 20px;"></td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                        <table cellpadding="0" cellspacing="0" border="0" align="center" width="640" style="width: 640px; min-width: 640px;" class="mlContentTable">
-                                                                            <tbody>
-                                                                                <tr>
-                                                                                    <td align="center" style="padding: 0px 40px;" class="mlContentOuter">
-                                                                                        <table cellpadding="0" cellspacing="0" border="0" align="center" width="100%">
-                                                                                            <tbody>
-                                                                                                <tr>
-                                                                                                    <td align="center">
-                                                                                                        <table cellpadding="0" cellspacing="0" border="0" align="left" width="267" style="width: 267px; min-width: 267px;" class="mlContentTable marginBottom">
-                                                                                                            <tbody>
-                                                                                                                <tr>
                                                                                                                     <td align="center" id="imageBlock-12">
-                                                                                                                        <img src="https://bucket.mlcdn.com/a/1658/1658152/images/760ebb986836e5ef85c62cb90dbb561505af0b0c.jpeg/003369b4a4a34ba13cfe02b303bf2c9e45736a17.jpeg" border="0" alt="" width="267" style="display: block;">
+                                                                                                                        <img src="https://lh3.googleusercontent.com/N-MPp2OekxL9YZwE1VBdNVX8kSpsVB_1fYMSMWzLoKPaD_xHwo8-EDIp2t68nUECKf0najhwqSaX1Vbg9gEjR_gcOmY-KU6KIxOHAIU7SFlywRlPQ_zRoE8zcPhoAG8COg" border="0" alt="" width="267" style="display: block;">
                                                                                                                     </td>
                                                                                                                 </tr>
                                                                                                             </tbody>
@@ -884,14 +884,14 @@
                                               </td>
                                               <td valign="top">
                                               <![endif]-->
-                                                                                                        <table cellpadding="0" cellspacing="0" border="0" align="right" width="267" style="width: 267px; min-width: 267px;" class="mlContentTable">
+                                                                                                        <table cellpadding="0" cellspacing="0" border="0" align="left" width="267" style="width: 267px; min-width: 267px;" class="mlContentTable">
                                                                                                             <tbody>
                                                                                                                 <tr>
                                                                                                                     <td align="center" valign="top" height="177" class="mlContentHeight">
                                                                                                                         <table cellpadding="0" cellspacing="0" border="0" align="center" width="100%">
                                                                                                                             <tbody>
                                                                                                                                 <tr>
-                                                                                                                                    <td align="center" class="bodyTitle" style="font-family: 'Lato', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: 700; line-height: 24px; color: #ec3642; text-transform: none; font-style: normal; text-decoration: none; text-align: left;">Monitor Conversation</td>
+                                                                                                                                    <td align="center" class="bodyTitle" style="font-family: 'Lato', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: 700; line-height: 24px; color: #ec3642; text-transform: none; font-style: normal; text-decoration: none; text-align: left;">Monitor conversation </td>
                                                                                                                                 </tr>
                                                                                                                                 <tr>
                                                                                                                                     <td height="10"></td>
@@ -957,16 +957,16 @@
                                                                                             <tbody>
                                                                                                 <tr>
                                                                                                     <td align="center">
-                                                                                                        <table cellpadding="0" cellspacing="0" border="0" align="right" width="267" style="width: 267px; min-width: 267px;" class="mlContentTable marginBottom">
+                                                                                                        <table cellpadding="0" cellspacing="0" border="0" align="left" width="267" style="width: 267px; min-width: 267px;" class="mlContentTable marginBottom">
                                                                                                             <tbody>
                                                                                                                 <tr>
                                                                                                                     <td align="center" id="imageBlock-14">
-                                                                                                                        <img src="https://bucket.mlcdn.com/a/1658/1658152/images/b0cfe64c6ec95502b9fa1b6b63c8d1dee24b8d35.png/cf7fcc9b755e976c34b0d57d893ca8aab8be7cc0.png" border="0" alt="" width="267" style="display: block;">
+                                                                                                                        <img src="https://lh3.googleusercontent.com/Q-W8XZK-qCVgmsqDlc7VRPyUJbFMWCYUPpcDAdegq68vYAguCmedQoewlwJIPJCtZrtCDHWm3iC1zkowrB4XkqtVFJHSY4WvTkpvACkPoApTiCB-nl9DFqEcbXGcafTTYw" border="0" alt="" width="267" style="display: block;">
                                                                                                                     </td>
                                                                                                                 </tr>
                                                                                                             </tbody>
                                                                                                         </table>
-                                                                                                        <table cellpadding="0" cellspacing="0" border="0" align="left" width="267" style="width: 267px; min-width: 267px;" class="mlContentTable">
+                                                                                                        <table cellpadding="0" cellspacing="0" border="0" align="right" width="267" style="width: 267px; min-width: 267px;" class="mlContentTable">
                                                                                                             <tbody>
                                                                                                                 <tr>
                                                                                                                     <td align="center" valign="top" height="178" class="mlContentHeight">
@@ -1044,7 +1044,7 @@
                                                                                                     <td class="bodyTitle" id="bodyText-16" style="font-family: 'Lato', Arial, Helvetica, sans-serif; font-size: 14px; line-height: 24px; color: #6f6f6f;">
                                                                                                         <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;">Cheers!</p>
                                                                                                         <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;">- This is Lumi from UniClix</p>
-                                                                                                        <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;">If you're ready to take your social media game to the next level and need ANY help to get started, just REPLY to this email with your questions, and I will respond back personally!</p>
+                                                                                                        <p style="margin-top: 0px; margin-bottom: 10px; line-height: 24px;">If you're ready to take your social media game to the next level and need ANY help to get started, just REPLY to this email with your questions and I will respond to you personally!</p>
                                                                                                         <p style="margin-top: 0px; margin-bottom: 0px; line-height: 24px;"></p>
                                                                                                     </td>
                                                                                                 </tr>

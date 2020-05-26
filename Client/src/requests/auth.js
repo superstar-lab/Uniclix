@@ -15,3 +15,11 @@ export const loginUser = (data) => {
                 return response.data;
             });
 };
+
+export const autologinUser = (data) => {
+    return axios.post(`${apiUrl}/oauth/password/autologin`, data)
+            .then((response) => {
+                console.log(response)
+                return response.data;
+            });
+};
