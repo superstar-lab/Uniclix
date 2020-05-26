@@ -141,22 +141,22 @@
                                             <div style="color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
                                                 <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 14px; color: #555555;">
                                                     <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Hi, {{$user}}</span></p>
-                                                    <p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;">My name is Lumi and I wanted to welcome you to the UniClix blog. We will share weekly content pertaining to social media management. Welcome!</span></p>
-                                                    <p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;">Additionally, you can check out our social media management tool, Uniclix.</span></p>
+                                                    <p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;">My name is Lumi and I wanted to thank you for signing up for your free 2 </span></p>
+                                                    <p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;">week trial with UniClix social media management tool. Welcome!</span></p>
                                                     <p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 14px;"><strong>Here’s how Uniclix works:</strong> </span></p>
                                                     <p></p>
                                                     <ul>
                                                         <li class="mail-label-li">Connect your social accounts</li>
                                                         <li class="mail-label-li">Choose the days and times you’d like to publish content</li>
                                                         <li class="mail-label-li">Add posts to your queue</li>
-                                                        <li class="mail-label-li">Sit back and relax knowing that your posts will be published as scheduled</li>
-                                                        <li class="mail-label-li">Get content recommendations based on your topics of interest to save time digging on the internet</li>
-                                                        <li class="mail-label-li">Track your social media performance data to keepimproving</li>
+                                                        <li class="mail-label-li">Sit back and relax while we publish your posts</li>
+                                                        <li class="mail-label-li">Get content recommendations based on topics of interest and save time digging on the internet</li>
+                                                        <li class="mail-label-li">Track performance to keep growing your social media engagement</li>
                                                     </ul>
 
-                                                    <p style="font-size: 20px; line-height: 16px; text-align:center;"><a href="{{config('app.url')}}?&utm_source=newsletter&utm_medium=email&utm_campaign=welcome_to_our_blog_and_uniclix" target="_blank" style="color:blue;"><strong>Connect your first social media account</strong></a></span></p>
+                                                    <p style="font-size: 20px; line-height: 16px; text-align:center;"><a href="{{config('app.url')}}?&utm_source=newsletter&utm_medium=email&utm_campaign=welcome_to_our_blog_and_uniclix" target="_blank" style="color:blue;"><strong>Connect your social media accounts</strong></a></span></p>
 
-                                                    <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">We’re here to support you. Reply to this email anytime to get in touch with our customer support.</span></p>
+                                                    <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">We’re here to support you. Reply to this email anytime to get straight in touch!</span></p>
 
                                                     <p style="font-size: 12px; line-height: 16px;"><span style="font-size: 14px;">Warmly,</span></p>
 

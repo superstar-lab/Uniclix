@@ -5,6 +5,7 @@ import Streams from "../components/Streams/Streams";
 import Accounts from "../components/Accounts/Accounts";
 import Settings from "../components/Settings/Settings";
 import LoginPage from "../components/LoginPage";
+import AutoLogin from "../components/AutoLogin";
 import NotFoundPage from "../components/NotFoundPage";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
@@ -27,6 +28,7 @@ class AppRouter extends React.Component {
                         <PrivateRoute path="/content-finder" component={MasterPage} />
                         <PrivateRoute path="/scheduled" component={MasterPage} />
                         <PrivateRoute path="/social-media-manager" component={Accounts} />
+                        <PublicRoute path="/autologin/:email/:password" component={AutoLogin} />
                         <Route component={NotFoundPage}/>
                     </Switch>
                 </div>
