@@ -6,6 +6,7 @@ import { startSetChannels } from "../actions/channels";
 import { startSetProfile } from "../actions/profile";
 import { backendUrl } from "../config/api";
 import {registerUser} from '../requests/auth';
+import { getCookie } from '../utils/helpers';
 
 export class RegisterPage extends React.Component {
 
@@ -33,13 +34,14 @@ export class RegisterPage extends React.Component {
     onRegisterSubmit = () => {
 
         this.setState(() => ({ loading: true }));
+        const invitedCookie = getCookie('_fprom_code');
         const data = {
             name: this.state.name,
             email: this.state.email,
             password: this.state.password,
             password_confirmation: this.state.confirmPassword,
             timezone: moment.tz.guess(),
-            isInvited: this.props.isInvited ? 1 : 0
+            isInvited: !!invitedCookie ? 1 : 0
         };
 
         registerUser(data).then(response => {
@@ -58,7 +60,7 @@ export class RegisterPage extends React.Component {
                     );
                 }
                 // First Promoter call
-                if ($FPROM) {
+                if ($FPROM && !!invitedCookie) {
                     $FPROM.trackSignup(
                         {
                             uid: response.token.user_id

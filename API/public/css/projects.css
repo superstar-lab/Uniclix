@@ -611,3 +611,15 @@
     text-align: center;
     color: #3F3D56;
 }
+
+.affiliate-content {
+    width: 500px;
+    text-align: center;
+    margin: 30px auto 0;
+}
+
+.affiliate-content div {
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-family: Rubik;
+}
