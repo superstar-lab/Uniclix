@@ -1,6 +1,6 @@
 @extends('layouts.homepage')
 @section('title')
-Pricing
+Affiliate Program
 @endsection
 
 @section('description')
@@ -24,10 +24,27 @@ See the pricing of Uniclix social media service and pick a plan that fits your b
         <div class="twitter-booster2" style="top: 46%;"><img src="{{ asset('images/pricing-image1.svg') }}" class="img-responsive laptop-img" /></div>
         <div class="twitter-booster1" style="top: 9%;"><img src="{{ asset('images/pricing-image2.svg') }}" class="img-responsive laptop-img" /></div>
         <div class="col-md-12 col-xs-12">
-            <h1 style="text-align: center;font-size: 60px;margin-top: 10%;">Joint the family<span class="point-pink-color">!</span><br>Become an affiliate and start generating income<span class="point-color">.</span></h1>
+            <h1 style="text-align: center;font-size: 60px;margin-top: 10%;">Join the family<span class="point-pink-color">!</span><br>Become an affiliate and start generating income<span class="point-color">.</span></h1>
                 <div class="home-subtitle">
-                    <div><a href="https://uniclixapp.firstpromoter.com/">Be part of the affiliation program</a><span class="point-pink-color">&nbsp;.&nbsp;</span></div>
+                    <div>
+                        <a
+                            class="btn plan-price-btn"
+                            href="https://uniclixapp.firstpromoter.com/"
+                            target="_blank"
+                            style="font-size: 25px;max-width: 500px;padding: 20px;"
+                        >
+                            Be part of the affiliation program
+                        </a>
+                    </div>
                 </div>
+        </div>
+    </div>
+    <div class="affiliate-content">
+        <div>
+            The Uniclix Affiliate Program allows you to earn an incredible recurring commission (25%) while referring a platform that will help you  manage all of your social media accounts with just a  couple of clix.
+        </div>
+        <div>
+            Our product, customer service, and marketing resources make it easier than ever for you to recommend a product you can joyfully stand behind. Because we stand behind the success of every customer.
         </div>
     </div>
 </div>
