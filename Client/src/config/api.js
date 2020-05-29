@@ -24,3 +24,5 @@ export const googleAnalyticsGtagID = process.env.GOOGLE_ANALYTICS_GTAG_ID || '';
 
 export const firstPromoterOriginURL = process.env.FIRST_PROMOTER_ORIGIN_URL || '';
 
+export const tidioUrl = process.env.TIDIO_URL ? process.env.TIDIO_URL : '';
+

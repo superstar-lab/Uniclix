@@ -13,7 +13,7 @@ import { setMiddleware } from "./actions/middleware";
 import { startGeneral } from './actions/general';
 import 'antd/dist/antd.css';
 import { Helmet } from 'react-helmet';
-import { googleAnalyticsGtagID, firstPromoterOriginURL } from './config/api';
+import { googleAnalyticsGtagID, firstPromoterOriginURL, tidioUrl } from './config/api';
 
 const store = configStore();
 
@@ -51,6 +51,9 @@ const Root = () => (
                         `}
                     </script>
                 ) : null
+            }
+            {
+                tidioUrl ? <script src={`${tidioUrl}`} async></script> : null
             }
         </Helmet>
         <Provider store={store}>
