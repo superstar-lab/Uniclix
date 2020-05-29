@@ -25,32 +25,51 @@ class PagesController extends Controller
     public function admin(Request $request) {
         if ($request->ajax()) {
             $users = \DB::table('users')->leftJoin('roles', 'users.role_id', '=', 'roles.id')->select('users.id as id', 'roles.name as role_name', 'users.*')->get();
-            $user_ids = [];
-            $user_channels = [];
             $results = [];
 
             foreach($users as $user){
-                array_push($user_ids, $user->id);
-            }
-            
-            foreach($user_ids as $user_id){
-                if(\DB::table('users')->where('users.id',$user_id)->first()){
-                    $channel_items = \DB::table('channels')->where("user_id", $user_id)->get();
-                    foreach($channel_items as $channel_item){
-                        array_push($user_channels, ['channel_id' => $channel_item->id, 'channel_type' => $channel_item->type]);
-                    }
-                    
-                } else {
-                    continue;
-                }
-            }
+                $channel_items = \DB::table('channels')->where("user_id", $user->id)->get();
+                $socialAccountLabel = '';
+                $socialMediaAccounts = '';
 
-            foreach($users as $user){
+                foreach($channel_items as $channel_item){
+                    if($channel_item->type == 'linkedin'){
+                        if(\DB::table('users')->leftJoin('channels', 'users.id', '=', 'channels.user_id')->leftJoin('linkedin_channels', 'channels.id', '=', 'linkedin_channels.channel_id')->where('users.id', $user->id)->where('linkedin_channels.channel_id', $channel_item->id)->first()){
+                            $items = \DB::table('users')->select('linkedin_channels.name as channel_name','users.*')->leftJoin('channels', 'users.id', '=', 'channels.user_id')->leftJoin('linkedin_channels', 'channels.id', '=', 'linkedin_channels.channel_id')->where('users.id', $user->id)->where('channels.id', $channel_item->id)->get();
+                            foreach($items as $item){
+                                $socialAccountLabel = $item->channel_name . '( linkedin )';
+                                $socialMediaAccounts .= $socialAccountLabel . ', <br/>';
+                            }
+                        } else {
+                            continue;
+                        }
+                    } else if($channel_item->type == 'twitter'){
+                        if(\DB::table('users')->leftJoin('channels', 'users.id', '=', 'channels.user_id')->leftJoin('twitter_channels', 'channels.id', '=', 'twitter_channels.channel_id')->where('users.id', $user->id)->where('twitter_channels.channel_id', $channel_item->id)->first()){
+                            $items = \DB::table('users')->select('twitter_channels.username as channel_name','users.*')->leftJoin('channels', 'users.id', '=', 'channels.user_id')->leftJoin('twitter_channels', 'channels.id', '=', 'twitter_channels.channel_id')->where('users.id', $user->id)->where('channels.id', $channel_item->id)->get();
+                            foreach($items as $item){
+                                $socialAccountLabel = $item->channel_name . '( twitter )';
+                                $socialMediaAccounts .= $socialAccountLabel . ', <br/>';
+                            }
+                        } else {
+                            continue;
+                        }
+                    } else {
+                        if(\DB::table('users')->leftJoin('channels', 'users.id', '=', 'channels.user_id')->leftJoin('facebook_channels', 'channels.id', '=', 'facebook_channels.channel_id')->where('users.id', $user->id)->where('facebook_channels.channel_id', $channel_item->id)->first()){
+                            $items = \DB::table('users')->select('facebook_channels.name as channel_name','users.*')->leftJoin('channels', 'users.id', '=', 'channels.user_id')->leftJoin('facebook_channels', 'channels.id', '=', 'facebook_channels.channel_id')->where('users.id', $user->id)->where('channels.id', $channel_item->id)->get();
+                            foreach($items as $item){
+                                $socialAccountLabel = $item->channel_name . '( facebook )';
+                                $socialMediaAccounts .= $socialAccountLabel . ', <br/>';
+                            }
+                        } else {
+                            continue;
+                        }
+                    }
+                } 
+
                 $name = explode(" ", $user->name);
-                $user_id = $user->id;
                 
                 $listOfKeywords = '';
-                $socialMediaAccounts = '';
+                
 
                 $firstName = '';
                 $secondName = '';
@@ -97,8 +116,8 @@ class PagesController extends Controller
                 }
 
                 
-                if(\DB::table('users')->leftJoin('topics', 'users.id', '=', 'topics.user_id')->where("users.id", $user_id)->first()){
-                    $topic_items = \DB::table('users')->leftJoin('topics', 'users.id', '=', 'topics.user_id')->where("topics.user_id", $user_id)->get();
+                if(\DB::table('users')->leftJoin('topics', 'users.id', '=', 'topics.user_id')->where("users.id", $user->id)->first()){
+                    $topic_items = \DB::table('users')->leftJoin('topics', 'users.id', '=', 'topics.user_id')->where("topics.user_id", $user->id)->get();
                     foreach ($topic_items as $topic_item) {
                         $listOfKeywords .= $topic_item->topic . ', <br/>';
                     }
@@ -106,41 +125,7 @@ class PagesController extends Controller
                     continue;
                 }
     
-                foreach($user_channels as $user_channel){
-                    if($user_channel['channel_type'] == 'linkedin'){
-                        if(\DB::table('users')->leftJoin('channels', 'users.id', '=', 'channels.user_id')->leftJoin('linkedin_channels', 'channels.id', '=', 'linkedin_channels.channel_id')->where('users.id', $user_id)->where('linkedin_channels.channel_id',$user_channel['channel_id'])->first()){
-                            $channel_items = \DB::table('users')->select('linkedin_channels.name as channel_name','users.*')->leftJoin('channels', 'users.id', '=', 'channels.user_id')->leftJoin('linkedin_channels', 'channels.id', '=', 'linkedin_channels.channel_id')->where('users.id', $user_id)->where('channels.id',$user_channel['channel_id'])->get();
-                            foreach($channel_items as $channel_item){
-                                $socialAccountLabel = $channel_item->channel_name . '( linkedin )';
-                                $socialMediaAccounts .= $socialAccountLabel . ', <br/>';
-                            }
-                        } else {
-                            continue;
-                        }
-                    } else if($user_channel['channel_type'] == 'twitter'){
-                        if(\DB::table('users')->leftJoin('channels', 'users.id', '=', 'channels.user_id')->leftJoin('twitter_channels', 'channels.id', '=', 'twitter_channels.channel_id')->where('users.id', $user_id)->where('twitter_channels.channel_id',$user_channel['channel_id'])->first()){
-                            $channel_items = \DB::table('users')->select('twitter_channels.username as channel_name','users.*')->leftJoin('channels', 'users.id', '=', 'channels.user_id')->leftJoin('twitter_channels', 'channels.id', '=', 'twitter_channels.channel_id')->where('users.id', $user_id)->where('channels.id',$user_channel['channel_id'])->get();
-                            foreach($channel_items as $channel_item){
-                                $socialAccountLabel = $channel_item->channel_name . '( twitter )';
-                                $socialMediaAccounts .= $socialAccountLabel . ', </br>';
-                            }
-                        } else {
-                            continue;
-                        }
-                    } else {
-                        if(\DB::table('users')->leftJoin('channels', 'users.id', '=', 'channels.user_id')->leftJoin('facebook_channels', 'channels.id', '=', 'facebook_channels.channel_id')->where('users.id', $user_id)->where('facebook_channels.channel_id',$user_channel['channel_id'])->first()){
-                            $channel_items = \DB::table('users')->select('facebook_channels.name as channel_name','users.*')->leftJoin('channels', 'users.id', '=', 'channels.user_id')->leftJoin('facebook_channels', 'channels.id', '=', 'facebook_channels.channel_id')->where('users.id', $user_id)->where('channels.id',$user_channel['channel_id'])->get();
-                            foreach($channel_items as $channel_item){
-                                $socialAccountLabel = $channel_item->channel_name . '( facebook )';
-                                $socialMediaAccounts .= $socialAccountLabel . ', <br/>';
-                            }
-                        } else {
-                            continue;
-                        }
-                    }
-                    
-                }
-                
+               
                 array_push($results, [
                     'signupDate' => $signupDate,
                     'email' => $email,
