@@ -106,24 +106,6 @@ class Compose extends React.Component {
                   content={content}
                   pictures={pictures}
                 />
-                <div className="category-section">
-                  <div className="subtitle">Category</div>
-                  <Select
-                    value={category}
-                    placeholder="Select or create your category"
-                    onChange={setCategory}
-                    size="large"
-                    style={{ width: '100%' }}
-                  >
-                    {
-                      categoryOptions && categoryOptions.map(category => (
-                        <Option key="topic" value={category.id} title={category.category_name}>
-                          {category.category_name}
-                        </Option>
-                      ))
-                    }
-                  </Select>
-                </div>
                 {
                   (date || startsAt) && (
                     <DateTimeSelector
@@ -138,6 +120,24 @@ class Compose extends React.Component {
                     />
                   )
                 }
+                <div className="category-section">
+                  <div className="subtitle">Category</div>
+                  <Select
+                    value={category}
+                    placeholder="Select or create your category (Optional)"
+                    onChange={setCategory}
+                    size="large"
+                    style={{ width: '100%' }}
+                  >
+                    {
+                      categoryOptions && categoryOptions.map(category => (
+                        <Option key="topic" value={category.id} title={category.category_name}>
+                          {category.category_name}
+                        </Option>
+                      ))
+                    }
+                  </Select>
+                </div>
               </div>
               <FooterSection
                 {...this.props}
