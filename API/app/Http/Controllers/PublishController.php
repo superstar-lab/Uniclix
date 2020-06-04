@@ -160,7 +160,8 @@ class PublishController extends Controller
                     'posted' => $publishType == 'now' ? 1 : 0,
                     //'posted' => 0,
                     'article_id' => $post['articleId'] ? $post['articleId'] : null,
-                    'category_id' => $post['category_id'] ? $post['category_id'] : null,
+                    // 63 is the "Other" category
+                    'category_id' => isset($post['category_id']) ? $post['category_id'] : 63,
                     'post_id' => $postId
                 ];
 
