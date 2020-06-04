@@ -26,3 +26,5 @@ export const firstPromoterOriginURL = process.env.FIRST_PROMOTER_ORIGIN_URL || '
 
 export const tidioUrl = process.env.TIDIO_URL ? process.env.TIDIO_URL : '';
 
+export const userFlowToken = process.env.USERFLOW_TOKEN ? process.env.USERFLOW_TOKEN : '';
+

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import userflow from 'userflow.js';
 import MonitorActivity from '../components/TwitterBooster/Sections/MonitorActivity';
 import AccountTargets from '../components/TwitterBooster/Sections/AccountTargets';
 import KeywordTargets from '../components/TwitterBooster/Sections/KeywordTargets';

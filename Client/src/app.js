@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+import userflow from 'userflow.js';
 import configStore from "./store/configStore";
 import AppRouter from "./routes/AppRouter";
 import "normalize.css/normalize.css";
@@ -13,9 +14,15 @@ import { setMiddleware } from "./actions/middleware";
 import { startGeneral } from './actions/general';
 import 'antd/dist/antd.css';
 import { Helmet } from 'react-helmet';
-import { googleAnalyticsGtagID, firstPromoterOriginURL, tidioUrl } from './config/api';
+import {
+    googleAnalyticsGtagID,
+    firstPromoterOriginURL,
+    tidioUrl,
+    userFlowToken
+} from './config/api';
 
 const store = configStore();
+userflow.init(userFlowToken);
 
 const Root = () => (
     <div>

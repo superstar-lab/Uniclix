@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 import moment from 'moment';
 import { notification } from 'antd';
+import userflow from 'userflow.js';
 
 import FunctionModal from '../Modal';
 import { updateTimeZone } from '../../requests/profile';
@@ -35,9 +36,16 @@ class Scheduled extends React.Component {
   }
 
   componentDidMount() {
-    if (isOwnerOrAdmin(this.props.accessLevel)) {
+    const { accessLevel, user: { id, name, email, created_at } } = this.props;
+    if (isOwnerOrAdmin(accessLevel)) {
       this.getAwaitingPosts();
     }
+
+    userflow.identify(id, {
+      name,
+      email,
+      signed_up_at: created_at
+    })
   }
 
   componentDidUpdate(prevProps) {
@@ -164,12 +172,13 @@ class Scheduled extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { profile: { user: { timezone }, accessLevel } = {} } = state;
+  const { profile: { user } = {} } = state;
   const main_profile = state.profile;
   return {
-    timezone,
+    timezone: user.timezone,
     main_profile,
-    accessLevel
+    accessLevel: user.accessLevel,
+    user
   };
 };
 
