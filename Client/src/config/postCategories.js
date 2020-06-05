@@ -9,5 +9,5 @@ export default [
   { "id": 60, "category_name": "Experiment", "color": "#FFFC99" },
   { "id": 61, "category_name": "Business", "color": "#0073B1" },
   { "id": 62, "category_name": "General", "color": "#8E8358" },
-  { "id": 63, "category_name": "Other", "color": "#D7DAE5" }
+  { "id": 63, "category_name": "Other", "color": "#2D86DA" }
 ];
