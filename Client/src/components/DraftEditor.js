@@ -4,7 +4,7 @@ import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import 'draft-js-mention-plugin/lib/plugin.css';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
-import ImageUploader from 'react-images-browse/src/component/compiled';
+import FileUploader from '../components/FileUploader/component/compiled';
 import moment from "moment";
 import hashtagSuggestionList from '../fixtures/hashtagSuggestions';
 
@@ -13,6 +13,7 @@ const {hasCommandModifier} = KeyBindingUtil;
 class DraftEditor extends React.Component{
 
     imageIcon = React.createRef();
+    videoRef = React.createRef();   
 
     constructor(props){
         super(props);
@@ -30,6 +31,7 @@ class DraftEditor extends React.Component{
         content: "", 
         type: "store",
         images: [],
+        videos: [],
         scheduled_at: moment(),
         scheduled_at_original: moment()
     };
@@ -39,12 +41,15 @@ class DraftEditor extends React.Component{
         hashtagSuggestions: hashtagSuggestionList,
         letterCount: 0,
         pictures: this.props.pictures,
+        videos: this.props.videos,
         showEmojiIcon: typeof(this.props.showEmojiIcon) !== "undefined" ? this.props.showEmojiIcon : true,
         showImagesIcon: typeof(this.props.showImagesIcon) !== "undefined" ? this.props.showImagesIcon : true,
+        showVideosIcon: typeof(this.props.showVideosIcon) !== "undefined" ? this.props.showVideosIcon : true,
         showHashtagsIcon: typeof(this.props.showHashtagsIcon) !== "undefined" ? this.props.showHashtagsIcon : true,
         placeholderText: typeof(this.props.placeholderText) !== "undefined" ? this.props.placeholderText : "What's on your mind?",
         singleImage: typeof(this.props.singleImage) !== "undefined" ? this.props.singleImage : true,
-        imageLimit:  typeof(this.props.imageLimit) !== "undefined" ? this.props.imageLimit : 4
+        imageLimit:  typeof(this.props.imageLimit) !== "undefined" ? this.props.imageLimit : 4,
+        videoName: '',
     };
 
 
@@ -80,6 +85,20 @@ class DraftEditor extends React.Component{
         });
     };
 
+    onVideo = (videos, videoDataUrls) => {
+        this.setState((prevState) => {
+            if(prevState.videos !== videos){
+                return {
+                    videos: videoDataUrls
+                }
+            }
+        }, () => {
+            if(typeof(this.props.onVideosChange) !== "undefined"){
+                this.props.onVideosChange(videoDataUrls);
+            }
+        });
+    };
+
     onDone = () => {
         const text = this.state.editorState.getCurrentContent().getPlainText();
         const pictures = this.state.pictures;
@@ -94,6 +113,11 @@ class DraftEditor extends React.Component{
         click();
     };
 
+    onVideoIconClick = () => {
+        this.videoRef.current.inputElement.
+        previousSibling.click();
+    };
+    
     onHashIconClick = () => {
         const editorState = this.state.editorState;
         const selection = editorState.getSelection();
@@ -127,9 +151,8 @@ class DraftEditor extends React.Component{
 
         return getDefaultKeyBinding(e);
     }
-
+    
     render(){
-
         const emojiPlugin = this.emojiPlugin;
         const hashtagMentionPlugin = this.hashtagMentionPlugin;
 
@@ -137,6 +160,7 @@ class DraftEditor extends React.Component{
         const { MentionSuggestions: HashtagSuggestions } = hashtagMentionPlugin;
         const plugins = [emojiPlugin, hashtagMentionPlugin];
         const {scheduledLabel, inclusive, toggle, network} = this.props;
+        const { videoName } = this.state;
 
         return(
             <div className="draft_editor_container">
@@ -169,11 +193,11 @@ class DraftEditor extends React.Component{
                                     placeholder={this.state.placeholderText}
                                     ref={(element) => { this.editor = element; }}
                                 />
-                                <ImageUploader
+                                <FileUploader
                                     withIcon={false}
                                     buttonText=''
                                     onChange={this.onDrop}
-                                    imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                                    imgExtension={['.jpg', '.gif', '.png', '.gif', '.webp', '.jpeg', '.svg']}
                                     maxFileSize={5242880}
                                     withPreview={true}
                                     withLabel={false}
@@ -181,6 +205,22 @@ class DraftEditor extends React.Component{
                                     ref={this.imageIcon}
                                     defaultImages={this.state.pictures}
                                     singleImage={this.state.singleImage}
+                                    fileType='image'
+                                />
+                                <FileUploader
+                                    withIcon={false}
+                                    buttonText=''
+                                    onChange={this.onVideo}
+                                    imgExtension={['.mp4', '.avi', '.mov', '.mpg', '.mpeg', '.webm', '.wmv', '.ogm', '.ogv', '.asx', '.m4v']}
+                                    accept="video/*"
+                                    maxFileSize={104857600}
+                                    withPreview={true}
+                                    withLabel={false}
+                                    buttonClassName='dnone'
+                                    ref={this.videoRef}
+                                    defaultImages={this.state.videos}
+                                    singleImage={this.state.singleImage}
+                                    fileType='video'
                                 />
 
                                 <EmojiSuggestions />
@@ -194,16 +234,23 @@ class DraftEditor extends React.Component{
                         </div>
                     </form>
                 </div>
+                <div className="video-label">{videoName}</div>
                 <div className="editor-icons">
                     {this.state.showEmojiIcon && <EmojiSelect />}
                     {this.state.showImagesIcon && 
-                        (   this.state.imageLimit <= this.state.pictures.length ?
+                        (   (this.state.imageLimit <= this.state.pictures.length) || (this.state.videos.length > 0) ?
                             <i className="fa fa-image upload-images disabled-btn"></i>
                             :
                             <i onClick={this.onImageIconClick} className="fa fa-image upload-images" style={{color: '#2D86DA'}}></i>
                         )
                     }
-                    {/* <i className="fa fa-map-marker add-location"></i> */}
+                    {this.state.showVideosIcon && 
+                        ((this.state.imageLimit <= this.state.videos.length) || (this.state.pictures.length > 0) ?
+                            <i className="fa fa-file-video-o disabled-btn"></i>
+                            :
+                            <i className="fa fa-file-video-o" onClick={this.onVideoIconClick}></i>
+                        )
+                    }
                 </div>
 
                 {inclusive && 

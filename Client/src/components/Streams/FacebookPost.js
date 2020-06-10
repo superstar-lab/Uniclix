@@ -8,6 +8,7 @@ class FacebookPost extends React.Component{
     state = {
         content: "",
         pictures: [],
+        videos: [],
         letterCount: 0,
         loading: false
     }
@@ -25,10 +26,16 @@ class FacebookPost extends React.Component{
         }));
     };
 
+    updateVideos = (videos = []) => {
+        this.setState(() => ({
+            videos: videos
+        }));
+    };
+
     send = () => {
 
         this.setState(() => ({loading: true}));
-        const {content, pictures} = this.state;
+        const {content, pictures, videos} = this.state;
         const {postData, channel, close} = this.props;
         const {statusId} = postData;
         const channelId = channel.id;
@@ -68,9 +75,11 @@ class FacebookPost extends React.Component{
                     <DraftEditor 
                         content={this.state.content}
                         pictures={this.state.pictures}
+                        videos={this.state.videos}
                         onChange={this.updateContent}
                         placeholderText="Add a few words..."
                         onImagesChange={this.updatePictures}
+                        onVideosChange={this.updateVideos}
                         showImagesIcon={false}
                         showEmojiIcon={false}
                         showHashtagsIcon={false}

@@ -16,6 +16,7 @@ class FacebookActions extends React.Component{
         liked: false,
         content: "",
         pictures: [],
+        videos: [],
         comment: false,
         loading: false,
         postBox: false,
@@ -72,11 +73,12 @@ class FacebookActions extends React.Component{
         }));
 
         const {feedItem, channel, updateItem} = this.props;
-        const {content, pictures} = this.state;
+        const {content, pictures, videos} = this.state;
 
         let image = pictures.length ? pictures[0] : "";
+        let video = videos.length ? videos[0] : "";
 
-        comment(feedItem.id, channel.id, content, image).then((response) => {
+        comment(feedItem.id, channel.id, content, image, video).then((response) => {
             this.setState(() => ({
                 comment: false
             }));
@@ -99,6 +101,7 @@ class FacebookActions extends React.Component{
                 this.setState(() => ({
                     content: "",
                     pictures: [],
+                    videos: [],
                     loading: false
                 }));
             }else{
@@ -155,6 +158,13 @@ class FacebookActions extends React.Component{
             pictures: pictures
         }));
     };
+
+    updateVideos = (vidios = []) => {
+        this.setState(() => ({
+            videos: videos
+        }));
+    };
+
 
     toggleLike = () => {
         const {liked} = this.state;
@@ -284,9 +294,11 @@ class FacebookActions extends React.Component{
                                     <DraftEditor 
                                         content={this.state.content}
                                         pictures={this.state.pictures}
+                                        videos={this.state.videos}
                                         onChange={this.updateContent}
                                         placeholderText="Write a comment..."
                                         onImagesChange={this.updatePictures}
+                                        onVideosChange={this.updateVideos}
                                         imageLimit={1}
                                         network="facebook"
                                     />

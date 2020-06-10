@@ -8,6 +8,7 @@ use Thujohn\Twitter\Facades\Twitter;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
+use Codebird\Codebird;
 
 set_time_limit(0);
 
@@ -101,6 +102,65 @@ trait Tweetable
         return Twitter::uploadMedia($media);
     }
 
+    public function uploadMediaVideo($media)
+    {
+        Codebird::setConsumerKey(config('ttwitter.CONSUMER_KEY'), config('ttwitter.CONSUMER_SECRET'));
+        $tokens = $this->getTokens();
+        $twitter = Codebird::getInstance();
+        $twitter->setToken($tokens->oauth_token, $tokens->oauth_token_secret);
+        $twitter->setTimeout(60 * 1000); // 60 second request timeout
+        $file = fopen($media, 'rb');
+        $size = fstat($file)['size'];
+        $media = $twitter->media_upload([
+            'command' => 'INIT',
+            'media_type' => 'video/mp4',
+            'media_category' => 'tweet_video',
+            'total_bytes' => $size,
+        ]);
+        $mediaId = $media->media_id;
+        $segmentId = 0;
+        while (!feof($file)) {
+            $chunk = fread($file,  1024 * 1024);
+            $media = $twitter->media_upload([
+                'command' => 'APPEND',
+                'media_id' => $mediaId,
+                'segment_index' => $segmentId,
+                'media' => $chunk,
+            ]);
+            $segmentId++;
+        }
+        fclose($file);
+        $media = $twitter->media_upload([
+            'command' => 'FINALIZE',
+            'media_id' => $mediaId,
+        ]);
+        if(isset($media->processing_info)) {
+            $info = $media->processing_info;
+            if($info->state != 'succeeded') {
+                $attempts = 0;
+                $checkAfterSecs = $info->check_after_secs;
+                $success = false;
+                do {
+                    $attempts++;
+                    sleep($checkAfterSecs);
+                    $media = $twitter->media_upload([
+                        'command' => 'STATUS',
+                        'media_id' => $mediaId
+                    ]);
+                    $procInfo = $media->processing_info;
+                        
+                    if($procInfo->state == 'succeeded' || $procInfo->state == 'failed') {
+                        break;
+                    }
+        
+                    $checkAfterSecs = $procInfo->check_after_secs;
+                } while($attempts <= 10);
+            }
+        }
+        
+        return $media;
+    }
+
 
     /**
      * @param array $tweet
@@ -131,15 +191,19 @@ trait Tweetable
         try{
             $payload = unserialize($scheduledPost->payload);
             $images = $payload['images'];
+            $videos = $payload['videos'];
             $timezone = $payload['scheduled']['publishTimezone'];
 
             $mediaIds = [];
-
             foreach($images as $image){
                 $relativePath = str_replace('storage', 'public', $image['relativePath']);
 
                 $media = ["media" => \Storage::get($relativePath)];
                 $uploadResponse = $this->uploadMedia($media);
+                $mediaIds[] = $uploadResponse->media_id;
+            }
+            foreach($videos as $video){
+                $uploadResponse = $this->uploadMediaVideo($video['relativePath']);
                 $mediaIds[] = $uploadResponse->media_id;
             }
 

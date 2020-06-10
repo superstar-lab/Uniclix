@@ -15,6 +15,7 @@ import {
   closeModal,
   setContent,
   setPictures,
+  setVideos,
   setCategory,
   setDate,
   setPostAtBestTime,
@@ -29,7 +30,12 @@ import SelectAccountModal from './components/SelectAccountsModal';
 
 const { Option } = Select;
 
-class Compose extends React.Component {
+class Compose extends React.Component {  
+  state = {
+    channels: this.props.channels,
+    showImagesIcon: true,
+    showVideosIcon: true,
+  };
 
   componentDidUpdate() {
     const { updatePublishChannels, publishChannels, channels } = this.props;
@@ -37,7 +43,29 @@ class Compose extends React.Component {
     // if there are no publish channels, we populate the array with the selected one
     if (!publishChannels) {
       channels.forEach(channel => {
-        if (channel.selected) updatePublishChannels(new Set([channel.details.channel_id]));
+        if (channel.selected) {
+          updatePublishChannels(new Set([channel.details.channel_id]));
+          switch (channel.type) {
+            case 'twitter':
+              this.setState({
+                showImagesIcon: true,
+                showVideosIcon: true,
+              });
+              break;
+            case 'linkedin':
+              this.setState({
+                showImagesIcon: true,
+                showVideosIcon: false,
+              });
+              break;
+            case 'facebook':
+              this.setState({
+                showImagesIcon: true,
+                showVideosIcon: true,
+              });
+              break;
+          }
+        }
       });
     }
   }
@@ -51,6 +79,7 @@ class Compose extends React.Component {
       channels,
       content,
       pictures,
+      videos,
       category,
       selectedTimezone,
       date,
@@ -61,6 +90,7 @@ class Compose extends React.Component {
       setCategory,
       setContent,
       setPictures,
+      setVideos,
       setShowSelectAccount,
       setDate,
       setPostAtBestTime,
@@ -103,8 +133,12 @@ class Compose extends React.Component {
                 <ContentInput
                   setContent={setContent}
                   setPictures={setPictures}
+                  setVideos={setVideos}
                   content={content}
                   pictures={pictures}
+                  videos={videos}
+                  showImagesIcon={this.state.showImagesIcon}
+                  showVideosIcon={this.state.showVideosIcon}
                 />
                 {
                   (date || startsAt) && (
@@ -175,6 +209,7 @@ const mapDispatchToProps = (dispatch) => ({
   closeModal: () => dispatch(closeModal()),
   setContent: (content) => dispatch(setContent(content)),
   setPictures: (pictures) => dispatch(setPictures(pictures)),
+  setVideos: (videos) => dispatch(setVideos(videos)),
   setCategory: (category) => dispatch(setCategory(category)),
   setDate: (date) => dispatch(setDate(date)),
   setPostAtBestTime: (postAtBestTime) => dispatch(setPostAtBestTime(postAtBestTime)),

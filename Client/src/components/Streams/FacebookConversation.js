@@ -9,6 +9,7 @@ class FacebookConversation extends React.Component{
     state = {
         content: "",
         pictures: [],
+        videos:[],
         letterCount: 0,
         loading: false
     }
@@ -23,6 +24,12 @@ class FacebookConversation extends React.Component{
     updatePictures = (pictures = []) => {
         this.setState(() => ({
             pictures: pictures
+        }));
+    };
+
+    updateVideos = (videos = []) => {
+        this.setState(() => ({
+            videos: videos
         }));
     };
 
@@ -80,10 +87,12 @@ class FacebookConversation extends React.Component{
                     <DraftEditor 
                         content={this.state.content}
                         pictures={this.state.pictures}
+                        videos={this.state.videos}
                         onChange={this.updateContent}
                         showImagesIcon={false}
                         placeholderText="Write a reply..."
                         onImagesChange={this.updatePictures}
+                        onVideoschange={this.updateVideos}
                         network="twitter"
                     />
                     

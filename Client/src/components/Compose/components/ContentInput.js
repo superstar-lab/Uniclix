@@ -7,8 +7,12 @@ class ContentInput extends React.Component {
   static propTypes = {
     setContent: PropTypes.func.isRequired,
     setPictures: PropTypes.func.isRequired,
+    setVideos: PropTypes.func.isRequired,
     content: PropTypes.string.isRequired,
-    pictures: PropTypes.array.isRequired
+    pictures: PropTypes.array.isRequired,
+    videos: PropTypes.array.isRequired,
+    showImagesIcon: PropTypes.boolean,
+    showVideosIcon: PropTypes.boolean,
   };
   
   onContentChange = (newContent) => {
@@ -17,19 +21,27 @@ class ContentInput extends React.Component {
 
   onPictureChange = (pictures = []) => {
     this.props.setPictures(pictures);
+  };
+
+  onVideoChange = (videos = []) => {
+    this.props.setVideos(videos);
   }
 
   render() {
-    const { content, pictures } = this.props;
-
+    const { content, pictures, videos } = this.props;
+    
     return (
       <DraftEditor
         scheduledLabel={null}
         onChange={this.onContentChange}
         onImagesChange={this.onPictureChange}
+        onVideosChange={this.onVideoChange}
         content={content}
         pictures={pictures}
+        videos={videos}
         showHashtagsIcon={false}
+        showImagesIcon={this.props.showImagesIcon}
+        showVideosIcon={this.props.showVideosIcon}
       />
     );
   }

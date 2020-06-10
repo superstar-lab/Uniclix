@@ -43,6 +43,11 @@ export const setPictures = (pictures) => ({
     pictures
 });
 
+export const setVideos = (videos) => ({
+    type: 'SET_VIDEOS',
+    videos
+});
+
 export const setCategory = (category) => ({
     type: 'SET_CATEGORY',
     category

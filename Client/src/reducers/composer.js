@@ -5,6 +5,7 @@ const defaultState = {
 		showSelectAccounts: false,
 		content: '',
 		pictures: [],
+		videos: [],
 		category: undefined,
 		date: undefined,
 		type: 'store',
@@ -56,6 +57,8 @@ export default (state = defaultState, action) => {
 			return { ...state, content: action.content };
 		case 'SET_PICTURES':
 			return { ...state, pictures: action.pictures };
+		case 'SET_VIDEOS':
+			return { ...state, videos: action.videos };
 		case 'SET_CATEGORY':
 			return { ...state, category: action.category };
 		case 'SET_DATE':

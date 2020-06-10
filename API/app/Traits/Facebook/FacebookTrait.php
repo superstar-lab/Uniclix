@@ -462,6 +462,18 @@ trait FacebookTrait
         return $response->getDecodedBody();
     }
 
+    public function uploadMediaVideo($mediaVideo, $data)
+    {
+        $fb = $this->setAsCurrentUser($this->access_token);
+        try {
+            $response = $fb->uploadVideo($this->original_id, $mediaVideo, $data, $this->access_token);
+          } catch(Facebook\Exception\SDKException $e) {
+            echo 'Error: ' . $e->getMessage();
+            exit;
+          }
+        return $response;
+    }
+
         /**
      * @param string $image base64 encoded
      * @return mixed
@@ -528,10 +540,12 @@ trait FacebookTrait
         try{
             $payload = unserialize($scheduledPost->payload);
             $images = $payload['images'];
+            $videos = $payload['videos'];
             $timezone = $payload['scheduled']['publishTimezone'];
             $appUrl = config("app.url");
             $mediaIds = [];
             $mediaCount = 0;
+            $text = $scheduledPost->content;
             foreach($images as $image){
                 $relativePath = $image['relativePath'];
                 $fullPath = $appUrl."/".$relativePath;
@@ -541,8 +555,19 @@ trait FacebookTrait
                 $mediaIds["attached_media[$mediaCount]"] = "{'media_fbid': '$mediaId'}";
                 $mediaCount++;
             }
+            foreach($videos as $video){
+                $relativePathVideo = $video['relativePath'];
+                // $fullPathVideo = $appUrl."/".$relativePathVideo;
+                $data = [
+                    'title' => 'My Foo Video',
+                    'description' => $text,
+                ];
+                $uploadResponseVideo = $this->uploadMediaVideo($relativePathVideo, $data);
+                $mediaVideoId = $uploadResponseVideo['video_id'];
+                $mediaVideoIds["attachments[$mediaCount]"] = "{'media': '$mediaVideoId'}";
+                $mediaCount++;
+            }
 
-            $text = $scheduledPost->content;
             $link = findUrlInText($text);
             $post = [];
 
@@ -556,7 +581,10 @@ trait FacebookTrait
             }
 
             if($mediaCount > 0){
-                $post = array_merge($mediaIds, $post);
+                if($images) $post = array_merge($mediaIds, $post);
+                if($videos) {
+                    $post = array_merge($mediaVideoIds, $post);
+                }
             }
 
             $result = $this->publish($post);

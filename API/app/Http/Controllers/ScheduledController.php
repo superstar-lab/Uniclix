@@ -79,8 +79,10 @@ class ScheduledController extends Controller
         foreach ($posts as $post) {
             $post->payload = unserialize($post->payload);
             $images = $post->payload['images'];
+            $videos = $post->payload['videos'];
             $scheduled = $post->payload['scheduled'];            
             $new_images = array();
+            $new_videos = array();
             $new_payload = array();
             if(!empty($images)){
                 foreach ($images as $image) {
@@ -89,8 +91,17 @@ class ScheduledController extends Controller
             } else {
                 //$new_images = null;
             }
+
+            if(!empty($videos)){
+                foreach ($videos as $video) {
+                    array_push( $new_videos, $video['absolutePath']);
+                }           
+            } else {
+                //$new_images = null;
+            }
             
-            $new_payload =  [ "images" => $new_images, "scheduled" => $scheduled ];
+            if($images) $new_payload =  [ "images" => $new_images, "scheduled" => $scheduled ];
+            if($videos) $new_payload =  [ "videos" => $new_videos, "scheduled" => $scheduled ];
             $post->payload = $new_payload;
         }
         

@@ -48,9 +48,11 @@ class PublishController extends Controller
             $scheduled = $post['scheduled'];
             $channels = $post['publishChannels'];
             $images = $post['images'];
+            $videos = $post['videos'];
             $publishType = $post['publishType'];
             $scheduledTime = Carbon::parse($scheduled['publishUTCDateTime'])->format("Y-m-d H:i:s");
             $uploadedImages = $this->uploadImages($images);
+            $uploadedVideos = $this->uploadVideos($videos);
             $bestTime = false;
             $permissionLevel = "publisher";
             $failedChannels = [];
@@ -96,6 +98,7 @@ class PublishController extends Controller
                 $currentChannel = $channel;
                 $networkContent = strtolower($channel->type) . "Content";
                 $networkPictures = strtolower($channel->type) . "Pictures";
+                $networkVideos = strtolower($channel->type) . "Videos";
                 $publishTime = Carbon::now();
 
                 if (isset($post[$networkPictures])) {
@@ -107,8 +110,18 @@ class PublishController extends Controller
                     }
                 }
 
+                if (isset($post[$networkVideos])) {
+
+                    $videos = $post[$networkVideos];
+                    
+                    if (count($videos)) {
+                        $uploadedVideos = $this->uploadVideos($videos);
+                    }
+                }
+
                 $payload = [
                     'images' => $uploadedImages,
+                    'videos' => $uploadedVideos,
                     'scheduled' => $scheduled
                 ];
 
@@ -284,6 +297,51 @@ class PublishController extends Controller
         }
 
         return $uploadedImages;
+    }
+
+    private function uploadVideos($videos)
+    {
+        $uploadedVideos = [];
+        foreach ($videos as $video) {
+            if (str_contains($video, "http") && str_contains($video, "storage")) {
+                
+                $relativePath = 'storage' . explode('storage', $video)[1];
+                
+                $uploadedVideos[] = [
+                    'relativePath' => $relativePath,
+                    'absolutePath' => $video
+                ];
+            } else {
+                    if (str_contains($video, "http")) {
+                    $contents = file_get_contents($video);
+                    $name = substr($video, strrpos($video, '/') + 1);
+                    $videoName = str_contains($name, "?") ? explode("?", $name)[0] : $name;
+                    $videoName = str_random(35) . "-" . $videoName;
+                } else if(!empty($video)){
+                    $videoData = explode(',', $video);
+                    $videoBase64 = $videoData[1];
+                    $videoInfo = explode(';', $videoData[0]);
+                    $videoOriginalName = explode('.', $videoInfo[1]);
+                    $videoExtension = $videoOriginalName[1];
+                    $contents = base64_decode($videoBase64);
+                    $videoName = str_random(35) . '.' . $videoExtension;
+                } else if(empty($video)){
+                    continue;
+                }
+                $today = Carbon::today();
+                $uploadPath = "public/$today->year/$today->month/$today->day/$videoName";
+                
+                \Storage::put($uploadPath, $contents);
+                
+                $relativePublicPath = str_replace("public", "storage", $uploadPath);
+
+                $uploadedVideos[] = [
+                    'relativePath' => $relativePublicPath,
+                    'absolutePath' => \URL::to('/') . '/' . $relativePublicPath
+                ];
+            }
+        }
+        return $uploadedVideos;
     }
 
     public function publish(Request $request)

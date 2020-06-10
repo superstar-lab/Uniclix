@@ -22,6 +22,7 @@ class FooterSection extends React.Component {
     publishChannels: PropTypes.array.isRequired,
     content: PropTypes.string.isRequired,
     pictures: PropTypes.array,
+    videos: PropTypes.array,
     category: PropTypes.string.isRequired,
     selectedTimezone: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
@@ -37,10 +38,12 @@ class FooterSection extends React.Component {
   };
 
   canPost = () => {
-    const { content, date, publishChannels, pictures } = this.props;
 
-    return (!!content.length || !!pictures.length) && date && !!publishChannels.size;
+    const { content, date, publishChannels, pictures, videos } = this.props;
+
+    return (!!content.length || !!pictures.length || !!videos.length) && date && !!publishChannels.size;
   };
+
 
   getPublishType = () => {
     let { postAtBestTime, postNow, selectedTimezone, date, accessLevel } = this.props;
@@ -75,6 +78,7 @@ class FooterSection extends React.Component {
       id,
       content,
       pictures,
+      videos,
       category,
       selectedTimezone,
       date,
@@ -93,10 +97,12 @@ class FooterSection extends React.Component {
       };
 
       this.setState({ isLoading: true });
+	  
       publish({
         scheduled,
         content,
         images: pictures,
+        videos: videos,
         publishChannels: this.getPublishChannels(),
         type,
         publishType: this.getPublishType(),
@@ -133,7 +139,7 @@ class FooterSection extends React.Component {
   render() {
     const { closeModal } = this.props;
     const { isLoading } = this.state;
-
+    
     return (
       <div className="footer-section">
         <Button type="link" onClick={closeModal}>

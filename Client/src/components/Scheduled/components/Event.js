@@ -50,7 +50,7 @@ const Event = ({
         post_id,
         channel_ids,
         content,
-        payload: { images, scheduled: { publishUTCDateTime } },
+        payload: { images, videos, scheduled: { publishUTCDateTime } },
         category_id
       } = event;
 
@@ -61,6 +61,7 @@ const Event = ({
         publishChannels: new Set(channel_ids),
         content,
         pictures: images,
+        videos: videos,
         category: category_id,
         date,
         selectedTimezone: timezone
