@@ -48,7 +48,7 @@ class ScheduledController extends Controller
                 $post[0]->channel_ids = $channel_ids;
                 array_push($new_item, (object)$post[0]);
                 array_push($new_posts, (object)$new_item[0]);
-                
+
             } else {
                 array_push($channel_ids, $post[0]->channel_id);
                 $post[0]->channel_ids = $channel_ids;
@@ -74,20 +74,20 @@ class ScheduledController extends Controller
         } else {
             $posts = $this->user->getMemberScheduledPosts($from_date, $to_date);
         }
-        
+
 
         foreach ($posts as $post) {
             $post->payload = unserialize($post->payload);
             $images = $post->payload['images'];
             $videos = $post->payload['videos'];
-            $scheduled = $post->payload['scheduled'];            
+            $scheduled = $post->payload['scheduled'];
             $new_images = array();
             $new_videos = array();
             $new_payload = array();
             if(!empty($images)){
                 foreach ($images as $image) {
                     array_push( $new_images, $image['absolutePath']);
-                }           
+                }
             } else {
                 //$new_images = null;
             }
@@ -95,16 +95,14 @@ class ScheduledController extends Controller
             if(!empty($videos)){
                 foreach ($videos as $video) {
                     array_push( $new_videos, $video['absolutePath']);
-                }           
+                }
             } else {
                 //$new_images = null;
             }
-            
-            if($images) $new_payload =  [ "images" => $new_images, "scheduled" => $scheduled ];
-            if($videos) $new_payload =  [ "videos" => $new_videos, "scheduled" => $scheduled ];
-            $post->payload = $new_payload;
+
+            $post->payload = [ "images" => $new_images, "videos" => $new_videos, "scheduled" => $scheduled ];
         }
-        
+
         $posts = $posts->groupBy('post_id');
         $new_posts = array();
         $new_item = array();
@@ -119,7 +117,7 @@ class ScheduledController extends Controller
                 $post[0]->channel_ids = $channel_ids;
                 array_push($new_item, (object)$post[0]);
                 array_push($new_posts, (object)$new_item[0]);
-                
+
             } else {
                 array_push($channel_ids, $post[0]->channel_id);
                 $post[0]->channel_ids = $channel_ids;

@@ -212,7 +212,7 @@ class DraftEditor extends React.Component{
                                     buttonText=''
                                     onChange={this.onVideo}
                                     imgExtension={['.mp4', '.avi', '.mov', '.mpg', '.mpeg', '.webm', '.wmv', '.ogm', '.ogv', '.asx', '.m4v']}
-                                    accept="video/*"
+                                    accept="video/mp4,video/x-m4v,video/*"
                                     maxFileSize={104857600}
                                     withPreview={true}
                                     withLabel={false}
