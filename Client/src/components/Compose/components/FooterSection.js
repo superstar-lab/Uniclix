@@ -30,7 +30,8 @@ class FooterSection extends React.Component {
     postNow: PropTypes.bool.isRequired,
     channels: PropTypes.array.isRequired,
     accessLevel: PropTypes.string.isRequired,
-    onPost: PropTypes.func
+    onPost: PropTypes.func,
+    onUploadCancelMedia: PropTypes.func
   };
 
   state = {
@@ -86,6 +87,9 @@ class FooterSection extends React.Component {
       articleId = '',
       closeModal,
       onPost,
+      uploadImages,
+      uploadVideos,
+      onUploadCancelMedia,
     } = this.props;
 
     try {
@@ -103,6 +107,8 @@ class FooterSection extends React.Component {
         content,
         images: pictures,
         videos: videos,
+        uploadImages: uploadImages,
+        uploadVideos: uploadVideos,
         publishChannels: this.getPublishChannels(),
         type,
         publishType: this.getPublishType(),
@@ -115,6 +121,7 @@ class FooterSection extends React.Component {
           onPost();
         }
         closeModal();
+        onUploadCancelMedia();
         notification.success({
           message: 'Done!',
           description: 'The post has been scheduled'
@@ -123,6 +130,7 @@ class FooterSection extends React.Component {
       .catch((error) => {
         console.log(error);
         closeModal();
+        onUploadCancelMedia();
         FunctionModal({
           type: 'error',
           title: 'Error',
@@ -133,16 +141,17 @@ class FooterSection extends React.Component {
       console.log(error);
       this.setState({ isLoading: false });
       closeModal();
+      onUploadCancelMedia();
     }
   };
 
   render() {
-    const { closeModal } = this.props;
+    const { closeModal, onUploadCancelMedia } = this.props;
     const { isLoading } = this.state;
     
     return (
       <div className="footer-section">
-        <Button type="link" onClick={closeModal}>
+        <Button type="link" onClick={() => {closeModal(), onUploadCancelMedia()}}>
           Cancel
         </Button>
         <Button

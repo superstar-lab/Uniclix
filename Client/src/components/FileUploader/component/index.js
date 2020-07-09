@@ -3,6 +3,13 @@ import PropTypes from 'prop-types';
 import './index.css';
 import FlipMove from 'react-flip-move';
 import UploadIcon from './UploadIcon.svg';
+// Import react-circular-progressbar module and styles
+import {
+  CircularProgressbar,
+  CircularProgressbarWithChildren,
+  buildStyles
+} from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 const styles = {
   display: "flex",
@@ -83,6 +90,7 @@ class ReactImageUploadComponent extends React.Component {
       const files = this.state.files.slice();
 
       newFilesData.forEach(newFileData => {
+        this.props.onUpload(newFileData.dataURL);
         dataURLs.push(newFileData.dataURL);
         files.push(newFileData.file);
       });
@@ -191,8 +199,22 @@ class ReactImageUploadComponent extends React.Component {
     return this.state.pictures.map((picture, index) => {
       return (
         <div key={index} className="uploadPictureContainer">
-          <div className="deleteImage" onClick={() => this.removeImage(picture)}>X</div>
-          <img src={picture} className="uploadPicture" alt="preview"/>
+          <div className={this.props.progressBarValue < 100 ? "deleteImage deleteImageHide" : "deleteImage"} onClick={() => this.removeImage(picture)}>X</div>
+          {
+            this.props.progressBarValue < 100 && this.props.uploadCount == index ?
+              <CircularProgressbar
+                value={this.props.progressBarValue}
+                text={`${this.props.progressBarValue}%`}
+                /* This is important to include, because if you're fully managing the
+                animation yourself, you'll want to disable the CSS animation. */
+                styles={buildStyles({ pathTransition: "none" })}
+              />
+              :
+              this.props.fileType == 'image' ?
+                <img src={picture} className="uploadPicture" alt="preview"/>
+                :
+                <video src={picture} className="uploadPicture" alt="preview"/>
+          }
         </div>
       );
     });
@@ -262,7 +284,10 @@ ReactImageUploadComponent.defaultProps = {
   errorStyle: {},
   singleImage: false,
   onChange: () => {},
-  defaultImages: []
+  defaultImages: [],
+  fileType: 'image',
+  progressBarValue: 0,
+  uploadCount: 0,
 };
 
 ReactImageUploadComponent.propTypes = {

@@ -15,6 +15,15 @@ export const selectChannel = (id) => {
         });
 };
 
+export const upload = (post, onUploadProgress) => {
+  return axios.post(`${apiUrl}/post/upload`, {post}, {
+      onUploadProgress: onUploadProgress
+    })
+    .then((response) => {
+      return response.data;
+    });
+};
+
 export const publish = (post) => {
     return axios.post(`${apiUrl}/post/store`, {
         post

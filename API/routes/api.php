@@ -45,6 +45,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/scheduled/past', 'ScheduledController@pastScheduled');
 
     Route::post('/post/store', 'PublishController@store');
+    Route::post('/post/upload', 'PublishController@upload');
     Route::delete('/post/{postId}', 'PublishController@destroy');
     Route::post('/post/{postId}', 'PublishController@postNow');
     Route::patch('/post/{postId}', 'PublishController@approve');
@@ -160,7 +161,7 @@ Route::prefix("linkedin")->group(function () {
         Route::get('channels/pages', 'Linkedin\ChannelController@getPages');
         Route::post('channels/pages/save', 'Linkedin\ChannelController@savePages');
         Route::get('insights/page/{type}', 'Linkedin\AnalyticsController@pageInsightsByType');
-        
+
         Route::post('streams/scheduled', 'Linkedin\StreamsFeedController@scheduled');
         Route::post('streams/{type}', 'Linkedin\StreamsFeedController@index');
     });

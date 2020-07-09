@@ -1,16 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import FunctionModal from "../../Modal";
 
 class ChannelsRow extends React.Component {
   static propTypes = {
     publishChannels: PropTypes.array.isRequired,
     setShowSelectAccount: PropTypes.func.isRequired,
-    channels: PropTypes.array.isRequired
+    channels: PropTypes.array.isRequired,
+    videos: PropTypes.array.isRequired,
   };
+
+  componentWillMount() {
+    const { videos } = this.props;
+    const selectedChannels = this.getPublishChannels();
+    selectedChannels.forEach(channel => {
+      if (videos.length != 0 && channel.type == "linkedin" && channel.selected != 1) {
+        FunctionModal({
+          type: 'error',
+          title: 'Warning',
+          content: 'Video scheduling is not supported with LinkedIn due to LinkedIn API.',
+        });
+      }
+    });
+  }
 
   toggleSelectChannelsModal = () => {
     this.props.setShowSelectAccount(!this.props.showSelectAccounts);
   };
+
+  // This is necessary since we are storing the ids of the channels and the
+  // backend expects the whole object
+  getPublishChannels = () => {
+    const { channels, publishChannels } = this.props;
+    const selectedChannels = channels.filter(channel => publishChannels.has(channel.details.channel_id));
+
+    return selectedChannels;
+  }
 
   render() {
     const { publishChannels, channels } = this.props;

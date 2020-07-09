@@ -128,3 +128,7 @@
     flex-wrap: wrap;
     width: 100%;
 }
+
+.deleteImageHide {
+	display: none;
+}

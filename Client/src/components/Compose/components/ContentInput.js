@@ -11,6 +11,8 @@ class ContentInput extends React.Component {
     content: PropTypes.string.isRequired,
     pictures: PropTypes.array.isRequired,
     videos: PropTypes.array.isRequired,
+    publishChannels: PropTypes.array.isRequired,
+    channels: PropTypes.array.isRequired,
     showImagesIcon: PropTypes.boolean,
     showVideosIcon: PropTypes.boolean,
   };
@@ -28,7 +30,7 @@ class ContentInput extends React.Component {
   }
 
   render() {
-    const { content, pictures, videos } = this.props;
+    const { content, pictures, videos, publishChannels, channels } = this.props;
     
     return (
       <DraftEditor
@@ -42,6 +44,9 @@ class ContentInput extends React.Component {
         showHashtagsIcon={false}
         showImagesIcon={this.props.showImagesIcon}
         showVideosIcon={this.props.showVideosIcon}
+        publishChannels={publishChannels}
+        channels={channels}
+        onUploadMedia={this.props.onUploadMedia}
       />
     );
   }

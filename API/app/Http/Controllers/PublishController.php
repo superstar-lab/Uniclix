@@ -51,8 +51,8 @@ class PublishController extends Controller
             $videos = $post['videos'];
             $publishType = $post['publishType'];
             $scheduledTime = Carbon::parse($scheduled['publishUTCDateTime'])->format("Y-m-d H:i:s");
-            $uploadedImages = $this->uploadImages($images);
-            $uploadedVideos = $this->uploadVideos($videos);
+            $uploadedImages = $post["uploadImages"];
+            $uploadedVideos = $post["uploadVideos"];
             $bestTime = false;
             $permissionLevel = "publisher";
             $failedChannels = [];
@@ -106,7 +106,7 @@ class PublishController extends Controller
                     $images = $post[$networkPictures];
 
                     if (count($images)) {
-                        $uploadedImages = $this->uploadImages($images);
+                        $uploadedImages = $uploadedImages;
                     }
                 }
 
@@ -115,7 +115,11 @@ class PublishController extends Controller
                     $videos = $post[$networkVideos];
                     
                     if (count($videos)) {
-                        $uploadedVideos = $this->uploadVideos($videos);
+                        if ($channel->type == "linkedin") {
+                            $uploadedVideos = [];
+                        } else {
+                            $uploadedVideos = $uploadedVideos;
+                        }
                     }
                 }
 
@@ -250,6 +254,23 @@ class PublishController extends Controller
         return response()->json(['message' => 'Your post was successfuly stored!', 'failedChannels' => $failedChannels]);
     }
 
+    public function upload(Request $request)
+    {
+        $post = $request->input('post');
+        $images = $post['images'];
+        $videos = $post['videos'];
+        $uploadedVideos = [];
+        $uploadedImages = [];
+        if (count($videos)) {
+            $uploadedVideos = $this->uploadVideos($videos);
+        }
+
+        if (count($images)) {
+            $uploadedImages = $this->uploadImages($images);
+        }
+
+        return response()->json(['uploadedVideos' => $uploadedVideos, 'uploadedImages' => $uploadedImages]);
+    }
 
     private function uploadImages($images)
     {
@@ -304,9 +325,9 @@ class PublishController extends Controller
         $uploadedVideos = [];
         foreach ($videos as $video) {
             if (str_contains($video, "http") && str_contains($video, "storage")) {
-                
+
                 $relativePath = 'storage' . explode('storage', $video)[1];
-                
+
                 $uploadedVideos[] = [
                     'relativePath' => $relativePath,
                     'absolutePath' => $video
@@ -330,9 +351,9 @@ class PublishController extends Controller
                 }
                 $today = Carbon::today();
                 $uploadPath = "public/$today->year/$today->month/$today->day/$videoName";
-                
+
                 \Storage::put($uploadPath, $contents);
-                
+
                 $relativePublicPath = str_replace("public", "storage", $uploadPath);
 
                 $uploadedVideos[] = [

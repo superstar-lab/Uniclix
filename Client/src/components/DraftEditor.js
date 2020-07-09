@@ -4,9 +4,11 @@ import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import 'draft-js-mention-plugin/lib/plugin.css';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
-import FileUploader from '../components/FileUploader/component/compiled';
+import FileUploader from '../components/FileUploader/component/index';
 import moment from "moment";
 import hashtagSuggestionList from '../fixtures/hashtagSuggestions';
+import FunctionModal from "./Modal";
+import {upload} from '../requests/channels';
 
 const {hasCommandModifier} = KeyBindingUtil;
 
@@ -50,6 +52,8 @@ class DraftEditor extends React.Component{
         singleImage: typeof(this.props.singleImage) !== "undefined" ? this.props.singleImage : true,
         imageLimit:  typeof(this.props.imageLimit) !== "undefined" ? this.props.imageLimit : 4,
         videoName: '',
+        progressBarValue: 0,
+        uploadCount: -1,
     };
 
 
@@ -114,6 +118,26 @@ class DraftEditor extends React.Component{
     };
 
     onVideoIconClick = () => {
+        let selectedLinkedIn = false;
+        const selectedChannels = this.getPublishChannels();
+        selectedChannels.forEach(channel => {
+          if (channel.type == "linkedin") {
+            selectedLinkedIn = true;
+          }
+        });
+        if (selectedLinkedIn == true) {
+          FunctionModal({
+            type: 'error',
+            title: 'Warning',
+            content: 'Video scheduling is not supported with LinkedIn due to LinkedIn API.',
+            onOk: this.onOpenFileBrowser
+          });
+        } else {
+            this.onOpenFileBrowser();
+        }
+    };
+
+    onOpenFileBrowser = () => {
         this.videoRef.current.inputElement.
         previousSibling.click();
     };
@@ -150,6 +174,46 @@ class DraftEditor extends React.Component{
         }
 
         return getDefaultKeyBinding(e);
+    }
+
+    // This is necessary since we are storing the ids of the channels and the
+    // backend expects the whole object
+    getPublishChannels = () => {
+      const { channels, publishChannels } = this.props;
+      const selectedChannels = channels.filter(channel => publishChannels.has(channel.details.channel_id));
+
+      return selectedChannels;
+    }
+
+    onUpload = (picture) => {
+        const uploadPicture = [picture];
+        let count = this.state.uploadCount;
+        this.setState({
+           uploadCount: count + 1,
+        });
+        if (picture.substring(5, 10) == "image") {
+            upload({
+                images: uploadPicture,
+                videos: [],
+            }, ProgressEvent => {
+                this.setState({
+                    progressBarValue: Math.floor(ProgressEvent.loaded / ProgressEvent.total * 100) % 101
+                });
+            }).then((res) => {
+                this.props.onUploadMedia(res.uploadedImages, res.uploadedVideos);
+            });
+        } else {
+            upload({
+                images: [],
+                videos: uploadPicture,
+            }, ProgressEvent => {
+                this.setState({
+                    progressBarValue: Math.floor(ProgressEvent.loaded / ProgressEvent.total * 100) % 101
+                });
+            }).then((res) => {
+                this.props.onUploadMedia(res.uploadedImages, res.uploadedVideos);
+            });
+        }
     }
     
     render(){
@@ -206,6 +270,9 @@ class DraftEditor extends React.Component{
                                     defaultImages={this.state.pictures}
                                     singleImage={this.state.singleImage}
                                     fileType='image'
+                                    onUpload={this.onUpload}
+                                    progressBarValue={this.state.progressBarValue}
+                                    uploadCount={this.state.uploadCount}
                                 />
                                 <FileUploader
                                     withIcon={false}
@@ -221,6 +288,9 @@ class DraftEditor extends React.Component{
                                     defaultImages={this.state.videos}
                                     singleImage={this.state.singleImage}
                                     fileType='video'
+                                    onUpload={this.onUpload}
+                                    progressBarValue={this.state.progressBarValue}
+                                    uploadCount={this.state.uploadCount}
                                 />
 
                                 <EmojiSuggestions />

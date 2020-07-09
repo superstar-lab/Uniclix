@@ -35,6 +35,8 @@ class Compose extends React.Component {
     channels: this.props.channels,
     showImagesIcon: true,
     showVideosIcon: true,
+    uploadImages: [],
+    uploadVideos: [],
   };
 
   componentDidUpdate() {
@@ -55,7 +57,7 @@ class Compose extends React.Component {
             case 'linkedin':
               this.setState({
                 showImagesIcon: true,
-                showVideosIcon: false,
+                showVideosIcon: true,
               });
               break;
             case 'facebook':
@@ -69,6 +71,32 @@ class Compose extends React.Component {
       });
     }
   }
+
+  onUploadMedia = (uploadImage = [], uploadVideo = []) => {
+    let images = this.state.uploadImages;
+    let videos = this.state.uploadVideos;
+
+    uploadImage.forEach(image => {
+      images.push(image);
+      this.setState({
+        uploadImages: images,
+      });
+    });
+
+    uploadVideo.forEach(video => {
+      videos.push(video);
+      this.setState({
+        uploadVideos: videos,
+      });
+    });
+  };
+
+  onUploadCancelMedia = () => {
+    this.setState({
+      uploadImages: [],
+      uploadVideos: [],
+    });
+  };
 
   render() {
     const {
@@ -129,6 +157,7 @@ class Compose extends React.Component {
                   publishChannels={publishChannels}
                   setShowSelectAccount={setShowSelectAccount}
                   channels={channels}
+                  videos={videos}
                 />
                 <ContentInput
                   setContent={setContent}
@@ -139,6 +168,9 @@ class Compose extends React.Component {
                   videos={videos}
                   showImagesIcon={this.state.showImagesIcon}
                   showVideosIcon={this.state.showVideosIcon}
+                  publishChannels={publishChannels}
+                  channels={channels}
+                  onUploadMedia={this.onUploadMedia}
                 />
                 {
                   (date || startsAt) && (
@@ -178,6 +210,9 @@ class Compose extends React.Component {
                 publishChannels={publishChannels}
                 onPost={onPost}
                 accessLevel={accessLevel}
+                uploadImages={this.state.uploadImages}
+                uploadVideos={this.state.uploadVideos}
+                onUploadCancelMedia={this.onUploadCancelMedia}
               />
             </div>
           )
