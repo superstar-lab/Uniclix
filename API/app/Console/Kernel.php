@@ -32,19 +32,19 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
          $schedule->command('sync:follower.ids')
-                  ->everyThirtyMinutes();
+             ->everyThirtyMinutes();
 
         $schedule->command('sync:following.ids')
             ->everyThirtyMinutes();
 
         $schedule->command('sync:tweets')
-        ->everyThirtyMinutes();
+            ->everyThirtyMinutes();
 
         $schedule->command('sync:retweets')
-        ->everyThirtyMinutes();
+            ->everyThirtyMinutes();
 
         $schedule->command('sync:likes')
-        ->everyThirtyMinutes();
+            ->everyThirtyMinutes();
 
         $schedule->command('run:scheduled')
             ->everyMinute();

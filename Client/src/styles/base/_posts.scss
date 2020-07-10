@@ -297,6 +297,10 @@
   font-family: Rubik;
   width: 600px;
 
+  .composer-modal-content-advanced {
+    height: 650px !important;
+  }
+
   .composer-modal-content {
     width: 100%;
     height: 600px;
@@ -327,6 +331,38 @@
 
     .schedule-section {
       margin-bottom: 15px;
+    }
+
+    .category-section {
+      margin-bottom: 15px;
+    }
+
+    .repeat-section {
+      margin-bottom: 15px;
+
+      .repeat-input {
+        margin-right: 20px;
+        width: 70px;
+      }
+
+      div {
+        display: flex;
+        align-items: center;
+
+        .repeat-select {
+          margin-right: 20px;
+          width: 100px;
+
+          div {
+            width: 100px;
+          }
+        }
+
+        div {
+          font-size: 14px;
+          margin-right: 20px;
+        }
+      }
     }
 
     .separator {
@@ -455,6 +491,15 @@
       .ant-btn-link {
         color: #2D86DA;
         margin-right: 30px;
+      }
+
+      .btn-advanced {
+        position: fixed;
+        padding-right: 470px;
+      }
+
+      .btn-advanced-hidden {
+        display: none;
       }
     }
   }

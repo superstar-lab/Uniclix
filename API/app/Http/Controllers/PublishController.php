@@ -59,7 +59,9 @@ class PublishController extends Controller
             $channelCount = 0;
             $postId = '';
             $channelsCount = count($channels);
-            
+            $cntRepeat = $post["cntRepeat"];
+            $scheduleOption = $post["scheduleOption"];
+
             if($post['type'] == 'store'){
                 $postId = uniqid();
             } else if($post['type'] == 'edit') {
@@ -234,7 +236,46 @@ class PublishController extends Controller
                         $scheduledPost = $channel->scheduledPosts()->create($postData);
                     }
                 } else {
-                    $scheduledPost = $channel->scheduledPosts()->create($postData);
+                    if ($cntRepeat > 0 && $publishType == "date") {
+                        for ($i = 0; $i < $cntRepeat; $i++) {
+                            $postId = uniqid();
+
+                            if ($scheduleOption == "Daily") {
+                                $publishTime = Carbon::now()->addDays($i + 1);
+                                $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
+                            }
+                            if ($scheduleOption == "Weekly") {
+                                $publishTime = Carbon::now()->addWeeks($i + 1);
+                                $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
+                            }
+                            if ($scheduleOption == "Monthly") {
+                                $publishTime = Carbon::now()->addMonths($i + 1);
+                                $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
+                            }
+                            if ($scheduleOption == "Yearly") {
+                                $publishTime = Carbon::now()->addYears($i + 1);
+                                $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
+                            }
+
+                            $postData = [
+                                'content' => isset($post[$networkContent]) ? $post[$networkContent] : $post['content'] ? $post['content'] : '',
+                                'scheduled_at' => $publishTime,
+                                'scheduled_at_original' => $publishOriginalTime,
+                                'payload' => serialize($payload),
+                                'approved' => $permissionLevel ? 1 : 0,
+                                'posted' => $publishType == 'now' ? 1 : 0,
+                                //'posted' => 0,
+                                'article_id' => $post['articleId'] ? $post['articleId'] : null,
+                                // 63 is the "Other" category
+                                'category_id' => isset($post['category_id']) ? $post['category_id'] : 63,
+                                'post_id' => $postId
+                            ];
+
+                            $scheduledPost = $channel->scheduledPosts()->create($postData);
+                        }
+                    } else {
+                        $scheduledPost = $channel->scheduledPosts()->create($postData);
+                    }
                 }
 
                 if (!$permissionLevel && $post['type'] !== 'edit') {

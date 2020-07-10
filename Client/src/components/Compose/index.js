@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
-import { Select } from 'antd';
+import { Select, Input } from 'antd';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
@@ -30,13 +30,23 @@ import SelectAccountModal from './components/SelectAccountsModal';
 
 const { Option } = Select;
 
-class Compose extends React.Component {  
+const SCHEDULE = [
+  "Daily",
+  "Weekly",
+  "Monthly",
+  "Yearly",
+];
+
+class Compose extends React.Component {
   state = {
     channels: this.props.channels,
     showImagesIcon: true,
     showVideosIcon: true,
     uploadImages: [],
     uploadVideos: [],
+    scheduleOption: "Daily",
+    advancedVisible: true,
+    cntRepeat: 0,
   };
 
   componentDidUpdate() {
@@ -95,6 +105,25 @@ class Compose extends React.Component {
     this.setState({
       uploadImages: [],
       uploadVideos: [],
+      scheduleOption: "Daily",
+      advancedVisible: true,
+      cntRepeat: 0,
+    });
+  };
+
+  onScheduleChange = (scheduleOption) => {
+    this.setState({ scheduleOption });
+  };
+
+  onAdvancedChange = () => {
+    this.setState({
+      advancedVisible: false,
+    });
+  };
+
+  onRepeatChange = (event) => {
+    this.setState({
+      cntRepeat: event.target.value,
     });
   };
 
@@ -127,6 +156,8 @@ class Compose extends React.Component {
       accessLevel
     } = this.props;
 
+    const { scheduleOption, advancedVisible, cntRepeat } = this.state;
+
     return (
       <Modal
         isOpen={isOpen}
@@ -140,14 +171,14 @@ class Compose extends React.Component {
             />
           ) :
           (
-            <div className="modal-content composer-modal-content">
+            <div className={advancedVisible == true ? "modal-content composer-modal-content" : "modal-content composer-modal-content composer-modal-content-advanced"}>
               <div>
                 <div className="composer-header">
                   <div className="composer-title">Post</div>
                   <button
                     id="closeModal"
                     type="button"
-                    onClick={closeModal}
+                    onClick={() => {closeModal(), this.onUploadCancelMedia()}}
                     className="close fa fa-times"
                   >
                   </button>
@@ -204,6 +235,34 @@ class Compose extends React.Component {
                     }
                   </Select>
                 </div>
+                {
+                  advancedVisible == false ?
+                    <div className="repeat-section">
+                      <div className="subtitle">Repeating options</div>
+                      <div>
+                        <div>Repeat</div>
+                        <Input className="repeat-input" onChange={this.onRepeatChange} disabled={postAtBestTime || postNow}/>
+                        <div>Times</div>
+                        <Select
+                          value={scheduleOption}
+                          size="large"
+                          className="repeat-select"
+                          onChange={this.onScheduleChange}
+                          disabled={postAtBestTime || postNow}
+                        >
+                          {
+                            SCHEDULE && SCHEDULE.map(schedule => (
+                              <Option key={schedule} value={schedule} title={schedule}>
+                                {schedule}
+                              </Option>
+                            ))
+                          }
+                        </Select>
+                      </div>
+                    </div>
+                    :
+                    ""
+                }
               </div>
               <FooterSection
                 {...this.props}
@@ -212,7 +271,11 @@ class Compose extends React.Component {
                 accessLevel={accessLevel}
                 uploadImages={this.state.uploadImages}
                 uploadVideos={this.state.uploadVideos}
+                advancedVisible={advancedVisible}
+                scheduleOption={scheduleOption}
+                cntRepeat={cntRepeat}
                 onUploadCancelMedia={this.onUploadCancelMedia}
+                onAdvancedChange={this.onAdvancedChange}
               />
             </div>
           )

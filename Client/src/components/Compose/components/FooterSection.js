@@ -31,7 +31,8 @@ class FooterSection extends React.Component {
     channels: PropTypes.array.isRequired,
     accessLevel: PropTypes.string.isRequired,
     onPost: PropTypes.func,
-    onUploadCancelMedia: PropTypes.func
+    onUploadCancelMedia: PropTypes.func,
+    onAdvancedChange: PropTypes.func,
   };
 
   state = {
@@ -89,6 +90,8 @@ class FooterSection extends React.Component {
       onPost,
       uploadImages,
       uploadVideos,
+      scheduleOption,
+      cntRepeat,
       onUploadCancelMedia,
     } = this.props;
 
@@ -109,6 +112,8 @@ class FooterSection extends React.Component {
         videos: videos,
         uploadImages: uploadImages,
         uploadVideos: uploadVideos,
+        scheduleOption: scheduleOption,
+        cntRepeat: cntRepeat,
         publishChannels: this.getPublishChannels(),
         type,
         publishType: this.getPublishType(),
@@ -146,11 +151,19 @@ class FooterSection extends React.Component {
   };
 
   render() {
-    const { closeModal, onUploadCancelMedia } = this.props;
+    const { closeModal, onUploadCancelMedia, onAdvancedChange, advancedVisible, postAtBestTime, postNow } = this.props;
     const { isLoading } = this.state;
     
     return (
       <div className="footer-section">
+        <Button
+          type="link"
+          className={advancedVisible == true ? "btn-advanced" : "btn-advanced btn-advanced-hidden"}
+          onClick={onAdvancedChange}
+          disabled={postAtBestTime || postNow}
+        >
+          Advanced
+        </Button>
         <Button type="link" onClick={() => {closeModal(), onUploadCancelMedia()}}>
           Cancel
         </Button>
