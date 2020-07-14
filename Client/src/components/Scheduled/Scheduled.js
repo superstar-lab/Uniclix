@@ -172,12 +172,11 @@ class Scheduled extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { profile: { user } = {} } = state;
-  const main_profile = state.profile;
+  const { profile: { user, accessLevel } = {} } = state;
+
   return {
     timezone: user.timezone,
-    main_profile,
-    accessLevel: user.accessLevel,
+    accessLevel: accessLevel,
     user
   };
 };
