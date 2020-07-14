@@ -275,12 +275,28 @@ class User extends Authenticatable
     {
         $id = $this->id;
         
-        if($from_date == null || $to_date == null){
+        if($from_date == null && $to_date == null){
             return ScheduledPost::with('category')->select('scheduled_posts.*')
             ->orderBy('scheduled_at', 'asc')->leftJoin('channels', 'scheduled_posts.channel_id', '=', 'channels.id')
             ->where("approved", 1)
             ->where("user_id", $id)
             ->get();
+        } else if ($from_date == null) {
+            // We return past post from a given date
+            return ScheduledPost::with('category')->select('scheduled_posts.*')
+                ->orderBy('scheduled_at', 'asc')->leftJoin('channels', 'scheduled_posts.channel_id', '=', 'channels.id')
+                ->where("approved", 1)
+                ->whereDate('scheduled_at', '<=', $to_date)
+                ->where("user_id", $id)
+                ->get();
+        } else if($to_date == null) {
+            // We return future post from a given date
+            return ScheduledPost::with('category')->select('scheduled_posts.*')
+                ->orderBy('scheduled_at', 'asc')->leftJoin('channels', 'scheduled_posts.channel_id', '=', 'channels.id')
+                ->where("approved", 1)
+                ->whereDate('scheduled_at', '>=', $from_date)
+                ->where("user_id", $id)
+                ->get();
         } else {
             return ScheduledPost::with('category')->select('scheduled_posts.*')
             ->orderBy('scheduled_at', 'asc')->leftJoin('channels', 'scheduled_posts.channel_id', '=', 'channels.id')
