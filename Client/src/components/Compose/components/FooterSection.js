@@ -97,9 +97,12 @@ class FooterSection extends React.Component {
 
     try {
 
+      const bestDate = new Date(new Date(date).getFullYear(), new Date(date).getMonth(), new Date(date).getDate(), 21, 0, 0, 0);
+      const isBest = this.getPublishType() == "best";
+
       const scheduled = {
-        publishUTCDateTime: date,
-        publishDateTime: moment(date).tz(selectedTimezone).format('YYYY-MM-DDTHH:mm'),
+        publishUTCDateTime: (cntRepeat > 0 && isBest) ? bestDate : date,
+        publishDateTime: (cntRepeat > 0 && isBest) ? moment(bestDate).tz(selectedTimezone).format('YYYY-MM-DDTHH:mm') : moment(date).tz(selectedTimezone).format('YYYY-MM-DDTHH:mm'),
         publishTimezone: selectedTimezone
       };
 

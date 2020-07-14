@@ -67,7 +67,7 @@ class PublishController extends Controller
             } else if($post['type'] == 'edit') {
                 $postId = $post['id'];
             }
-            
+
             foreach ($channels as $channel) {
                 $boards = false;
 
@@ -115,7 +115,7 @@ class PublishController extends Controller
                 if (isset($post[$networkVideos])) {
 
                     $videos = $post[$networkVideos];
-                    
+
                     if (count($videos)) {
                         if ($channel->type == "linkedin") {
                             $uploadedVideos = [];
@@ -236,26 +236,43 @@ class PublishController extends Controller
                         $scheduledPost = $channel->scheduledPosts()->create($postData);
                     }
                 } else {
-                    if ($cntRepeat > 0 && $publishType == "date") {
+                    if ($cntRepeat > 0) {
                         for ($i = 0; $i < $cntRepeat; $i++) {
                             $postId = uniqid();
 
                             if ($scheduleOption == "Daily") {
-                                $publishTime = Carbon::now()->addDays($i + 1);
+                                $publishUTCDateTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addDays($i)->toRfc3339String();
+                                $publishDateTime = Carbon::parse($post['scheduled']['publishDateTime'])->addDays($i)->format('Y-m-d H:i');
+                                $publishTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addDays($i)->format("Y-m-d H:i:s");
                                 $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
                             }
                             if ($scheduleOption == "Weekly") {
-                                $publishTime = Carbon::now()->addWeeks($i + 1);
+                                $publishUTCDateTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addWeeks($i)->toRfc3339String();
+                                $publishDateTime = Carbon::parse($post['scheduled']['publishDateTime'])->addWeeks($i)->format('Y-m-d H:i');
+                                $publishTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addWeeks($i)->format("Y-m-d H:i:s");
                                 $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
                             }
                             if ($scheduleOption == "Monthly") {
-                                $publishTime = Carbon::now()->addMonths($i + 1);
+                                $publishUTCDateTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addMonths($i)->toRfc3339String();
+                                $publishDateTime = Carbon::parse($post['scheduled']['publishDateTime'])->addMonths($i)->format('Y-m-d H:i');
+                                $publishTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addMonths($i)->format("Y-m-d H:i:s");
                                 $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
                             }
                             if ($scheduleOption == "Yearly") {
-                                $publishTime = Carbon::now()->addYears($i + 1);
+                                $publishUTCDateTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addYears($i)->toRfc3339String();
+                                $publishDateTime = Carbon::parse($post['scheduled']['publishDateTime'])->addYears($i)->format('Y-m-d H:i');
+                                $publishTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addYears($i)->format("Y-m-d H:i:s");
                                 $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
                             }
+
+                            $scheduled['publishUTCDateTime'] = $publishUTCDateTime;
+                            $scheduled['publishDateTime'] = $publishDateTime;
+
+                            $payload = [
+                                'images' => $uploadedImages,
+                                'videos' => $uploadedVideos,
+                                'scheduled' => $scheduled
+                            ];
 
                             $postData = [
                                 'content' => isset($post[$networkContent]) ? $post[$networkContent] : $post['content'] ? $post['content'] : '',
@@ -263,7 +280,7 @@ class PublishController extends Controller
                                 'scheduled_at_original' => $publishOriginalTime,
                                 'payload' => serialize($payload),
                                 'approved' => $permissionLevel ? 1 : 0,
-                                'posted' => $publishType == 'now' ? 1 : 0,
+                                'posted' => 0,
                                 //'posted' => 0,
                                 'article_id' => $post['articleId'] ? $post['articleId'] : null,
                                 // 63 is the "Other" category
@@ -284,7 +301,7 @@ class PublishController extends Controller
 
                 $channelCount++;
                 if($publishType == 'now'){
-                    
+
                     $channel->details->publishScheduledPost($scheduledPost);
                 }
             }
