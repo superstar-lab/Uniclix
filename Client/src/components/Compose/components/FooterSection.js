@@ -104,8 +104,8 @@ class FooterSection extends React.Component {
       const isBest = this.getPublishType() == "best";
 
       const scheduled = {
-        publishUTCDateTime: (cntRepeat > 0 && isBest) ? bestDate : date,
-        publishDateTime: (cntRepeat > 0 && isBest) ? moment(bestDate).tz(selectedTimezone).format('YYYY-MM-DDTHH:mm') : moment(date).tz(selectedTimezone).format('YYYY-MM-DDTHH:mm'),
+        publishUTCDateTime: (isBest) ? bestDate : date,
+        publishDateTime: (isBest) ? moment(bestDate).tz(selectedTimezone).format('YYYY-MM-DDTHH:mm') : moment(date).tz(selectedTimezone).format('YYYY-MM-DDTHH:mm'),
         publishTimezone: selectedTimezone
       };
 

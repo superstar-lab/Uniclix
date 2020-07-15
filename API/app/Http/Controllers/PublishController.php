@@ -142,18 +142,7 @@ class PublishController extends Controller
 
                     if (!$bestTime) {
 
-                        $latestScheduledPost = $channel->scheduledPosts()
-                            ->where("scheduled_at", ">", Carbon::now())
-                            ->orderBy("scheduled_at", "desc")->first();
-
-                        if ($latestScheduledPost) {
-
-                            $publishTime = Carbon::parse($latestScheduledPost->scheduled_at)->addHours(mt_rand(1, 12))->addMinutes(mt_rand(0, 59));
-                        } else {
-
-                            $publishTime = Carbon::now()->addHours(mt_rand(1, 12))->addMinutes(mt_rand(0, 59));
-                        }
-
+                        $publishTime = Carbon::parse($post['scheduled']['publishUTCDateTime']);
                         $bestTime = $publishTime;
                     } else {
                         $publishTime = $bestTime;
