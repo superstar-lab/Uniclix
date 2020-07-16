@@ -6,6 +6,10 @@
       margin-right: 20px;
       font-size: 17px;
     }
+
+    .select-margin-top {
+      margin-top: 5px;
+    }
   }
 }
 
@@ -288,6 +292,134 @@
         white-space: normal;
         width: 24px;
         display: block;
+      }
+    }
+  }
+}
+
+.post-scheduling {
+  font-family: Rubik;
+
+  .post-scheduling-container {
+    width: 800px;
+
+    .post-scheduling-title {
+      width: 100%;
+      font-weight: 700;
+      font-family: Lato;
+      margin-right: 20px;
+      font-size: 18px;
+      color: rgb(54, 54, 54);
+      padding-top: 20px;
+      padding-bottom: 20px;
+      border-bottom: 0.5px solid #DBDBDB;
+    }
+
+    .post-scheduling-queue-section {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin-right: 20px;
+      padding-top: 20px;
+      padding-bottom: 30px;
+      border-bottom: 0.5px solid #DBDBDB;
+
+      .post-scheduling-padding {
+        text-align: right;
+      }
+
+      .btn-queue {
+        margin-top: 5px;
+        font-weight: bold;
+      }
+    }
+
+    .post-scheduling-time-section {
+      width: 100%;
+      margin-right: 20px;
+      padding-top: 20px;
+      padding-bottom: 30px;
+      border-bottom: 0.5px solid #DBDBDB;
+
+      .time-label {
+        font-weight: bold;
+        font-family: Lato;
+        font-size: 17px;
+      }
+
+      .post-scheduling-time-margin-top {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-top: 5px;
+
+        .post-time-margin-right {
+          margin-right: 10px;
+        }
+      }
+    }
+
+    .post-scheduling-display-section {
+      width: 100%;
+
+      .post-scheduling-display-header {
+        display: flex;
+        justify-content: space-between;
+        margin-right: 20px;
+        padding-top: 20px;
+        padding-bottom: 30px;
+
+        .post-scheduling-display-title {
+          font-weight: 700;
+          font-family: Lato;
+          margin-right: 20px;
+          font-size: 18px;
+        }
+      }
+
+      .post-scheduling-display-body {
+        text-align: center;
+
+        .post-scheduling-display-title {
+          font-weight: 700;
+          font-family: Lato;
+          font-size: 18px;
+        }
+
+        .post-scheduling-display-subtitle {
+          font-family: Lato;
+          font-size: 16px;
+        }
+      }
+
+      table {
+        border: 0.5px solid #DBDBDB;
+        width: 100%;
+
+        th {
+          border: 0.5px solid #DBDBDB;
+          padding: 5px;
+          text-align: center;
+        }
+
+        td {
+          border: 0.5px solid #DBDBDB;
+          padding: 5px;
+          text-align: center;
+          vertical-align: top;
+
+          ul {
+            margin-bottom: 0px;
+
+            li {
+              padding: 3px;
+
+              input {
+                font-size: 12px;
+              }
+            }
+          }
+        }
       }
     }
   }

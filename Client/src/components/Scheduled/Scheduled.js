@@ -13,6 +13,7 @@ import { unapprovedPosts } from '../../requests/channels';
 import { setTimezone } from '../../actions/profile';
 
 import ScheduledPosts from './Sections/ScheduledPosts';
+import PostScheduling from './Sections/PostScheduling';
 import TimezoneSelector from './components/TimezoneSelector';
 import AwaitingApproval from './Sections/AwaitingApproval';
 import AwaitingApprovalTabTitle from './components/AwaitingApprovalTabTitle';
@@ -122,7 +123,7 @@ class Scheduled extends React.Component {
       awaitingApprovalPosts,
       awaitingLoading
     } = this.state;
-    const { accessLevel } = this.props;
+    const { accessLevel, user } = this.props;
 
     return (
       <div className="scheduled">
@@ -149,6 +150,10 @@ class Scheduled extends React.Component {
           <TabPane tab="Scheduled" key="scheduled">
             {/* I needed a way to force the call that is made when the component gets mounted*/}
             { activeTab === 'scheduled' && <ScheduledPosts timezone={selectedTimezone} /> }
+          </TabPane>
+          <TabPane tab="Post Scheduling" key="post scheduling">
+            {/* I needed a way to force the call that is made when the component gets mounted*/}
+            { activeTab === 'post scheduling' && <PostScheduling timezone={selectedTimezone} name={user.name} /> }
           </TabPane>
           {
             isOwnerOrAdmin(accessLevel) && (
