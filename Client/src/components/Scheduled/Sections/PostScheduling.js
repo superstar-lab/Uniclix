@@ -65,7 +65,7 @@ class PostScheduling extends React.Component {
     if (this.state.isQueue) {
       notification.success({
         message: 'Done!',
-        description: 'Ok! Your stacks is now active again.'
+        description: 'Ok! Your stack is now active again.'
       });
     } else {
       notification.success({
@@ -220,7 +220,7 @@ class PostScheduling extends React.Component {
           </div>
           <div className="post-scheduling-queue-section">
             <div className="post-scheduling-padding">
-              <div>{this.state.isQueue ? "Your stacks has been paused!" : "Stop all posts from being sent on this Social Account?"}</div>
+              <div>{this.state.isQueue ? "Your stack has been paused!" : "Stop all posts from being sent on this Social Account?"}</div>
               <Button type="primary" className="btn-queue" onClick={this.onChangeQueue}>{this.state.isQueue ? "Resume Stacks" : "Pause Stacks"}</Button>
             </div>
           </div>
@@ -268,7 +268,7 @@ class PostScheduling extends React.Component {
                 <div className="post-scheduling-display-body">
                   <i className="fa fa-3x fa-clock-o"></i>
                   <div className="post-scheduling-display-title">Looks like you don't have any posting times set!</div>
-                  <div className="post-scheduling-display-subtitle">Add a new posting time to start publishing posts from your stacks.</div>
+                  <div className="post-scheduling-display-subtitle">Add a new posting time to start publishing posts from your stack.</div>
                 </div>
                 :
                 <table>
