@@ -133,12 +133,17 @@ class Scheduled extends React.Component {
               <h2>Posts</h2>
             </div>
             <div className="col-xs-12 col-md-4">
-              <button
-                  className="magento-btn pull-right"
-                  onClick={this.onNewPostClick}
-              >
-                  New Post
-              </button>
+              {
+                activeTab == "scheduled" ?
+                  <button
+                    className="magento-btn pull-right"
+                    onClick={this.onNewPostClick}
+                  >
+                    New Post
+                  </button>
+                  :
+                  ""
+              }
             </div>
           </div>
         </div>

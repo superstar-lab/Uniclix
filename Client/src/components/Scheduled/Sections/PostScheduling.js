@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import {Select, Button, notification, TimePicker} from 'antd';
+import {Select, Button, notification, TimePicker, Modal} from 'antd';
 
 import { scheduledPosts } from '../../../requests/channels';
 
@@ -46,6 +46,7 @@ class PostScheduling extends React.Component {
         {name: "Sunday", status: false},
       ],
       schedulingTimes: [],
+      visible: false,
     }
   }
 
@@ -182,17 +183,13 @@ class PostScheduling extends React.Component {
       message: 'Done!',
       description: 'Awesome! Your schedule has been successfully saved.'
     });
-  }
+  };
 
   onClearPostTime = () => {
     this.setState({
-      schedulingTimes: [],
+      visible: true,
     });
-    notification.success({
-      message: 'Done!',
-      description: 'Awesome! Your schedule has been successfully saved.'
-    });
-  }
+  };
 
   onTurnScheduleTime = (e) => {
     const { weeks } = this.state;
@@ -207,13 +204,41 @@ class PostScheduling extends React.Component {
     });
   }
 
+  handleOk = () => {
+    this.setState({
+      schedulingTimes: [],
+      visible: false,
+    });
+    notification.success({
+      message: 'Done!',
+      description: 'Awesome! Your schedule has been successfully saved.'
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      visible: false,
+    });
+  };
+
   render() {
-    const { postSchedulingOption, weeks, schedulingTimes } = this.state;
+    const { postSchedulingOption, weeks, schedulingTimes, visible } = this.state;
     const { name } = this.props;
     const dateTime = this.getDateTime();
 
     return (
       <div className="post-scheduling">
+        <Modal
+          title="Are you sure?"
+          visible={visible}
+          okText="I'm Sure, Empty It"
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+          width={400}
+          style={{ top: 300 }}
+        >
+          Would you like us to remove all your posting times for {name}?
+        </Modal>
         <div className="post-scheduling-container">
           <div className="post-scheduling-title">
             Your posting schedule for {name}
