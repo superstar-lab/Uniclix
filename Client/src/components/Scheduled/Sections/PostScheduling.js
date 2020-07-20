@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import {Select, Button, notification, TimePicker, Modal} from 'antd';
 
-import { scheduledPosts } from '../../../requests/channels';
+import { schedulingTimes, schedulingStore, schedulingEdit, destroyTime, clearAll } from '../../../requests/channels';
 
 import SchedulingTableHeader from '../components/SchedulingTableHeader';
 import SchedulingTableBody from '../components/SchedulingTableBody';
@@ -33,9 +33,10 @@ class PostScheduling extends React.Component {
     super(props);
 
     this.state = {
+      isLoading: false,
       isQueue: true,
       postSchedulingOption: 'Every Day',
-      bestTime: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 21, 0, 0, 0),
+      bestTime: "21:00",
       weeks: [
         {name: "Monday", status: false},
         {name: "Tuesday", status: false},
@@ -51,15 +52,93 @@ class PostScheduling extends React.Component {
   }
 
   componentWillMount() {
+    this.setState({ isLoading: true });
 
+    try {
+      schedulingTimes()
+        .then((response) => {
+          const tmpSchedulingTimes = response.items;
+          let schedulingTimes = [];
+          if (tmpSchedulingTimes.length > 0) {
+            schedulingTimes = this.getScheduleTimes(tmpSchedulingTimes);
+          }
+
+          this.setState({
+            schedulingTimes,
+            isLoading: false,
+          });
+        }).catch((error) => {
+        this.setState({ isLoading: false });
+      });
+    } catch(error) {
+      console.log(error);
+    }
   }
 
   getDateTime() {
     const { timezone } = this.props;
     const { bestTime } = this.state;
-    const dateTime = moment(bestTime).tz(timezone);
+    const dateTime = moment(bestTime, 'h:mm A').tz(timezone);
 
     return dateTime;
+  };
+
+  getStringTime24 = (valueString) => {
+    let isAm = valueString.split(' ')[1];
+    let time = '';
+    if (isAm == "AM") {
+      let hour = 0;
+      if (parseInt(valueString.split(' ')[0].split(":")[0]) == 12) {
+        time = hour + ":" + valueString.split(' ')[0].split(":")[1];
+      } else {
+        time = valueString.split(' ')[0];
+      }
+    } else {
+      let hour = 0;
+      if (parseInt(valueString.split(' ')[0].split(":")[0]) == 12) {
+        hour = parseInt(valueString.split(' ')[0].split(":")[0]);
+      } else  {
+        hour = parseInt(valueString.split(' ')[0].split(":")[0]) + 12;
+      }
+      time = hour + ":" + valueString.split(' ')[0].split(":")[1];
+    }
+
+    return time;
+  };
+
+  getScheduleTimes = (tmpSchedulingTimes) => {
+    let schedulingTimes = [];
+
+    for (let i = 0; i < 7; i++) {
+      schedulingTimes[i] = [];
+    }
+
+    tmpSchedulingTimes.forEach(time => {
+      switch(time.schedule_week) {
+        case 0:
+          schedulingTimes[0].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted });
+          break;
+        case 1:
+          schedulingTimes[1].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted });
+          break;
+        case 2:
+          schedulingTimes[2].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted });
+          break;
+        case 3:
+          schedulingTimes[3].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted });
+          break;
+        case 4:
+          schedulingTimes[4].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted });
+          break;
+        case 5:
+          schedulingTimes[5].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted });
+          break;
+        case 6:
+          schedulingTimes[6].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted });
+      }
+    });
+
+    return schedulingTimes;
   };
 
   onChangeQueue = () => {
@@ -79,33 +158,59 @@ class PostScheduling extends React.Component {
     });
   };
 
-  onDateTimeChange = (value) => {
+  onDateTimeChange = (value, valueString) => {
+    let time = this.getStringTime24(valueString);
     value.tz('Europe/London');
     this.setState({
-      bestTime: value.format('YYYY-MM-DDTHH:mmZ')
+      bestTime: time
     });
   };
 
-  onEveryDateTimeChange = (value, week, index) => {
+  onEveryDateTimeChange = (value, valueString, week, index, timeId) => {
     const { timezone } = this.props;
     const { schedulingTimes } = this.state;
 
-    let tmpSchedulingTimes = schedulingTimes;
     if (value != null) {
       value.tz('Europe/London');
-      const dateTime = moment(value.format('YYYY-MM-DDTHH:mmZ')).tz(timezone);
-      tmpSchedulingTimes[week][index].time = dateTime;
+      const dateTime = this.getStringTime24(valueString);
 
-      this.setState({
-        schedulingTimes: tmpSchedulingTimes,
-      });
+      try {
+        schedulingEdit(timeId, dateTime)
+          .then((response) => {
+            const tmpSchedulingTimes = response.items;
+            let schedulingTimes = [];
+            if (tmpSchedulingTimes.length > 0) {
+              schedulingTimes = this.getScheduleTimes(tmpSchedulingTimes);
+            }
+
+            this.setState({
+              schedulingTimes,
+            });
+          }).catch((error) => {
+        });
+      } catch(error) {
+        console.log(error);
+      }
     } else {
-      tmpSchedulingTimes[week].splice(index, 1);
+      try {
+        destroyTime(timeId)
+          .then((response) => {
+            const tmpSchedulingTimes = response.items;
+            let schedulingTimes = [];
+            if (tmpSchedulingTimes.length > 0) {
+              schedulingTimes = this.getScheduleTimes(tmpSchedulingTimes);
+            }
 
-      this.setState({
-        schedulingTimes: tmpSchedulingTimes,
-      });
+            this.setState({
+              schedulingTimes,
+            });
+          }).catch((error) => {
+        });
+      } catch(error) {
+        console.log(error);
+      }
     }
+
     notification.success({
       message: 'Done!',
       description: 'Awesome! Your schedule has been successfully saved.'
@@ -118,17 +223,11 @@ class PostScheduling extends React.Component {
 
   onAddPostTime = () => {
     const { timezone } = this.props;
-    const { schedulingTimes, postSchedulingOption } = this.state;
+    const { schedulingTimes, postSchedulingOption, bestTime } = this.state;
     const dateTime = this.getDateTime();
 
-    let tmpSchedulingTimes = schedulingTimes;
     let start, end = 0;
-
-    if (tmpSchedulingTimes.length == 0) {
-      for (let i = 0; i < 7; i++) {
-        tmpSchedulingTimes[i] = [];
-      }
-    }
+    let times = [];
 
     switch(postSchedulingOption) {
       case "Every Day":
@@ -173,16 +272,33 @@ class PostScheduling extends React.Component {
     }
 
     for (let i = start; i < end; i++) {
-      tmpSchedulingTimes[i].push({ time: dateTime });
+      times.push({ schedule_time: bestTime, schedule_week: i });
     }
 
-    this.setState({
-      schedulingTimes: tmpSchedulingTimes,
-    });
-    notification.success({
-      message: 'Done!',
-      description: 'Awesome! Your schedule has been successfully saved.'
-    });
+    try {
+      schedulingStore({
+        times
+      })
+        .then((response) => {
+          const tmpSchedulingTimes = response.items;
+          let schedulingTimes = [];
+          if (tmpSchedulingTimes.length > 0) {
+            schedulingTimes = this.getScheduleTimes(tmpSchedulingTimes);
+          }
+
+          this.setState({
+            schedulingTimes,
+          });
+
+          notification.success({
+            message: 'Done!',
+            description: 'Awesome! Your schedule has been successfully saved.'
+          });
+        }).catch((error) => {
+      });
+    } catch(error) {
+      console.log(error);
+    }
   };
 
   onClearPostTime = () => {
@@ -205,14 +321,28 @@ class PostScheduling extends React.Component {
   }
 
   handleOk = () => {
-    this.setState({
-      schedulingTimes: [],
-      visible: false,
-    });
-    notification.success({
-      message: 'Done!',
-      description: 'Awesome! Your schedule has been successfully saved.'
-    });
+    try {
+      clearAll()
+        .then((response) => {
+          const tmpSchedulingTimes = response.items;
+          let schedulingTimes = [];
+          if (tmpSchedulingTimes.length > 0) {
+            schedulingTimes = this.getScheduleTimes(tmpSchedulingTimes);
+          }
+
+          this.setState({
+            schedulingTimes,
+            visible: false,
+          });
+          notification.success({
+            message: 'Done!',
+            description: 'Awesome! Your schedule has been successfully saved.'
+          });
+        }).catch((error) => {
+      });
+    } catch(error) {
+      console.log(error);
+    }
   };
 
   handleCancel = () => {
@@ -222,8 +352,8 @@ class PostScheduling extends React.Component {
   };
 
   render() {
-    const { postSchedulingOption, weeks, schedulingTimes, visible } = this.state;
-    const { name } = this.props;
+    const { postSchedulingOption, weeks, schedulingTimes, visible, isLoading } = this.state;
+    const { name, timezone } = this.props;
     const dateTime = this.getDateTime();
 
     return (
@@ -298,11 +428,12 @@ class PostScheduling extends React.Component {
                 :
                 <table>
                   <SchedulingTableHeader weeks={weeks} onTurnScheduleTime={this.onTurnScheduleTime}/>
-                  <SchedulingTableBody schedulingTimes={schedulingTimes} onEveryDateTimeChange={this.onEveryDateTimeChange}/>
+                  <SchedulingTableBody schedulingTimes={schedulingTimes} timezone={timezone} onEveryDateTimeChange={this.onEveryDateTimeChange}/>
                 </table>
             }
           </div>
         </div>
+        { isLoading && <Loader fullscreen /> }
       </div>
     );
   }

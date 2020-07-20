@@ -156,9 +156,9 @@ class Scheduled extends React.Component {
             {/* I needed a way to force the call that is made when the component gets mounted*/}
             { activeTab === 'scheduled' && <ScheduledPosts timezone={selectedTimezone} /> }
           </TabPane>
-          <TabPane tab="Post Scheduling" key="post scheduling">
+          <TabPane tab="Schedule Settings" key="schedule settings">
             {/* I needed a way to force the call that is made when the component gets mounted*/}
-            { activeTab === 'post scheduling' && <PostScheduling timezone={selectedTimezone} name={user.name} /> }
+            { activeTab === 'schedule settings' && <PostScheduling timezone={selectedTimezone} name={user.name} /> }
           </TabPane>
           {
             isOwnerOrAdmin(accessLevel) && (

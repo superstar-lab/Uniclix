@@ -317,7 +317,7 @@
 
     .post-scheduling-queue-section {
       width: 100%;
-      display: flex;
+      display: none; //flex;
       justify-content: flex-end;
       margin-right: 20px;
       padding-top: 20px;
@@ -365,7 +365,6 @@
       .post-scheduling-display-header {
         display: flex;
         justify-content: space-between;
-        margin-right: 20px;
         padding-top: 20px;
         padding-bottom: 30px;
 
@@ -400,6 +399,10 @@
           border: 0.5px solid #DBDBDB;
           padding: 5px;
           text-align: center;
+
+          button {
+            display: none;
+          }
         }
 
         td {

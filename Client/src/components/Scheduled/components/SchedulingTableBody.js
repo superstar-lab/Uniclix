@@ -14,14 +14,14 @@ class SchedulingTableBody extends React.Component {
   }
 
   render() {
-    const { schedulingTimes } = this.props;
+    const { schedulingTimes, timezone } = this.props;
 
     return (
       <tr>
         {
           schedulingTimes.map((schedulingTime, index) => (
             <td>
-              <PostsTimePicker schedulingTime={schedulingTime} week={index} onEveryDateTimeChange={this.props.onEveryDateTimeChange}/>
+              <PostsTimePicker schedulingTime={schedulingTime} timezone={timezone} week={index} onEveryDateTimeChange={this.props.onEveryDateTimeChange}/>
             </td>
           ))
         }
