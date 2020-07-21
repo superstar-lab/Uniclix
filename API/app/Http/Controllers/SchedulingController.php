@@ -90,11 +90,22 @@ class SchedulingController extends Controller
     {
         ScheduleTime::where("channel_id", $this->selectedChannel->id)
             ->delete();
-        
+
         $times = ScheduleTime::where("channel_id", $this->selectedChannel->id)
             ->orderBy("id", "ASC")
             ->get();
 
         return response()->json(["items" => $times]);
+    }
+
+    public function schedulingCount(Request $request)
+    {
+        $count = ScheduleTime::where("channel_id", $this->selectedChannel->id)
+            ->where("posted", 0)
+            ->orderBy("id", "ASC")
+            ->get()
+            ->count();
+
+        return response()->json(["count" => $count]);
     }
 }

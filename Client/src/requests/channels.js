@@ -129,3 +129,10 @@ export const clearAll = () => {
       return response.data;
     });
 };
+
+export const schedulingCount = () => {
+  return axios.get(`${apiUrl}/scheduling/count`)
+    .then((response) => {
+      return response.data;
+    });
+};

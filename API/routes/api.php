@@ -49,6 +49,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('scheduling/edit', 'SchedulingController@schedulingEdit');
     Route::delete('scheduling/delete/{timeId}', 'SchedulingController@destroy');
     Route::delete('scheduling/clear', 'SchedulingController@clearAll');
+    Route::get('scheduling/count', 'SchedulingController@schedulingCount');
 
     Route::post('/post/store', 'PublishController@store');
     Route::post('/post/upload', 'PublishController@upload');
