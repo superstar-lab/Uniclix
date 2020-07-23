@@ -27,14 +27,19 @@ class PostsTimePicker extends React.Component {
         {
           schedulingTime.map((item, index) => (
             <li>
-              <TimePicker
-                use12Hours
-                format="h:mm A"
-                onChange={(value, valueString) => {this.props.onEveryDateTimeChange(value, valueString, week, index, item.timeId)}}
-                value={this.getDateTime(item.time)}
-                size="small"
-                style={{width: 90}}
-              />
+              {
+                item.posted == 1 && item.content != null ?
+                  <div title={item.content}>{item.content}</div>
+                  :
+                  <TimePicker
+                    use12Hours
+                    format="h:mm A"
+                    onChange={(value, valueString) => {this.props.onEveryDateTimeChange(value, valueString, week, index, item.timeId)}}
+                    value={this.getDateTime(item.time)}
+                    size="small"
+                    style={{width: 90}}
+                  />
+              }
             </li>
           ))
         }

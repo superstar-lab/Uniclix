@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ScheduleTime;
 use Carbon\Carbon;
 use App\Models\Channel;
 use App\Models\ScheduledPost;
@@ -140,23 +141,16 @@ class PublishController extends Controller
                     $publishTime = $scheduledTime;
                 } else if ($publishType == "best") {
 
-                    if (!$bestTime) {
+                    if ($cntRepeat == 0) {
+                        $schedulingTimes = $this->getScheduleTimes($channel->id);
+                        $publishScheduled = $this->getPublishScheduled($post, $schedulingTimes);
 
-                        $latestScheduledPost = $channel->scheduledPosts()
-                            ->where("scheduled_at", ">", Carbon::now())
-                            ->orderBy("scheduled_at", "desc")->first();
-
-                        if ($latestScheduledPost) {
-
-                            $publishTime = Carbon::parse($latestScheduledPost->scheduled_at)->addHours(mt_rand(1, 12))->addMinutes(mt_rand(0, 59));
-                        } else {
-
-                            $publishTime = Carbon::now()->addHours(mt_rand(1, 12))->addMinutes(mt_rand(0, 59));
-                        }
-
-                        $bestTime = $publishTime;
-                    } else {
-                        $publishTime = $bestTime;
+                        $publishTime = $publishScheduled['publishTime'];
+                        $payload = [
+                            'images' => $uploadedImages,
+                            'videos' => $uploadedVideos,
+                            'scheduled' => $publishScheduled['scheduled']
+                        ];
                     }
                 } else if ($publishType == "now") {
 
@@ -237,32 +231,63 @@ class PublishController extends Controller
                     }
                 } else {
                     if ($cntRepeat > 0) {
+                        $schedulingTimes = $this->getScheduleTimes($channel->id);
+                        $publishScheduled = $this->getPublishScheduled($post, $schedulingTimes);
+
                         for ($i = 0; $i < $cntRepeat; $i++) {
                             $postId = uniqid();
 
                             if ($scheduleOption == "Daily") {
-                                $publishUTCDateTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addDays($i)->toRfc3339String();
-                                $publishDateTime = Carbon::parse($post['scheduled']['publishDateTime'])->addDays($i)->format('Y-m-d H:i');
-                                $publishTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addDays($i)->format("Y-m-d H:i:s");
-                                $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
+                                if ($publishType == "best") {
+                                    $publishUTCDateTime = Carbon::parse($publishScheduled['scheduled']['publishUTCDateTime'])->addDays($i)->toRfc3339String();
+                                    $publishDateTime = Carbon::parse($publishScheduled['scheduled']['publishDateTime'])->addDays($i)->format('Y-m-d H:i');
+                                    $publishTime = Carbon::parse($publishScheduled['publishTime'])->addDays($i)->format("Y-m-d H:i:s");
+                                    $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($publishScheduled['scheduled']["publishTimezone"]);
+                                } else {
+                                    $publishUTCDateTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addDays($i)->toRfc3339String();
+                                    $publishDateTime = Carbon::parse($post['scheduled']['publishDateTime'])->addDays($i)->format('Y-m-d H:i');
+                                    $publishTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addDays($i)->format("Y-m-d H:i:s");
+                                    $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
+                                }
                             }
                             if ($scheduleOption == "Weekly") {
-                                $publishUTCDateTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addWeeks($i)->toRfc3339String();
-                                $publishDateTime = Carbon::parse($post['scheduled']['publishDateTime'])->addWeeks($i)->format('Y-m-d H:i');
-                                $publishTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addWeeks($i)->format("Y-m-d H:i:s");
-                                $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
+                                if ($publishType == "best") {
+                                    $publishUTCDateTime = Carbon::parse($publishScheduled['scheduled']['publishUTCDateTime'])->addWeeks($i)->toRfc3339String();
+                                    $publishDateTime = Carbon::parse($publishScheduled['scheduled']['publishDateTime'])->addWeeks($i)->format('Y-m-d H:i');
+                                    $publishTime = Carbon::parse($publishScheduled['publishTime'])->addWeeks($i)->format("Y-m-d H:i:s");
+                                    $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($publishScheduled['scheduled']["publishTimezone"]);
+                                } else {
+                                    $publishUTCDateTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addWeeks($i)->toRfc3339String();
+                                    $publishDateTime = Carbon::parse($post['scheduled']['publishDateTime'])->addWeeks($i)->format('Y-m-d H:i');
+                                    $publishTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addWeeks($i)->format("Y-m-d H:i:s");
+                                    $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
+                                }
                             }
                             if ($scheduleOption == "Monthly") {
-                                $publishUTCDateTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addMonths($i)->toRfc3339String();
-                                $publishDateTime = Carbon::parse($post['scheduled']['publishDateTime'])->addMonths($i)->format('Y-m-d H:i');
-                                $publishTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addMonths($i)->format("Y-m-d H:i:s");
-                                $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
+                                if ($publishType == "best") {
+                                    $publishUTCDateTime = Carbon::parse($publishScheduled['scheduled']['publishUTCDateTime'])->addMonths($i)->toRfc3339String();
+                                    $publishDateTime = Carbon::parse($publishScheduled['scheduled']['publishDateTime'])->addMonths($i)->format('Y-m-d H:i');
+                                    $publishTime = Carbon::parse($publishScheduled['publishTime'])->addMonths($i)->format("Y-m-d H:i:s");
+                                    $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($publishScheduled['scheduled']["publishTimezone"]);
+                                } else {
+                                    $publishUTCDateTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addMonths($i)->toRfc3339String();
+                                    $publishDateTime = Carbon::parse($post['scheduled']['publishDateTime'])->addMonths($i)->format('Y-m-d H:i');
+                                    $publishTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addMonths($i)->format("Y-m-d H:i:s");
+                                    $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
+                                }
                             }
                             if ($scheduleOption == "Yearly") {
-                                $publishUTCDateTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addYears($i)->toRfc3339String();
-                                $publishDateTime = Carbon::parse($post['scheduled']['publishDateTime'])->addYears($i)->format('Y-m-d H:i');
-                                $publishTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addYears($i)->format("Y-m-d H:i:s");
-                                $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
+                                if ($publishType == "best") {
+                                    $publishUTCDateTime = Carbon::parse($publishScheduled['scheduled']['publishUTCDateTime'])->addYears($i)->toRfc3339String();
+                                    $publishDateTime = Carbon::parse($publishScheduled['scheduled']['publishDateTime'])->addYears($i)->format('Y-m-d H:i');
+                                    $publishTime = Carbon::parse($publishScheduled['publishTime'])->addYears($i)->format("Y-m-d H:i:s");
+                                    $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($publishScheduled['scheduled']["publishTimezone"]);
+                                } else {
+                                    $publishUTCDateTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addYears($i)->toRfc3339String();
+                                    $publishDateTime = Carbon::parse($post['scheduled']['publishDateTime'])->addYears($i)->format('Y-m-d H:i');
+                                    $publishTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addYears($i)->format("Y-m-d H:i:s");
+                                    $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
+                                }
                             }
 
                             $scheduled['publishUTCDateTime'] = $publishUTCDateTime;
@@ -518,5 +543,123 @@ class PublishController extends Controller
         } catch (\Exception $e) {
             return getErrorResponse($e);
         }
+    }
+
+    public function getScheduleTimes($channel) {
+        $tmpSchedulingTimes = ScheduleTime::where("channel_id", $channel)
+            ->where("posted", 0)
+            ->orderBy("id", "ASC")
+            ->get();
+
+        $schedulingTimes = [];
+        if (count($tmpSchedulingTimes) > 0) {
+            for ($i = 0; $i < 7; $i++) {
+                $schedulingTimes[$i] = [];
+            }
+        }
+
+        foreach ($tmpSchedulingTimes as $tmpSchedulingTime) {
+            switch ($tmpSchedulingTime->schedule_week) {
+                case 0:
+                    array_push($schedulingTimes[0], ['time' => $tmpSchedulingTime->schedule_time, 'timeId' => $tmpSchedulingTime->time_id, 'posted' => $tmpSchedulingTime->posted]);
+                    break;
+                case 1:
+                    array_push($schedulingTimes[1], ['time' => $tmpSchedulingTime->schedule_time, 'timeId' => $tmpSchedulingTime->time_id, 'posted' => $tmpSchedulingTime->posted]);
+                    break;
+                case 2:
+                    array_push($schedulingTimes[2], ['time' => $tmpSchedulingTime->schedule_time, 'timeId' => $tmpSchedulingTime->time_id, 'posted' => $tmpSchedulingTime->posted]);
+                    break;
+                case 3:
+                    array_push($schedulingTimes[3], ['time' => $tmpSchedulingTime->schedule_time, 'timeId' => $tmpSchedulingTime->time_id, 'posted' => $tmpSchedulingTime->posted]);
+                    break;
+                case 4:
+                    array_push($schedulingTimes[4], ['time' => $tmpSchedulingTime->schedule_time, 'timeId' => $tmpSchedulingTime->time_id, 'posted' => $tmpSchedulingTime->posted]);
+                    break;
+                case 5:
+                    array_push($schedulingTimes[5], ['time' => $tmpSchedulingTime->schedule_time, 'timeId' => $tmpSchedulingTime->time_id, 'posted' => $tmpSchedulingTime->posted]);
+                    break;
+                case 6:
+                    array_push($schedulingTimes[6], ['time' => $tmpSchedulingTime->schedule_time, 'timeId' => $tmpSchedulingTime->time_id, 'posted' => $tmpSchedulingTime->posted]);
+            }
+        }
+
+        return $schedulingTimes;
+    }
+
+    public function getPublishScheduled($post, $schedulingTimes) {
+        $start = Carbon::parse($post['scheduled']['publishUTCDateTime'])->dayOfWeek;
+        if ($start > 0) {
+            $start = $start - 1;
+        } else {
+            $start = 6;
+        }
+        $currentDate = Carbon::parse($post['scheduled']['publishUTCDateTime'])->setTimezone($post['scheduled']['publishTimezone']);
+
+        $content = $post['content'];
+        if ($post["cntRepeat"] > 1) {
+            switch ($post["scheduleOption"]) {
+                case 'Daily':
+                    $content = $post['content'] . '(Daily' . $post["cntRepeat"] . ')';
+                    break;
+                case 'Weekly':
+                    $content = $post['content'] . '(Weekly' . $post["cntRepeat"] . ')';
+                    break;
+                case 'Monthly':
+                    $content = $post['content'] . '(Monthly' . $post["cntRepeat"] . ')';
+                    break;
+                case 'Yearly':
+                    $content = $post['content'] . '(Yearly' . $post["cntRepeat"] . ')';
+            }
+        }
+
+        $isSetSchedulingTime = false;
+        for ($i = $start; $i < 7; $i++) {
+            for ($j = 0; $j < count($schedulingTimes[$i]); $j++) {
+                if ($currentDate->timestamp <= Carbon::createFromFormat('H:i', $schedulingTimes[$i][$j]['time'], $post['scheduled']['publishTimezone'])->addDays($i-$start)->timestamp) {
+                    ScheduleTime::where("time_id", $schedulingTimes[$i][$j]['timeId'])
+                        ->update([
+                            'posted' => 1,
+                            'content' => $content,
+                        ]);
+                    $scheduled['publishUTCDateTime'] = Carbon::createFromFormat('H:i', $schedulingTimes[$i][$j]['time'], $post['scheduled']['publishTimezone'])->addDays($i-$start)->toRfc3339String();
+                    $scheduled['publishDateTime'] = Carbon::createFromFormat('H:i', $schedulingTimes[$i][$j]['time'], $post['scheduled']['publishTimezone'])->addDays($i-$start)->format('Y-m-d H:i');
+                    $scheduled['publishTimezone'] = $post['scheduled']['publishTimezone'];
+                    $publishTime = Carbon::createFromFormat('H:i', $schedulingTimes[$i][$j]['time'], $post['scheduled']['publishTimezone'])->addDays($i-$start)->format("Y-m-d H:i:s");
+                    $isSetSchedulingTime = true;
+                    break;
+                }
+            }
+            if ($isSetSchedulingTime == true) {
+                break;
+            }
+        }
+
+        if ($isSetSchedulingTime == false) {
+            for ($i = 0; $i < 7; $i++) {
+                for ($j = 0; $j < count($schedulingTimes[$i]); $j++) {
+                    ScheduleTime::where("time_id", $schedulingTimes[$i][$j]['timeId'])
+                        ->update([
+                            'posted' => 1,
+                            'content' => $content,
+                        ]);
+                    $scheduled['publishUTCDateTime'] = Carbon::createFromFormat('H:i', $schedulingTimes[$i][$j]['time'], $post['scheduled']['publishTimezone'])->addDays(7 + $i-$start)->toRfc3339String();
+                    $scheduled['publishDateTime'] = Carbon::createFromFormat('H:i', $schedulingTimes[$i][$j]['time'], $post['scheduled']['publishTimezone'])->addDays(7 + $i-$start)->format('Y-m-d H:i');
+                    $scheduled['publishTimezone'] = $post['scheduled']['publishTimezone'];
+                    $publishTime = Carbon::createFromFormat('H:i', $schedulingTimes[$i][$j]['time'], $post['scheduled']['publishTimezone'])->addDays(7 + $i-$start)->format("Y-m-d H:i:s");
+                    $isSetSchedulingTime = true;
+                    break;
+                }
+                if ($isSetSchedulingTime == true) {
+                    break;
+                }
+            }
+        }
+
+        $publishScheduled = [
+            'scheduled' => $scheduled,
+            'publishTime' => $publishTime,
+        ];
+
+        return $publishScheduled;
     }
 }

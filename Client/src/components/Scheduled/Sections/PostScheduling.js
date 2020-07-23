@@ -116,25 +116,25 @@ class PostScheduling extends React.Component {
     tmpSchedulingTimes.forEach(time => {
       switch(time.schedule_week) {
         case 0:
-          schedulingTimes[0].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted });
+          schedulingTimes[0].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted, content: time.content });
           break;
         case 1:
-          schedulingTimes[1].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted });
+          schedulingTimes[1].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted, content: time.content });
           break;
         case 2:
-          schedulingTimes[2].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted });
+          schedulingTimes[2].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted, content: time.content });
           break;
         case 3:
-          schedulingTimes[3].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted });
+          schedulingTimes[3].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted, content: time.content });
           break;
         case 4:
-          schedulingTimes[4].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted });
+          schedulingTimes[4].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted, content: time.content });
           break;
         case 5:
-          schedulingTimes[5].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted });
+          schedulingTimes[5].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted, content: time.content });
           break;
         case 6:
-          schedulingTimes[6].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted });
+          schedulingTimes[6].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted, content: time.content });
       }
     });
 

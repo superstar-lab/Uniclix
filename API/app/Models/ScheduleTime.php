@@ -12,6 +12,7 @@ class ScheduleTime extends Model
         "schedule_week",
         "schedule_time",
         "posted",
+        "content",
     ];
 
     public function channel()
