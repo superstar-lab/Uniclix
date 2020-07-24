@@ -92,3 +92,47 @@ export const getCategories = () => {
             getCategories();
         });
 };
+
+export const schedulingTimes = () => {
+  return axios.get(`${apiUrl}/scheduling/times`)
+    .then((response) => {
+      return response.data;
+    });
+};
+
+export const schedulingStore = (times) => {
+  return axios.post(`${apiUrl}/scheduling/store`, {
+    times
+  })
+    .then((response) => {
+      return response.data;
+    });
+};
+
+export const schedulingEdit = (timeId, schedulingTime) => {
+  return axios.get(`${apiUrl}/scheduling/edit?time_id=${timeId}&schedule_time=${schedulingTime}`)
+    .then((response) => {
+      return response.data;
+    });
+};
+
+export const destroyTime = (timeId) => {
+  return axios.delete(`${apiUrl}/scheduling/delete/${timeId}`)
+    .then((response) => {
+      return response.data;
+    });
+};
+
+export const clearAll = () => {
+  return axios.delete(`${apiUrl}/scheduling/clear`)
+    .then((response) => {
+      return response.data;
+    });
+};
+
+export const schedulingCount = () => {
+  return axios.get(`${apiUrl}/scheduling/count`)
+    .then((response) => {
+      return response.data;
+    });
+};

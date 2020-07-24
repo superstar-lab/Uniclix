@@ -27,6 +27,7 @@ import ChannelsRow from './components/ChannelsRow';
 import DateTimeSelector from './components/DateTimeSelector';
 import FooterSection from './components/FooterSection';
 import SelectAccountModal from './components/SelectAccountsModal';
+import { schedulingCount } from "../../requests/channels";
 
 const { Option } = Select;
 
@@ -47,7 +48,22 @@ class Compose extends React.Component {
     scheduleOption: "Daily",
     advancedVisible: true,
     cntRepeat: 0,
+    cntScheduling: 0,
   };
+
+  componentWillMount() {
+    try {
+      schedulingCount()
+        .then((response) => {
+          this.setState({
+            cntScheduling: response.count,
+          });
+        }).catch((error) => {
+      });
+    } catch(error) {
+      console.log(error);
+    }
+  }
 
   componentDidUpdate() {
     const { updatePublishChannels, publishChannels, channels } = this.props;
@@ -109,6 +125,17 @@ class Compose extends React.Component {
       advancedVisible: true,
       cntRepeat: 0,
     });
+    try {
+      schedulingCount()
+        .then((response) => {
+          this.setState({
+            cntScheduling: response.count,
+          });
+        }).catch((error) => {
+      });
+    } catch(error) {
+      console.log(error);
+    }
   };
 
   onScheduleChange = (scheduleOption) => {
@@ -156,7 +183,7 @@ class Compose extends React.Component {
       accessLevel
     } = this.props;
 
-    const { scheduleOption, advancedVisible, cntRepeat } = this.state;
+    const { scheduleOption, advancedVisible, cntRepeat, cntScheduling } = this.state;
 
     return (
       <Modal
@@ -214,6 +241,7 @@ class Compose extends React.Component {
                       postAtBestTime={postAtBestTime}
                       postNow={postNow}
                       accessLevel={accessLevel}
+                      cntScheduling={cntScheduling}
                     />
                   )
                 }

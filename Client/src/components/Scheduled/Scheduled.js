@@ -13,6 +13,7 @@ import { unapprovedPosts } from '../../requests/channels';
 import { setTimezone } from '../../actions/profile';
 
 import ScheduledPosts from './Sections/ScheduledPosts';
+import PostScheduling from './Sections/PostScheduling';
 import TimezoneSelector from './components/TimezoneSelector';
 import AwaitingApproval from './Sections/AwaitingApproval';
 import AwaitingApprovalTabTitle from './components/AwaitingApprovalTabTitle';
@@ -122,7 +123,7 @@ class Scheduled extends React.Component {
       awaitingApprovalPosts,
       awaitingLoading
     } = this.state;
-    const { accessLevel } = this.props;
+    const { accessLevel, user } = this.props;
 
     return (
       <div className="scheduled">
@@ -132,12 +133,17 @@ class Scheduled extends React.Component {
               <h2>Posts</h2>
             </div>
             <div className="col-xs-12 col-md-4">
-              <button
-                  className="magento-btn pull-right"
-                  onClick={this.onNewPostClick}
-              >
-                  New Post
-              </button>
+              {
+                activeTab == "scheduled" ?
+                  <button
+                    className="magento-btn pull-right"
+                    onClick={this.onNewPostClick}
+                  >
+                    New Post
+                  </button>
+                  :
+                  ""
+              }
             </div>
           </div>
         </div>
@@ -149,6 +155,10 @@ class Scheduled extends React.Component {
           <TabPane tab="Scheduled" key="scheduled">
             {/* I needed a way to force the call that is made when the component gets mounted*/}
             { activeTab === 'scheduled' && <ScheduledPosts timezone={selectedTimezone} /> }
+          </TabPane>
+          <TabPane tab="Schedule Settings" key="schedule settings">
+            {/* I needed a way to force the call that is made when the component gets mounted*/}
+            { activeTab === 'schedule settings' && <PostScheduling timezone={selectedTimezone} name={user.name} /> }
           </TabPane>
           {
             isOwnerOrAdmin(accessLevel) && (
