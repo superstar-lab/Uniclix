@@ -78,7 +78,7 @@ class PostScheduling extends React.Component {
   getDateTime() {
     const { timezone } = this.props;
     const { bestTime } = this.state;
-    const dateTime = moment(bestTime, 'h:mm A').tz(timezone);
+    const dateTime = moment.tz(bestTime, 'hh:mm A', timezone);
 
     return dateTime;
   };
@@ -399,7 +399,7 @@ class PostScheduling extends React.Component {
               <div className="time-label post-time-margin-right">Choose times</div>
               <TimePicker
                 use12Hours
-                format="h:mm A"
+                format="hh:mm A"
                 onChange={this.onDateTimeChange}
                 value={dateTime}
                 size="large"

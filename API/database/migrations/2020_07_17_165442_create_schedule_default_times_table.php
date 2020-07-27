@@ -20,7 +20,7 @@ class CreateScheduleDefaultTimesTable extends Migration
             $table->timestamps();
         });
 
-        $times = ['9:35', '17:30', '21:47'];
+        $times = ['09:35', '17:30', '21:47'];
         foreach ($times as $time)
             ScheduleDefaultTime::create(['default_time' => $time]);
     }
