@@ -14,7 +14,7 @@ class PostsTimePicker extends React.Component {
 
   getDateTime = (time) => {
     const { timezone } = this.props;
-    const dateTime = moment(time, 'hh:mm A').tz(timezone);
+    const dateTime = moment.tz(time, 'hh:mm A', timezone);
 
     return dateTime;
   };

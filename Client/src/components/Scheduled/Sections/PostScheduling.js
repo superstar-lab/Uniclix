@@ -78,7 +78,7 @@ class PostScheduling extends React.Component {
   getDateTime() {
     const { timezone } = this.props;
     const { bestTime } = this.state;
-    const dateTime = moment(bestTime, 'hh:mm A').tz(timezone);
+    const dateTime = moment.tz(bestTime, 'hh:mm A', timezone);
 
     return dateTime;
   };
