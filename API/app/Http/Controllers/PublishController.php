@@ -144,9 +144,9 @@ class PublishController extends Controller
                     if ($cntRepeat == 0) {
                         $schedulingTimes = $this->getSchedule($post, $channel->id, 1, $scheduleOption);
 
-                        $scheduled['publishUTCDateTime'] = Carbon::createFromFormat('Y-m-d H:i:s', $schedulingTimes[0], $post['scheduled']["publishTimezone"])->toRfc3339String();
-                        $scheduled['publishDateTime'] = Carbon::createFromFormat('Y-m-d H:i:s', $schedulingTimes[0], $post['scheduled']["publishTimezone"])->format('Y-m-d H:i');
-                        $publishTime = Carbon::createFromFormat('Y-m-d H:i:s', $schedulingTimes[0], $post['scheduled']["publishTimezone"])->format("Y-m-d H:i:s");
+                        $scheduled['publishUTCDateTime'] = $schedulingTimes[0]->toRfc3339String();
+                        $scheduled['publishDateTime'] = $schedulingTimes[0]->format('Y-m-d H:i');
+                        $publishTime = $schedulingTimes[0]->format("Y-m-d H:i:s");
                         $payload = [
                             'images' => $uploadedImages,
                             'videos' => $uploadedVideos,
@@ -239,9 +239,9 @@ class PublishController extends Controller
                             foreach ($schedulingTimes as $schedulingTime) {
                                 $postId = uniqid();
 
-                                $scheduled['publishUTCDateTime'] = Carbon::createFromFormat('Y-m-d H:i:s', $schedulingTime, $post['scheduled']["publishTimezone"])->toRfc3339String();
-                                $scheduled['publishDateTime'] = Carbon::createFromFormat('Y-m-d H:i:s', $schedulingTime, $post['scheduled']["publishTimezone"])->format('Y-m-d H:i');
-                                $publishTime = Carbon::createFromFormat('Y-m-d H:i:s', $schedulingTime, $post['scheduled']["publishTimezone"])->format("Y-m-d H:i:s");
+                                $scheduled['publishUTCDateTime'] = $schedulingTime->toRfc3339String();
+                                $scheduled['publishDateTime'] = $schedulingTime->format('Y-m-d H:i');
+                                $publishTime = $schedulingTime->format("Y-m-d H:i:s");
                                 $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
                                 $payload = [
                                     'images' => $uploadedImages,
