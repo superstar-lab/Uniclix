@@ -30,7 +30,7 @@ class SchedulingController extends Controller
     public function schedulingTimes(Request $request)
     {
         $times = ScheduleTime::where("channel_id", $this->selectedChannel->id)
-            ->orderBy("id", "ASC")
+            ->orderBy("schedule_time", "ASC")
             ->get();
 
         return response()->json(["items" => $times]);
@@ -51,7 +51,7 @@ class SchedulingController extends Controller
         }
 
         $times = ScheduleTime::where("channel_id", $this->selectedChannel->id)
-            ->orderBy("id", "ASC")
+            ->orderBy("schedule_time", "ASC")
             ->get();
 
         return response()->json(["items" => $times]);
@@ -68,7 +68,7 @@ class SchedulingController extends Controller
             ]);
 
         $times = ScheduleTime::where("channel_id", $this->selectedChannel->id)
-            ->orderBy("id", "ASC")
+            ->orderBy("schedule_time", "ASC")
             ->get();
 
         return response()->json(["items" => $times]);
@@ -80,7 +80,7 @@ class SchedulingController extends Controller
             ->delete();
 
         $times = ScheduleTime::where("channel_id", $this->selectedChannel->id)
-            ->orderBy("id", "ASC")
+            ->orderBy("schedule_time", "ASC")
             ->get();
 
         return response()->json(["items" => $times]);
@@ -92,7 +92,7 @@ class SchedulingController extends Controller
             ->delete();
 
         $times = ScheduleTime::where("channel_id", $this->selectedChannel->id)
-            ->orderBy("id", "ASC")
+            ->orderBy("schedule_time", "ASC")
             ->get();
 
         return response()->json(["items" => $times]);
@@ -102,7 +102,7 @@ class SchedulingController extends Controller
     {
         $count = ScheduleTime::where("channel_id", $this->selectedChannel->id)
             ->where("posted", 0)
-            ->orderBy("id", "ASC")
+            ->orderBy("schedule_time", "ASC")
             ->get()
             ->count();
 

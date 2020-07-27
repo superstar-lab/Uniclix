@@ -14,7 +14,7 @@ class PostsTimePicker extends React.Component {
 
   getDateTime = (time) => {
     const { timezone } = this.props;
-    const dateTime = moment(time, 'h:mm A').tz(timezone);
+    const dateTime = moment(time, 'hh:mm A').tz(timezone);
 
     return dateTime;
   };
@@ -29,7 +29,7 @@ class PostsTimePicker extends React.Component {
             <li>
               <TimePicker
                 use12Hours
-                format="h:mm A"
+                format="hh:mm A"
                 onChange={(value, valueString) => {this.props.onEveryDateTimeChange(value, valueString, week, index, item.timeId)}}
                 value={this.getDateTime(item.time)}
                 size="small"

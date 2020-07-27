@@ -576,12 +576,12 @@ class PublishController extends Controller
             if ($dayOfTheWeek != 0) {
                 $tmpSchedulingTime = ScheduleTime::where("channel_id", $channel_id)
                     ->where("schedule_week", $dayOfTheWeek - 1)
-                    ->orderBy("id", "ASC")
+                    ->orderBy("schedule_time", "ASC")
                     ->pluck("schedule_time");
             } else {
                 $tmpSchedulingTime = ScheduleTime::where("channel_id", $channel_id)
                     ->where("schedule_week", 6)
-                    ->orderBy("id", "ASC")
+                    ->orderBy("schedule_time", "ASC")
                     ->pluck("schedule_time");
             }
 
