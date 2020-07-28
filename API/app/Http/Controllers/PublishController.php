@@ -144,6 +144,7 @@ class PublishController extends Controller
                     if ($cntRepeat == 0) {
                         $schedulingTimes = $this->getSchedule($post, $channel->id, 1, $scheduleOption);
 
+                        $postId = uniqid();
                         $scheduled['publishUTCDateTime'] = $schedulingTimes[0]->toRfc3339String();
                         $scheduled['publishDateTime'] = $schedulingTimes[0]->format('Y-m-d H:i');
                         $publishTime = $schedulingTimes[0]->format("Y-m-d H:i:s");
