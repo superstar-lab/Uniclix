@@ -59,12 +59,19 @@ class PublishController extends Controller
             $failedChannels = [];
             $channelCount = 0;
             $postId = '';
+            $postIds = [];
             $channelsCount = count($channels);
             $cntRepeat = $post["cntRepeat"];
             $scheduleOption = $post["scheduleOption"];
+            $bestScheduleTime = false;
 
             if($post['type'] == 'store'){
                 $postId = uniqid();
+                if ($cntRepeat > 0) {
+                    for ($i = 0; $i < $cntRepeat; $i++) {
+                        array_push($postIds, uniqid());
+                    }
+                }
             } else if($post['type'] == 'edit') {
                 $postId = $post['id'];
             }
@@ -142,9 +149,13 @@ class PublishController extends Controller
                 } else if ($publishType == "best") {
 
                     if ($cntRepeat == 0) {
-                        $schedulingTimes = $this->getSchedule($post, $channel->id, 1, $scheduleOption);
+                        if (!$bestScheduleTime) {
+                            $schedulingTimes = $this->getSchedule($post, $this->user->id, 1, $scheduleOption);
+                            $bestScheduleTime = $schedulingTimes;
+                        } else {
+                            $schedulingTimes = $bestScheduleTime;
+                        }
 
-                        $postId = uniqid();
                         $scheduled['publishUTCDateTime'] = $schedulingTimes[0]->toRfc3339String();
                         $scheduled['publishDateTime'] = $schedulingTimes[0]->format('Y-m-d H:i');
                         $publishTime = $schedulingTimes[0]->format("Y-m-d H:i:s");
@@ -235,14 +246,19 @@ class PublishController extends Controller
                 } else {
                     if ($cntRepeat > 0) {
                         if ($publishType == "best") {
-                            $schedulingTimes = $this->getSchedule($post, $channel->id, $cntRepeat, $scheduleOption);
+                            if (!$bestScheduleTime) {
+                                $schedulingTimes = $this->getSchedule($post, $this->user->id, $cntRepeat, $scheduleOption);
+                                $bestScheduleTime = $schedulingTimes;
+                            } else {
+                                $schedulingTimes = $bestScheduleTime;
+                            }
 
-                            foreach ($schedulingTimes as $schedulingTime) {
-                                $postId = uniqid();
+                            for ($i = 0; $i <count($schedulingTimes); $i++) {
+                                $postId = $postIds[$i];
 
-                                $scheduled['publishUTCDateTime'] = $schedulingTime->toRfc3339String();
-                                $scheduled['publishDateTime'] = $schedulingTime->format('Y-m-d H:i');
-                                $publishTime = $schedulingTime->format("Y-m-d H:i:s");
+                                $scheduled['publishUTCDateTime'] = $schedulingTimes[$i]->toRfc3339String();
+                                $scheduled['publishDateTime'] = $schedulingTimes[$i]->format('Y-m-d H:i');
+                                $publishTime = $schedulingTimes[$i]->format("Y-m-d H:i:s");
                                 $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
                                 $payload = [
                                     'images' => $uploadedImages,
@@ -269,7 +285,7 @@ class PublishController extends Controller
                             }
                         } else {
                             for ($i = 0; $i < $cntRepeat; $i++) {
-                                $postId = uniqid();
+                                $postId = $postIds[$i];
 
                                 if ($scheduleOption == "Daily") {
                                     $publishUTCDateTime = Carbon::parse($post['scheduled']['publishUTCDateTime'])->addDays($i)->toRfc3339String();
@@ -552,7 +568,7 @@ class PublishController extends Controller
         }
     }
 
-    public function getSchedule($post, $channel_id, $cntRepeat, $scheduleOption) {
+    public function getSchedule($post, $user_id, $cntRepeat, $scheduleOption) {
         $result = [];
         $cnt = 0;
         $currentDate = Carbon::parse($post['scheduled']['publishUTCDateTime'])->setTimezone($post['scheduled']['publishTimezone']);
@@ -564,7 +580,6 @@ class PublishController extends Controller
             $tmpScheduledPost = ScheduledPost::query()
                 ->whereRaw("DAYOFWEEK(scheduled_at)=?", [$dayOfTheWeek + 1])
                 ->where('scheduled_at', '>=', $currentDate->format("Y-m-d H:i:s"))
-                ->where('channel_id', $channel_id)
                 ->where('is_best', 1)
                 ->orderBy('id', "ASC")
                 ->pluck('scheduled_at');
@@ -575,12 +590,12 @@ class PublishController extends Controller
             }
 
             if ($dayOfTheWeek != 0) {
-                $tmpSchedulingTime = ScheduleTime::where("channel_id", $channel_id)
+                $tmpSchedulingTime = ScheduleTime::where("user_id", $user_id)
                     ->where("schedule_week", $dayOfTheWeek - 1)
                     ->orderBy("schedule_time", "ASC")
                     ->pluck("schedule_time");
             } else {
-                $tmpSchedulingTime = ScheduleTime::where("channel_id", $channel_id)
+                $tmpSchedulingTime = ScheduleTime::where("user_id", $user_id)
                     ->where("schedule_week", 6)
                     ->orderBy("schedule_time", "ASC")
                     ->pluck("schedule_time");

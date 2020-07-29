@@ -29,7 +29,7 @@ class SchedulingController extends Controller
 
     public function schedulingTimes(Request $request)
     {
-        $times = ScheduleTime::where("channel_id", $this->selectedChannel->id)
+        $times = ScheduleTime::where("user_id", $this->user->id)
             ->orderBy("schedule_time", "ASC")
             ->get();
 
@@ -43,14 +43,14 @@ class SchedulingController extends Controller
 
         foreach ($scheduleTimes as $scheduleTime) {
             ScheduleTime::create([
-                'channel_id' => $this->selectedChannel->id,
+                'user_id' => $this->user->id,
                 'time_id' => uniqid(),
                 'schedule_week' => $scheduleTime["schedule_week"],
                 'schedule_time' => $scheduleTime["schedule_time"],
             ]);
         }
 
-        $times = ScheduleTime::where("channel_id", $this->selectedChannel->id)
+        $times = ScheduleTime::where("user_id", $this->user->id)
             ->orderBy("schedule_time", "ASC")
             ->get();
 
@@ -67,7 +67,7 @@ class SchedulingController extends Controller
                 'schedule_time' => $schedule_time,
             ]);
 
-        $times = ScheduleTime::where("channel_id", $this->selectedChannel->id)
+        $times = ScheduleTime::where("user_id", $this->user->id)
             ->orderBy("schedule_time", "ASC")
             ->get();
 
@@ -79,7 +79,7 @@ class SchedulingController extends Controller
         ScheduleTime::where("time_id", $timeId)
             ->delete();
 
-        $times = ScheduleTime::where("channel_id", $this->selectedChannel->id)
+        $times = ScheduleTime::where("user_id", $this->user->id)
             ->orderBy("schedule_time", "ASC")
             ->get();
 
@@ -88,10 +88,10 @@ class SchedulingController extends Controller
 
     public function clearAll(Request $request)
     {
-        ScheduleTime::where("channel_id", $this->selectedChannel->id)
+        ScheduleTime::where("user_id", $this->user->id)
             ->delete();
 
-        $times = ScheduleTime::where("channel_id", $this->selectedChannel->id)
+        $times = ScheduleTime::where("user_id", $this->user->id)
             ->orderBy("schedule_time", "ASC")
             ->get();
 
@@ -100,7 +100,7 @@ class SchedulingController extends Controller
 
     public function schedulingCount(Request $request)
     {
-        $count = ScheduleTime::where("channel_id", $this->selectedChannel->id)
+        $count = ScheduleTime::where("user_id", $this->user->id)
             ->where("posted", 0)
             ->orderBy("schedule_time", "ASC")
             ->get()

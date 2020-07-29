@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ScheduleTime extends Model
 {
     protected $fillable = [
-        "channel_id",
+        "user_id",
         "time_id",
         "schedule_week",
         "schedule_time",

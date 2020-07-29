@@ -59,20 +59,6 @@ class ChannelController extends Controller
                 }
             }
 
-            $channel_id = GlobalChannel::orderBy("id", "desc")->pluck("id")->first();
-            $defaultTimes = ScheduleDefaultTime::all()->pluck("default_time");
-
-            for ($i = 0; $i < 7; $i++) {
-                foreach ($defaultTimes as $defaultTime) {
-                    ScheduleTime::create([
-                        'channel_id' => $channel_id,
-                        'time_id' => uniqid(),
-                        'schedule_week' => $i,
-                        'schedule_time' => $defaultTime,
-                    ]);
-                }
-            }
-
             return $user->allFormattedChannels();
         }
 
