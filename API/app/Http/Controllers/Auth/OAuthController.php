@@ -29,6 +29,8 @@ use App\Mail\AfterTwelveDays;
 use App\Mail\AfterTwelveDaysSecond;
 use App\Mail\AfterFourteenDays;
 use App\Mail\AfterFifteenDays;
+use App\Models\ScheduleTime;
+use App\Models\ScheduleDefaultTime;
 
 
 class OAuthController extends Controller
@@ -73,12 +75,12 @@ class OAuthController extends Controller
 
         $email = $request->input('email');
         $user_register = User::where('email', $email)->first();
-        
+
         $created_at = strtotime($user_register['created_at']);
         $trial_ends_at = date("Y-m-d h:i:s", $created_at + 14 * 86400);
 
         \DB::table('users')->where('email', $email)->update(['trial_ends_at' => $trial_ends_at]);
-        
+
         // $user->notify(new \App\Notifications\User\UserSignUp());
 
 
@@ -101,6 +103,19 @@ class OAuthController extends Controller
         Mail::to($email)->send(new AfterFourteenDays($user));
         Mail::to($email)->send(new AfterFifteenDays($user));
 
+        $defaultTimes = ScheduleDefaultTime::all()->pluck("default_time");
+
+        for ($i = 0; $i < 7; $i++) {
+            foreach ($defaultTimes as $defaultTime) {
+                ScheduleTime::create([
+                    'user_id' => $user->id,
+                    'time_id' => uniqid(),
+                    'schedule_week' => $i,
+                    'schedule_time' => $defaultTime,
+                ]);
+            }
+        }
+
         $token = $user->createToken("Password Token");
 
         //The UI needs this value before the portal gets loaded
@@ -121,7 +136,7 @@ class OAuthController extends Controller
         $user_id = $user->id;
         // is our way to activate invited users
         TeamUser::where('member_id', $user_id)->update(['is_pending' => 0]);
-    
+
         $token = $user->createToken("Password Token");
 
         //The UI needs this value before the portal gets loaded
@@ -142,8 +157,8 @@ class OAuthController extends Controller
         $user_id = $user->id;
         // is our way to activate invited users
         TeamUser::where('member_id', $user_id)->update(['is_pending' => 0]);
-    
-        $token = $user->createToken("Password Token");  
+
+        $token = $user->createToken("Password Token");
 
         //The UI needs this value before the portal gets loaded
         $token->token->accessLevel = $user->getAccessLevel();

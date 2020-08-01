@@ -18,7 +18,8 @@ class ScheduledPost extends Model
         "approved",
         "article_id",
         "category_id",
-        "post_id"
+        "post_id",
+        "is_best"
     ];
 
     public function channel()
