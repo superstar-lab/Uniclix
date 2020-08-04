@@ -156,9 +156,9 @@ class PublishController extends Controller
                             $schedulingTimes = $bestScheduleTime;
                         }
 
-                        $scheduled['publishUTCDateTime'] = $schedulingTimes[0]->toRfc3339String();
                         $scheduled['publishDateTime'] = $schedulingTimes[0]->format('Y-m-d H:i');
-                        $publishTime = $schedulingTimes[0]->format("Y-m-d H:i:s");
+                        $scheduled['publishUTCDateTime'] = $schedulingTimes[0]->setTimezone('Europe/London')->toRfc3339String();
+                        $publishTime = $schedulingTimes[0]->setTimezone('Europe/London')->format("Y-m-d H:i:s");
                         $payload = [
                             'images' => $uploadedImages,
                             'videos' => $uploadedVideos,
@@ -256,9 +256,9 @@ class PublishController extends Controller
                             for ($i = 0; $i <count($schedulingTimes); $i++) {
                                 $postId = $postIds[$i];
 
-                                $scheduled['publishUTCDateTime'] = $schedulingTimes[$i]->toRfc3339String();
                                 $scheduled['publishDateTime'] = $schedulingTimes[$i]->format('Y-m-d H:i');
-                                $publishTime = $schedulingTimes[$i]->format("Y-m-d H:i:s");
+                                $scheduled['publishUTCDateTime'] = $schedulingTimes[$i]->setTimezone('Europe/London')->toRfc3339String();
+                                $publishTime = $schedulingTimes[$i]->setTimezone('Europe/London')->format("Y-m-d H:i:s");
                                 $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
                                 $payload = [
                                     'images' => $uploadedImages,
@@ -586,7 +586,7 @@ class PublishController extends Controller
 
             $scheduledPost = [];
             for ($i = 0; $i < count($tmpScheduledPost); $i++) {
-                array_push($scheduledPost, $tmpScheduledPost[$i]);
+                array_push($scheduledPost, Carbon::createFromFormat('Y-m-d H:i:s', $tmpScheduledPost[$i], 'Europe/London')->setTimezone($post['scheduled']['publishTimezone'])->format("Y-m-d H:i:s"));
             }
 
             if ($dayOfTheWeek != 0) {
