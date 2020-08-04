@@ -12,7 +12,8 @@ class DateTimeSelector extends React.Component {
     postNow: PropTypes.bool.isRequired,
     setDate: PropTypes.func.isRequired,
     setPostAtBestTime: PropTypes.func.isRequired,
-    setPostNow: PropTypes.func.isRequired
+    setPostNow: PropTypes.func.isRequired,
+    cntScheduling: PropTypes.bool.isRequired,
   };
 
   componentDidMount() {
@@ -98,7 +99,7 @@ class DateTimeSelector extends React.Component {
   };
 
   render() {
-    const { postAtBestTime, postNow, accessLevel } = this.props;
+    const { postAtBestTime, postNow, accessLevel, cntScheduling } = this.props;
     const dateTime = this.getDateTime();
 
     return (
@@ -126,7 +127,7 @@ class DateTimeSelector extends React.Component {
           {
             isOwnerOrAdmin(accessLevel) && (
               <div className="checkboxes-group">
-                <Checkbox checked={postAtBestTime} disabled={postNow} onChange={this.onPostAtBestTime}>
+                <Checkbox checked={postAtBestTime} disabled={cntScheduling == 0 || postNow} onChange={this.onPostAtBestTime}>
                   Post at best time
                 </Checkbox>
                 <Checkbox checked={postNow} disabled={postAtBestTime} onChange={this.onPostNow}>
