@@ -293,6 +293,18 @@
   }
 }
 
+.no-channels-modal {
+  .no-channels-modal-content {
+    height: 300px;
+    padding: 90px;
+
+    .message {
+      width: 500px;
+      margin-bottom: 30px;
+    }
+  }
+}
+
 .composer-modal {
   font-family: Rubik;
   width: 600px;

@@ -158,7 +158,9 @@ class Compose extends React.Component {
 
     const { scheduleOption, advancedVisible, cntRepeat } = this.state;
 
-    return (
+    const hasValidChannels = channels.length > 0;
+
+    return hasValidChannels ? (
       <Modal
         isOpen={isOpen}
         ariaHideApp={false}
@@ -281,7 +283,28 @@ class Compose extends React.Component {
           )
         }
       </Modal>
-    );
+    ) : (
+      <Modal
+        isOpen={isOpen}
+        ariaHideApp={false}
+        className="flex-center modal-no-radius no-outline no-channels-modal"
+      >
+        <div className="modal-content no-channels-modal-content">
+          <h3>Add profiles!</h3>
+          <div className="message">
+            Due to Facebook policies, we can't post into profile accounts. Please go
+            to the accounts settings and add a Facebook group or any account from other
+            social media.
+          </div>
+          <button
+            className="magento-btn pull-right"
+            onClick={closeModal}
+          >
+            Got it
+          </button>
+        </div>
+      </Modal>
+    )
   }
 }
 
