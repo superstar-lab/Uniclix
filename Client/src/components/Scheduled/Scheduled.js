@@ -18,6 +18,7 @@ import TimezoneSelector from './components/TimezoneSelector';
 import AwaitingApproval from './Sections/AwaitingApproval';
 import AwaitingApprovalTabTitle from './components/AwaitingApprovalTabTitle';
 import Loader from '../Loader';
+import channelSelector from "../../selectors/channels";
 
 const { TabPane } = Tabs;
 
@@ -123,7 +124,7 @@ class Scheduled extends React.Component {
       awaitingApprovalPosts,
       awaitingLoading
     } = this.state;
-    const { accessLevel, user } = this.props;
+    const { accessLevel, user, selectedChannel } = this.props;
 
     return (
       <div className="scheduled">
@@ -154,7 +155,7 @@ class Scheduled extends React.Component {
         >
           <TabPane tab="Scheduled" key="scheduled">
             {/* I needed a way to force the call that is made when the component gets mounted*/}
-            { activeTab === 'scheduled' && <ScheduledPosts timezone={selectedTimezone} /> }
+            { activeTab === 'scheduled' && <ScheduledPosts timezone={selectedTimezone} selectedChannel={selectedChannel} /> }
           </TabPane>
           <TabPane tab="Schedule Settings" key="schedule settings">
             {/* I needed a way to force the call that is made when the component gets mounted*/}
@@ -183,11 +184,15 @@ class Scheduled extends React.Component {
 
 const mapStateToProps = (state) => {
   const { profile: { user, accessLevel } = {} } = state;
+  const selectedGlobalChannel = { selected: 1, provider: undefined };
+
+  const selectedChannel = channelSelector(state.channels.list, selectedGlobalChannel);
 
   return {
     timezone: user.timezone,
     accessLevel: accessLevel,
-    user
+    user,
+    selectedChannel: selectedChannel.length ? selectedChannel[0] : {},
   };
 };
 

@@ -34,6 +34,176 @@
     margin-bottom: 20px;
   }
 
+  .infinite-best-btn-title {
+    background-color: #ecf0f3;
+    border-radius: 5px;
+    padding-left: 30px;
+    height: 40px;
+    line-height: 40px;
+  }
+
+  .infinite-best-btn {
+    background-color: #ffffff;
+    border-radius: 5px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    display: flex;
+    justify-content: space-between;
+
+    .infinite-best-btn-icon {
+      display: flex;
+      justify-content: flex-end;
+      color: #2D86DA;
+      font-size: 20px;
+      align-items: center;
+      height: 50px;
+      line-height: 50px;
+
+      .infinite-best-btn-icon-laugh {
+        margin-right: 20px;
+        font-size: 30px !important;
+        height: 50px;
+        line-height: 50px;
+        margin-bottom: 8px;
+      }
+    }
+  }
+
+  .infinite-title {
+    font-size: 18px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .infinite-time {
+    font-size: 16px;
+    background-color: #ffffff;
+    text-align: center;
+    line-height: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+
+    .infinite-best-time {
+      height: 180px;
+      border: 0.5px solid #DBDBDB;
+      border-radius: 5px;
+
+      .infinite-best-time-title {
+        display: flex;
+        justify-content: space-between;
+        margin-left: 20px;
+        height: 90px;
+
+        div {
+          padding-top: 20px;
+          text-align: left;
+          color: #1F2024;
+        }
+
+        i {
+          padding-right: 10px;
+          padding-top: 10px;
+          padding-left: 10px;
+        }
+      }
+
+      .infinite-best-time-boundary {
+        border-bottom: 0.5px solid #DBDBDB;
+        margin-right: 20px;
+        margin-left: 20px;
+      }
+
+      .infinite-best-time-body {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        margin-left: 20px;
+        margin-left: 20px;
+        height: 90px;
+
+        .infinite-best-time-channels {
+          display: flex;
+          height: 45px;
+          margin-right: 20px;
+
+          div {
+            position: relative;
+            margin-right: 10px;
+
+            img {
+              width: 40px;
+              height: 40px;
+              border-radius: 100%;
+            }
+
+            i {
+              width: 16px;
+              height: 16px;
+              font-size: 10px;
+              border-radius: 100%;
+              position: absolute;
+              display: flex;
+              right: -3px;
+              bottom: -2px;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+        }
+
+        .infinite-best-time-category {
+          background-color: #0073B1;
+          border-radius: 4px;
+          color: #fff;
+          font-family: Rubik;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 30px;
+          height: 30px;
+          text-align: center;
+          margin-top: 5px;
+        }
+
+        .infinite-best-time-post {
+          text-align: left;
+          height: 20px;
+          line-height: 20px;
+        }
+      }
+    }
+
+    .btn-hover {
+      background-color: #eaf3fb;
+      border: 1px solid #2D86DA;
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 50px;
+
+      i.fab {
+        width: 25px;
+        height: 25px;
+        font-size: 15px;
+        border-radius: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      div {
+        border: 0px;
+        width: 150px;
+      }
+    }
+  }
+
   // needed to display all the calendar's height
   .ant-tabs.ant-tabs-top.ant-tabs-line {
     height: 1950px;
@@ -297,14 +467,146 @@
   }
 }
 
-.no-channels-modal {
-  .no-channels-modal-content {
-    height: 300px;
-    padding: 30px;
+.post-scheduling {
+  font-family: Rubik;
 
-    .message {
-      width: 500px;
-      margin-bottom: 90px;
+  .post-scheduling-container {
+    width: 800px;
+
+    .post-scheduling-title {
+      width: 100%;
+      font-weight: 700;
+      font-family: Lato;
+      margin-right: 20px;
+      font-size: 18px;
+      color: rgb(54, 54, 54);
+      padding-top: 20px;
+      padding-bottom: 20px;
+      border-bottom: 0.5px solid #DBDBDB;
+    }
+
+    .post-scheduling-queue-section {
+      width: 100%;
+      display: none; //flex;
+      justify-content: flex-end;
+      margin-right: 20px;
+      padding-top: 20px;
+      padding-bottom: 30px;
+      border-bottom: 0.5px solid #DBDBDB;
+
+      .post-scheduling-padding {
+        text-align: right;
+      }
+
+      .btn-queue {
+        margin-top: 5px;
+        font-weight: bold;
+      }
+    }
+
+    .post-scheduling-time-section {
+      width: 100%;
+      margin-right: 20px;
+      padding-top: 20px;
+      padding-bottom: 30px;
+      border-bottom: 0.5px solid #DBDBDB;
+
+      .time-label {
+        font-weight: bold;
+        font-family: Lato;
+        font-size: 17px;
+      }
+
+      .post-scheduling-time-margin-top {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-top: 5px;
+
+        .post-time-margin-right {
+          margin-right: 10px;
+        }
+      }
+    }
+
+    .post-scheduling-display-section {
+      width: 100%;
+
+      .post-scheduling-display-header {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 20px;
+        padding-bottom: 30px;
+
+        .post-scheduling-display-title {
+          font-weight: 700;
+          font-family: Lato;
+          margin-right: 20px;
+          font-size: 18px;
+        }
+      }
+
+      .post-scheduling-display-body {
+        text-align: center;
+
+        .post-scheduling-display-title {
+          font-weight: 700;
+          font-family: Lato;
+          font-size: 18px;
+        }
+
+        .post-scheduling-display-subtitle {
+          font-family: Lato;
+          font-size: 16px;
+        }
+      }
+
+      table {
+        border: 0.5px solid #DBDBDB;
+        width: 100%;
+
+        th {
+          border: 0.5px solid #DBDBDB;
+          padding: 5px;
+          text-align: center;
+
+          button {
+            display: none;
+          }
+        }
+
+        td {
+          border: 0.5px solid #DBDBDB;
+          padding: 5px;
+          text-align: center;
+          vertical-align: top;
+
+          ul {
+            margin-bottom: 0px;
+
+            li {
+              padding: 3px;
+
+              input {
+                font-size: 12px;
+              }
+
+              div {
+                white-space: nowrap;
+                width: 90px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                border-radius: 5px;
+                border: 0.5px solid #DBDBDB;
+                margin-left: 4px;
+                padding: 2px;
+                font-size: 12px;
+                color: red;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

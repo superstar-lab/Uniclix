@@ -45,7 +45,7 @@ const TodaysAgenda = ({ posts, timezone, channelsList }) => {
                   <div className="event-channels">
                     {
                       channelsList
-                        .filter(channel => post['channel_ids'] === channel.id)
+                        .filter(channel => post['channel_ids'].indexOf(channel.id) !== -1)
                         .map(({ type, avatar }, index) => (
                           <div key={`${type}-${index}`}>
                             <img src={avatar} />
