@@ -1,13 +1,15 @@
 import React from 'react';
 import moment from 'moment';
 import { Select } from 'antd';
+import InfiniteScroll from "react-infinite-scroll-component";
 
-import { scheduledPosts } from '../../../requests/channels';
+import {scheduledPosts, schedulingTimes} from '../../../requests/channels';
 
 import Compose from '../../Compose/index';
 import DateRangeSelector from '../components/DateRangeSelector';
 import PostsCalendar from '../components/PostsCalendar';
 import TodaysAgenda from '../components/TodaysAgenda';
+import PostsDay from '../components/PostsDay';
 import Loader from '../../Loader';
 
 const { Option } = Select;
@@ -17,6 +19,13 @@ const PERIODS = [
   'Week',
   'Day'
 ];
+const monthNames = [
+  "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+];
+const weekday = [
+  'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
+];
+const cntDate = 20;
 
 class ScheduledPosts extends React.Component {
 
@@ -29,7 +38,31 @@ class ScheduledPosts extends React.Component {
       calendarDisplay: 'Week',
       resetDates: true,
       startDate: moment().tz(props.timezone).startOf('week'),
-      endDate: moment().tz(props.timezone).endOf('week')
+      endDate: moment().tz(props.timezone).endOf('week'),
+      items: [],
+      page: 0,
+      schedulingTimes: [],
+    }
+  }
+
+  componentWillMount() {
+    try {
+      schedulingTimes()
+        .then((response) => {
+          const tmpSchedulingTimes = response.items;
+          let schedulingTimes = [];
+          if (tmpSchedulingTimes.length > 0) {
+            schedulingTimes = this.getScheduleTimes(tmpSchedulingTimes);
+          }
+
+          this.setState({
+            schedulingTimes,
+          });
+          this.fetchMoreData();
+        }).catch((error) => {
+      });
+    } catch(error) {
+      console.log(error);
     }
   }
 
@@ -69,7 +102,99 @@ class ScheduledPosts extends React.Component {
     } catch(error) {
       console.log(error);
     }
-  }
+  };
+
+  fetchMoreData = () => {
+    const { items, page, schedulingTimes } = this.state;
+    const { timezone } = this.props;
+    let tmpItems = items;
+    let tmpPage = page;
+    const cloneStart = moment().tz(timezone).add(tmpPage * cntDate, 'days').subtract(1, 'days').format('YYYY-MM-DD'),
+      cloneEnd = moment().tz(timezone).add((tmpPage + 1) * cntDate, 'days').format('YYYY-MM-DD');
+
+    try {
+      scheduledPosts(cloneStart, cloneEnd)
+        .then((response) => {
+          const posts = response.items;
+          for (let i = tmpPage * cntDate; i < (tmpPage + 1) * cntDate; i++) {
+            let date = new Date(moment().tz(timezone).add(i, 'days').format('YYYY-MM-DD'));
+            let weekdayNames = weekday[date.getDay()];
+            if (i === 0) {
+              weekdayNames = 'Today';
+            }
+            if (i === 1) {
+              weekdayNames = 'Tomorrow';
+            }
+            let settingTimes = [];
+            if (date.getDay() === 0) {
+              settingTimes = JSON.parse(JSON.stringify(schedulingTimes[6]));
+            } else {
+              settingTimes = JSON.parse(JSON.stringify(schedulingTimes[date.getDay() - 1]));
+            }
+            for (let j = 0; j <settingTimes.length; j++) {
+              for (let k = 0; k < posts.length; k++) {
+                if (posts[k].is_best === 1 && (posts[k].payload.scheduled.publishDateTime === (moment().tz(timezone).add(i, 'days').format('YYYY-MM-DD') + ' ' + settingTimes[j].time))) {
+                  settingTimes[j] = posts[k];
+                }
+              }
+            }
+
+            tmpItems.push({ day: moment().tz(timezone).add(i, 'days').format('YYYY-MM-DD'), weekdayNames: weekdayNames, monthNames: monthNames[date.getMonth()], date: date.getDate(), settingTimes: settingTimes })
+          }
+
+          tmpPage++;
+          this.setState({
+            items: tmpItems,
+            page: tmpPage
+          });
+        }).catch((error) => {
+      });
+    } catch(error) {
+      console.log(error);
+    }
+  };
+
+  getScheduleTimes = (tmpSchedulingTimes) => {
+    let schedulingTimes = [];
+
+    for (let i = 0; i < 7; i++) {
+      schedulingTimes[i] = [];
+    }
+
+    tmpSchedulingTimes.forEach(time => {
+      switch(time.schedule_week) {
+        case 0:
+          schedulingTimes[0].push({ time: time.schedule_time, timeId: time.time_id, hover: true });
+          break;
+        case 1:
+          schedulingTimes[1].push({ time: time.schedule_time, timeId: time.time_id, hover: true });
+          break;
+        case 2:
+          schedulingTimes[2].push({ time: time.schedule_time, timeId: time.time_id, hover: true });
+          break;
+        case 3:
+          schedulingTimes[3].push({ time: time.schedule_time, timeId: time.time_id, hover: true });
+          break;
+        case 4:
+          schedulingTimes[4].push({ time: time.schedule_time, timeId: time.time_id, hover: true });
+          break;
+        case 5:
+          schedulingTimes[5].push({ time: time.schedule_time, timeId: time.time_id, hover: true });
+          break;
+        case 6:
+          schedulingTimes[6].push({ time: time.schedule_time, timeId: time.time_id, hover: true });
+      }
+    });
+
+    return schedulingTimes;
+  };
+
+  onResetPage = () => {
+    this.setState({
+      page: 0,
+      items: [],
+    });
+  };
 
   onDateChange = (startDate, endDate) => {
     const { timezone } = this.props;
@@ -81,12 +206,26 @@ class ScheduledPosts extends React.Component {
   };
 
   onPeriodChange = (calendarDisplay, resetDates = true) => {
-    this.setState({ calendarDisplay, resetDates });
+    this.setState({ calendarDisplay, resetDates, items: [], page: 0 });
+    if (calendarDisplay === 'Day') {
+      this.fetchMoreData();
+    }
+  };
+
+  onHover = (indexI, indexJ, hover) => {
+    const { items } = this.state;
+    let tmpItems = items;
+    if (tmpItems[indexI].settingTimes[indexJ].time !== undefined) {
+      tmpItems[indexI].settingTimes[indexJ].hover = hover;
+    }
+    this.setState({
+      items: tmpItems
+    });
   };
 
   render() {
     const { startDate, endDate, calendarDisplay, posts, isLoading, resetDates } = this.state;
-    const { timezone } = this.props;
+    const { timezone, selectedChannel } = this.props;
 
     return (
       <div className="calendar-events">
@@ -106,15 +245,56 @@ class ScheduledPosts extends React.Component {
               }
             </Select>
           </div>
-          <PostsCalendar
-            events={posts}
-            view={calendarDisplay.toLowerCase()}
-            timezone={timezone}
-            startDate={startDate}
-            fetchPosts={this.fetchPosts}
-            onDateChange={this.onDateChange}
-            onPeriodChange={this.onPeriodChange}
-          />
+          {
+            calendarDisplay === 'Day' ?
+              <div>
+                <div>
+                  <h4 className="infinite-best-btn-title">Create Post</h4>
+                  <div className="infinite-best-btn" onClick={this.props.onBestPostClick}>
+                    <div>What's on your mind?</div>
+                    <div className="infinite-best-btn-icon">
+                      <div className="infinite-best-btn-icon-laugh"><strong>☺</strong></div>
+                      <i className="fa fa-image upload-images"/>
+                    </div>
+                  </div>
+                </div>
+                <InfiniteScroll
+                  dataLength={this.state.items.length}
+                  next={this.fetchMoreData}
+                  hasMore={true}
+                  style={{ overflowY: 'hidden' }}
+                >
+                  {this.state.items.map((item, index) => (
+                    <div>
+                      <div className="infinite-title">
+                        <strong>{item.weekdayNames}, </strong>{item.monthNames} {item.date}
+                      </div>
+                      <PostsDay
+                        settingTimes={item.settingTimes}
+                        day={item.day}
+                        timezone={timezone}
+                        selectedChannel={selectedChannel}
+                        indexI={index}
+                        onHover={this.onHover}
+                        onBestPostClick={this.props.onBestPostClick}
+                        fetchMoreData={this.fetchMoreData}
+                        onResetPage={this.onResetPage}
+                      />
+                    </div>
+                  ))}
+                </InfiniteScroll>
+              </div>
+              :
+              <PostsCalendar
+                events={posts}
+                view={calendarDisplay.toLowerCase()}
+                timezone={timezone}
+                startDate={startDate}
+                fetchPosts={this.fetchPosts}
+                onDateChange={this.onDateChange}
+                onPeriodChange={this.onPeriodChange}
+              />
+          }
         </div>
         <div>
           <TodaysAgenda

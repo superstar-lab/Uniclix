@@ -7,7 +7,7 @@ import userflow from 'userflow.js';
 
 import FunctionModal from '../Modal';
 import { updateTimeZone } from '../../requests/profile';
-import { setComposerModal } from '../../actions/composer';
+import { setComposerModal, setPostAtBestTime } from '../../actions/composer';
 import { isOwnerOrAdmin } from '../../utils/helpers';
 import { unapprovedPosts } from '../../requests/channels';
 import { setTimezone } from '../../actions/profile';
@@ -18,6 +18,7 @@ import TimezoneSelector from './components/TimezoneSelector';
 import AwaitingApproval from './Sections/AwaitingApproval';
 import AwaitingApprovalTabTitle from './components/AwaitingApprovalTabTitle';
 import Loader from '../Loader';
+import channelSelector from "../../selectors/channels";
 
 const { TabPane } = Tabs;
 
@@ -115,6 +116,15 @@ class Scheduled extends React.Component {
     this.setState({ activeTab: key });
   };
 
+  onBestPostClick = (e) => {
+    if (e.target.id === "") {
+      this.props.setComposerModal(moment().format('YYYY-MM-DDTHH:mmZ'), this.state.selectedTimezone);
+    } else {
+      this.props.setComposerModal(moment(e.target.id).format('YYYY-MM-DDTHH:mmZ'), this.state.selectedTimezone);
+    }
+    this.props.setPostAtBestTime(true);
+  };
+
   render() {
     const {
       selectedTimezone,
@@ -123,7 +133,7 @@ class Scheduled extends React.Component {
       awaitingApprovalPosts,
       awaitingLoading
     } = this.state;
-    const { accessLevel, user } = this.props;
+    const { accessLevel, user, selectedChannel } = this.props;
 
     return (
       <div className="scheduled">
@@ -154,7 +164,7 @@ class Scheduled extends React.Component {
         >
           <TabPane tab="Scheduled" key="scheduled">
             {/* I needed a way to force the call that is made when the component gets mounted*/}
-            { activeTab === 'scheduled' && <ScheduledPosts timezone={selectedTimezone} /> }
+            { activeTab === 'scheduled' && <ScheduledPosts timezone={selectedTimezone} selectedChannel={selectedChannel} onBestPostClick={this.onBestPostClick} /> }
           </TabPane>
           <TabPane tab="Schedule Settings" key="schedule settings">
             {/* I needed a way to force the call that is made when the component gets mounted*/}
@@ -183,12 +193,16 @@ class Scheduled extends React.Component {
 
 const mapStateToProps = (state) => {
   const { profile: { user, accessLevel } = {} } = state;
+  const selectedGlobalChannel = { selected: 1, provider: undefined };
+
+  const selectedChannel = channelSelector(state.channels.list, selectedGlobalChannel);
 
   return {
     timezone: user.timezone,
     accessLevel: accessLevel,
-    user
+    user,
+    selectedChannel: selectedChannel.length ? selectedChannel[0] : {},
   };
 };
 
-export default connect(mapStateToProps, { setComposerModal, setTimezone })(Scheduled);
+export default connect(mapStateToProps, { setComposerModal, setTimezone, setPostAtBestTime })(Scheduled);

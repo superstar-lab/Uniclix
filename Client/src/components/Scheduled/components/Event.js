@@ -14,7 +14,8 @@ const Event = ({
   toggleLoading,
   fetchPosts,
   setComposerToEdit,
-  accessLevel
+  accessLevel,
+  deleteWeekPost
 }) => {
   const { content, payload: { scheduled: { publishUTCDateTime } }, category, channel_ids } = event;
   let timeEvent = moment(publishUTCDateTime).tz(timezone);
@@ -31,15 +32,7 @@ const Event = ({
   };
 
   const deletePost = () => {
-    toggleLoading();
-    destroyPost(event.post_id)
-      .then(() => {
-        toggleLoading();
-        fetchPosts();
-      })
-      .catch(() => {
-        toggleLoading();
-      });
+    deleteWeekPost(event.post_id);
   };
 
   const editPost = () => {
