@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Button, Select, TimePicker} from 'antd';
 import moment from "moment";
 import {connect} from "react-redux";
+import { Draggable, Droppable } from 'react-drag-and-drop';
 
 import PostsDayBestTime from './PostsDayBestTime';
 import {setComposerModal, setComposerToEdit} from "../../../actions/composer";
@@ -23,12 +24,8 @@ class PostsDay extends React.Component {
     return dateTime;
   };
 
-  onBestPost = (e) => {
-    console.log("Click", e.target.id);
-  };
-
   render() {
-    const { settingTimes, day, timezone, indexI, selectedChannel } = this.props;
+    const { settingTimes, day, timezone, indexI, selectedChannel, fetchMoreData, onResetPage } = this.props;
 
     return (
       <div>
@@ -42,12 +39,12 @@ class PostsDay extends React.Component {
             >
               {
                 settingTime.time === undefined ?
-                  <PostsDayBestTime bestTime={settingTime}/>
+                  <PostsDayBestTime bestTime={settingTime} fetchMoreData={fetchMoreData} onResetPage={onResetPage}/>
                   :
                   settingTime.hover ?
                     <span>{this.getDateTime(settingTime.time)}</span>
                     :
-                    <button className="btn-hover" id={day + ' ' + settingTime.time} onClick={(e)=>this.onBestPost(e)}>
+                    <button className="btn-hover" id={day + ' ' + settingTime.time} onClick={(e)=>this.props.onBestPostClick(e)}>
                       <i id={day + ' ' + settingTime.time} className={`fab fa-${selectedChannel.type} ${selectedChannel.type}_bg`}/>
                       <div id={day + ' ' + settingTime.time}>Schedule a Post</div>
                     </button>

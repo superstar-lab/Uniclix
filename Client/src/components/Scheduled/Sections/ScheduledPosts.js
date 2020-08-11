@@ -189,6 +189,13 @@ class ScheduledPosts extends React.Component {
     return schedulingTimes;
   };
 
+  onResetPage = () => {
+    this.setState({
+      page: 0,
+      items: [],
+    });
+  };
+
   onDateChange = (startDate, endDate) => {
     const { timezone } = this.props;
 
@@ -243,7 +250,7 @@ class ScheduledPosts extends React.Component {
               <div>
                 <div>
                   <h4 className="infinite-best-btn-title">Create Post</h4>
-                  <div className="infinite-best-btn">
+                  <div className="infinite-best-btn" onClick={this.props.onBestPostClick}>
                     <div>What's on your mind?</div>
                     <div className="infinite-best-btn-icon">
                       <div className="infinite-best-btn-icon-laugh"><strong>☺</strong></div>
@@ -269,6 +276,9 @@ class ScheduledPosts extends React.Component {
                         selectedChannel={selectedChannel}
                         indexI={index}
                         onHover={this.onHover}
+                        onBestPostClick={this.props.onBestPostClick}
+                        fetchMoreData={this.fetchMoreData}
+                        onResetPage={this.onResetPage}
                       />
                     </div>
                   ))}

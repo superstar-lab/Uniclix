@@ -9,6 +9,8 @@ import { setComposerModal, setComposerToEdit } from '../../../actions/composer';
 import { momentToDate } from '../../../utils/formatTime';
 import Event from './Event';
 import Loader from '../../Loader';
+import {destroyPost} from "../../../requests/channels";
+import {Modal} from "antd";
 
 const localizer = momentLocalizer(moment);
 
@@ -31,7 +33,9 @@ class PostsCalendar extends React.Component {
       currentDate: props.timezone ? moment().tz(props.timezone) : moment(),
       selectedEvent: {},
       isLoading: false,
-      intervalId: ''
+      intervalId: '',
+      visible: false,
+      postId: "",
     }
   }
 
@@ -163,13 +167,55 @@ class PostsCalendar extends React.Component {
     }
   };
 
+  deleteWeekPost = (post_id) => {
+    this.setState({
+      visible: true,
+      postId: post_id
+    });
+  };
+
+  handleOk = () => {
+    const { postId } = this.state;
+    const { fetchPosts } = this.props;
+    
+    this.toggleLoading();
+    destroyPost(postId)
+      .then(() => {
+        this.toggleLoading();
+        fetchPosts();
+        this.setState({
+          visible: false,
+        });
+      })
+      .catch(() => {
+        this.toggleLoading();
+      });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      visible: false,
+    });
+  };
+
   render() {
     const { view, startDate, channelsList, setComposerToEdit, timezone, fetchPosts, accessLevel } = this.props;
-    const { currentDate, selectedEvent, isLoading } = this.state;
+    const { currentDate, selectedEvent, isLoading, visible } = this.state;
 
     return (
       currentDate ? (
         <React.Fragment>
+          <Modal
+            title="Delete post"
+            visible={visible}
+            okText="Yes, Delete it"
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            width={400}
+            style={{ top: 300 }}
+          >
+            Are you sure you want to delete the post?
+          </Modal>
           <Calendar
             localizer={localizer}
             formats={formats}
@@ -191,6 +237,7 @@ class PostsCalendar extends React.Component {
                   setComposerToEdit={setComposerToEdit}
                   view={view}
                   accessLevel={accessLevel}
+                  deleteWeekPost={this.deleteWeekPost}
                 />
               )
             }}
