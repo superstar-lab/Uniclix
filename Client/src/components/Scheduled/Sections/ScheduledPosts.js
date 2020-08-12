@@ -35,7 +35,7 @@ class ScheduledPosts extends React.Component {
     this.state = {
       isLoading: false,
       posts: [],
-      calendarDisplay: 'Week',
+      calendarDisplay: 'Day',
       resetDates: true,
       startDate: moment().tz(props.timezone).startOf('week'),
       endDate: moment().tz(props.timezone).endOf('week'),
