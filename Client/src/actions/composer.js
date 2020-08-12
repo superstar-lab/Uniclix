@@ -66,4 +66,9 @@ export const setPostAtBestTime = (postAtBestTime) => ({
 export const setPostNow = (postNow) => ({
     type: 'SET_POST_NOW',
     postNow
-})
+});
+
+export const setPostCalendar = (postCalendar) => ({
+    type: 'SET_POST_CALENDAR',
+    postCalendar
+});

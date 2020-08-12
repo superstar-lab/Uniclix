@@ -45,6 +45,8 @@
   .infinite-best-btn {
     background-color: #ffffff;
     border-radius: 5px;
+    border: 0px;
+    width: 100%;
     height: 50px;
     line-height: 50px;
     font-size: 20px;
@@ -99,9 +101,19 @@
         height: 90px;
 
         div {
-          padding-top: 20px;
+          padding-top: 10px;
           text-align: left;
           color: #1F2024;
+          align-items: center;
+
+          div {
+            line-height: 15px;
+          }
+
+          a {
+            line-height: 15px;
+            color: #40a9ff;
+          }
         }
 
         i {
@@ -472,6 +484,18 @@
 
   .post-scheduling-container {
     width: 800px;
+
+    .post-scheduling-title {
+      width: 100%;
+      font-weight: 700;
+      font-family: Lato;
+      margin-right: 20px;
+      font-size: 18px;
+      color: rgb(54, 54, 54);
+      padding-top: 20px;
+      padding-bottom: 20px;
+      border-bottom: 0.5px solid #DBDBDB;
+    }
 
     .post-scheduling-title {
       width: 100%;

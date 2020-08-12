@@ -37,7 +37,7 @@ class PostsDayBestTime extends React.Component {
   };
 
   handleOk = () => {
-    const { bestTime, fetchMoreData,onResetPage } = this.props;
+    const { bestTime, fetchMoreData,onResetPage, fetchPosts } = this.props;
 
     this.toggleLoading();
     destroyPost(bestTime.post_id)
@@ -45,6 +45,7 @@ class PostsDayBestTime extends React.Component {
         this.toggleLoading();
         onResetPage();
         fetchMoreData();
+        fetchPosts();
         this.setState({
           visible: false,
         });
@@ -63,13 +64,16 @@ class PostsDayBestTime extends React.Component {
   render() {
     const { channelsList, bestTime, fetchMoreData } = this.props;
     const { isLoading, visible } = this.state;
-    const { content, payload: { scheduled: { publishDateTime } }, category, channel_ids } = bestTime;
+    const { content, payload: { scheduled: { publishDateTime }, images, videos }, category, channel_ids } = bestTime;
     const channels = channelsList.filter(channel => channel_ids.indexOf(channel.id) !== -1);
 
     return (
       <div className="infinite-best-time">
         <div className="infinite-best-time-title">
-          <div className="col-xs-12 col-md-11">{content}</div>
+          <div  className="col-xs-12 col-md-11">
+            <div>{content}</div>
+            <a href={images.length > 0 ? images[0] : videos.length > 0 ? videos[0] : ""} target="_blank">{images.length > 0 ? images[0] : videos.length > 0 ? videos[0] : ""}</a>
+          </div>
           <i className="fa fa-close" onClick={this.deleteBestPost}/>
         </div>
         <div className="infinite-best-time-boundary" />

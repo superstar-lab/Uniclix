@@ -19,7 +19,8 @@ import {
   setCategory,
   setDate,
   setPostAtBestTime,
-  setPostNow
+  setPostNow,
+  setPostCalendar
 } from "../../actions/composer";
 
 import ContentInput from './components/ContentInput';
@@ -180,7 +181,8 @@ class Compose extends React.Component {
       setPostAtBestTime,
       setPostNow,
       onPost,
-      accessLevel
+      accessLevel,
+      postCalendar
     } = this.props;
 
     const { scheduleOption, advancedVisible, cntRepeat, cntScheduling } = this.state;
@@ -304,6 +306,7 @@ class Compose extends React.Component {
                 advancedVisible={advancedVisible}
                 scheduleOption={scheduleOption}
                 cntRepeat={cntRepeat}
+                postCalendar={postCalendar}
                 onUploadCancelMedia={this.onUploadCancelMedia}
                 onAdvancedChange={this.onAdvancedChange}
               />
@@ -362,7 +365,8 @@ const mapDispatchToProps = (dispatch) => ({
   setCategory: (category) => dispatch(setCategory(category)),
   setDate: (date) => dispatch(setDate(date)),
   setPostAtBestTime: (postAtBestTime) => dispatch(setPostAtBestTime(postAtBestTime)),
-  setPostNow: (postNow) => dispatch(setPostNow(postNow))
+  setPostNow: (postNow) => dispatch(setPostNow(postNow)),
+  setPostCalendar: (postCalendar) => dispatch(setPostCalendar(postCalendar))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Compose);

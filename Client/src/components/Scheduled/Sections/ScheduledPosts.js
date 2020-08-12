@@ -35,7 +35,7 @@ class ScheduledPosts extends React.Component {
     this.state = {
       isLoading: false,
       posts: [],
-      calendarDisplay: 'Week',
+      calendarDisplay: 'Day',
       resetDates: true,
       startDate: moment().tz(props.timezone).startOf('week'),
       endDate: moment().tz(props.timezone).endOf('week'),
@@ -250,13 +250,13 @@ class ScheduledPosts extends React.Component {
               <div>
                 <div>
                   <h4 className="infinite-best-btn-title">Create Post</h4>
-                  <div className="infinite-best-btn" onClick={this.props.onBestPostClick}>
+                  <button className="infinite-best-btn" onClick={this.props.onBestPostClick}>
                     <div>What's on your mind?</div>
                     <div className="infinite-best-btn-icon">
                       <div className="infinite-best-btn-icon-laugh"><strong>☺</strong></div>
                       <i className="fa fa-image upload-images"/>
                     </div>
-                  </div>
+                  </button>
                 </div>
                 <InfiniteScroll
                   dataLength={this.state.items.length}
@@ -279,6 +279,7 @@ class ScheduledPosts extends React.Component {
                         onBestPostClick={this.props.onBestPostClick}
                         fetchMoreData={this.fetchMoreData}
                         onResetPage={this.onResetPage}
+                        fetchPosts={this.fetchPosts}
                       />
                     </div>
                   ))}
@@ -303,7 +304,7 @@ class ScheduledPosts extends React.Component {
           />
         </div>
         { isLoading && <Loader fullscreen /> }
-        <Compose onPost={this.fetchPosts} />
+        <Compose onPost={()=>{this.onResetPage(), this.fetchPosts(), this.fetchMoreData()}} />
       </div>
     );
   }

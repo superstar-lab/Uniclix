@@ -92,17 +92,18 @@ class FooterSection extends React.Component {
       uploadVideos,
       scheduleOption,
       cntRepeat,
+      postCalendar,
       onUploadCancelMedia,
     } = this.props;
 
     try {
 
       let bestDate = moment().tz(selectedTimezone).format('YYYY-MM-DDTHH:mmZ');
-      const isBest = this.getPublishType() == "best";
+      const isBest = this.getPublishType() === "best";
 
       const scheduled = {
-        publishUTCDateTime: (isBest) ? bestDate : date,
-        publishDateTime: (isBest) ? moment(bestDate).tz(selectedTimezone).format('YYYY-MM-DDTHH:mm') : moment(date).tz(selectedTimezone).format('YYYY-MM-DDTHH:mm'),
+        publishUTCDateTime: (isBest && postCalendar === 'Week') ? bestDate : date,
+        publishDateTime: (isBest && postCalendar === 'Week') ? moment(bestDate).tz(selectedTimezone).format('YYYY-MM-DDTHH:mm') : moment(date).tz(selectedTimezone).format('YYYY-MM-DDTHH:mm'),
         publishTimezone: selectedTimezone
       };
 
@@ -117,6 +118,7 @@ class FooterSection extends React.Component {
         uploadVideos: uploadVideos,
         scheduleOption: scheduleOption,
         cntRepeat: cntRepeat,
+        postCalendar: postCalendar,
         publishChannels: this.getPublishChannels(),
         type,
         publishType: this.getPublishType(),
