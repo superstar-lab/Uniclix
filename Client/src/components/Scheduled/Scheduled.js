@@ -7,7 +7,7 @@ import userflow from 'userflow.js';
 
 import FunctionModal from '../Modal';
 import { updateTimeZone } from '../../requests/profile';
-import { setComposerModal, setPostAtBestTime } from '../../actions/composer';
+import { setComposerModal, setPostAtBestTime, setPostCalendar } from '../../actions/composer';
 import { isOwnerOrAdmin } from '../../utils/helpers';
 import { unapprovedPosts } from '../../requests/channels';
 import { setTimezone } from '../../actions/profile';
@@ -123,6 +123,7 @@ class Scheduled extends React.Component {
       this.props.setComposerModal(moment(e.target.id).format('YYYY-MM-DDTHH:mmZ'), this.state.selectedTimezone);
     }
     this.props.setPostAtBestTime(true);
+    this.props.setPostCalendar('Day');
   };
 
   render() {
@@ -205,4 +206,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setComposerModal, setTimezone, setPostAtBestTime })(Scheduled);
+export default connect(mapStateToProps, { setComposerModal, setTimezone, setPostAtBestTime, setPostCalendar })(Scheduled);
