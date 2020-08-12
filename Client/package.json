@@ -58,6 +58,7 @@
     "react-dates": "^17.1.1",
     "react-device-detect": "^1.7.5",
     "react-dom": "^16.12.0",
+    "react-drag-and-drop": "^3.0.0",
     "react-draggable-tab": "^0.10.1",
     "react-facebook-login": "^4.1.1",
     "react-geosuggest": "^2.8.0",
