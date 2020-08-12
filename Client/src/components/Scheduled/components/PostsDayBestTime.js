@@ -37,7 +37,7 @@ class PostsDayBestTime extends React.Component {
   };
 
   handleOk = () => {
-    const { bestTime, fetchMoreData,onResetPage } = this.props;
+    const { bestTime, fetchMoreData,onResetPage, fetchPosts } = this.props;
 
     this.toggleLoading();
     destroyPost(bestTime.post_id)
@@ -45,6 +45,7 @@ class PostsDayBestTime extends React.Component {
         this.toggleLoading();
         onResetPage();
         fetchMoreData();
+        fetchPosts();
         this.setState({
           visible: false,
         });

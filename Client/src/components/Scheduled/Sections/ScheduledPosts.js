@@ -279,6 +279,7 @@ class ScheduledPosts extends React.Component {
                         onBestPostClick={this.props.onBestPostClick}
                         fetchMoreData={this.fetchMoreData}
                         onResetPage={this.onResetPage}
+                        fetchPosts={this.fetchPosts}
                       />
                     </div>
                   ))}
