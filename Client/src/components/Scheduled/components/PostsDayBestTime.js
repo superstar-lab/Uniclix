@@ -99,7 +99,7 @@ class PostsDayBestTime extends React.Component {
             <Button
               type="primary"
               shape="round"
-              size="large"
+              size="medium"
             >
               Share Now
             </Button>

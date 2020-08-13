@@ -90,18 +90,18 @@
     border-radius: 5px;
 
     .infinite-best-time {
-      height: 180px;
       border: 0.5px solid #DBDBDB;
       border-radius: 5px;
+      width: 100%;
 
       .infinite-best-time-title {
         display: flex;
         justify-content: space-between;
         margin-left: 20px;
-        height: 90px;
+        padding-top: 10px;
+        padding-bottom: 10px;
 
         div {
-          padding-top: 10px;
           text-align: left;
           color: #1F2024;
           align-items: center;
