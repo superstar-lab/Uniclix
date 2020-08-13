@@ -571,7 +571,7 @@ class PublishController extends Controller
     public function getSchedule($post, $user_id, $cntRepeat, $scheduleOption) {
         $result = [];
         $cnt = 0;
-        $currentDate = Carbon::parse($post['scheduled']['publishUTCDateTime'])->setTimezone($post['scheduled']['publishTimezone']);
+        $currentDate = Carbon::parse($post['scheduled']['publishUTCDateTime'])->setTimezone('Europe/London');
         $scheduleStartTime = '';
 
         while($cnt < $cntRepeat) {
@@ -579,7 +579,7 @@ class PublishController extends Controller
 
             $tmpScheduledPost = ScheduledPost::query()
                 ->whereRaw("DAYOFWEEK(scheduled_at)=?", [$dayOfTheWeek + 1])
-                ->where('scheduled_at', '>=', $currentDate->format("Y-m-d H:i:s"))
+                ->where('scheduled_at', '>=', $currentDate)
                 ->where('is_best', 1)
                 ->orderBy('id', "ASC")
                 ->pluck('scheduled_at');
