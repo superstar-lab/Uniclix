@@ -62,7 +62,7 @@ class PostsDayBestTime extends React.Component {
   };
 
   render() {
-    const { channelsList, bestTime, fetchMoreData } = this.props;
+    const { channelsList, bestTime, weekdayNames, fetchMoreData } = this.props;
     const { isLoading, visible } = this.state;
     const { content, payload: { scheduled: { publishDateTime }, images, videos }, category, channel_ids } = bestTime;
     const channels = channelsList.filter(channel => channel_ids.indexOf(channel.id) !== -1);
@@ -89,7 +89,7 @@ class PostsDayBestTime extends React.Component {
             }
           </div>
           <div className="infinite-best-time-category col-xs-12 col-md-1" style={{ backgroundColor: category.color }}>{category.category_name}</div>
-          <div className="infinite-best-time-post col-xs-12 col-md-6"><p>This post will be published today at {this.getDateTime(publishDateTime)}</p></div>
+          <div className="infinite-best-time-post col-xs-12 col-md-6"><p>This post will be published {weekdayNames} at {this.getDateTime(publishDateTime)}</p></div>
           <div className="col-xs-12 col-md-1">
             <Button type="link">
               Edit

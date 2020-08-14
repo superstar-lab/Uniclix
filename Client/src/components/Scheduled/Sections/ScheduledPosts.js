@@ -270,8 +270,7 @@ class ScheduledPosts extends React.Component {
                         <strong>{item.weekdayNames}, </strong>{item.monthNames} {item.date}
                       </div>
                       <PostsDay
-                        settingTimes={item.settingTimes}
-                        day={item.day}
+                        item={item}
                         timezone={timezone}
                         selectedChannel={selectedChannel}
                         indexI={index}
