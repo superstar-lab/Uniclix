@@ -36,7 +36,7 @@ class PostsDay extends React.Component {
               className="infinite-time"
               onMouseEnter={() => this.props.onHover(indexI, index, false)}
               onMouseLeave={() => this.props.onHover(indexI, index, true)}
-              style={{display: moment().tz(timezone).unix() > moment(day + ' ' + settingTime.time).tz(timezone).unix() ? "none" : "block"}}
+              style={{display: moment().tz(timezone).unix() > moment(settingTime.time !== undefined ? day + ' ' + settingTime.time : settingTime.payload.scheduled.publishDateTime).tz(timezone).unix() ? "none" : "block"}}
             >
               {
                 settingTime.time === undefined ?
