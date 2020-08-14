@@ -118,10 +118,14 @@ class Scheduled extends React.Component {
 
   onBestPostClick = (e) => {
     if (e.target.id === "") {
-      this.props.setComposerModal(moment().format('YYYY-MM-DDTHH:mmZ'), this.state.selectedTimezone);
+      const date = moment().format('YYYY-MM-DDTHH:mm');
+      const postTz = moment().tz(this.state.selectedTimezone).format('Z');
+      this.props.setComposerModal(`${date}${postTz}`, this.state.selectedTimezone);
       this.props.setPostCalendar('Week');
     } else {
-      this.props.setComposerModal(moment(e.target.id).format('YYYY-MM-DDTHH:mmZ'), this.state.selectedTimezone);
+      const date = moment(e.target.id).format('YYYY-MM-DDTHH:mm');
+      const postTz = moment().tz(this.state.selectedTimezone).format('Z');
+      this.props.setComposerModal(`${date}${postTz}`, this.state.selectedTimezone);
       this.props.setPostCalendar('Day');
     }
     this.props.setPostAtBestTime(true);

@@ -117,8 +117,8 @@ class ScheduledPosts extends React.Component {
         .then((response) => {
           const posts = response.items;
           for (let i = tmpPage * cntDate; i < (tmpPage + 1) * cntDate; i++) {
-            let date = new Date(moment().tz(timezone).add(i, 'days').format('YYYY-MM-DD'));
-            let weekdayNames = weekday[date.getDay()];
+            let date = moment().tz(timezone).add(i, 'days');
+            let weekdayNames = weekday[date.day()];
             if (i === 0) {
               weekdayNames = 'Today';
             }
@@ -126,20 +126,20 @@ class ScheduledPosts extends React.Component {
               weekdayNames = 'Tomorrow';
             }
             let settingTimes = [];
-            if (date.getDay() === 0) {
+            if (date.day() === 0) {
               settingTimes = JSON.parse(JSON.stringify(schedulingTimes[6]));
             } else {
-              settingTimes = JSON.parse(JSON.stringify(schedulingTimes[date.getDay() - 1]));
+              settingTimes = JSON.parse(JSON.stringify(schedulingTimes[date.day() - 1]));
             }
             for (let j = 0; j <settingTimes.length; j++) {
               for (let k = 0; k < posts.length; k++) {
-                if (posts[k].is_best === 1 && (posts[k].payload.scheduled.publishDateTime === (moment().tz(timezone).add(i, 'days').format('YYYY-MM-DD') + ' ' + settingTimes[j].time))) {
+                if (posts[k].is_best === 1 && (posts[k].payload.scheduled.publishDateTime === (date.format('YYYY-MM-DD') + ' ' + settingTimes[j].time))) {
                   settingTimes[j] = posts[k];
                 }
               }
             }
 
-            tmpItems.push({ day: moment().tz(timezone).add(i, 'days').format('YYYY-MM-DD'), weekdayNames: weekdayNames, monthNames: monthNames[date.getMonth()], date: date.getDate(), settingTimes: settingTimes })
+            tmpItems.push({ day: date.format('YYYY-MM-DD'), weekdayNames: weekdayNames, monthNames: monthNames[date.month()], date: date.date(), settingTimes: settingTimes })
           }
 
           tmpPage++;
