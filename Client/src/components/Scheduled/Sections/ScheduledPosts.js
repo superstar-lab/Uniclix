@@ -231,14 +231,19 @@ class ScheduledPosts extends React.Component {
       <div className="calendar-events">
         <div className="calendar-container">
           <div className="header">
-            <DateRangeSelector
-              startDate={startDate}
-              endDate={endDate}
-              selectedPeriod={calendarDisplay}
-              timezone={timezone}
-              onDateChange={this.onDateChange}
-              resetDates={resetDates}
-            />
+            {
+              calendarDisplay !== 'Day' ?
+                <DateRangeSelector
+                  startDate={startDate}
+                  endDate={endDate}
+                  selectedPeriod={calendarDisplay}
+                  timezone={timezone}
+                  onDateChange={this.onDateChange}
+                  resetDates={resetDates}
+                />
+                :
+                <div/>
+            }
             <Select value={calendarDisplay} onChange={this.onPeriodChange}>
               {
                 PERIODS.map(period => <Option key={period} value={period}>{period}</Option>)
