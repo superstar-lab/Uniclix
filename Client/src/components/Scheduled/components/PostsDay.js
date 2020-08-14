@@ -25,7 +25,7 @@ class PostsDay extends React.Component {
   };
 
   render() {
-    const { settingTimes, day, timezone, indexI, selectedChannel, fetchMoreData, onResetPage, fetchPosts } = this.props;
+    const { item : { day, settingTimes, weekdayNames }, timezone, indexI, selectedChannel, fetchMoreData, onResetPage, fetchPosts } = this.props;
 
     return (
       <div>
@@ -39,7 +39,7 @@ class PostsDay extends React.Component {
             >
               {
                 settingTime.time === undefined ?
-                  <PostsDayBestTime bestTime={settingTime} fetchMoreData={fetchMoreData} onResetPage={onResetPage} fetchPosts={fetchPosts}/>
+                  <PostsDayBestTime bestTime={settingTime} weekdayNames={weekdayNames} fetchMoreData={fetchMoreData} onResetPage={onResetPage} fetchPosts={fetchPosts}/>
                   :
                   settingTime.hover ?
                     <span>{this.getDateTime(settingTime.time)}</span>
