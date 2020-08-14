@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Button, Modal, Select, TimePicker} from 'antd';
 import moment from "moment";
 import {connect} from "react-redux";
-import {setComposerModal, setComposerToEdit} from "../../../actions/composer";
+import {setComposerModal, setComposerToEdit, setPostAtBestTime, setPostCalendar} from "../../../actions/composer";
 import Loader from "../../Loader";
 import {destroyPost} from "../../../requests/channels";
 
@@ -61,6 +61,37 @@ class PostsDayBestTime extends React.Component {
     });
   };
 
+  editBestPost = () => {
+    const { bestTime, timezone, setComposerToEdit, setPostAtBestTime, setPostCalendar } = this.props;
+    const {
+      post_id,
+      channel_ids,
+      content,
+      payload: { images, videos, scheduled: { publishUTCDateTime } },
+      category_id,
+      posted
+    } = bestTime;
+
+    if (!posted) {
+      const date = moment(publishUTCDateTime).tz(timezone).format('YYYY-MM-DDTHH:mmZ');
+
+      const postData = {
+        id: post_id,
+        publishChannels: new Set(channel_ids),
+        content,
+        pictures: images,
+        videos: videos,
+        category: category_id,
+        date,
+        selectedTimezone: timezone
+      };
+
+      setComposerToEdit(postData);
+      setPostAtBestTime(true);
+      setPostCalendar('Day');
+    }
+  };
+
   render() {
     const { channelsList, bestTime, weekdayNames, fetchMoreData } = this.props;
     const { isLoading, visible } = this.state;
@@ -91,7 +122,7 @@ class PostsDayBestTime extends React.Component {
           <div className="infinite-best-time-category col-xs-12 col-md-1" style={{ backgroundColor: category.color }}>{category.category_name}</div>
           <div className="infinite-best-time-post col-xs-12 col-md-6"><p>This post will be published {weekdayNames} at {this.getDateTime(publishDateTime)}</p></div>
           <div className="col-xs-12 col-md-1">
-            <Button type="link">
+            <Button type="link" onClick={this.editBestPost}>
               Edit
             </Button>
           </div>
@@ -128,4 +159,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setComposerModal, setComposerToEdit })(PostsDayBestTime);
+export default connect(mapStateToProps, { setComposerModal, setComposerToEdit, setPostAtBestTime, setPostCalendar })(PostsDayBestTime);

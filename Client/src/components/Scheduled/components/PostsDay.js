@@ -39,7 +39,7 @@ class PostsDay extends React.Component {
             >
               {
                 settingTime.time === undefined ?
-                  <PostsDayBestTime bestTime={settingTime} weekdayNames={weekdayNames} fetchMoreData={fetchMoreData} onResetPage={onResetPage} fetchPosts={fetchPosts}/>
+                  <PostsDayBestTime bestTime={settingTime} weekdayNames={weekdayNames} timezone={timezone} fetchMoreData={fetchMoreData} onResetPage={onResetPage} fetchPosts={fetchPosts}/>
                   :
                   settingTime.hover ?
                     <span>{this.getDateTime(settingTime.time)}</span>
