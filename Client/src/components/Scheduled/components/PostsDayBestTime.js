@@ -120,13 +120,13 @@ class PostsDayBestTime extends React.Component {
             }
           </div>
           <div className="infinite-best-time-category col-xs-12 col-md-1" style={{ backgroundColor: category.color }}>{category.category_name}</div>
-          <div className="infinite-best-time-post col-xs-12 col-md-6"><p>This post will be published {weekdayNames} at {this.getDateTime(publishDateTime)}</p></div>
+          <div className="infinite-best-time-post col-xs-12 col-md-5"><p>This post will be published {weekdayNames} at {this.getDateTime(publishDateTime)}</p></div>
           <div className="col-xs-12 col-md-1">
             <Button type="link" onClick={this.editBestPost}>
               Edit
             </Button>
           </div>
-          <div className="col-xs-12 col-md-1">
+          <div className="col-xs-12 col-md-2">
             <Button
               type="primary"
               shape="round"
