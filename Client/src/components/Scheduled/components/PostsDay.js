@@ -36,10 +36,11 @@ class PostsDay extends React.Component {
               className="infinite-time"
               onMouseEnter={() => this.props.onHover(indexI, index, false)}
               onMouseLeave={() => this.props.onHover(indexI, index, true)}
+              style={{display: moment().tz(timezone).unix() > moment(settingTime.time !== undefined ? day + ' ' + settingTime.time : settingTime.payload.scheduled.publishDateTime).tz(timezone).unix() ? "none" : "block"}}
             >
               {
                 settingTime.time === undefined ?
-                  <PostsDayBestTime bestTime={settingTime} weekdayNames={weekdayNames} fetchMoreData={fetchMoreData} onResetPage={onResetPage} fetchPosts={fetchPosts}/>
+                  <PostsDayBestTime bestTime={settingTime} weekdayNames={weekdayNames} timezone={timezone} fetchMoreData={fetchMoreData} onResetPage={onResetPage} fetchPosts={fetchPosts}/>
                   :
                   settingTime.hover ?
                     <span>{this.getDateTime(settingTime.time)}</span>

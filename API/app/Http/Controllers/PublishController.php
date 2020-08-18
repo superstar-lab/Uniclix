@@ -146,7 +146,7 @@ class PublishController extends Controller
                 if ($publishType == "date") {
 
                     $publishTime = $scheduledTime;
-                } else if ($publishType == "best") {
+                } else if ($publishType == "best" && $post['type'] != 'edit') {
 
                     if ($cntRepeat == 0) {
                         if (!$bestScheduleTime) {
@@ -206,6 +206,8 @@ class PublishController extends Controller
                         if ($posts_approved->approved == 0) {
                             if($account_count < $channelsCount){
                                 if($posts->where("channel_id", $channel['id'])->where("approved", 0)->count() > 0){
+                                    $postData['scheduled_at'] = $scheduledTime;
+                                    $postData['scheduled_at_original'] = Carbon::parse($scheduledTime)->setTimezone($scheduled['publishTimezone']);
                                     $scheduledPost = $item_approved_post->update($postData);
                                 } else {
                                     $scheduledPost = $channel->scheduledPosts()->create($postData);
@@ -213,7 +215,9 @@ class PublishController extends Controller
                             } else {
                                 foreach($posts as $post) {
                                     if($channel['id'] == $post->channel_id){
-                                    $item_approved_post->update($postData);
+                                        $postData['scheduled_at'] = $scheduledTime;
+                                        $postData['scheduled_at_original'] = Carbon::parse($scheduledTime)->setTimezone($scheduled['publishTimezone']);
+                                        $item_approved_post->update($postData);
                                     } else {
                                         $post->delete();
                                     }
@@ -222,6 +226,8 @@ class PublishController extends Controller
                         } else if ($this->user->hasPublishPermission($channel)) {
                             if($account_count < $channelsCount){
                                 if($posts->where("channel_id", $channel['id'])->count() > 0){
+                                    $postData['scheduled_at'] = $scheduledTime;
+                                    $postData['scheduled_at_original'] = Carbon::parse($scheduledTime)->setTimezone($scheduled['publishTimezone']);
                                     $scheduledPost = $item_post->update($postData);
                                 } else {
                                     $scheduledPost = $channel->scheduledPosts()->create($postData);
@@ -229,7 +235,9 @@ class PublishController extends Controller
                             } else {
                                 foreach($posts as $post) {
                                     if($channel['id'] == $post->channel_id){
-                                    $item_post->update($postData);
+                                        $postData['scheduled_at'] = $scheduledTime;
+                                        $postData['scheduled_at_original'] = Carbon::parse($scheduledTime)->setTimezone($scheduled['publishTimezone']);
+                                        $item_post->update($postData);
                                     } else {
                                         $post->delete();
                                     }

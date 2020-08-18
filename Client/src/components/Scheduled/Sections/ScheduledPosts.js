@@ -133,11 +133,29 @@ class ScheduledPosts extends React.Component {
             }
             for (let j = 0; j <settingTimes.length; j++) {
               for (let k = 0; k < posts.length; k++) {
-                if (posts[k].is_best === 1 && (posts[k].payload.scheduled.publishDateTime === (date.format('YYYY-MM-DD') + ' ' + settingTimes[j].time))) {
+                if (posts[k].is_best === 1 && (posts[k].payload.scheduled.publishDateTime.replace('T', ' ') === (date.format('YYYY-MM-DD') + ' ' + settingTimes[j].time))) {
                   settingTimes[j] = posts[k];
                 }
               }
             }
+
+            for (let j = 0; j < posts.length; j++) {
+              if (posts[j].is_best !== 1 && posts[j].payload.scheduled.publishDateTime.substring(0, 10) === date.format('YYYY-MM-DD')) {
+                posts[j].payload.scheduled.publishDateTime = posts[j].payload.scheduled.publishDateTime.replace('T', ' ');
+                settingTimes.push(posts[j]);
+              }
+            }
+
+            settingTimes.sort((a, b) => {
+              const timeA = a.time === undefined ? a.payload.scheduled.publishDateTime.substr(11) : a.time;
+              const timeB = b.time === undefined ? b.payload.scheduled.publishDateTime.substr(11) : b.time;
+
+              if (timeA > timeB)
+                return 1;
+              if (timeA < timeB)
+                return -1;
+              return 0;
+            });
 
             tmpItems.push({ day: date.format('YYYY-MM-DD'), weekdayNames: weekdayNames, monthNames: monthNames[date.month()], date: date.date(), settingTimes: settingTimes })
           }
@@ -231,14 +249,19 @@ class ScheduledPosts extends React.Component {
       <div className="calendar-events">
         <div className="calendar-container">
           <div className="header">
-            <DateRangeSelector
-              startDate={startDate}
-              endDate={endDate}
-              selectedPeriod={calendarDisplay}
-              timezone={timezone}
-              onDateChange={this.onDateChange}
-              resetDates={resetDates}
-            />
+            {
+              calendarDisplay !== 'Day' ?
+                <DateRangeSelector
+                  startDate={startDate}
+                  endDate={endDate}
+                  selectedPeriod={calendarDisplay}
+                  timezone={timezone}
+                  onDateChange={this.onDateChange}
+                  resetDates={resetDates}
+                />
+                :
+                <div/>
+            }
             <Select value={calendarDisplay} onChange={this.onPeriodChange}>
               {
                 PERIODS.map(period => <Option key={period} value={period}>{period}</Option>)
