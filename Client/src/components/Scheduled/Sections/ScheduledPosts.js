@@ -135,6 +135,7 @@ class ScheduledPosts extends React.Component {
             for (let j = 0; j <settingTimes.length; j++) {
               for (let k = 0; k < posts.length; k++) {
                 if (posts[k].is_best === 1 && (posts[k].payload.scheduled.publishDateTime.replace('T', ' ') === (date.format('YYYY-MM-DD') + ' ' + settingTimes[j].time))) {
+                  posts[k].payload.scheduled.publishDateTime = posts[k].payload.scheduled.publishDateTime.replace('T', ' ');
                   settingTimes[j] = posts[k];
                 }
               }
