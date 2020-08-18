@@ -1,9 +1,9 @@
 import React from 'react';
 import moment from 'moment';
-import { Select } from 'antd';
+import {notification, Select} from 'antd';
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import {scheduledPosts, schedulingTimes} from '../../../requests/channels';
+import {scheduledPosts, schedulingTimes, postNow} from '../../../requests/channels';
 
 import Compose from '../../Compose/index';
 import DateRangeSelector from '../components/DateRangeSelector';
@@ -11,6 +11,7 @@ import PostsCalendar from '../components/PostsCalendar';
 import TodaysAgenda from '../components/TodaysAgenda';
 import PostsDay from '../components/PostsDay';
 import Loader from '../../Loader';
+import FunctionModal from "../../Modal";
 
 const { Option } = Select;
 
@@ -134,6 +135,7 @@ class ScheduledPosts extends React.Component {
             for (let j = 0; j <settingTimes.length; j++) {
               for (let k = 0; k < posts.length; k++) {
                 if (posts[k].is_best === 1 && (posts[k].payload.scheduled.publishDateTime.replace('T', ' ') === (date.format('YYYY-MM-DD') + ' ' + settingTimes[j].time))) {
+                  posts[k].payload.scheduled.publishDateTime = posts[k].payload.scheduled.publishDateTime.replace('T', ' ');
                   settingTimes[j] = posts[k];
                 }
               }
@@ -241,6 +243,28 @@ class ScheduledPosts extends React.Component {
     });
   };
 
+  postNow = (postId) => {
+    this.setState({isLoading: true});
+    postNow(postId)
+      .then((response) => {
+        this.onResetPage();
+        this.fetchPosts();
+        this.fetchMoreData();
+        this.setState({isLoading: false});
+        notification.success({
+          message: 'Done!',
+          description: 'The post has been scheduled'
+        });
+      }).catch((error) => {
+        this.setState({isLoading: false});
+        FunctionModal({
+          type: 'error',
+          title: 'Error',
+          content: 'Something went wrong when trying to schedule your post, please try again later.'
+        });
+    });
+  };
+
   render() {
     const { startDate, endDate, calendarDisplay, posts, isLoading, resetDates } = this.state;
     const { timezone, selectedChannel } = this.props;
@@ -302,6 +326,7 @@ class ScheduledPosts extends React.Component {
                         fetchMoreData={this.fetchMoreData}
                         onResetPage={this.onResetPage}
                         fetchPosts={this.fetchPosts}
+                        postNow={this.postNow}
                       />
                     </div>
                   ))}

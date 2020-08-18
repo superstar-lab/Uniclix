@@ -93,44 +93,58 @@ class PostsDayBestTime extends React.Component {
   };
 
   render() {
-    const { channelsList, bestTime, weekdayNames, fetchMoreData } = this.props;
+    const { channelsList, bestTime, weekdayNames, fetchMoreData, postNow } = this.props;
     const { isLoading, visible } = this.state;
-    const { content, payload: { scheduled: { publishDateTime }, images, videos }, category, channel_ids } = bestTime;
+    const { post_id, content, payload: { scheduled: { publishDateTime }, images, videos }, category, channel_ids } = bestTime;
     const channels = channelsList.filter(channel => channel_ids.indexOf(channel.id) !== -1);
 
     return (
       <div className="infinite-best-time">
         <div className="infinite-best-time-title">
           <div  className="col-xs-12 col-md-11">
-            <div>{content}</div>
-            <a href={images.length > 0 ? images[0] : videos.length > 0 ? videos[0] : ""} target="_blank">{images.length > 0 ? images[0] : videos.length > 0 ? videos[0] : ""}</a>
+            <div className="content">{content}</div>
+            <div className="infinite-best-media-preview">
+              {images.length > 0 ?
+                images.map((image, index) => (
+                  <img src={image} className="preview" alt="preview"/>
+                ))
+                :
+                videos.length > 0 ?
+                  videos.map((video, index) => (
+                    <video src={video} className="preview" alt="preview"/>
+                  ))
+                  :
+                  ""
+              }
+            </div>
           </div>
           <i className="fa fa-close" onClick={this.deleteBestPost}/>
         </div>
         <div className="infinite-best-time-boundary" />
         <div className="infinite-best-time-body">
-          <div className="infinite-best-time-channels col-xs-12 col-md-2">
-            {
-              channels.map(({ type, avatar }, index) => (
-                <div key={`${type}-${index}`}>
-                  <img src={avatar} />
-                  <i className={`fab fa-${type} ${type}_bg`} />
-                </div>
-              ))
-            }
+          <div className="infinite-best-time-body-footer col-md-9">
+            <div className="infinite-best-time-channels">
+              {
+                channels.map(({ type, avatar }, index) => (
+                  <div key={`${type}-${index}`}>
+                    <img src={avatar} />
+                    <i className={`fab fa-${type} ${type}_bg`} />
+                  </div>
+                ))
+              }
+            </div>
+            <div className="infinite-best-time-category" style={{ backgroundColor: category.color }}>{category.category_name}</div>
+            <div className="infinite-best-time-post"><p>This post will be published {weekdayNames} at {this.getDateTime(publishDateTime)}</p></div>
           </div>
-          <div className="infinite-best-time-category col-xs-12 col-md-1" style={{ backgroundColor: category.color }}>{category.category_name}</div>
-          <div className="infinite-best-time-post col-xs-12 col-md-5"><p>This post will be published {weekdayNames} at {this.getDateTime(publishDateTime)}</p></div>
-          <div className="col-xs-12 col-md-1">
-            <Button type="link" onClick={this.editBestPost}>
+          <div className="infinite-best-time-body-footer-btn col-md-3">
+            <Button type="link" size="medium" onClick={this.editBestPost}>
               Edit
             </Button>
-          </div>
-          <div className="col-xs-12 col-md-2">
             <Button
               type="primary"
               shape="round"
               size="medium"
+              onClick={()=>postNow(post_id)}
             >
               Share Now
             </Button>
