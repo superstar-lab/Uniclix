@@ -93,9 +93,9 @@ class PostsDayBestTime extends React.Component {
   };
 
   render() {
-    const { channelsList, bestTime, weekdayNames, fetchMoreData } = this.props;
+    const { channelsList, bestTime, weekdayNames, fetchMoreData, postNow } = this.props;
     const { isLoading, visible } = this.state;
-    const { content, payload: { scheduled: { publishDateTime }, images, videos }, category, channel_ids } = bestTime;
+    const { post_id, content, payload: { scheduled: { publishDateTime }, images, videos }, category, channel_ids } = bestTime;
     const channels = channelsList.filter(channel => channel_ids.indexOf(channel.id) !== -1);
 
     return (
@@ -131,6 +131,7 @@ class PostsDayBestTime extends React.Component {
               type="primary"
               shape="round"
               size="medium"
+              onClick={()=>postNow(post_id)}
             >
               Share Now
             </Button>

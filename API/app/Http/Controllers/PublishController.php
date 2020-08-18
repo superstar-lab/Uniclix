@@ -156,7 +156,7 @@ class PublishController extends Controller
                             $schedulingTimes = $bestScheduleTime;
                         }
 
-                        $scheduled['publishDateTime'] = $schedulingTimes[0]->format('Y-m-d H:i');
+                        $scheduled['publishDateTime'] = $schedulingTimes[0]->setTimezone($scheduled["publishTimezone"])->format('Y-m-d H:i');
                         $scheduled['publishUTCDateTime'] = $schedulingTimes[0]->setTimezone('Europe/London')->toRfc3339String();
                         $publishTime = $schedulingTimes[0]->setTimezone('Europe/London')->format("Y-m-d H:i:s");
                         $payload = [
@@ -264,7 +264,7 @@ class PublishController extends Controller
                             for ($i = 0; $i <count($schedulingTimes); $i++) {
                                 $postId = $postIds[$i];
 
-                                $scheduled['publishDateTime'] = $schedulingTimes[$i]->format('Y-m-d H:i');
+                                $scheduled['publishDateTime'] = $schedulingTimes[$i]->setTimezone($scheduled["publishTimezone"])->format('Y-m-d H:i');
                                 $scheduled['publishUTCDateTime'] = $schedulingTimes[$i]->setTimezone('Europe/London')->toRfc3339String();
                                 $publishTime = $schedulingTimes[$i]->setTimezone('Europe/London')->format("Y-m-d H:i:s");
                                 $publishOriginalTime = Carbon::parse($publishTime)->setTimezone($scheduled["publishTimezone"]);
@@ -504,8 +504,19 @@ class PublishController extends Controller
         if ($this->selectedChannel) {
 
             try {
-                $scheduledPost = $this->selectedChannel->scheduledPosts()->find($postId);
-                $this->selectedChannel->details->publishScheduledPost($scheduledPost);
+                $scheduledPosts = ScheduledPost::where('post_id', $postId)
+                    ->where('posted', 0)
+                    ->get();
+                foreach ($scheduledPosts as $scheduledPost) {
+                    $payload = unserialize($scheduledPost->payload);
+                    $channel = Channel::find($scheduledPost->channel_id);
+                    $payload['scheduled']['publishUTCDateTime'] = Carbon::now()->setTimezone('Europe/London')->toRfc3339String();
+                    $payload['scheduled']['publishDateTime'] = Carbon::now()->setTimezone('Europe/London')->setTimezone($payload['scheduled']['publishTimezone'])->format('Y-m-d H:i');
+                    $scheduledPost['payload'] = serialize($payload);
+                    $scheduledPost['is_best'] = 0;
+
+                    $channel->details->publishScheduledPost($scheduledPost);
+                }
             } catch (\Exception $e) {
                 return getErrorResponse($e, $this->selectedChannel);
             }
