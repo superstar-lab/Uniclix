@@ -54,4 +54,16 @@
             }
         }
     }
+
+    /* Styles for when there is a banner */
+    .body-wrap.with-banner {
+        .body-container {
+            padding-top: 100px;
+        }
+
+        .vertical-menu {
+            top: 100px;
+            height: calc(100% - 100px);
+        }
+    }
 }

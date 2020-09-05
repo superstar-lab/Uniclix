@@ -7,12 +7,14 @@ import ManageRouter from '../routes/ManageRouter';
 import channelSelector from '../selectors/channels';
 import { setTwitterChannel } from '../actions/channels';
 import Loader from './Loader';
-import { filterFacebookProfiles } from '../utils/helpers';
+import { filterFacebookProfiles, isOwner } from '../utils/helpers';
 
-const MasterPage = ({channels, selectedChannel, selectChannel, accessLevel}) => {
-    const hasChannel = typeof(selectedChannel.username) !== 'undefined'; 
+const MasterPage = ({channels, selectedChannel, selectChannel, accessLevel, profile}) => {
+    const hasChannel = typeof(selectedChannel.username) !== 'undefined';
+    const hasBanner = !profile.subscription.activeSubscription && isOwner(profile.accessLevel);
+
     return (
-      <div className="body-wrap">
+      <div className={`body-wrap ${hasBanner ? 'with-banner' : ''}`}>
           {!!hasChannel ? 
             <div>
               <VerticalMenu
@@ -48,7 +50,8 @@ const mapStateToProps = (state) => {
   return {
     channels,
     selectedChannel: selectedChannel.length ? selectedChannel[0] : {},
-    accessLevel: state.profile.accessLevel
+    accessLevel: state.profile.accessLevel,
+    profile: state.profile
   };
 };
 
