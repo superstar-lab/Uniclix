@@ -165,7 +165,6 @@ class FooterSection extends React.Component {
           type="link"
           className={advancedVisible == true ? "btn-advanced" : "btn-advanced btn-advanced-hidden"}
           onClick={onAdvancedChange}
-          disabled={postAtBestTime || postNow}
         >
           Advanced
         </Button>

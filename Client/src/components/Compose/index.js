@@ -273,14 +273,13 @@ class Compose extends React.Component {
                       <div className="subtitle">Repeating options</div>
                       <div>
                         <div>Repeat</div>
-                        <Input className="repeat-input" onChange={this.onRepeatChange} disabled={postAtBestTime || postNow}/>
+                        <Input className="repeat-input" onChange={this.onRepeatChange}/>
                         <div>Times</div>
                         <Select
                           value={scheduleOption}
                           size="large"
                           className="repeat-select"
                           onChange={this.onScheduleChange}
-                          disabled={postAtBestTime || postNow}
                         >
                           {
                             SCHEDULE && SCHEDULE.map(schedule => (

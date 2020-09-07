@@ -127,7 +127,7 @@ class DateTimeSelector extends React.Component {
           {
             isOwnerOrAdmin(accessLevel) && (
               <div className="checkboxes-group">
-                <Checkbox checked={postAtBestTime} disabled={cntScheduling == 0 || postNow} onChange={this.onPostAtBestTime}>
+                <Checkbox checked={postAtBestTime} disabled={postNow} onChange={this.onPostAtBestTime}>
                   Post at best time
                 </Checkbox>
                 <Checkbox checked={postNow} disabled={postAtBestTime} onChange={this.onPostNow}>
