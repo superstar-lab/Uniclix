@@ -144,22 +144,9 @@ class Scheduled extends React.Component {
     return (
       <div className="scheduled">
         <div className="section-header no-border mb-40">
-          <div className="section-header__first-row row">
+          <div className="section-header__first-row row posts">
             <div className="col-xs-12 col-md-8 ">
               <h2>Posts</h2>
-            </div>
-            <div className="col-xs-12 col-md-4">
-              {
-                activeTab == "scheduled" ?
-                  <button
-                    className="magento-btn pull-right"
-                    onClick={this.onNewPostClick}
-                  >
-                    New Post
-                  </button>
-                  :
-                  ""
-              }
             </div>
           </div>
         </div>
@@ -170,7 +157,14 @@ class Scheduled extends React.Component {
         >
           <TabPane tab="Scheduled" key="scheduled">
             {/* I needed a way to force the call that is made when the component gets mounted*/}
-            { activeTab === 'scheduled' && <ScheduledPosts timezone={selectedTimezone} selectedChannel={selectedChannel} onBestPostClick={this.onBestPostClick} /> }
+            { activeTab === 'scheduled' && (<ScheduledPosts
+                timezone={selectedTimezone}
+                selectedChannel={selectedChannel}
+                onBestPostClick={this.onBestPostClick}
+                onNewPostClick={this.onNewPostClick}
+                />
+              )
+            }
           </TabPane>
           <TabPane tab="Schedule Settings" key="schedule settings">
             {/* I needed a way to force the call that is made when the component gets mounted*/}

@@ -272,6 +272,16 @@ class ScheduledPosts extends React.Component {
     return (
       <div className="calendar-events">
         <div className="calendar-container">
+          <div className="new-post">
+            <h4 className="infinite-best-btn-title">Create Post</h4>
+            <button className="infinite-best-btn" onClick={this.props.onNewPostClick}>
+              <div>What's on your mind?</div>
+              <div className="infinite-best-btn-icon">
+                <div className="infinite-best-btn-icon-laugh"><strong>☺</strong></div>
+                <i className="fa fa-image upload-images"/>
+              </div>
+            </button>
+          </div>
           <div className="header">
             {
               calendarDisplay !== 'Day' ?
@@ -295,16 +305,6 @@ class ScheduledPosts extends React.Component {
           {
             calendarDisplay === 'Day' ?
               <div>
-                <div>
-                  <h4 className="infinite-best-btn-title">Create Post</h4>
-                  <button className="infinite-best-btn" onClick={this.props.onBestPostClick}>
-                    <div>What's on your mind?</div>
-                    <div className="infinite-best-btn-icon">
-                      <div className="infinite-best-btn-icon-laugh"><strong>☺</strong></div>
-                      <i className="fa fa-image upload-images"/>
-                    </div>
-                  </button>
-                </div>
                 <InfiniteScroll
                   dataLength={this.state.items.length}
                   next={this.fetchMoreData}
