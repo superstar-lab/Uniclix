@@ -49,6 +49,8 @@ class SelectAccountsModal extends React.Component {
   onClickAccount = (id) => {
     const { selectedAccounts } = this.state;
 
+    if (this.checkIfChannelDisabled()) return;
+
     if (selectedAccounts.has(id)) {
       selectedAccounts.delete(id);
     } else {
@@ -64,10 +66,31 @@ class SelectAccountsModal extends React.Component {
     setShowSelectAccount(false);
   }
 
+  // Checks if the channels is enabled
+  checkIfChannelDisabled = () => {
+    const { selectedMedia } = this.state;
+    const { imagesAmount } = this.props;
+
+    if (selectedMedia === 'linkedin' && imagesAmount > 1) return true;
+
+    return false;
+  }
+
+  // Returns the correspoinding warning message
+  getMessage = () => {
+    const { selectedMedia } = this.state;
+    const { imagesAmount } = this.props;
+
+    if (selectedMedia === 'linkedin' && imagesAmount > 1) {
+      return 'Linkedin does not allow to post more than one photo at the time';
+    }
+  }
+
   render() {
     const { selectedAccounts, orderedAccounts, selectedMedia } = this.state;
 
     const availableSocialMedias = Object.keys(orderedAccounts);
+    const message = this.getMessage();
 
     return (
       <div className="modal-content main-modal-style">
@@ -90,6 +113,7 @@ class SelectAccountsModal extends React.Component {
             </ul>
           </div>
           <div className="modal-results col-md-8">
+            { !!message && <div className="channels-message">{ message }</div> }
             {
               orderedAccounts[selectedMedia].map(({ details: { channel_id }, avatar, name}) => (
                 <div
@@ -104,6 +128,7 @@ class SelectAccountsModal extends React.Component {
                         onChange={() => this.onClickAccount(channel_id)}
                         defaultChecked={selectedAccounts.has(channel_id) ? 'checked' : ''}
                         name={`${selectedMedia}_channel`}
+                        disabled={this.checkIfChannelDisabled()}
                       />
                       <span className="checkmark"></span>
                       <img
@@ -132,6 +157,9 @@ class SelectAccountsModal extends React.Component {
 
 }
 
-const mapStateToProps = (state) => ({ accounts: filterFacebookProfiles(state.channels.list) });
+const mapStateToProps = state => ({
+  accounts: filterFacebookProfiles(state.channels.list),
+  imagesAmount: state.composer.pictures.length
+});
 
 export default connect(mapStateToProps, { updatePublishChannels, setShowSelectAccount })(SelectAccountsModal);

@@ -5,25 +5,29 @@ import { setGlobalChannel } from '../../actions/channels';
 import { connect } from "react-redux";
 import { settingsMenus } from '../../config/menuItems';
 import VerticalMenu from '../Menus/VerticalMenu';
-import { filterFacebookProfiles } from '../../utils/helpers';
+import { filterFacebookProfiles, isOwner } from '../../utils/helpers';
 
-const Settings = ({ channels, selectedChannel, selectChannel, accessLevel }) => (
-    <div className="body-wrap">
-        <div>
-            <VerticalMenu
-                menuItems={settingsMenus[accessLevel]}
-                channels={channels}
-                selectedChannel={selectedChannel}
-                selectChannel={selectChannel}
-            />
-            <div className="body-container">
-                <div className="main-section">
-                    <SettingsRouter />
+const Settings = ({ channels, selectedChannel, selectChannel, accessLevel, profile }) => {
+    const hasBanner = !profile.subscription.activeSubscription && isOwner(profile.accessLevel);
+
+    return (
+        <div className={`body-wrap ${hasBanner ? 'with-banner' : ''}`}>
+            <div>
+                <VerticalMenu
+                    menuItems={settingsMenus[accessLevel]}
+                    channels={channels}
+                    selectedChannel={selectedChannel}
+                    selectChannel={selectChannel}
+                />
+                <div className="body-container">
+                    <div className="main-section">
+                        <SettingsRouter />
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-);
+    );
+};
 
 
 const mapStateToProps = (state) => {
@@ -37,7 +41,8 @@ const mapStateToProps = (state) => {
     return {
         channels,
         selectedChannel: selectedChannel.length ? selectedChannel[0] : {},
-        accessLevel: state.profile.accessLevel
+        accessLevel: state.profile.accessLevel,
+        profile: state.profile
     };
 };
 

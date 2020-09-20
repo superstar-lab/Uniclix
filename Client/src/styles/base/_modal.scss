@@ -220,6 +220,11 @@ body.ReactModal__Body--open {
   }
 }
 
+.modal-results .channels-message {
+  font-size: 12px;
+  margin-bottom: 15px;
+}
+
 .modal-results .selection-container input:checked~.checkmark {
   background-color: #485576;
 }

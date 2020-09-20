@@ -10,8 +10,6 @@ import hashtagSuggestionList from '../fixtures/hashtagSuggestions';
 import FunctionModal from "./Modal";
 import {upload} from '../requests/channels';
 
-const {hasCommandModifier} = KeyBindingUtil;
-
 class DraftEditor extends React.Component{
 
     imageIcon = React.createRef();
@@ -50,7 +48,6 @@ class DraftEditor extends React.Component{
         showHashtagsIcon: typeof(this.props.showHashtagsIcon) !== "undefined" ? this.props.showHashtagsIcon : true,
         placeholderText: typeof(this.props.placeholderText) !== "undefined" ? this.props.placeholderText : "What's on your mind?",
         singleImage: typeof(this.props.singleImage) !== "undefined" ? this.props.singleImage : true,
-        imageLimit:  typeof(this.props.imageLimit) !== "undefined" ? this.props.imageLimit : 4,
         videoName: '',
         progressBarValue: 0,
         uploadCount: -1,
@@ -223,7 +220,7 @@ class DraftEditor extends React.Component{
         const { EmojiSuggestions, EmojiSelect} = emojiPlugin;
         const { MentionSuggestions: HashtagSuggestions } = hashtagMentionPlugin;
         const plugins = [emojiPlugin, hashtagMentionPlugin];
-        const {scheduledLabel, inclusive, toggle, network} = this.props;
+        const {scheduledLabel, inclusive, toggle, network, imageLimit} = this.props;
         const { videoName } = this.state;
 
         return(
@@ -308,14 +305,14 @@ class DraftEditor extends React.Component{
                 <div className="editor-icons">
                     {this.state.showEmojiIcon && <EmojiSelect />}
                     {this.state.showImagesIcon && 
-                        (   (this.state.imageLimit <= this.state.pictures.length) || (this.state.videos.length > 0) ?
+                        (   (imageLimit <= this.state.pictures.length) || (this.state.videos.length > 0) ?
                             <i className="fa fa-image upload-images disabled-btn"></i>
                             :
                             <i onClick={this.onImageIconClick} className="fa fa-image upload-images" style={{color: '#2D86DA'}}></i>
                         )
                     }
                     {this.state.showVideosIcon && 
-                        ((this.state.imageLimit <= this.state.videos.length) || (this.state.pictures.length > 0) ?
+                        ((imageLimit <= this.state.videos.length) || (this.state.pictures.length > 0) ?
                             <i className="fa fa-file-video-o disabled-btn"></i>
                             :
                             <i className="fa fa-file-video-o" onClick={this.onVideoIconClick}></i>
