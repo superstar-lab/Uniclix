@@ -672,10 +672,6 @@
   font-family: Rubik;
   width: auto;
 
-  .composer-modal-content-advanced {
-    height: 650px !important;
-  }
-
   .composer-modal-content {
     width: 100%;
     min-height: 600px;
@@ -1059,7 +1055,7 @@
       display: flex;
       margin-bottom: 15px;
 
-      div {
+      .channel {
         position: relative;
         margin-right: 10px;
 
@@ -1081,6 +1077,18 @@
           justify-content: center;
           align-items: center;
         }
+
+        .overlay {
+          display: none;
+          position: absolute;
+          background-color: rgba(255, 66, 48, 0.5);
+          width: 100%;
+          height: 100%;
+          border-radius: 50px;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+        }
       }
 
       .circle {
@@ -1095,6 +1103,20 @@
         border-radius: 25px;
         margin-right: 10px;
         cursor: pointer;
+        top: 0;
+        left: 0;
+      }
+
+      .channel:hover {
+        .overlay {
+          display: flex;
+
+          div {
+            margin: auto;
+            font-size: 20px;
+            color: white;
+          }
+        }
       }
     }
 

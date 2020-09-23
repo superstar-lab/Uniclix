@@ -230,7 +230,7 @@ class Compose extends React.Component {
             />
           ) :
           (
-            <div className={advancedVisible == true ? "modal-content composer-modal-content" : "modal-content composer-modal-content composer-modal-content-advanced"}>
+            <div className="modal-content composer-modal-content">
               <div className="composer-container">
               <div className="composer-header">
                 <div className="composer-title">Create Post</div>

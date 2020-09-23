@@ -17,24 +17,20 @@ class Preview extends React.Component {
     videos: PropTypes.array.isRequired
   }
 
-  state = {
-    selectedChannels: []
-  }
-
   slider = React.createRef();
 
-  componentWillMount() {
+  getSelectedChannels() {
     const selectedChannels = [];
     const { publishChannels, channels } = this.props;
 
-    publishChannels.forEach(chId => {
+    publishChannels && publishChannels.forEach(chId => {
       const chIndex = channels.findIndex(channel => channel.id === chId);
       if (chIndex !== -1) {
         selectedChannels.push(channels[chIndex]);
       }
     });
 
-    this.setState({ selectedChannels });
+    return selectedChannels;
   }
 
 
@@ -50,13 +46,13 @@ class Preview extends React.Component {
       pictures,
       videos
     } = this.props;
-    const { selectedChannels } = this.state;
+    const selectedChannels = this.getSelectedChannels();
 
     return (
       <div className="preview-container">
         <Carousel ref={this.slider}>
           {
-            selectedChannels.map(channel => {
+            !!selectedChannels && selectedChannels.map(channel => {
               switch(channel.type) {
                 case 'facebook':
                   return (

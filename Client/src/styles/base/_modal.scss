@@ -225,28 +225,6 @@ body.ReactModal__Body--open {
   margin-bottom: 15px;
 }
 
-.modal-results .selection-container input:checked~.checkmark {
-  background-color: #485576;
-}
-
-.modal-results .checkmark {
-  position: absolute;
-  top: 15px;
-  left: 0;
-  height: 18px;
-  width: 18px;
-  background-color: #eee;
-}
-
-.modal-results .selection-container .checkmark:after {
-  top: 6px;
-  left: 6px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: white;
-}
-
 .modal-results .channel-selection-container {
   border: 1px solid #e1e1e1;
   align-items: center;
@@ -254,10 +232,12 @@ body.ReactModal__Body--open {
   margin-bottom: 10px;
   display: flex;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .modal-results .channel-selection-container.selected {
-  border: 1px solid #485576;
+  border: 1px solid #2D86DA;
+  background: #EAF3FB;
 }
 
 .modal-results .channel-selection-container label {
@@ -301,5 +281,58 @@ body.ReactModal__Body--open {
     color: #2D86DA;
     padding: 10px 20px;
     font-size: 16px;
+  }
+}
+
+.select-account-modal {
+  .select-account-modal-content {
+    display: flex;
+  }
+
+  .accounts {
+    height: 245px;
+
+    .selection-container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      align-items: center;
+      padding: 5px 15px;
+      
+      .account-info {
+        display: flex;
+  
+        .avatar {
+          object-fit: contain;
+          width: 50px;
+          height: 50px;
+          border-radius: 50px;
+          margin-right: 10px;
+        }
+  
+        .names-container {
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+  
+          .account-name {
+            font-weight: bold;
+            font-size: 16px;
+            color: #363636;
+          }
+  
+          .twitter-name {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #909090;
+          }
+        }
+      }
+
+      .fa-check {
+        color: #2D86DA;
+      }
+    }
+
   }
 }
