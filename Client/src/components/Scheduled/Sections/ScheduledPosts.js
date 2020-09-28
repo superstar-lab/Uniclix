@@ -296,11 +296,14 @@ class ScheduledPosts extends React.Component {
                 :
                 <div/>
             }
-            <Select value={calendarDisplay} onChange={this.onPeriodChange}>
-              {
-                PERIODS.map(period => <Option key={period} value={period}>{period}</Option>)
-              }
-            </Select>
+            <div>
+              <span className="label">Display By</span>
+              <Select value={calendarDisplay} onChange={this.onPeriodChange}>
+                {
+                  PERIODS.map(period => <Option key={period} value={period}>{period}</Option>)
+                }
+              </Select>
+            </div>
           </div>
           {
             calendarDisplay === 'Day' ?

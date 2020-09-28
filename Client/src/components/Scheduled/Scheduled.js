@@ -106,6 +106,7 @@ class Scheduled extends React.Component {
 
   onNewPostClick = () => {
     this.props.setComposerModal(moment().format('YYYY-MM-DDTHH:mmZ'), this.state.selectedTimezone);
+    this.props.setPostAtBestTime(true);
   };
 
   onTabChange = (key) => {
@@ -155,7 +156,7 @@ class Scheduled extends React.Component {
           onChange={(key) => this.onTabChange(key)}
           tabBarExtraContent={this.getTabExtraContent()}
         >
-          <TabPane tab="Scheduled" key="scheduled">
+          <TabPane tab="Post Queue" key="scheduled">
             {/* I needed a way to force the call that is made when the component gets mounted*/}
             { activeTab === 'scheduled' && (<ScheduledPosts
                 timezone={selectedTimezone}
@@ -165,10 +166,6 @@ class Scheduled extends React.Component {
                 />
               )
             }
-          </TabPane>
-          <TabPane tab="Schedule Settings" key="schedule settings">
-            {/* I needed a way to force the call that is made when the component gets mounted*/}
-            { activeTab === 'schedule settings' && <PostScheduling timezone={selectedTimezone} name={user.name} /> }
           </TabPane>
           {
             isOwnerOrAdmin(accessLevel) && (
@@ -184,6 +181,10 @@ class Scheduled extends React.Component {
               </TabPane>
             )
           }
+          <TabPane tab="Schedule Settings" key="schedule settings">
+            {/* I needed a way to force the call that is made when the component gets mounted*/}
+            { activeTab === 'schedule settings' && <PostScheduling timezone={selectedTimezone} name={user.name} /> }
+          </TabPane>
         </Tabs>
         { (isLoading || awaitingLoading) && <Loader fullscreen /> }
       </div>
@@ -205,4 +206,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setComposerModal, setTimezone, setPostAtBestTime, setPostCalendar })(Scheduled);
+export default connect(
+  mapStateToProps,
+  {
+    setComposerModal,
+    setTimezone,
+    setPostAtBestTime,
+    setPostCalendar
+  }
+)(Scheduled);

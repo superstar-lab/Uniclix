@@ -2587,6 +2587,14 @@ button.streammaker-btn:hover {
   }
 }
 
+.editor-errors {
+  font-size: 13px;
+  margin-bottom: 10px;
+
+  .error-msg {
+    color: red;
+  }
+}
 
 .popup-content .SingleDatePicker_picker {
   position: static;

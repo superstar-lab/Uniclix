@@ -40,14 +40,22 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+
+    .label {
+      margin-right: 15px;
+      font-weight: 400;
+      font-size: 14px;
+      color: #363636;
+    }
   }
 
   .infinite-best-btn-title {
-    background-color: #ecf0f3;
+    background-color: #DAE1E8;
     border-radius: 5px;
     padding-left: 30px;
     height: 40px;
     line-height: 40px;
+    margin: 35px 0 0 0;
   }
 
   .infinite-best-btn {

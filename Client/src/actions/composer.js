@@ -72,3 +72,8 @@ export const setPostCalendar = (postCalendar) => ({
     type: 'SET_POST_CALENDAR',
     postCalendar
 });
+
+export const setWithError = withError => ({
+    type: 'SET_WITH_ERRROR',
+    withError
+})
