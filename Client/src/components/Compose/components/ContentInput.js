@@ -29,9 +29,24 @@ class ContentInput extends React.Component {
     this.props.setVideos(videos);
   }
 
+  linkedinChannelIsPresent = () => {
+    const { publishChannels, channels } = this.props;
+    let isPresent = false;
+
+    publishChannels && publishChannels.forEach(chId => {
+      const chIndex = channels.findIndex(channel => channel.id === chId);
+      if (chIndex !== -1) {
+        if (channels[chIndex].type === 'linkedin') isPresent = true;
+      }
+    });
+
+    return isPresent;
+  }
+
   render() {
     const { content, pictures, videos, publishChannels, channels } = this.props;
-    
+    const imagesLimit = this.linkedinChannelIsPresent() ? 1 : 4;
+
     return (
       <DraftEditor
         scheduledLabel={null}
@@ -47,6 +62,7 @@ class ContentInput extends React.Component {
         publishChannels={publishChannels}
         channels={channels}
         onUploadMedia={this.props.onUploadMedia}
+        imageLimit={imagesLimit}
       />
     );
   }

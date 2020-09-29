@@ -22,7 +22,7 @@ class PublishButton extends React.Component {
             }
         },
         publishState: {
-            name: "Post at Best Time",
+            name: "Add to queue",
             value: "best"
         },
         postDate: moment(),
@@ -45,7 +45,7 @@ class PublishButton extends React.Component {
 
             if (this.props.post.type == 'store') {
                 publishState = {
-                    name: "Post at Best Time",
+                    name: "Add to queue",
                     value: "best"
                 }
             }
@@ -103,7 +103,7 @@ class PublishButton extends React.Component {
 
             if (this.props.post.type == 'store') {
                 publishState = {
-                    name: "Post at Best Time",
+                    name: "Add to queue",
                     value: "best"
                 }
             }
@@ -255,8 +255,8 @@ class PublishButton extends React.Component {
                                                 <p className="schedule-info">{moment(this.state.publishDateTime).format("DD MMMM YYYY hh:mmA")}</p>
                                             }
                                         </div>
-                                        <div onClick={() => this.setPublishState({ name: "Post at Best Time", value: "best" }, close)} className="menu-item">
-                                            <h4>Post at Best Time</h4>
+                                        <div onClick={() => this.setPublishState({ name: "Add to queue", value: "best" }, close)} className="menu-item">
+                                            <h4>Add to queue</h4>
                                             <p>Share when your audience is most active</p>
                                         </div>
                                     </div>

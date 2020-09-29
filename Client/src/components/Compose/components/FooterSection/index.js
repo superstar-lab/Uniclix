@@ -4,22 +4,17 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { notification } from 'antd';
 
-import { isOwnerOrAdmin } from '../../../utils/helpers';
-import FunctionModal from '../../Modal';
-import { publish } from '../../../requests/channels';
+import { isOwnerOrAdmin } from '../../../../utils/helpers';
+import FunctionModal from '../../../Modal';
+import { publish } from '../../../../requests/channels';
 
-import Loader from '../../Loader';
-
-const postLabels = {
-  now: 'Post Now',
-  best: 'Post At Best Time',
-  date: 'Schedule Post'
-};
+import Loader from '../../../Loader';
+import PostButton from './PostButton';
 
 class FooterSection extends React.Component {
   static propTypes = {
     closeModal: PropTypes.func.isRequired,
-    publishChannels: PropTypes.array.isRequired,
+    publishChannels: PropTypes.object.isRequired,
     content: PropTypes.string.isRequired,
     pictures: PropTypes.array,
     videos: PropTypes.array,
@@ -33,6 +28,7 @@ class FooterSection extends React.Component {
     onPost: PropTypes.func,
     onUploadCancelMedia: PropTypes.func,
     onAdvancedChange: PropTypes.func,
+    setPostType: PropTypes.func
   };
 
   state = {
@@ -156,7 +152,7 @@ class FooterSection extends React.Component {
   };
 
   render() {
-    const { closeModal, onUploadCancelMedia, onAdvancedChange, advancedVisible, postAtBestTime, postNow } = this.props;
+    const { closeModal, onUploadCancelMedia, onAdvancedChange, advancedVisible, setPostType, accessLevel } = this.props;
     const { isLoading } = this.state;
     
     return (
@@ -171,15 +167,13 @@ class FooterSection extends React.Component {
         <Button type="link" onClick={() => {closeModal(), onUploadCancelMedia()}}>
           Cancel
         </Button>
-        <Button
-          type="primary"
-          shape="round"
-          size="large"
-          disabled={!this.canPost()}
-          onClick={this.savePost}
-        >
-          {postLabels[this.getPublishType()]}
-        </Button>
+        <PostButton
+          isDisabled={!this.canPost()}
+          onSavePost={this.savePost}
+          publishType={this.getPublishType()}
+          setPostType={setPostType}
+          accessLevel={accessLevel}
+        />
         { isLoading && <Loader fullscreen />}
       </div>
     );
