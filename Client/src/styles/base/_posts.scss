@@ -15,6 +15,10 @@
       margin-top: 5px;
     }
   }
+
+  .ant-tabs {
+    overflow: visible;
+  }
 }
 
 .calendar-events {
@@ -55,7 +59,7 @@
     padding-left: 30px;
     height: 40px;
     line-height: 40px;
-    margin: 35px 0 0 0;
+    margin: 25px 0 0 0;
   }
 
   .infinite-best-btn {
@@ -1248,49 +1252,84 @@
   }
 }
 
+.agenda-container {
+  height: 100%;
+  display: flex;
+  margin-right: -30px;
+}
+
 .todays-agenda {
-  h4 {
+  background-color: #F5F7FB;
+  border: 1px solid #DBDBDB;
+  border-radius: 30px 0 0 0;
+  padding: 24px 10px 0;
+  width: 286px;
+
+  .ta-title {
+    font-size: 18px;
     margin-bottom: 20px;
+    color: #363636;
+
+    .ta-label {
+      margin-right: 5px;
+      font-weight: 500;
+    }
+  }
+
+  .time-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 14px;
+    padding-left: 10px;
+
+    .time {
+      font-size: 14px;
+      font-weight: 400;
+      margin-right: 10px;
+      color: #363636;
+    }
+
+    .separator {
+      border-bottom: 1px solid #DAE1E8;
+      width: 180px;
+    }
   }
 
   .event-in-agenda {
-    padding-left: 10px;
-    border-radius: 10px;
+    border-radius: 5px;
     margin-bottom: 15px;
 
     .event-content {
       padding: 15px;
       background-color: #FFF;
 
-      .event-header {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-
-        .hour {
-          font-size: 16px;
-          color: #363636;
-        }
-  
-        .category {
-          color: #FFF;
-          padding: 5px;
-          font-weight: 500;
-          border-radius: 5px;
-        }
-      }
-
       .content {
         font-size: 12px;
         margin-bottom: 10px;
         max-width: 220px;
+        color: #363636;
+      }
+
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .category-post {
+          width: 74px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          text-align: center;
+          height: 24px;
+          font-size: 12px;
+        }
       }
     }
 
     .event-channels {
       display: flex;
 
-        div {
+        .channel {
           position: relative;
           margin-right: 10px;
 
@@ -1313,8 +1352,49 @@
             align-items: center;
           }
         }
+
+        .rest-of-channels {
+          width: 30px;
+          height: 30px;
+          border-radius: 100%;
+          border: 0.740741px solid #2D86DA;
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #2D86DA;
+        }
     }
   }
+}
+
+.post-queue-bar {
+  width: 58px;
+  height: 100%;
+  background: #FFF;
+  border-radius: 30px 0 0 0;
+  padding-top: 15px;
+
+  .option {
+    height: 37px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #363636;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .option.active {
+    color: #2D86DA;
+    border-left: 2px solid #2D86DA;
+    background-color: #F5F7FB;
+  }
+}
+
+.post-queue-bar {
+  border-radius: 0;
 }
 
 .awaiting-approval-container {
