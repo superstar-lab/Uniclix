@@ -38,7 +38,7 @@ trait FacebookTrait
         return Cache::remember($key, $minutes, function () use ($id){
             $fb = $this->setAsCurrentUser();
             $response = $fb->get("/$id?fields=about,picture,name,bio,company_overview,cover,description,general_info,genre,products,website,fan_count");
-    
+
             return $response->getDecodedBody();
         });
     }
@@ -49,21 +49,21 @@ trait FacebookTrait
         return Cache::remember($key, $minutes, function () use ($id){
             $fb = $this->setAsCurrentUser();
             $response = $fb->get("/$id?fields=about,picture,name,cover");
-    
+
             return $response->getDecodedBody();
         });
     }
 
     public function getPages(){
         $fb = $this->setAsCurrentUser();
-        $response = $fb->get('/me/accounts?fields=access_token,picture,name');
+        $response = $fb->get('/me/accounts?fields=access_token,picture,name&admin_only=true');
 
         return $response->getDecodedBody();
     }
 
     public function getGroups(){
         $fb = $this->setAsCurrentUser();
-        $response = $fb->get('/me/groups?fields=owner,picture,name');
+        $response = $fb->get('/me/groups?fields=owner,picture,name&admin_only=true');
 
         return $response->getDecodedBody();
     }
@@ -145,7 +145,7 @@ trait FacebookTrait
         return Cache::remember($key, $minutes, function () use ($after, $query) {
             $fb = $this->setAsCurrentUser();
             $response = $fb->get("/pages/search?q=$query$after");
-    
+
             return $response->getDecodedBody();
         });
     }

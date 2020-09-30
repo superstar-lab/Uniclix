@@ -14,7 +14,9 @@ const defaultState = {
 		startsAt: undefined,
 		selectedTimezone: '',
 		postNow: false,
-		postAtBestTime: false
+		postAtBestTime: false,
+		postCalendar: 'Week',
+		withError: false
 };
 
 export default (state = defaultState, action) => {
@@ -67,6 +69,10 @@ export default (state = defaultState, action) => {
 			return { ...state, postAtBestTime: action.postAtBestTime };
 		case 'SET_POST_NOW':
 			return {...state, postNow: action.postNow };
+		case 'SET_POST_CALENDAR':
+			return { ...state, postCalendar: action.postCalendar };
+		case 'SET_WITH_ERRROR':
+			return { ...state, withError: action.withError };
 		default:
 			return state;    
 	}

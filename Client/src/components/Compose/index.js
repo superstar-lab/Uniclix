@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
+import moment from 'moment';
 import { Select, Input } from 'antd';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
@@ -19,7 +20,9 @@ import {
   setCategory,
   setDate,
   setPostAtBestTime,
-  setPostNow
+  setPostNow,
+  setPostCalendar,
+  setWithError
 } from "../../actions/composer";
 
 import ContentInput from './components/ContentInput';
@@ -27,6 +30,8 @@ import ChannelsRow from './components/ChannelsRow';
 import DateTimeSelector from './components/DateTimeSelector';
 import FooterSection from './components/FooterSection';
 import SelectAccountModal from './components/SelectAccountsModal';
+import { schedulingCount } from "../../requests/channels";
+import Preview from './components/Preview';
 
 const { Option } = Select;
 
@@ -47,7 +52,22 @@ class Compose extends React.Component {
     scheduleOption: "Daily",
     advancedVisible: true,
     cntRepeat: 0,
+    cntScheduling: 0,
   };
+
+  componentWillMount() {
+    try {
+      schedulingCount()
+        .then((response) => {
+          this.setState({
+            cntScheduling: response.count,
+          });
+        }).catch((error) => {
+      });
+    } catch(error) {
+      console.log(error);
+    }
+  }
 
   componentDidUpdate() {
     const { updatePublishChannels, publishChannels, channels } = this.props;
@@ -109,6 +129,17 @@ class Compose extends React.Component {
       advancedVisible: true,
       cntRepeat: 0,
     });
+    try {
+      schedulingCount()
+        .then((response) => {
+          this.setState({
+            cntScheduling: response.count,
+          });
+        }).catch((error) => {
+      });
+    } catch(error) {
+      console.log(error);
+    }
   };
 
   onScheduleChange = (scheduleOption) => {
@@ -126,6 +157,32 @@ class Compose extends React.Component {
       cntRepeat: event.target.value,
     });
   };
+
+  setPostType = type => {
+    switch(type) {
+      case 'now': {
+        const { selectedTimezone, setPostNow, setPostAtBestTime, setDate } = this.props;
+        const now = moment().tz(selectedTimezone);
+
+        setPostNow(true);
+        setPostAtBestTime(false);
+        setDate(now.format('YYYY-MM-DDTHH:mmZ'));
+      }
+      break;
+      case 'best': {
+        const { setPostNow, setPostAtBestTime } = this.props;
+        setPostNow(false);
+        setPostAtBestTime(true);
+      }
+      break;
+      case 'schedule': {
+        const { setPostNow, setPostAtBestTime } = this.props;
+        setPostNow(false);
+        setPostAtBestTime(false);
+      }
+      break;
+    }
+  }
 
   render() {
     const {
@@ -153,10 +210,13 @@ class Compose extends React.Component {
       setPostAtBestTime,
       setPostNow,
       onPost,
-      accessLevel
+      accessLevel,
+      postCalendar,
+      withError,
+      setWithError
     } = this.props;
 
-    const { scheduleOption, advancedVisible, cntRepeat } = this.state;
+    const { scheduleOption, advancedVisible, cntRepeat, cntScheduling } = this.state;
 
     const hasValidChannels = channels.length > 0;
 
@@ -173,10 +233,10 @@ class Compose extends React.Component {
             />
           ) :
           (
-            <div className={advancedVisible == true ? "modal-content composer-modal-content" : "modal-content composer-modal-content composer-modal-content-advanced"}>
-              <div>
-                <div className="composer-header">
-                  <div className="composer-title">Post</div>
+            <div className="modal-content composer-modal-content">
+              <div className="composer-container">
+              <div className="composer-header">
+                <div className="composer-title">Create Post</div>
                   <button
                     id="closeModal"
                     type="button"
@@ -185,86 +245,101 @@ class Compose extends React.Component {
                   >
                   </button>
                 </div>
-                <div className="separator"></div>
-                <ChannelsRow
-                  publishChannels={publishChannels}
-                  setShowSelectAccount={setShowSelectAccount}
-                  channels={channels}
-                  videos={videos}
-                />
-                <ContentInput
-                  setContent={setContent}
-                  setPictures={setPictures}
-                  setVideos={setVideos}
-                  content={content}
-                  pictures={pictures}
-                  videos={videos}
-                  showImagesIcon={this.state.showImagesIcon}
-                  showVideosIcon={this.state.showVideosIcon}
-                  publishChannels={publishChannels}
-                  channels={channels}
-                  onUploadMedia={this.onUploadMedia}
-                />
-                {
-                  (date || startsAt) && (
-                    <DateTimeSelector
-                      selectedTimezone={selectedTimezone}
-                      setDate={setDate}
-                      setPostAtBestTime={setPostAtBestTime}
-                      setPostNow={setPostNow}
-                      postDate={date ? date : startsAt}
-                      postAtBestTime={postAtBestTime}
-                      postNow={postNow}
-                      accessLevel={accessLevel}
+                <div className="composer-content">
+                  <div className="inputs">
+                    <ContentInput
+                      setContent={setContent}
+                      setPictures={setPictures}
+                      setVideos={setVideos}
+                      content={content}
+                      pictures={pictures}
+                      videos={videos}
+                      showImagesIcon={this.state.showImagesIcon}
+                      showVideosIcon={this.state.showVideosIcon}
+                      publishChannels={publishChannels}
+                      channels={channels}
+                      onUploadMedia={this.onUploadMedia}
+                      setWithError={setWithError}
+                      withError={withError}
                     />
-                  )
-                }
-                <div className="category-section">
-                  <div className="subtitle">Category</div>
-                  <Select
-                    value={category}
-                    placeholder="Select or create your category (Optional)"
-                    onChange={setCategory}
-                    size="large"
-                    style={{ width: '100%' }}
-                  >
-                    {
-                      categoryOptions && categoryOptions.map(category => (
-                        <Option key="topic" value={category.id} title={category.category_name}>
-                          {category.category_name}
-                        </Option>
-                      ))
-                    }
-                  </Select>
-                </div>
-                {
-                  advancedVisible == false ?
-                    <div className="repeat-section">
-                      <div className="subtitle">Repeating options</div>
-                      <div>
-                        <div>Repeat</div>
-                        <Input className="repeat-input" onChange={this.onRepeatChange} disabled={postAtBestTime || postNow}/>
-                        <div>Times</div>
-                        <Select
-                          value={scheduleOption}
-                          size="large"
-                          className="repeat-select"
-                          onChange={this.onScheduleChange}
-                          disabled={postAtBestTime || postNow}
-                        >
-                          {
-                            SCHEDULE && SCHEDULE.map(schedule => (
-                              <Option key={schedule} value={schedule} title={schedule}>
-                                {schedule}
-                              </Option>
-                            ))
-                          }
-                        </Select>
-                      </div>
+                    <ChannelsRow
+                      publishChannels={publishChannels}
+                      setShowSelectAccount={setShowSelectAccount}
+                      channels={channels}
+                      videos={videos}
+                    />
+                    <div className="separator"></div>
+                    <div className="category-section">
+                      <div className="subtitle">Category</div>
+                      <Select
+                        value={category}
+                        placeholder="Select or create your category (Optional)"
+                        onChange={setCategory}
+                        size="large"
+                        style={{ width: '100%' }}
+                      >
+                        {
+                          categoryOptions && categoryOptions.map(category => (
+                            <Option key="topic" value={category.id} title={category.category_name}>
+                              {category.category_name}
+                            </Option>
+                          ))
+                        }
+                      </Select>
                     </div>
-                    :
-                    ""
-                }
+                    {
+                      (date || startsAt) && (
+                        <DateTimeSelector
+                          selectedTimezone={selectedTimezone}
+                          setDate={setDate}
+                          setPostAtBestTime={setPostAtBestTime}
+                          setPostNow={setPostNow}
+                          postDate={date ? date : startsAt}
+                          postAtBestTime={postAtBestTime}
+                          postNow={postNow}
+                          accessLevel={accessLevel}
+                          cntScheduling={cntScheduling}
+                        />
+                      )
+                    }
+                    {
+                      advancedVisible == false ?
+                        <div className="repeat-section">
+                          <div className="subtitle">Repeating options</div>
+                          <div>
+                            <div>Repeat</div>
+                            <Input className="repeat-input" onChange={this.onRepeatChange}/>
+                            <div>Times</div>
+                            <Select
+                              value={scheduleOption}
+                              size="large"
+                              className="repeat-select"
+                              onChange={this.onScheduleChange}
+                            >
+                              {
+                                SCHEDULE && SCHEDULE.map(schedule => (
+                                  <Option key={schedule} value={schedule} title={schedule}>
+                                    {schedule}
+                                  </Option>
+                                ))
+                              }
+                            </Select>
+                          </div>
+                        </div>
+                        :
+                        ""
+                    }
+                  </div>
+                  <Preview
+                    publishChannels={publishChannels}
+                    channels={channels}
+                    text={content}
+                    date={date}
+                    timezone={selectedTimezone}
+                    pictures={pictures}
+                    videos={videos}
+                  />
+                </div>
               </div>
               <FooterSection
                 {...this.props}
@@ -276,8 +351,11 @@ class Compose extends React.Component {
                 advancedVisible={advancedVisible}
                 scheduleOption={scheduleOption}
                 cntRepeat={cntRepeat}
+                postCalendar={postCalendar}
                 onUploadCancelMedia={this.onUploadCancelMedia}
                 onAdvancedChange={this.onAdvancedChange}
+                setPostType={this.setPostType}
+                withError={withError}
               />
             </div>
           )
@@ -334,7 +412,9 @@ const mapDispatchToProps = (dispatch) => ({
   setCategory: (category) => dispatch(setCategory(category)),
   setDate: (date) => dispatch(setDate(date)),
   setPostAtBestTime: (postAtBestTime) => dispatch(setPostAtBestTime(postAtBestTime)),
-  setPostNow: (postNow) => dispatch(setPostNow(postNow))
+  setPostNow: (postNow) => dispatch(setPostNow(postNow)),
+  setPostCalendar: (postCalendar) => dispatch(setPostCalendar(postCalendar)),
+  setWithError: (withError) => dispatch(setWithError(withError))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Compose);

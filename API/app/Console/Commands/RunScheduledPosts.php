@@ -40,14 +40,14 @@ class RunScheduledPosts extends Command
     public function handle()
     {
         $scheduledPosts = ScheduledPost::where('posted', 0)
-        ->where('scheduled_at', '<=', Carbon::now())
+        ->where('scheduled_at', '<=', Carbon::now()->setTimezone('Europe/London'))
         ->where('approved', 1)
         ->whereNull('status')->get();
-        
+
         $ids = $scheduledPosts->pluck('id');
 
         ScheduledPost::whereIn('id', $ids)->update(['posted' => 1]);
-        
+
         multiRequest(route('publish'), $scheduledPosts);
     }
 }

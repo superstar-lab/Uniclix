@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Facebook;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-define('HOUR', 3600000);
-define('DAY', 86400000);
-define('MONTH', 2592000000);
+if(!defined('HOUR')) define('HOUR', 3600000);
+if(!defined('DAY')) define('DAY', 86400000);
+if(!defined('MONTH')) define('MONTH', 2592000000);
 
 class AnalyticsController extends Controller
-{   
+{
     private $user;
 
     public function __construct()
@@ -40,7 +40,7 @@ class AnalyticsController extends Controller
         return response()->json(['error' => 'No channel found'], 404);
     }
     /**
-     * 
+     *
      * Prepare data for Facebook Page Insights
      */
     public function pageInsights(Request $request)
@@ -61,7 +61,7 @@ class AnalyticsController extends Controller
     }
 
     /**
-     * 
+     *
      * Prepare data for Facebook Page Insights
      */
     public function pagePostsInsights(Request $request)
@@ -82,11 +82,11 @@ class AnalyticsController extends Controller
     }
 
     /**
-     * 
+     *
      * Get count of facebook page posts
      */
     public function pageInsightsByType($type, Request $request)
-    {   
+    {
         $user_id = $this->user->id;
         if(!$this->user->hasPermission("advanced-analytics", $user_id)) return response()->json(["error" => "You need to upgrade to unlock this feature."], 403);
         $user    = $this->user;
@@ -111,7 +111,7 @@ class AnalyticsController extends Controller
                     $data             = $channel->pageInsightsByType($type, $request->startDate, $request->endDate, $request->period);
                     $historyData      = $channel->pageInsightsByType($type, $startDateHistory, $endDateHistory, $request->period);
                     $prevData         = $channel->pageInsightsByType($type, $prevStartDate, $prevEndDate, $request->$period);
-                    
+
                     $reactions        = isset($data['reactions']) ? $data['reactions']  : 0;
                     $comments         = isset($data['comments'])  ? $data['comments']   : 0;
                     $shares           = isset($data['shares'])    ? $data['shares']    : 0;

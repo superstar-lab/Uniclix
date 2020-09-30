@@ -1,8 +1,7 @@
 import React from 'react';
-import { DatePicker, TimePicker, Checkbox } from 'antd';
+import { DatePicker, TimePicker } from 'antd';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { isOwnerOrAdmin } from '../../../utils/helpers';
 
 class DateTimeSelector extends React.Component {
   static propTypes = {
@@ -12,7 +11,8 @@ class DateTimeSelector extends React.Component {
     postNow: PropTypes.bool.isRequired,
     setDate: PropTypes.func.isRequired,
     setPostAtBestTime: PropTypes.func.isRequired,
-    setPostNow: PropTypes.func.isRequired
+    setPostNow: PropTypes.func.isRequired,
+    cntScheduling: PropTypes.bool.isRequired,
   };
 
   componentDidMount() {
@@ -85,20 +85,8 @@ class DateTimeSelector extends React.Component {
     this.props.setDate(value.format('YYYY-MM-DDTHH:mmZ'));
   };
 
-  onPostAtBestTime = (e) => {
-    this.props.setPostAtBestTime(e.target.checked);
-  };
-
-  onPostNow = (e) => {
-    const { selectedTimezone, setPostNow, setDate } = this.props;
-    const now = moment().tz(selectedTimezone);
-
-    setPostNow(e.target.checked);
-    setDate(now.format('YYYY-MM-DDTHH:mmZ'));
-  };
-
   render() {
-    const { postAtBestTime, postNow, accessLevel } = this.props;
+    const { postAtBestTime, postNow, accessLevel, cntScheduling } = this.props;
     const dateTime = this.getDateTime();
 
     return (
@@ -123,18 +111,6 @@ class DateTimeSelector extends React.Component {
             disabledMinutes={this.disableMinutes}
             disabled={postAtBestTime || postNow}
           />
-          {
-            isOwnerOrAdmin(accessLevel) && (
-              <div className="checkboxes-group">
-                <Checkbox checked={postAtBestTime} disabled={postNow} onChange={this.onPostAtBestTime}>
-                  Post at best time
-                </Checkbox>
-                <Checkbox checked={postNow} disabled={postAtBestTime} onChange={this.onPostNow}>
-                  Post now
-                </Checkbox>
-              </div>
-            )
-          }
         </div>
       </div>
     );

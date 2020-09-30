@@ -4,22 +4,17 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { notification } from 'antd';
 
-import { isOwnerOrAdmin } from '../../../utils/helpers';
-import FunctionModal from '../../Modal';
-import { publish } from '../../../requests/channels';
+import { isOwnerOrAdmin } from '../../../../utils/helpers';
+import FunctionModal from '../../../Modal';
+import { publish } from '../../../../requests/channels';
 
-import Loader from '../../Loader';
-
-const postLabels = {
-  now: 'Post Now',
-  best: 'Post At Best Time',
-  date: 'Schedule Post'
-};
+import Loader from '../../../Loader';
+import PostButton from './PostButton';
 
 class FooterSection extends React.Component {
   static propTypes = {
     closeModal: PropTypes.func.isRequired,
-    publishChannels: PropTypes.array.isRequired,
+    publishChannels: PropTypes.object.isRequired,
     content: PropTypes.string.isRequired,
     pictures: PropTypes.array,
     videos: PropTypes.array,
@@ -33,6 +28,7 @@ class FooterSection extends React.Component {
     onPost: PropTypes.func,
     onUploadCancelMedia: PropTypes.func,
     onAdvancedChange: PropTypes.func,
+    setPostType: PropTypes.func
   };
 
   state = {
@@ -41,9 +37,12 @@ class FooterSection extends React.Component {
 
   canPost = () => {
 
-    const { content, date, publishChannels, pictures, videos } = this.props;
+    const { content, date, publishChannels, pictures, videos, withError } = this.props;
 
-    return (!!content.length || !!pictures.length || !!videos.length) && date && !!publishChannels.size;
+    return (!!content.length || !!pictures.length || !!videos.length) &&
+      date &&
+      !!publishChannels.size &&
+      !withError;
   };
 
 
@@ -92,20 +91,18 @@ class FooterSection extends React.Component {
       uploadVideos,
       scheduleOption,
       cntRepeat,
+      postCalendar,
       onUploadCancelMedia,
     } = this.props;
 
     try {
 
-      let bestDate = new Date(new Date(date).getFullYear(), new Date(date).getMonth(), new Date(date).getDate(), 21, 0, 0, 0);
-      if (new Date().getTime() > bestDate.getTime()) {
-        bestDate = new Date(bestDate.getTime() + 24 * 60 * 60 * 1000);
-      }
-      const isBest = this.getPublishType() == "best";
+      let bestDate = moment().tz(selectedTimezone).format('YYYY-MM-DDTHH:mmZ');
+      const isBest = this.getPublishType() === "best";
 
       const scheduled = {
-        publishUTCDateTime: (isBest) ? bestDate : date,
-        publishDateTime: (isBest) ? moment(bestDate).tz(selectedTimezone).format('YYYY-MM-DDTHH:mm') : moment(date).tz(selectedTimezone).format('YYYY-MM-DDTHH:mm'),
+        publishUTCDateTime: (isBest && postCalendar === 'Week') ? bestDate : date,
+        publishDateTime: (isBest && postCalendar === 'Week') ? moment(bestDate).tz(selectedTimezone).format('YYYY-MM-DDTHH:mm') : moment(date).tz(selectedTimezone).format('YYYY-MM-DDTHH:mm'),
         publishTimezone: selectedTimezone
       };
 
@@ -120,6 +117,7 @@ class FooterSection extends React.Component {
         uploadVideos: uploadVideos,
         scheduleOption: scheduleOption,
         cntRepeat: cntRepeat,
+        postCalendar: postCalendar,
         publishChannels: this.getPublishChannels(),
         type,
         publishType: this.getPublishType(),
@@ -157,7 +155,7 @@ class FooterSection extends React.Component {
   };
 
   render() {
-    const { closeModal, onUploadCancelMedia, onAdvancedChange, advancedVisible, postAtBestTime, postNow } = this.props;
+    const { closeModal, onUploadCancelMedia, onAdvancedChange, advancedVisible, setPostType, accessLevel } = this.props;
     const { isLoading } = this.state;
     
     return (
@@ -166,22 +164,19 @@ class FooterSection extends React.Component {
           type="link"
           className={advancedVisible == true ? "btn-advanced" : "btn-advanced btn-advanced-hidden"}
           onClick={onAdvancedChange}
-          disabled={postAtBestTime || postNow}
         >
           Advanced
         </Button>
         <Button type="link" onClick={() => {closeModal(), onUploadCancelMedia()}}>
           Cancel
         </Button>
-        <Button
-          type="primary"
-          shape="round"
-          size="large"
-          disabled={!this.canPost()}
-          onClick={this.savePost}
-        >
-          {postLabels[this.getPublishType()]}
-        </Button>
+        <PostButton
+          isDisabled={!this.canPost()}
+          onSavePost={this.savePost}
+          publishType={this.getPublishType()}
+          setPostType={setPostType}
+          accessLevel={accessLevel}
+        />
         { isLoading && <Loader fullscreen />}
       </div>
     );

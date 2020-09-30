@@ -10,12 +10,14 @@ use App\Models\Facebook\Channel;
 use App\Models\Channel as GlobalChannel;
 use App\Exceptions\FacebookException as FacebookException;
 use GuzzleHttp\Exception\ClientException as ClientException;
+use App\Models\ScheduleDefaultTime;
+use App\Models\ScheduleTime;
 
 class ChannelController extends Controller
 {
 
     public function add(Request $request){
-        
+
         $user = auth()->user();
         // if($user->countChannels() >= $user->getLimit("account_limit")) return response()->json(["error" => "You have exceeded the account limit for this plan."], 403);
 
@@ -35,14 +37,14 @@ class ChannelController extends Controller
         if(is_object($credentials) && !isset($credentials->error)){
 
             $existingChannel = Channel::where("email", $credentials->email)->first();
-    
+
             if(!$existingChannel){
                 $channel = $user->channels()->create(["type" => "facebook"]);
                 $facebookChannel = $channel->details()->create([
-                    "user_id" => $user->id, 
+                    "user_id" => $user->id,
                     "email" => $credentials->email,
-                    "name" => $credentials->name, 
-                    "payload" => serialize($credentials), 
+                    "name" => $credentials->name,
+                    "payload" => serialize($credentials),
                     "access_token" => $credentials->token,
                     "account_type" => "profile"
                 ]);
@@ -54,7 +56,7 @@ class ChannelController extends Controller
                     $global->save();
                     $facebookChannel = $existingChannel;
                     $facebookChannel->access_token = $credentials->token;
-                    $facebookChannel->save(); 
+                    $facebookChannel->save();
                 }else{
                     return response()->json(['error' => 'Channel already exists with some other account'], 409);
                 }
@@ -113,13 +115,13 @@ class ChannelController extends Controller
             $accounts = $request->get("accounts");
             $user = auth()->user();
             $channel = $user->selectedFacebookChannel();
-    
+
             if(!$accounts) return;
-            
+
             if($user->countChannels() + count($accounts) > $user->getLimit("account_limit")) {
                 return response()->json(["message" => "limit of accounts exceded"], 432);
             }
-            
+
             $accountData = [];
             foreach($accounts as $account){
 
@@ -150,14 +152,14 @@ class ChannelController extends Controller
                     $global->save();
                 }
             }
-    
+
         }catch(\Exception $e){
             return response()->json(["error" => $e->getMessage()], 400);
         }
 
         return response()->json(["message" => "Account added successfully."]);
     }
-    
+
     public function select($id)
     {
         $user = auth()->user();

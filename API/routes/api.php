@@ -44,6 +44,13 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/scheduled/posts', 'ScheduledController@scheduledPosts');
     Route::get('/scheduled/past', 'ScheduledController@pastScheduled');
 
+    Route::get('scheduling/times', 'SchedulingController@schedulingTimes');
+    Route::post('scheduling/store', 'SchedulingController@schedulingStore');
+    Route::get('scheduling/edit', 'SchedulingController@schedulingEdit');
+    Route::delete('scheduling/delete/{timeId}', 'SchedulingController@destroy');
+    Route::delete('scheduling/clear', 'SchedulingController@clearAll');
+    Route::get('scheduling/count', 'SchedulingController@schedulingCount');
+
     Route::post('/post/store', 'PublishController@store');
     Route::post('/post/upload', 'PublishController@upload');
     Route::delete('/post/{postId}', 'PublishController@destroy');

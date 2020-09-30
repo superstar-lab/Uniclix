@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import FunctionModal from "../../Modal";
+import { updatePublishChannels } from '../../../actions/composer';
 
 class ChannelsRow extends React.Component {
   static propTypes = {
@@ -37,6 +39,13 @@ class ChannelsRow extends React.Component {
     return selectedChannels;
   }
 
+  deselectChannel = (id) => {
+    const { publishChannels, updatePublishChannels } = this.props;
+
+    publishChannels.delete(id);
+    updatePublishChannels(publishChannels);
+  }
+
   render() {
     const { publishChannels, channels } = this.props;
 
@@ -46,20 +55,23 @@ class ChannelsRow extends React.Component {
           publishChannels && channels
             .map(({ type, avatar, details: { channel_id } }, index) => {
               return publishChannels.has(channel_id) ? (
-                <div key={`${type}-${index}`}>
+                <div key={`${type}-${index}`} className="channel">
                   <img src={avatar} />
                   <i className={`fab fa-${type} ${type}_bg`} />
+                  <div className="overlay" onClick={() => this.deselectChannel(channel_id)}>
+                    <div className="fa fa-times"></div>
+                  </div>
                 </div>
               ) :
               ''
             })
         }
         <div className="circle" onClick={this.toggleSelectChannelsModal}>
-            <i className="fa fa-plus" />
+          <i className="fa fa-plus" />
         </div>
       </div>
     );
   }
 }
 
-export default ChannelsRow;
+export default connect(null, { updatePublishChannels })(ChannelsRow);
