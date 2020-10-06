@@ -21,7 +21,8 @@ import {
   setDate,
   setPostAtBestTime,
   setPostNow,
-  setPostCalendar
+  setPostCalendar,
+  setWithError
 } from "../../actions/composer";
 
 import ContentInput from './components/ContentInput';
@@ -210,7 +211,9 @@ class Compose extends React.Component {
       setPostNow,
       onPost,
       accessLevel,
-      postCalendar
+      postCalendar,
+      withError,
+      setWithError
     } = this.props;
 
     const { scheduleOption, advancedVisible, cntRepeat, cntScheduling } = this.state;
@@ -256,6 +259,8 @@ class Compose extends React.Component {
                       publishChannels={publishChannels}
                       channels={channels}
                       onUploadMedia={this.onUploadMedia}
+                      setWithError={setWithError}
+                      withError={withError}
                     />
                     <ChannelsRow
                       publishChannels={publishChannels}
@@ -350,6 +355,7 @@ class Compose extends React.Component {
                 onUploadCancelMedia={this.onUploadCancelMedia}
                 onAdvancedChange={this.onAdvancedChange}
                 setPostType={this.setPostType}
+                withError={withError}
               />
             </div>
           )
@@ -407,7 +413,8 @@ const mapDispatchToProps = (dispatch) => ({
   setDate: (date) => dispatch(setDate(date)),
   setPostAtBestTime: (postAtBestTime) => dispatch(setPostAtBestTime(postAtBestTime)),
   setPostNow: (postNow) => dispatch(setPostNow(postNow)),
-  setPostCalendar: (postCalendar) => dispatch(setPostCalendar(postCalendar))
+  setPostCalendar: (postCalendar) => dispatch(setPostCalendar(postCalendar)),
+  setWithError: (withError) => dispatch(setWithError(withError))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Compose);

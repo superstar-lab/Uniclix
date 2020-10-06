@@ -2,66 +2,82 @@ import React from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
-const TodaysAgenda = ({ posts, timezone, channelsList }) => {
-  const currentDate = timezone ? moment().tz(timezone) : moment();
+import AgendaItem from './AgendaItem';
 
-  const filterTodaysByTimezone = (post) => {
+class TodaysAgenda extends React.Component {
+  state = {
+    showAgenda: false
+  }
+
+  filterTodaysByTimezone = (post) => {
+    const { timezone } = this.props;
+    const currentDate = timezone ? moment().tz(timezone) : moment();
     const { payload: { scheduled: { publishUTCDateTime } } } = post;
     const postDateTime = moment(publishUTCDateTime).tz(timezone);
 
     return postDateTime.date() === currentDate.date() &&
       postDateTime.month() === currentDate.month();
   }
-  
-  return (
-    <div>
-      {
-      
-        <div className="todays-agenda">
-          <h4>Today’s agenda, {currentDate.format('MMMM D.')}</h4>
-          {
-            posts.filter(filterTodaysByTimezone).map((post) => (
-              <div
-                key={post.id}
-                className="event-in-agenda"
-                style={{ backgroundColor: post.category.color }}
-              >
-                <div className="event-content">
-                  <div className="event-header">
-                    <div className="hour">
-                      {moment(post.payload.scheduled.publishUTCDateTime).tz(timezone).format("h:mm A")}
-                    </div>
-                    <div className="category" style={{ backgroundColor: post.category.color }}
-                        className="category-post">
-                        {post.category.category_name}
-                    </div>
-                  </div>
-                  <div className="content">
-                  { post.content ?
-                      `${(post.content).substring(0, 200)}${post.content.length > 200 ? '...' : ''}` :
-                      ''
-                  }
-                  </div>
-                  <div className="event-channels">
-                    {
-                      channelsList
-                        .filter(channel => post['channel_ids'].indexOf(channel.id) !== -1)
-                        .map(({ type, avatar }, index) => (
-                          <div key={`${type}-${index}`}>
-                            <img src={avatar} />
-                            <i className={`fab fa-${type} ${type}_bg`} />
-                          </div>
-                        ))
-                    }
-                  </div>
-                </div>
+
+  toggleAgenda = () => {
+    this.setState({ showAgenda: !this.state.showAgenda });
+  }
+
+  render() {
+    const { posts, timezone, channelsList } = this.props;
+    const { showAgenda } = this.state;
+    const currentDate = timezone ? moment().tz(timezone) : moment();
+    let lastDate = '';
+    
+    return (
+      <div className="agenda-container">
+        {
+          showAgenda && (
+            <div className="todays-agenda">
+              <div className="ta-title">
+                <span className="ta-label">Today’s agenda,</span>
+                <span>{currentDate.format('MMM D.')}</span>
               </div>
-            ))
-          }
+              {
+                posts.filter(this.filterTodaysByTimezone).map((post) => {
+                  let showTime = false;
+                  
+                  if (lastDate !== post.payload.scheduled.publishUTCDateTime) {
+                    lastDate = post.payload.scheduled.publishUTCDateTime;
+                    showTime = true;
+                  }
+
+                  return (
+                    <React.Fragment>
+                      {
+                        showTime && (
+                          <div className="time-title">
+                            <div className="time">
+                              {moment(post.payload.scheduled.publishUTCDateTime).tz(timezone).format("h.mm A")}
+                            </div>
+                            <div className="separator"></div>
+                          </div>
+                        )
+                      }
+                      <AgendaItem key={post.id} post={post} channelsList={channelsList} />
+                    </React.Fragment>
+                  )
+                })
+              }
+            </div>
+          )
+        }
+        <div className={`post-queue-bar ${showAgenda ? 'open' : ''}`}>
+          <div
+            className={`calendar-opt option ${showAgenda ? 'active' : ''}`}
+            onClick={this.toggleAgenda}
+          >
+            <i className="fa fa-calendar-o" />
+          </div>
         </div>
-      }
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state) => {

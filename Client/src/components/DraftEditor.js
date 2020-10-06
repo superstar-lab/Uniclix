@@ -61,7 +61,7 @@ class DraftEditor extends React.Component{
     onChange = (editorState) => {
 
         const text = editorState.getCurrentContent().getPlainText();
-
+        console.log(text);
         this.setState(() => ({
             editorState,
             letterCount: text.length
@@ -212,6 +212,23 @@ class DraftEditor extends React.Component{
             });
         }
     }
+
+    getErrors = () => {
+        const { withTwitter, content, setWithError, withError } = this.props;
+        let errors = [];
+
+        if (withTwitter && content.length >= 280) {
+            errors.push('Twitter does\'t allow more that 280 characters.');
+        }
+
+        if (errors.length && !withError) {
+            setWithError(true);
+        } else if (!errors.length && withError) {
+            setWithError(false);
+        }
+
+        return errors;
+    }
     
     render(){
         const emojiPlugin = this.emojiPlugin;
@@ -222,118 +239,116 @@ class DraftEditor extends React.Component{
         const plugins = [emojiPlugin, hashtagMentionPlugin];
         const {scheduledLabel, inclusive, toggle, network, imageLimit} = this.props;
         const { videoName } = this.state;
+        const errors = this.getErrors();
 
         return(
-            <div className="draft_editor_container">
+            <React.Fragment>
+                <div className="draft_editor_container">
 
-                {inclusive &&
-                    <div className="modal-header">
-                        <button
-                            id="closeModal"
-                            onClick={toggle}
-                            className="close fa fa-times-circle"
-                            data-dismiss="modal">
-                        </button>
-                        <h4>Editing</h4>
-                    </div>
-                }
-
-                <div className="draft-body">
-                    <form id="draft_form">
-                        <div>
-                            <div className="editor" onClick={this.focus}>
-
-                                {scheduledLabel}
-
-                                <Editor
-                                    editorState={this.state.editorState}
-                                    onChange={this.onChange}
-                                    handleKeyCommand={this.props.handleKeyCommand}
-                                    keyBindingFn={this.myKeyBindingFn}
-                                    plugins={plugins}
-                                    placeholder={this.state.placeholderText}
-                                    ref={(element) => { this.editor = element; }}
-                                />
-                                <FileUploader
-                                    withIcon={false}
-                                    buttonText=''
-                                    onChange={this.onDrop}
-                                    imgExtension={['.jpg', '.gif', '.png', '.gif', '.webp', '.jpeg', '.svg']}
-                                    maxFileSize={5242880}
-                                    withPreview={true}
-                                    withLabel={false}
-                                    buttonClassName='dnone'
-                                    ref={this.imageIcon}
-                                    defaultImages={this.state.pictures}
-                                    singleImage={this.state.singleImage}
-                                    fileType='image'
-                                    onUpload={this.onUpload}
-                                    progressBarValue={this.state.progressBarValue}
-                                    uploadCount={this.state.uploadCount}
-                                />
-                                <FileUploader
-                                    withIcon={false}
-                                    buttonText=''
-                                    onChange={this.onVideo}
-                                    imgExtension={['.mp4', '.avi', '.mov', '.mpg', '.mpeg', '.webm', '.wmv', '.ogm', '.ogv', '.asx', '.m4v']}
-                                    accept="video/mp4,video/x-m4v,video/*"
-                                    maxFileSize={104857600}
-                                    withPreview={true}
-                                    withLabel={false}
-                                    buttonClassName='dnone'
-                                    ref={this.videoRef}
-                                    defaultImages={this.state.videos}
-                                    singleImage={this.state.singleImage}
-                                    fileType='video'
-                                    onUpload={this.onUpload}
-                                    progressBarValue={this.state.progressBarValue}
-                                    uploadCount={this.state.uploadCount}
-                                />
-
-                                <EmojiSuggestions />
-                                <HashtagSuggestions
-                                    onSearchChange={this.onHashtagSearchChange}
-                                    suggestions={this.state.hashtagSuggestions}
-                                    onAddMention={this.onAddMention}
-                                    onClose={() => this.setState({ ...this, suggestions: hashtagSuggestionList })}
-                                />
-                            </div>
+                    {inclusive &&
+                        <div className="modal-header">
+                            <button
+                                id="closeModal"
+                                onClick={toggle}
+                                className="close fa fa-times-circle"
+                                data-dismiss="modal">
+                            </button>
+                            <h4>Editing</h4>
                         </div>
-                    </form>
-                </div>
-                <div className="video-label">{videoName}</div>
-                <div className="editor-icons">
-                    {this.state.showEmojiIcon && <EmojiSelect />}
-                    {this.state.showImagesIcon && 
-                        (   (imageLimit <= this.state.pictures.length) || (this.state.videos.length > 0) ?
-                            <i className="fa fa-image upload-images disabled-btn"></i>
-                            :
-                            <i onClick={this.onImageIconClick} className="fa fa-image upload-images" style={{color: '#2D86DA'}}></i>
-                        )
                     }
-                    {this.state.showVideosIcon && 
-                        ((imageLimit <= this.state.videos.length) || (this.state.pictures.length > 0) ?
-                            <i className="fa fa-file-video-o disabled-btn"></i>
-                            :
-                            <i className="fa fa-file-video-o" onClick={this.onVideoIconClick}></i>
-                        )
-                    }
-                </div>
 
-                {inclusive && 
-                    <div className="modal-footer" style={{position:"relative"}}>
-                    
-                        <p className={`letter-count pull-left ${this.state.letterCount > 280 && network == 'twitter' ? 'red-txt' : ''}`}>{this.state.letterCount}</p>
+                    <div className="draft-body">
+                        <form id="draft_form">
+                            <div>
+                                <div className="editor" onClick={this.focus}>
 
-                        {(this.state.letterCount > 280 && network == "twitter") || (this.state.pictures.length < 1 && network == "pinterest") || (this.state.letterCount < 1 && this.state.pictures.length < 1) ?
-                            <button disabled onClick={this.onDone} className={`upgrade-btn pull-right disabled-btn`}>Done</button>
-                        :
-                            <button onClick={this.onDone} className={`upgrade-btn pull-right`}>Done</button>
-                        }
-                        
+                                    {scheduledLabel}
+
+                                    <Editor
+                                        editorState={this.state.editorState}
+                                        onChange={this.onChange}
+                                        handleKeyCommand={this.props.handleKeyCommand}
+                                        keyBindingFn={this.myKeyBindingFn}
+                                        plugins={plugins}
+                                        placeholder={this.state.placeholderText}
+                                        ref={(element) => { this.editor = element; }}
+                                    />
+                                    <FileUploader
+                                        withIcon={false}
+                                        buttonText=''
+                                        onChange={this.onDrop}
+                                        imgExtension={['.jpg', '.gif', '.png', '.gif', '.webp', '.jpeg', '.svg']}
+                                        maxFileSize={5242880}
+                                        withPreview={true}
+                                        withLabel={false}
+                                        buttonClassName='dnone'
+                                        ref={this.imageIcon}
+                                        defaultImages={this.state.pictures}
+                                        singleImage={this.state.singleImage}
+                                        fileType='image'
+                                        onUpload={this.onUpload}
+                                        progressBarValue={this.state.progressBarValue}
+                                        uploadCount={this.state.uploadCount}
+                                    />
+                                    <FileUploader
+                                        withIcon={false}
+                                        buttonText=''
+                                        onChange={this.onVideo}
+                                        imgExtension={['.mp4', '.avi', '.mov', '.mpg', '.mpeg', '.webm', '.wmv', '.ogm', '.ogv', '.asx', '.m4v']}
+                                        accept="video/mp4,video/x-m4v,video/*"
+                                        maxFileSize={104857600}
+                                        withPreview={true}
+                                        withLabel={false}
+                                        buttonClassName='dnone'
+                                        ref={this.videoRef}
+                                        defaultImages={this.state.videos}
+                                        singleImage={this.state.singleImage}
+                                        fileType='video'
+                                        onUpload={this.onUpload}
+                                        progressBarValue={this.state.progressBarValue}
+                                        uploadCount={this.state.uploadCount}
+                                    />
+
+                                    <EmojiSuggestions />
+                                    <HashtagSuggestions
+                                        onSearchChange={this.onHashtagSearchChange}
+                                        suggestions={this.state.hashtagSuggestions}
+                                        onAddMention={this.onAddMention}
+                                        onClose={() => this.setState({ ...this, suggestions: hashtagSuggestionList })}
+                                    />
+                                </div>
+                            </div>
+                        </form>
                     </div>
+                    <div className="video-label">{videoName}</div>
+                    <div className="editor-icons">
+                        {this.state.showEmojiIcon && <EmojiSelect />}
+                        {this.state.showImagesIcon && 
+                            (   (imageLimit <= this.state.pictures.length) || (this.state.videos.length > 0) ?
+                                <i className="fa fa-image upload-images disabled-btn"></i>
+                                :
+                                <i onClick={this.onImageIconClick} className="fa fa-image upload-images" style={{color: '#2D86DA'}}></i>
+                            )
+                        }
+                        {this.state.showVideosIcon && 
+                            ((imageLimit <= this.state.videos.length) || (this.state.pictures.length > 0) ?
+                                <i className="fa fa-file-video-o disabled-btn"></i>
+                                :
+                                <i className="fa fa-file-video-o" onClick={this.onVideoIconClick}></i>
+                            )
+                        }
+                    </div>
+                </div>
+                {
+                    !!errors.length && (
+                        <div className="editor-errors">
+                            {
+                                errors.map(error => <div className="error-msg">{error}</div>) 
+                            }
+                        </div>
+                    )
                 }
-            </div>
+            </React.Fragment>
         );
     }
 }
