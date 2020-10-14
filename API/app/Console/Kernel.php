@@ -53,7 +53,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('sync:articles')
             ->twiceDaily(1, 13);
 
-        $schedule->call(function (){
+        $schedule->call(function (){ // Delete articles older than one month
             Article::removeOlderArticles();
         })->weekly();
     }

@@ -37,10 +37,10 @@ class Article extends Model
 
         $apiUrl = "https://newsapi.org/v2/everything?q={$topic}&language={$language}&sortBy={$sortBy}&pageSize={$pageSize}&apiKey={$apiKey}";
 
-        $response = $client->request("GET", $apiUrl, ['headers' => ['Accept' => 'application/json']]); 
-    
+        $response = $client->request("GET", $apiUrl, ['headers' => ['Accept' => 'application/json']]);
+
         $responseData = json_decode((string) $response->getBody(), true);
-        
+
         $feed = [];
 
         if(!$responseData) return;
@@ -71,5 +71,10 @@ class Article extends Model
         }
 
         self::insert($feed);
+    }
+
+    public static function removeOlderArticles()
+    {
+        \DB::table('articles')->where('published_at', '<', Carbon::today()->subMonth())->delete();
     }
 }
