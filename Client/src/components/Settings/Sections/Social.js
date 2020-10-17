@@ -198,20 +198,17 @@ class Social extends React.Component {
                         <div className="row mt20">
                             <div className="col-md-10">
                                 <div className="col-md-12">
-                                    <div class="form-group search-account">
-                                        <input type="search" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search Account" />
-                                        <span><i class="fa fa-search"></i></span>
-                                    </div>
-                                    <ChannelItems channels={this.props.channels} setAction={this.setAction} />
-                                    {!!this.props.loading && <Loader />}
-
-                                    <div className="accounts-container__content__wrapper__footer">
-
-                                        <button className="add-channel-plus-btn" onClick={() => this.AddOtherAccounts(true)}>
+                                    <div className="channels-grid">
+                                        <div
+                                            className="add-account-btn"
+                                            onClick={() => this.AddOtherAccounts(true)}
+                                        >
                                             <i className="fa fa-plus"></i>
-                                        </button>
-                                        <span className="left-side-label">Add more accounts</span>
+                                            <span className="left-side-label">Add more accounts</span>
+                                        </div>
+                                        <ChannelItems channels={this.props.channels} setAction={this.setAction} />
                                     </div>
+                                    {!!this.props.loading && <Loader />}
                                 </div>
                             </div>
                         </div>

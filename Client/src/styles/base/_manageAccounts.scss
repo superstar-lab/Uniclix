@@ -1,0 +1,112 @@
+.channels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 180px);
+  grid-gap: 20px;
+}
+
+.account-square,
+.add-account-btn {
+  height: 124px;
+  width: 180px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out, border 0.3s ease-in-out;
+}
+
+.account-square:hover,
+.add-account-btn:hover {
+  box-shadow: 0 10px 6px -6px #777;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.add-account-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+
+  i {
+    margin-bottom: 20px;
+  }
+}
+
+.account-square {
+  height: 124px;
+  width: 180px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  box-sizing: content-box;
+
+  .avatar-container {
+    position: relative;
+
+    img {
+      width: 100%;
+      max-height: 100px;
+      object-fit: cover;
+    }
+
+    i {
+      position: absolute;
+      left: 15px;
+      top: 75px;
+      padding: 3px;
+    }
+  }
+
+  .name-holder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFF;
+  }
+
+  .user-action {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 124px;
+    width: 180px;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(216, 62, 127, 0.5);
+    font-size: 35px;
+    color: #FFF;
+    cursor: pointer;
+  }
+}
+
+.account-square:hover {
+  .user-action {
+    display: flex;
+  }
+}
+
+.connect-btn {
+  border: none;
+  height: 86px;
+
+  i {
+    height: 50px;
+    width: 50px;
+    font-size: 20px;
+    margin-right: 16px;
+    color: #FFF;
+  }
+
+  .title {
+    margin: 0 0 5px 0;
+    size: 14px;
+    font-weight: 500;
+  }
+
+  .sub-title {
+    size: 14px;
+    text-align: initial;
+  }
+}

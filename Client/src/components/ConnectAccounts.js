@@ -117,6 +117,7 @@ class ConnectAccounts extends React.Component {
                 this.props.startAddTwitterChannel(body.oauth_token, body.oauth_token_secret)
                     .then(() => {
                         this.setState(() => ({ loading: false, addAccounts: "twitter" }));
+                        this.props.AddOtherAccounts();
                     }).catch(error => {
                         this.setState(() => ({ loading: false }));
                         if (error.response.status === 409) {
@@ -222,6 +223,7 @@ class ConnectAccounts extends React.Component {
                     this.setState(() => ({ loading: false }));
                     this.props.startSetChannels();
                     this.togglebussinesPagesModal();
+                    this.props.AddOtherAccounts();
                 })
                 .catch(error => {
                     this.setState({
@@ -250,6 +252,7 @@ class ConnectAccounts extends React.Component {
                     this.setState(() => ({ loading: false }));
                     this.props.startSetChannels();
                     this.togglebussinesPagesModal();
+                    this.props.AddOtherAccounts();
                 })
                 .catch(error => {
                     this.setState({
@@ -315,24 +318,6 @@ class ConnectAccounts extends React.Component {
                         title: 'Error',
                         content: 'Something went wrong!'
                     });
-                }
-            });
-        } catch (e) {
-            this.setState(() => ({ loading: false }));
-        }
-    };
-
-    onPinterestSuccess = (response) => {
-        try {
-            this.setState(() => ({ loading: true }));
-            this.props.startAddPinterestChannel(response.accessToken).then(() => {
-                this.setState(() => ({ loading: false, addAccounts: "pinterest" }));
-            }).catch(error => {
-                this.setState(() => ({ loading: false }));
-                if (error.response.status === 403) {
-                    this.setForbidden(true);
-                } else {
-                    this.setError("Something went wrong!");
                 }
             });
         } catch (e) {
@@ -446,12 +431,75 @@ class ConnectAccounts extends React.Component {
         return filteredAccounts;
     };
 
+    getFacebookLabel = () => {
+        const { channels } = this.props;
+        const fbAccounts = { pages: [], groups: [], profiles: [] };
+        let subTitle = [];
+
+        channels
+            .filter(item => item.type === 'facebook')
+            .map(item => {
+                if (item.details.account_type === 'profile') fbAccounts.profiles.push(item);
+                if (item.details.account_type === 'group') fbAccounts.groups.push(item);
+                if (item.details.account_type === 'page') fbAccounts.pages.push(item);
+            });
+
+        if (fbAccounts.pages.length) subTitle.push(`${fbAccounts.pages.length} pages`);
+        if (fbAccounts.groups.length) subTitle.push(`${fbAccounts.groups.length} groups`);
+        if (fbAccounts.profiles.length) subTitle.push(`${fbAccounts.profiles.length} profiles`);
+
+        return (
+            <div className="btn-label">
+                <div className="title">
+                    { !!subTitle.length ? 'Connected accounts' : 'Connect my Facebook account' }
+                </div>
+                { !!subTitle.length && <div className="sub-title">{subTitle.join(' | ')}</div> }
+            </div>
+        );
+    }
+
+    getTwitterLabel = () => {
+        const { channels } = this.props;
+        let subTitle = channels.filter(item => item.type === 'twitter').length;
+
+        return (
+            <div className="btn-label">
+                <div className="title">
+                    { !!subTitle ? 'Connected accounts' : 'Connect my Twitter account' }
+                </div>
+                { !!subTitle && <div className="sub-title">{`${subTitle} profiles`}</div> }
+            </div>
+        );
+    }
+
+    getLinkedinLabel = () => {
+        const { channels } = this.props;
+        const liAccounts = { pages: [], profiles: [] };
+        let subTitle = [];
+
+        channels
+            .filter(item => item.type === 'linkedin')
+            .map(item => {
+                if (item.details.account_type === 'profile') liAccounts.profiles.push(item);
+                if (item.details.account_type === 'page') liAccounts.pages.push(item);
+            });
+
+        if (liAccounts.pages.length) subTitle.push(`${liAccounts.pages.length} pages`);
+        if (liAccounts.profiles.length) subTitle.push(`${liAccounts.profiles.length} profiles`);
+
+        return (
+            <div className="btn-label">
+                <div className="title">
+                    { !!subTitle.length ? 'Connected accounts' : 'Connect my Linkedin account' }
+                </div>
+                { !!subTitle.length && <div className="sub-title">{subTitle.join(' | ')}</div> }
+            </div>
+        );
+    }
+
     render() {
-        const { channels, AddOtherAccounts } = this.props;
         const { loading, addAccounts, bussinesPagesModal, error, accountsModal, message } = this.state;
-        let countLinkedFacebookAcc = channels.length > 0 ? channels.filter(item => item.type == 'facebook').length : 0
-        let countLinkedTwitterAcc = channels.length > 0 ? channels.filter(item => item.type == 'twitter').length : 0
-        let countLinkedLinkedinAcc = channels.length > 0 ? channels.filter(item => item.type == 'linkedin').length : 0
+        
         return (
             <div className="main-container">
                         
@@ -463,6 +511,7 @@ class ConnectAccounts extends React.Component {
                         onSave={this.onBussinesPagesSave}
                         error={error}
                         closeModal={this.togglebussinesPagesModal}
+                        socialMedia={addAccounts}
                     />
                     {loading && <LoaderWithOverlay />}
                    
@@ -482,77 +531,54 @@ class ConnectAccounts extends React.Component {
                     }
 
                     <div className="box channels-box">
-                        {channels.length > 0 && addAccounts.length > 0
-                            ?
-                            <div className="">
-                                <div className="channel-profiles">
-                                    <h2>Connected your <span className="capitalized-text">{addAccounts}</span> account</h2>
-                                    <h5>Cats who destroy birds. Eat an easter feather as if it were a bird then burp victoriously</h5>
-
-                                    {channels.map(channel => {
-                                        if (addAccounts == channel.type) {
-                                            return (
-                                                <div key={channel.id} className="channel-profile-box col-xs-12">
-                                                    {this.renderTypeaccounts(channel)}
-                                                </div>
-                                            )
-                                        }
-                                    })}
-                                    {this.renderTypeLoginAccounts(addAccounts)}
-                                    <button className="magento-btn mt50" onClick={() => this.showAllChannels()}>Continue</button>
-                                </div>
+                        <div>
+                            <div className="header-title">
+                                <div className="main">Connect a new social account</div>
+                                <div className="secondary">Click one of the buttons below to get started:</div>
                             </div>
-                            :
-                            <div>
-                                <div className="header-title">
-                                    <h2>Connect your accounts</h2>
-                                    <h5>Click one of the buttons below to get started:</h5>
-                                </div>
-                                <div className="channel-buttons">
-                                    <FacebookLogin
-                                        appId={facebookAppId}
-                                        autoLoad={false}
-                                        fields={fbFields}
-                                        scope={fbScope}
-                                        callback={this.onFacebookSuccess}
-                                        cssClass="col-md-12 twitter-middleware-btn"
-                                        icon={<i className="fab fa-facebook"></i>}
-                                        textButton={countLinkedFacebookAcc ? countLinkedFacebookAcc + " Connected Facebook Accounts. Add more" : "Connect my Facebook Account"}
-                                        ref={this.facebookRef}
-                                        disableMobileRedirect={true}
-                                    />
+                            <div className="channel-buttons">
+                                <FacebookLogin
+                                    appId={facebookAppId}
+                                    autoLoad={false}
+                                    fields={fbFields}
+                                    scope={fbScope}
+                                    callback={this.onFacebookSuccess}
+                                    cssClass="col-md-12 twitter-middleware-btn connect-btn"
+                                    icon={<i className="fab fa-facebook-square facebook_bg"></i>}
+                                    textButton={this.getFacebookLabel()}
+                                    ref={this.facebookRef}
+                                    disableMobileRedirect={true}
+                                />
 
-                                    <button
-                                        className="col-md-12 twitter-middleware-btn"
-                                        onClick={(e) => this.twitterRef.current.onButtonClick(e)}>
-                                        <i className="fab fa-twitter"></i>
-                                        {countLinkedTwitterAcc ? countLinkedTwitterAcc + " connected Twitter Accounts. Add more" : "Connect my Twitter Account"}
-                                    </button>
+                                <button
+                                    className="col-md-12 twitter-middleware-btn connect-btn"
+                                    onClick={(e) => this.twitterRef.current.onButtonClick(e)}>
+                                    <i className="fab fa-twitter twitter_bg"></i>
+                                    {this.getTwitterLabel()}
+                                </button>
 
-                                    <LinkedInButton
-                                        clientId={linkedinAppId}
-                                        redirectUri={`${backendUrl}/api/linkedin/callback`}
-                                        onSuccess={this.onLinkedInSuccess}
-                                        onError={this.onFailure}
-                                        cssClass="col-md-12 twitter-middleware-btn"
-                                        icon={<i className="fab fa-linkedin"></i>}
-                                        countLinkedLinkedinAcc
-                                        textButton={countLinkedLinkedinAcc ? countLinkedLinkedinAcc + " Connected Linkedin Accounts. Add more" : "Connect my Linkedin Account"}
-                                        ref={this.linkedinRef}
-                                    />
+                                <LinkedInButton
+                                    clientId={linkedinAppId}
+                                    redirectUri={`${backendUrl}/api/linkedin/callback`}
+                                    onSuccess={this.onLinkedInSuccess}
+                                    onError={this.onFailure}
+                                    cssClass="col-md-12 twitter-middleware-btn connect-btn"
+                                    icon={<i className="fab fa-linkedin linkedin_bg"></i>}
+                                    countLinkedLinkedinAcc
+                                    textButton={this.getLinkedinLabel()}
+                                    ref={this.linkedinRef}
+                                />
 
-                                    <TwitterLogin loginUrl={twitterAccessTokenUrl}
-                                        onFailure={this.onFailure} onSuccess={this.onTwitterSuccess}
-                                        requestTokenUrl={twitterRequestTokenUrl}
-                                        showIcon={false}
-                                        forceLogin={true}
-                                        className="hide"
-                                        ref={this.twitterRef}
-                                    ></TwitterLogin>
-                                    <button className="magento-btn mt50" onClick={() => AddOtherAccounts(false)}>Save</button>
-                                </div>
+                                <TwitterLogin loginUrl={twitterAccessTokenUrl}
+                                    onFailure={this.onFailure} onSuccess={this.onTwitterSuccess}
+                                    requestTokenUrl={twitterRequestTokenUrl}
+                                    showIcon={false}
+                                    forceLogin={true}
+                                    className="hide"
+                                    ref={this.twitterRef}
+                                ></TwitterLogin>
                             </div>
-                        }
+                        </div>
                     </div>
                 </div>
             </div>

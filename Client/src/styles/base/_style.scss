@@ -148,6 +148,10 @@ a:link {
   width: 70%;
 }
 
+.login-container.channels .box.channels-box {
+  width: 85%;
+}
+
 .box.channels-box {
   h2 {
     font-weight: bold;
@@ -3535,18 +3539,65 @@ button.doneBtn {
 
   .close-icon {
     position: absolute;
-    top: 5px;
-    right: 10px;
+    top: 17px;
+    right: 25px;
     cursor: pointer;
+    color: #C4C8CC !important;
   }
 }
 
 .account-select-modal {
   width: 500px !important;
   max-width: 500px !important;
+  height: 600px;
+  max-height: 600px;
   border: 1px solid #ccc;
-  background: white;
+  background: #F5F7FB;
   margin: 10px;
+  padding: 17px 25px;
+  border-radius: 7px;
+
+  .ant-tabs {
+    height: 450px;
+    max-height: 450px;
+  }
+
+  .ant-tabs-tab {
+    font-weight: 700;
+  }
+
+  .ant-tabs-ink-bar {
+    height: 3px;
+  }
+
+  .modal-title {
+    font-weight: 700;
+    font-size: 16px;
+    padding: 0;
+    margin-bottom: 45px;
+  }
+
+  .no-accounts-msg {
+    font-weight: 700;
+    text-align: center;
+    margin: 50px;
+  }
+
+  .modal-btns {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .cancel {
+      margin-right: 35px;
+      color: #2D86DA;
+      font-weight: 700;
+    }
+
+    .connect {
+      background-color: #2D86DA;
+    }
+  }
 }
 
 .account-items-wrapper {
@@ -3561,6 +3612,32 @@ button.doneBtn {
   padding: 10px 30px;
   width: 100%;
   max-height: 400px;
+  background-color: #FFF; 
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+
+  .account-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    img {
+      margin-right: 15px;
+    }
+
+    .name {
+      color: #363636;
+    }
+  }
+
+  &.selected {
+    background-color: #EAF3FB;
+
+    i {
+      font-size: 20px;
+      color: #2D86DA;
+    }
+  }
 }
 
 .center-inline {
@@ -4519,8 +4596,21 @@ aside .btn-group {
 }
 
 .header-title {
-  h5 {
-    float: left;
+  color: #363636;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .main {
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .secondary {
+    margin-bottom: 40px;
+    font-size: 18px;
+    font-weight: 400;
   }
 }
 
