@@ -28,3 +28,5 @@ export const tidioUrl = process.env.TIDIO_URL ? process.env.TIDIO_URL : '';
 
 export const userFlowToken = process.env.USERFLOW_TOKEN ? process.env.USERFLOW_TOKEN : '';
 
+export const facebookPixelID = process.env.FACEBOOK_PIXEL_ID ? process.env.FACEBOOK_PIXEL_ID : '';
+
