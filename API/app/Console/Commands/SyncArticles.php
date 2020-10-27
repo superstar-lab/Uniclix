@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Article;
 use Illuminate\Console\Command;
 use App\Models\Topic;
 
@@ -37,11 +38,20 @@ class SyncArticles extends Command
      * @return mixed
      */
     public function handle()
-    {   
-        $topics = Topic::select('topic')->distinct()->pluck("topic")->toArray();
+    {
+        $topics = Topic::select('topic')
+                    ->join('users', 'topics.user_id', '=', 'users.id')
+                    ->where('users.active', 1)
+                    ->distinct()->pluck("topic")->toArray();
 
-        foreach (array_chunk($topics, 300) as $chunck) {
-            multiRequest(route('articles.sync'), $chunck);
+        foreach ($topics as $topic){
+
+            try{
+                Article::storeByTopic($topic);
+
+            }catch(\Exception $e){
+                return $e->getMessage();
+            }
         }
     }
 }
