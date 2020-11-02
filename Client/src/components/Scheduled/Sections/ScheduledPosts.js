@@ -267,12 +267,12 @@ class ScheduledPosts extends React.Component {
 
   render() {
     const { startDate, endDate, calendarDisplay, posts, isLoading, resetDates } = this.state;
-    const { timezone, selectedChannel } = this.props;
+    const { timezone, selectedChannel, startTour } = this.props;
 
     return (
       <div className="calendar-events">
         <div className="calendar-container">
-          <div className="new-post">
+          <div className="new-post step-1">
             <h4 className="infinite-best-btn-title">Create Post</h4>
             <button className="infinite-best-btn" onClick={this.props.onNewPostClick}>
               <div>What's on your mind?</div>
@@ -296,7 +296,7 @@ class ScheduledPosts extends React.Component {
                 :
                 <div/>
             }
-            <div>
+            <div className="display-by step-3">
               <span className="label">Display By</span>
               <Select value={calendarDisplay} onChange={this.onPeriodChange}>
                 {
@@ -351,6 +351,7 @@ class ScheduledPosts extends React.Component {
           <TodaysAgenda
             posts={posts}
             timezone={timezone}
+            startTour={startTour}
           />
         </div>
         { isLoading && <Loader fullscreen /> }

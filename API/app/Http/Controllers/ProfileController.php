@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\OnBoardingQuestion;
 
 class ProfileController extends Controller
 {
@@ -156,5 +157,17 @@ class ProfileController extends Controller
         }
 
         return response()->json(['message' => 'Timezone updated successfully.']);
+    }
+
+    public function saveOnBoardingQuestions(Request $request)
+    {
+        $howDidYouFindUs = $request->input('howDidYouFindUs');
+        $businessDescription = $request->input('businessDescription');
+
+        OnBoardingQuestion::create([
+            'user_id' => $this->user->id,
+            'how_did_you_find_us' => $howDidYouFindUs,
+            'business_description' => $businessDescription
+        ]);
     }
 }

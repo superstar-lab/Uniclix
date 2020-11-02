@@ -6,10 +6,6 @@ import { schedulingTimes, schedulingStore, schedulingEdit, destroyTime, clearAll
 
 import SchedulingTableHeader from '../components/SchedulingTableHeader';
 import SchedulingTableBody from '../components/SchedulingTableBody';
-import Compose from '../../Compose/index';
-import DateRangeSelector from '../components/DateRangeSelector';
-import PostsCalendar from '../components/PostsCalendar';
-import TodaysAgenda from '../components/TodaysAgenda';
 import Loader from '../../Loader';
 
 const { Option } = Select;

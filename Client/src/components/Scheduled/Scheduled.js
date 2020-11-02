@@ -2,8 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 import moment from 'moment';
-import { notification } from 'antd';
+import { notification, Button } from 'antd';
 import userflow from 'userflow.js';
+import Modal from 'react-modal';
 
 import FunctionModal from '../Modal';
 import { updateTimeZone } from '../../requests/profile';
@@ -11,6 +12,7 @@ import { setComposerModal, setPostAtBestTime, setPostCalendar } from '../../acti
 import { isOwnerOrAdmin } from '../../utils/helpers';
 import { unapprovedPosts } from '../../requests/channels';
 import { setTimezone } from '../../actions/profile';
+import channelSelector from "../../selectors/channels";
 
 import ScheduledPosts from './Sections/ScheduledPosts';
 import PostScheduling from './Sections/PostScheduling';
@@ -18,14 +20,60 @@ import TimezoneSelector from './components/TimezoneSelector';
 import AwaitingApproval from './Sections/AwaitingApproval';
 import AwaitingApprovalTabTitle from './components/AwaitingApprovalTabTitle';
 import Loader from '../Loader';
-import channelSelector from "../../selectors/channels";
+import TourWizard from '../TourWizard';
 
 const { TabPane } = Tabs;
+
+const tourWizardConfig = [
+  {
+    target: '.new-post.step-1',
+    title: 'Create a new post',
+    message: 'Do you want to create a post right away? Start by clicking on "what\'s on yout mind" section',
+    imageLocation: '../images/alone.svg',
+    cardPosition: 'bottom-left'
+  },
+  {
+    target: '.infinite-scroll-component > div:first-child',
+    title: 'Schedule a post',
+    message: 'Do you want to schedule a post? Click on the desired time slot to start scheduling your post. (Don\'t worry, you can set up your preferred slots from the settings section).',
+    imageLocation: '../images/alone.svg',
+    cardPosition: 'bottom-left'
+  },
+  {
+    target: '.display-by.step-3',
+    title: 'Switch to calendar view',
+    message: 'You can change the layout to what\'s best for you, and display your scheduled posts by day, week or month.',
+    imageLocation: '../images/alone.svg',
+    cardPosition: 'bottom-right',
+    offsetPosition: 70
+  },
+  {
+    target: '.ant-tabs-nav.ant-tabs-nav-animated > div > div:nth-child(3)',
+    title: 'Schedule settings',
+    message: 'You can configure your preferred posting times from the schedule settings tad. Add, edit or delete your time slots from here.',
+    imageLocation: '../images/alone.svg',
+    cardPosition: 'bottom-left',
+    offsetPosition: 70
+  }
+];
+
+const tutorialFinalMsg = {
+  image: '../images/alone.svg',
+  title: 'That\s all!',
+  message: 'Now you know how to manage your posts easily. What will you share next?',
+  buttonLabel: 'Got it!'
+};
 
 class Scheduled extends React.Component {
 
   constructor(props) {
     super(props);
+
+    const {
+      location: {
+        state: { comingFromOnBoarding } = { comingFromOnBoarding: false }
+      }
+    } = this.props;
 
     this.state = {
       activeTab: 'scheduled',
@@ -33,7 +81,9 @@ class Scheduled extends React.Component {
       isLoading: false,
       accountsModal: false,
       awaitingApprovalPosts: [],
-      awaitingLoading: false
+      awaitingLoading: false,
+      tourModalOpen: comingFromOnBoarding,
+      showTour: false
     }
   }
 
@@ -132,18 +182,61 @@ class Scheduled extends React.Component {
     this.props.setPostAtBestTime(true);
   };
 
+  closeTourModal = () => {
+    this.setState({ tourModalOpen: false });
+  }
+
+  startTour = () => {
+    this.setState({ tourModalOpen: false, showTour: true });
+  }
+
   render() {
     const {
       selectedTimezone,
       isLoading,
       activeTab,
       awaitingApprovalPosts,
-      awaitingLoading
+      awaitingLoading,
+      tourModalOpen,
+      showTour
     } = this.state;
     const { accessLevel, user, selectedChannel } = this.props;
 
     return (
       <div className="scheduled">
+        <Modal
+          isOpen={tourModalOpen}
+          className="tour-modal"
+        >
+          <div className="tour-container">
+            <div className="close-icon fa fa-times" onClick={this.closeTourModal}></div>
+            <div className="picture">
+              <img src="/images/welcome-tour.svg" />
+            </div>
+            <div className="content">
+              <div className="tour-title">
+                Welcome to your 14-day Uniclix Basic trial!
+              </div>
+              <div className="list">
+                <ul>
+                  <li>Connect your social accounts</li>
+                  <li>Schedule unlimited posts</li>
+                  <li>Get a calendar view of you social media schedule</li>
+                  <li>And much more!</li>
+                </ul>
+              </div>
+              <Button
+                onClick={this.startTour}
+                className="continue"
+                type="primary"
+                shape="round"
+                size="large"
+              >
+                Start Exploring
+              </Button>
+            </div>
+          </div>
+        </Modal>
         <div className="section-header no-border mb-40">
           <div className="section-header__first-row row posts">
             <div className="col-xs-12 col-md-8 ">
@@ -163,6 +256,7 @@ class Scheduled extends React.Component {
                 selectedChannel={selectedChannel}
                 onBestPostClick={this.onBestPostClick}
                 onNewPostClick={this.onNewPostClick}
+                startTour={this.startTour}
                 />
               )
             }
@@ -187,6 +281,14 @@ class Scheduled extends React.Component {
           </TabPane>
         </Tabs>
         { (isLoading || awaitingLoading) && <Loader fullscreen /> }
+        {
+          showTour && <TourWizard
+            steps={tourWizardConfig}
+            generalClassName={'schedule-posts'}
+            closeTutorial={() => this.setState({ showTour: false })}
+            finalMessage={tutorialFinalMsg}
+          />
+        }
       </div>
     );
   }

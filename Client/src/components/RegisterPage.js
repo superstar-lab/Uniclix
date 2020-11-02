@@ -5,25 +5,25 @@ import { startLogin, initLogin } from "../actions/auth";
 import { startSetChannels } from "../actions/channels";
 import { startSetProfile } from "../actions/profile";
 import { backendUrl } from "../config/api";
-import {registerUser} from '../requests/auth';
+import { registerUser } from '../requests/auth';
 import { getCookie } from '../utils/helpers';
+import zxcvbn from 'zxcvbn';
 
 export class RegisterPage extends React.Component {
-
     state = {
         loading: false,
         name: "",
         email: "",
         password: "",
-        confirmPassword: "",
         error: "",
         checkboxVal: false,
     }
 
-
     performLogin = (token) => {
         return this.props.initLogin(token).then(() => {
-            this.props.startSetProfile();
+            this.props.startSetProfile().then(() => {
+                this.props.goToOnboarding();
+            });
             this.props.startSetChannels();
         }).catch(e => {
             this.setState(() => ({ loading: false }));
@@ -32,14 +32,12 @@ export class RegisterPage extends React.Component {
     };
 
     onRegisterSubmit = () => {
-
         this.setState(() => ({ loading: true }));
         const invitedCookie = getCookie('_fprom_code');
         const data = {
             name: this.state.name,
             email: this.state.email,
             password: this.state.password,
-            password_confirmation: this.state.confirmPassword,
             timezone: moment.tz.guess(),
             isInvited: !!invitedCookie ? 1 : 0
         };
@@ -81,6 +79,7 @@ export class RegisterPage extends React.Component {
             console.log(e);
         });
     };
+
     onInputChange = (e) => {
         let inputName = e.target.name;
         let input = [];
@@ -89,60 +88,118 @@ export class RegisterPage extends React.Component {
             ...input
         });
     };
+
     onCheckboxChange = (e) => {
         let checkboxVal = this.state.checkboxVal;
         this.setState({
             checkboxVal: !checkboxVal,
         });
     }
+
     render() {
+        const { password, email, name, checkboxVal, error} = this.state;
+        const passwordLevel = zxcvbn(password).score;
 
         return (
             <div className="login-form">
-                {!!this.state.error.length &&
-                    <div className="alert alert-danger">
-                        {this.state.error}
-                    </div>}
-
+                {
+                    !!error.length && (
+                        <div className="alert alert-danger">
+                            {error}
+                        </div>
+                    )
+                }
                 <h3>Create your Uniclix account</h3>
                 <div className="form-group">
                     <label htmlFor="inputName1">Full Name</label>
-                    <input type="text" onChange={this.onInputChange} name='name' minLength="6" className="form-control" placeholder="John Doe" value={this.state.name} id="inputName1" aria-describedby="emailHelp" required />
+                    <input
+                        type="text"
+                        onChange={this.onInputChange}
+                        name='name'
+                        minLength="6"
+                        className="form-control"
+                        placeholder="John Doe"
+                        value={name}
+                        id="inputName1"
+                        aria-describedby="emailHelp"
+                        required
+                    />
                 </div>
                 <div className="form-group">
                     <label htmlFor="inputEmail1">Email address</label>
-                    <input type="email" name="email" onChange={this.onInputChange} minLength="8" placeholder="example@domain.com" className="form-control" value={this.state.email} id="inputEmail1" aria-describedby="emailHelp" required />
+                    <input
+                        type="email"
+                        name="email"
+                        onChange={this.onInputChange}
+                        minLength="8"
+                        placeholder="example@domain.com"
+                        className="form-control"
+                        value={email}
+                        id="inputEmail1"
+                        aria-describedby="emailHelp"
+                        required
+                    />
                 </div>
                 <div className="form-group">
                     <label htmlFor="inputPassword1">Password</label>
-                    <input type="password" onChange={this.onInputChange} minLength="8" placeholder="Use at least 8 characters"
-                        className={`form-control ${this.state.password !== "" && this.state.password.length < 8 ? 'red-border' : ''}`}
-                        value={this.state.password} id="inputPassword1" required name="password" />
-                    {this.state.password !== "" && this.state.password.length < 8 ?
-                        <span className="error">Password must be 8 + characters, include 1 uppercase letter and 1 number</span>
-                        :
-                        ''
+                    <input
+                        type="password"
+                        onChange={this.onInputChange}
+                        minLength="8"
+                        placeholder="Use at least 8 characters"
+                        className={`form-control ${password !== "" && password.length < 8 ? 'red-border' : ''}`}
+                        value={password}
+                        id="inputPassword1"
+                        required
+                        name="password"
+                    />
+                    {
+                        password !== "" && password.length < 8 ?
+                            <span className="error">Password must have at least 8 characters</span>
+                            :
+                            ''
                     }
                 </div>
-                <div className="form-group">
-                    <label htmlFor="inputConfirmPassword1">Confirm Password</label>
-                    <input type="password"
-                        placeholder="Repeat the password above"
-                        name="confirmPassword"
-                        onChange={this.onInputChange}
-                        className={`form-control 
-                                    ${this.state.confirmPassword !== "" && this.state.confirmPassword !== this.state.password ? 'red-border' : ''}`}
-                        value={this.state.confirmPassword} id="inputConfirmPassword1"
-                    />
-                </div>
-
+                {
+                    !!password && (
+                        <div className={`password-strength level-${passwordLevel}`}>
+                            <div className="bar-level lvl01"></div>
+                            <div className="bar-level lvl2"></div>
+                            <div className="bar-level lvl3"></div>
+                            <div className="bar-level lvl4"></div>
+                        </div>
+                    )
+                }
                 <p className="inline-txt">
-                    <input type="checkbox" value="true" onChange={this.onCheckboxChange} className="checkbox"/>
-                    I agree with Uniclix <a href={`${backendUrl}/privacy-policy`} target="_blank" className="btn btn-link"> Terms of Services</a>
+                    <input
+                        type="checkbox"
+                        value="true"
+                        onChange={this.onCheckboxChange}
+                        className="checkbox"
+                    />
+                    I agree with Uniclix
+                    <a
+                        href={`${backendUrl}/privacy-policy`}
+                        target="_blank"
+                        className="btn btn-link"> Terms of Services
+                    </a>
                 </p>
-                {this.state.email && this.state.password && this.state.name && this.state.confirmPassword && this.state.checkboxVal?
-                    <button type="submit" onClick={this.onRegisterSubmit} className="btn magento-btn full-width">Sign up</button> :
-                    <button type="submit" className="btn magento-btn full-width disabled-btn" disabled>Sign up</button>
+                {
+                    email && password.length >= 8 && name && checkboxVal ?
+                        <button
+                            type="submit"
+                            onClick={this.onRegisterSubmit}
+                            className="btn magento-btn full-width"
+                        >
+                            Sign up
+                        </button> :
+                        <button
+                            type="submit"
+                            className="btn magento-btn full-width disabled-btn"
+                            disabled
+                        >
+                            Sign up
+                        </button>
                 }
             </div>
         );

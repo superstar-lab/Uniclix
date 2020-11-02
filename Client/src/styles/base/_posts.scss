@@ -54,12 +54,13 @@
   }
 
   .infinite-best-btn-title {
-    background-color: #DAE1E8;
-    border-radius: 5px;
+    background-color: #2D86DA;
+    border-radius: 5px 5px 0 0;
     padding-left: 30px;
     height: 40px;
     line-height: 40px;
     margin: 25px 0 0 0;
+    color: #FFF;
   }
 
   .infinite-best-btn {
@@ -1522,5 +1523,92 @@
   div:hover {
     background-color: #2d86da;
     color: #FFF;
+  }
+}
+
+.tour-modal {
+  width: 505px;
+  height: 560px;
+  font-family: 'Rubik';
+
+  .tour-container {
+    height: 100%;
+    width: 100%;
+    position: relative;
+  }
+
+  .close-icon {
+    position: absolute;
+    top: 17px;
+    right: 25px;
+    cursor: pointer;
+    color: #C4C8CC !important;
+  }
+
+  .picture {
+    height: 300px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #DAE1E8;
+
+    img {
+      width: 368px;
+      height: 263px;
+    }
+  }
+
+  .content {
+    color: #000000;
+    background-color: #FFF;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 50px;
+
+    .tour-title {
+      font-size: 20px;
+      margin-bottom: 24px;
+      margin-top: 30px;
+      font-weight: 500;
+    }
+
+    .list {
+      font-size: 16px;
+      margin-left: 15px;
+      margin-bottom: 20px;
+
+      ul {
+        list-style: none;
+      }
+
+      ul li::before {
+        content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+        color: #D83E7F;  /* Change the color */
+        font-weight: bold; /* If you want it to be bold */
+        display: inline-block; /* Needed to add space between the bullet and the text */
+        width: 1em; /* Also needed for space (tweak if needed) */
+        margin-left: -1em; /* Also needed for space (tweak if needed) */
+      }
+    }
+
+    button {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+#tour-wizard-step {
+  .tour-card.schedule-posts.step-1 {
+    width: 490px;
+    height: 170px;
+  }
+
+  .tour-card.schedule-posts.step-2,
+  .tour-card.schedule-posts.step-3,
+  .tour-card.schedule-posts.step-4 {
+    width: 490px;
+    height: 180px;
   }
 }

@@ -24,7 +24,7 @@ class TodaysAgenda extends React.Component {
   }
 
   render() {
-    const { posts, timezone, channelsList } = this.props;
+    const { posts, timezone, channelsList, startTour } = this.props;
     const { showAgenda } = this.state;
     const currentDate = timezone ? moment().tz(timezone) : moment();
     let lastDate = '';
@@ -73,6 +73,12 @@ class TodaysAgenda extends React.Component {
             onClick={this.toggleAgenda}
           >
             <i className="fa fa-calendar-o" />
+          </div>
+          <div
+            className={`calendar-opt option`}
+            onClick={startTour}
+          >
+            <i className="fa fa-question-circle-o" />
           </div>
         </div>
       </div>

@@ -13,7 +13,8 @@ body {
   font-family: Lato, sans-serif, Arial, Helvetica;
   background: $body_bg;
   font-size: $base_size !important;
-  size: 1;
+  height: auto !important;
+  position: relative;
 }
 
 button,
@@ -301,6 +302,48 @@ a:link {
     align-items: center;
     padding: 10px 0;
     font-size: 1.3rem;
+  }
+
+  .password-strength {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    .bar-level {
+      height: 4px;
+      width: 24%;
+      border-radius: 3px;
+      background-color: #DDDDDD;
+    }
+
+    .lvl01, .lvl2, .lvl3 {
+      margin-right: 8px;
+    }
+  }
+
+  .password-strength.level-0,
+  .password-strength.level-1 {
+    .lvl01 {
+      background-color: #D83E3E;
+    }
+  }
+
+  .password-strength.level-2 {
+    .lvl01, .lvl2 {
+      background: #FA9E49;
+    }
+  }
+
+  .password-strength.level-3 {
+    .lvl01, .lvl2, .lvl3 {
+      background: #F2D776;
+    }
+  }
+
+  .password-strength.level-4 {
+    .lvl01, .lvl2, .lvl3, .lvl4 {
+      background: #57B894;
+    }
   }
 }
 
@@ -916,6 +959,7 @@ a:link {
   justify-content: center;
   align-items: center;
   color: white;
+  display: flex !important;
 }
 
 .stream-feed-container {
@@ -5993,4 +6037,69 @@ section.pricing {
 .video-label {
   text-align: left;
   margin-left: 20px;
+}
+
+.on-boarding {
+  height: 100vh;
+  width: 100%;
+  font-family: Rubik;
+  color: #363636;
+  background-color: #F5F7FB;
+  display: flex;
+
+  .left-side {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
+    .header {
+      margin-bottom: 73px;
+    }
+
+    .on-boarding-form {
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+      height: 100%;
+
+      .on-boarding-title {
+        font-size: 32px;
+        font-weight: 500;
+        margin-bottom: 85px;
+      }
+
+      .input-set {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 30px;
+
+        label {
+          font-size: 14px;
+          font-weight: 500;
+          margin-bottom: 10px;
+        }
+      }
+      
+      .buttons {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+
+        .continue {
+          margin-bottom: 40px;
+          background: #2D86DA;
+          border-color: #2D86DA;
+          width: 529px;
+        }
+      }
+    }
+  }
+
+  .on-boarding-side {
+    background-image: url('/images/on-boarding-side-img.svg');
+  }
 }

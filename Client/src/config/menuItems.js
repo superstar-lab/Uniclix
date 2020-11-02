@@ -96,3 +96,18 @@ export const settingsMenus = {
         }
     ]
 };
+
+export const getExtraForSettings = () => ([
+    {
+        id: 'twitter-booster_manage_posts',
+        displayName: 'Manage posts',
+        uri: '/scheduled',
+        icon: 'pencil'
+    },
+    {
+        id: 'twitter-booster_search',
+        displayName: 'Content Finder',
+        uri: '/content-finder',
+        icon: 'search'
+    }
+  ]);
