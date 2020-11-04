@@ -25,13 +25,20 @@ class TourWizard extends React.Component {
       title: PropTypes.string.isRequired,
       message: PropTypes.string.isRequired,
       buttonLabel: PropTypes.string.isRequired
-    })
+    }),
+    actions: PropTypes.arrayOf(
+      PropTypes.objectOf({
+        callback: PropTypes.func.isRequired,
+        atStepNumber: PropTypes.number.isRequired
+      })
+    )
   }
 
   state = {
     currentStepNumber: 0,
     spotLightPosition: {},
-    tourCardPosition: {}
+    tourCardPosition: {},
+    showCard: true
   }
 
   componentDidMount() {
@@ -97,8 +104,27 @@ class TourWizard extends React.Component {
     this.setState(
       { currentStepNumber: this.state.currentStepNumber + 1 },
       () => {
-        if (this.props.steps.length > this.state.currentStepNumber) {
-          this.calculatePosition()
+        const { steps, actions } = this.props;
+        const { currentStepNumber } = this.state;
+        // We check if there are any actions to take
+        const action = actions ? actions.filter(
+          (action) => currentStepNumber === action.atStepNumber
+        )[0] : null;
+
+        if (steps.length <= currentStepNumber) {
+          // we check if there is an action for when
+          // the tour finishes
+          if (action) {
+            action.callback();
+          }
+
+          return;
+        };
+
+        if (action) {
+          action.callback(this.calculatePosition, this.toggleCard);
+        } else {
+          this.calculatePosition();
         }
       }
     );
@@ -108,13 +134,19 @@ class TourWizard extends React.Component {
     this.props.closeTutorial();
   }
 
+  toggleCard = () => {
+    this.setState({ showCard: !this.state.showCard });
+  }
+
   renderOverlayContent = () => {
     return (
       <div className={`tour-wizard-overlay`}>
-        <div
-          className="spot-light"
-          style={this.state.spotLightPosition}>
-        </div>
+        {
+          this.state.showCard && <div
+            className="spot-light"
+            style={this.state.spotLightPosition}>
+          </div>
+        }
       </div>
     )
   }
@@ -149,7 +181,7 @@ class TourWizard extends React.Component {
 
   render() {
     const { steps, finalMessage, closeTutorial } = this.props;
-    const { currentStepNumber } = this.state;
+    const { currentStepNumber, showCard } = this.state;
 
     // We want to close the tutorial if there are no more steps to show
     // and there is no final message
@@ -166,7 +198,7 @@ class TourWizard extends React.Component {
           )
         }
         {
-          ReactDOM.createPortal(
+          showCard && ReactDOM.createPortal(
             <div className="tour-card-holder">
               {this.renderCardContent()}
             </div>,

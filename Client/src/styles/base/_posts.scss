@@ -530,6 +530,7 @@
 
   .post-scheduling-container {
     width: 800px;
+    min-height: 700px;
 
     .post-scheduling-title {
       width: 100%;
@@ -1607,7 +1608,9 @@
 
   .tour-card.schedule-posts.step-2,
   .tour-card.schedule-posts.step-3,
-  .tour-card.schedule-posts.step-4 {
+  .tour-card.schedule-posts.step-4,
+  .tour-card.schedule-posts.step-5,
+  .tour-card.schedule-posts.step-6 {
     width: 490px;
     height: 180px;
   }
