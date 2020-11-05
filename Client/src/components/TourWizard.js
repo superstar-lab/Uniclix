@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import Modal from 'react-modal';
 
-import { getOffset } from '../../utils/helpers';
+import { getOffset } from '../utils/helpers';
 
 class TourWizard extends React.Component {
   static propTypes = {
@@ -50,6 +50,17 @@ class TourWizard extends React.Component {
   componentWillUnmount() {
     window.removeEventListener('resize', this.calculatePosition);
     document.querySelector('#tour-wizard-node').setAttribute('class', '');
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // this work around is for safari
+    if (this.state.showCard !== nextState.showCard) {
+      document
+        .querySelector('#tour-wizard-node')
+        .setAttribute('class', nextState.showCard ? 'open' : '');
+    }
+
+    return true;
   }
 
   calculatePosition = () => {
