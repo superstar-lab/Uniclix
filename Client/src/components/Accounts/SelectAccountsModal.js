@@ -37,7 +37,7 @@ class SelectAccountsModal extends React.Component{
         const { accounts } = this.props;
 
         return (
-            <Tabs>
+            <Tabs animated={false}>
                 <TabPane tab="Linkedin pages" key="1">
                     {
                         accounts.length ?
@@ -59,7 +59,7 @@ class SelectAccountsModal extends React.Component{
         });
 
         return (
-            <Tabs>
+            <Tabs animated={false}>
                 <TabPane tab="Facebook pages" key="0">
                     {
                         fbAccounts.pages.length ?
@@ -94,9 +94,9 @@ class SelectAccountsModal extends React.Component{
 
         return (
             <Modal
-            isOpen={isOpen}
-            ariaHideApp={false}
-            className="account-select-modal"
+                isOpen={isOpen}
+                ariaHideApp={false}
+                className="account-select-modal"
             >       
                 <div className="modal-title">
                     { socialMedia === 'facebook' ? 
