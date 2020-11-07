@@ -275,9 +275,9 @@ class ScheduledPosts extends React.Component {
           <div className="new-post step-1">
             <h4 className="infinite-best-btn-title">Create Post</h4>
             <button className="infinite-best-btn" onClick={this.props.onNewPostClick}>
-              <div>What's on your mind?</div>
+              <div className="new-post-placeholder">What's on your mind?</div>
               <div className="infinite-best-btn-icon">
-                <div className="infinite-best-btn-icon-laugh"><strong>☺</strong></div>
+                <div className="infinite-best-btn-icon-laugh">☺</div>
                 <i className="fa fa-image upload-images"/>
               </div>
             </button>
@@ -317,7 +317,8 @@ class ScheduledPosts extends React.Component {
                   {this.state.items.map((item, index) => (
                     <div>
                       <div className="infinite-title">
-                        <strong>{item.weekdayNames}, </strong>{item.monthNames} {item.date}
+                        <div className="weekday">{item.weekdayNames},</div>
+                        <div className="month-date">{item.monthNames} {item.date}</div>
                       </div>
                       <PostsDay
                         item={item}

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { notification } from 'antd';
+import { notification, Button } from 'antd';
 
 import { removeMember } from '../../../../requests/team';
 
@@ -30,9 +30,14 @@ class MemberRow extends React.Component {
       teamId: team_id,
       memberId: member_id
     }).then(() => {
-      notification.success({
+      notification.open({
         title: 'Success!',
-        message: 'The member was successfully erased!'
+        message: 'The member was successfully erased!',
+        placement: 'bottomRight',
+        closeIcon: (
+          <span className="close-notif">Got it</span>
+        ),
+        bottom: 110
       });
       refreshMembers();
     })

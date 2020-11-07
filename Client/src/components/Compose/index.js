@@ -184,6 +184,10 @@ class Compose extends React.Component {
     }
   }
 
+  clearCategory = () => {
+    this.props.setCategory();
+  }
+
   render() {
     const {
       closeModal,
@@ -271,21 +275,33 @@ class Compose extends React.Component {
                     <div className="separator"></div>
                     <div className="category-section">
                       <div className="subtitle">Category</div>
-                      <Select
-                        value={category}
-                        placeholder="Select or create your category (Optional)"
-                        onChange={setCategory}
-                        size="large"
-                        style={{ width: '100%' }}
-                      >
-                        {
-                          categoryOptions && categoryOptions.map(category => (
-                            <Option key="topic" value={category.id} title={category.category_name}>
-                              {category.category_name}
-                            </Option>
-                          ))
-                        }
-                      </Select>
+                      { !category && (
+                        <Select
+                          value={category}
+                          placeholder="Select or create your category (Optional)"
+                          onChange={setCategory}
+                          size="large"
+                          style={{ width: '100%' }}
+                        >
+                          {
+                            categoryOptions && categoryOptions.map(category => (
+                              <Option key="topic" value={category.id} title={category.category_name}>
+                                {category.category_name}
+                              </Option>
+                            ))
+                          }
+                        </Select>
+                      )}
+                      {
+                        !!category && (
+                          <div className="selected-category-container">
+                            <div>{categoryOptions.filter(cat => cat.id === category)[0].category_name}</div>
+                            <div className="clear-category-button" onClick={this.clearCategory}>
+                              <i className="close fa fa-times" />
+                            </div>
+                          </div>
+                        )
+                      }
                     </div>
                     {
                       (date || startsAt) && (

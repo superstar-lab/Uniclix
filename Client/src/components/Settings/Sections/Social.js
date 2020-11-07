@@ -85,9 +85,14 @@ class Social extends React.Component {
             .then((response) => {
                 this.props.startSetChannels()
                     .then((response) => {
-                        notification.success({
+                        notification.open({
                             message: 'Done!',
-                            description: 'Account deleted successfully'
+                            description: 'Account deleted successfully',
+                            placement: 'bottomRight',
+                            closeIcon: (
+                                <span className="close-notif">Got it</span>
+                            ),
+                            bottom: 110
                         });
                         this.setState(() => ({
                             action: this.defaultAction
@@ -100,9 +105,14 @@ class Social extends React.Component {
                     }));
                     return;
                 }
-                notification.error({
+                notification.open({
                     message: 'Error',
-                    description: 'We couldn\'t delet your account, please try again later'
+                    description: 'We couldn\'t delet your account, please try again later',
+                    placement: 'bottomRight',
+                    closeIcon: (
+                        <span className="close-notif">Got it</span>
+                    ),
+                    bottom: 110
                 });
             });
     }

@@ -283,15 +283,17 @@ class Scheduled extends React.Component {
           defaultActiveKey="scheduled"
           onChange={(key) => this.onTabChange(key)}
           tabBarExtraContent={this.getTabExtraContent()}
+          animated={false}
         >
           <TabPane tab="Post Queue" key="scheduled">
             {/* I needed a way to force the call that is made when the component gets mounted*/}
-            { activeTab === 'scheduled' && (<ScheduledPosts
-                timezone={selectedTimezone}
-                selectedChannel={selectedChannel}
-                onBestPostClick={this.onBestPostClick}
-                onNewPostClick={this.onNewPostClick}
-                startTour={this.startTour}
+            { activeTab === 'scheduled' && (
+                <ScheduledPosts
+                  timezone={selectedTimezone}
+                  selectedChannel={selectedChannel}
+                  onBestPostClick={this.onBestPostClick}
+                  onNewPostClick={this.onNewPostClick}
+                  startTour={this.startTour}
                 />
               )
             }
