@@ -8,14 +8,16 @@ import { getOffset } from '../utils/helpers';
 
 class TourWizard extends React.Component {
   static propTypes = {
+    setUp: PropTypes.func,
     steps: PropTypes.arrayOf(
       PropTypes.objectOf({
         target: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
-        message: PropTypes.string.isRequired,
+        message: PropTypes.oneOf(PropTypes.node, PropTypes.string).isRequired,
         imageLocation: PropTypes.string.isRequired,
-        cardPosition: PropTypes.oneOf('bottom-left', 'bottom-right'),
-        offsetPosition: PropTypes.number
+        cardPosition: PropTypes.oneOf('bottom-left', 'bottom-right', 'top-right').isRequired,
+        correctPositionX: PropTypes.number,
+        correctPositionY: PropTypes.number,
       })
     ),
     generalClassName: PropTypes.string.isRequired,
@@ -42,6 +44,7 @@ class TourWizard extends React.Component {
   }
 
   componentDidMount() {
+    if (this.props.setUp) this.props.setUp(this.calculatePosition, this.toggleCard);
     this.calculatePosition();
     window.addEventListener('resize', this.calculatePosition);
     document.querySelector('#tour-wizard-node').setAttribute('class', 'open');
@@ -79,7 +82,8 @@ class TourWizard extends React.Component {
     };
     let tourCardStyles = {};
     // This is used to correct the position of the card
-    const offset = currentStep.offsetPosition ? currentStep.offsetPosition : 0;
+    const correctionX = currentStep.correctPositionX ? currentStep.correctPositionX : 0;
+    const correctionY = currentStep.correctPositionY ? currentStep.correctPositionY : 0;
 
     switch(currentStep.cardPosition) {
       case 'bottom-left':
@@ -91,7 +95,13 @@ class TourWizard extends React.Component {
       case 'bottom-right':
         tourCardStyles = {
           top: boundings.height + realPosition.top + 30,
-          left: realPosition.left - boundings.width + offset - 20
+          left: realPosition.left - boundings.width + correctionX - 20
+        }
+        break;
+      case 'top-right':
+        tourCardStyles = {
+          top: realPosition.top - boundings.height - correctionY - 30,
+          left: realPosition.left - boundings.width - correctionX
         }
         break;
     }

@@ -3,6 +3,15 @@
 }
 
 .scheduled {
+  .page-content {
+    display: flex;
+    justify-content: space-between;
+
+    .ant-tabs {
+      flex: 1;
+    }
+  }
+
   .timezone-selector {
     .select-label {
       font-weight: bold;
@@ -1321,9 +1330,10 @@
 }
 
 .agenda-container {
-  height: 100%;
   display: flex;
   margin-right: -30px;
+  height: inherit;
+  margin-top: 80px;
 }
 
 .todays-agenda {
@@ -1440,7 +1450,7 @@
   width: 58px;
   height: 100%;
   background: #FFF;
-  border-radius: 30px 0 0 0;
+  border-radius: 20px 0 0 0;
   padding-top: 15px;
 
   .option {
@@ -1460,10 +1470,6 @@
     border-left: 2px solid #2D86DA;
     background-color: #F5F7FB;
   }
-}
-
-.post-queue-bar {
-  border-radius: 0;
 }
 
 .awaiting-approval-container {
@@ -1668,17 +1674,23 @@
 }
 
 #tour-wizard-step {
+  .tour-card.schedule-posts {
+    width: 490px;
+    height: 180px;
+  }
+
   .tour-card.schedule-posts.step-1 {
     width: 490px;
     height: 170px;
   }
 
-  .tour-card.schedule-posts.step-2,
-  .tour-card.schedule-posts.step-3,
-  .tour-card.schedule-posts.step-4,
-  .tour-card.schedule-posts.step-5,
   .tour-card.schedule-posts.step-6 {
-    width: 490px;
-    height: 180px;
+    height: 267px;
+  }
+
+  .schedule-wizard-types {
+    div {
+      margin-bottom: 10px;
+    }
   }
 }

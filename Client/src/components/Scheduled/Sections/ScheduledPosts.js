@@ -93,6 +93,7 @@ class ScheduledPosts extends React.Component {
       scheduledPosts(cloneStart.format('YYYY-MM-DD'), cloneEnd.format('YYYY-MM-DD'))
         .then((response) => {
             const posts = response.items;
+            this.props.setTodaysPosts(posts);
             this.setState({
                 posts,
                 isLoading: false,
@@ -347,13 +348,6 @@ class ScheduledPosts extends React.Component {
                 onPeriodChange={this.onPeriodChange}
               />
           }
-        </div>
-        <div>
-          <TodaysAgenda
-            posts={posts}
-            timezone={timezone}
-            startTour={startTour}
-          />
         </div>
         { isLoading && <Loader fullscreen /> }
         <Compose onPost={()=>{this.onResetPage(), this.fetchPosts(), this.fetchMoreData()}} />

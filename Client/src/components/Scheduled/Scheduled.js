@@ -20,62 +20,10 @@ import TimezoneSelector from './components/TimezoneSelector';
 import AwaitingApproval from './Sections/AwaitingApproval';
 import AwaitingApprovalTabTitle from './components/AwaitingApprovalTabTitle';
 import Loader from '../Loader';
-import TourWizard from '../TourWizard';
+import ScheduleWizard from './components/ScheduleWizard';
+import TodaysAgenda from './components/TodaysAgenda';
 
 const { TabPane } = Tabs;
-
-const tourWizardConfig = [
-  {
-    target: '.new-post.step-1',
-    title: 'Create a new post',
-    message: 'Create a post by clicking into the text box. You can add an emoji or an image and chose to post it now or schedule it for later.',
-    imageLocation: '../images/tours/schedule-step-0.svg',
-    cardPosition: 'bottom-left'
-  },
-  {
-    target: '.infinite-scroll-component > div:first-child',
-    title: 'Schedule a post',
-    message: 'Schedule a post for a specific day and time by selecting a desired slot.',
-    imageLocation: '../images/tours/schedule-step-1.svg',
-    cardPosition: 'bottom-left'
-  },
-  {
-    target: '.display-by.step-3',
-    title: 'Switch to calendar view',
-    message: 'You can view your calendar by day, week or month.',
-    imageLocation: '../images/tours/schedule-step-2.svg',
-    cardPosition: 'bottom-right',
-    offsetPosition: 70
-  },
-  {
-    target: '.ant-tabs-nav.ant-tabs-nav-animated > div > div:nth-child(3)',
-    title: 'Schedule settings',
-    message: 'Choose frequency and timings of your posts by adjusting your settings.',
-    imageLocation: '../images/tours/schedule-step-3.svg',
-    cardPosition: 'bottom-left'
-  },
-  {
-    target: '.post-scheduling-time-section',
-    title: 'Add a new posting time',
-    message: 'Select time slots you want add to your Post Schedule - these are your recommended best times to post.',
-    imageLocation: '../images/tours/schedule-step-4.svg',
-    cardPosition: 'bottom-left'
-  },
-  {
-    target: '.post-scheduling-display-section',
-    title: 'Manage your posting times',
-    message: 'Visualize, edit and delete your slots.',
-    imageLocation: '../images/tours/schedule-step-5.svg',
-    cardPosition: 'bottom-left'
-  }
-];
-
-const tutorialFinalMsg = {
-  image: '../images/tours/schedule-final-img.svg',
-  title: 'That\s all!',
-  message: 'Now you know how to manage your posts easily. What will you share next?',
-  buttonLabel: 'Got it!'
-};
 
 class Scheduled extends React.Component {
 
@@ -96,7 +44,8 @@ class Scheduled extends React.Component {
       awaitingApprovalPosts: [],
       awaitingLoading: false,
       tourModalOpen: comingFromOnBoarding,
-      showTour: false
+      showTour: false,
+      todaysPosts: []
     }
   }
 
@@ -203,26 +152,8 @@ class Scheduled extends React.Component {
     this.setState({ tourModalOpen: false, showTour: true });
   }
 
-  moveToScheduleSettings = (nextStep, toggleCard) => {
-    // We click on the tab to navigate to it
-    document.querySelectorAll('.ant-tabs-tab')[2].click();
-    toggleCard();
-
-    // We need to constantly check if the element is present,
-    // that our way to know that the page loaded
-    const intervalId = setInterval(() => {
-      const el = document.querySelectorAll('.post-scheduling-time-section');
-
-      if (el) {
-        nextStep();
-        toggleCard();
-        clearInterval(intervalId);
-      }
-    }, 1000);
-  }
-
-  comeBackToSchedulePost = () => {
-    document.querySelectorAll('.ant-tabs-tab')[0].click();
+  setTodaysPosts = posts => {
+    this.setState({ todaysPosts: posts });
   }
 
   render() {
@@ -233,7 +164,8 @@ class Scheduled extends React.Component {
       awaitingApprovalPosts,
       awaitingLoading,
       tourModalOpen,
-      showTour
+      showTour,
+      todaysPosts
     } = this.state;
     const { accessLevel, user, selectedChannel } = this.props;
 
@@ -279,62 +211,54 @@ class Scheduled extends React.Component {
             </div>
           </div>
         </div>
-        <Tabs
-          defaultActiveKey="scheduled"
-          onChange={(key) => this.onTabChange(key)}
-          tabBarExtraContent={this.getTabExtraContent()}
-          animated={false}
-        >
-          <TabPane tab="Post Queue" key="scheduled">
-            {/* I needed a way to force the call that is made when the component gets mounted*/}
-            { activeTab === 'scheduled' && (
-                <ScheduledPosts
-                  timezone={selectedTimezone}
-                  selectedChannel={selectedChannel}
-                  onBestPostClick={this.onBestPostClick}
-                  onNewPostClick={this.onNewPostClick}
-                  startTour={this.startTour}
-                />
+        <div className="page-content">
+          <Tabs
+            defaultActiveKey="scheduled"
+            onChange={(key) => this.onTabChange(key)}
+            tabBarExtraContent={this.getTabExtraContent()}
+            animated={false}
+          >
+            <TabPane tab="Post Queue" key="scheduled">
+              {/* I needed a way to force the call that is made when the component gets mounted*/}
+              { activeTab === 'scheduled' && (
+                  <ScheduledPosts
+                    timezone={selectedTimezone}
+                    selectedChannel={selectedChannel}
+                    onBestPostClick={this.onBestPostClick}
+                    onNewPostClick={this.onNewPostClick}
+                    setTodaysPosts={this.setTodaysPosts}
+                  />
+                )
+              }
+            </TabPane>
+            {
+              isOwnerOrAdmin(accessLevel) && (
+                <TabPane
+                  tab={<AwaitingApprovalTabTitle amountOfPendingPosts={awaitingApprovalPosts.length}/>}
+                  key="awaiting"
+                >
+                  <AwaitingApproval
+                    timezone={selectedTimezone}
+                    pendingPosts={awaitingApprovalPosts}
+                    getAwaitingPosts={this.getAwaitingPosts}
+                  />
+                </TabPane>
               )
             }
-          </TabPane>
-          {
-            isOwnerOrAdmin(accessLevel) && (
-              <TabPane
-                tab={<AwaitingApprovalTabTitle amountOfPendingPosts={awaitingApprovalPosts.length}/>}
-                key="awaiting"
-              >
-                <AwaitingApproval
-                  timezone={selectedTimezone}
-                  pendingPosts={awaitingApprovalPosts}
-                  getAwaitingPosts={this.getAwaitingPosts}
-                />
-              </TabPane>
-            )
-          }
-          <TabPane tab="Schedule Settings" key="schedule settings">
-            {/* I needed a way to force the call that is made when the component gets mounted*/}
-            { activeTab === 'schedule settings' && <PostScheduling timezone={selectedTimezone} name={user.name} /> }
-          </TabPane>
-        </Tabs>
+            <TabPane tab="Schedule Settings" key="schedule settings">
+              {/* I needed a way to force the call that is made when the component gets mounted*/}
+              { activeTab === 'schedule settings' && <PostScheduling timezone={selectedTimezone} name={user.name} /> }
+            </TabPane>
+          </Tabs>
+          <TodaysAgenda
+            posts={todaysPosts}
+            timezone={selectedTimezone}
+            startTour={this.startTour}
+          />
+        </div>
         { (isLoading || awaitingLoading) && <Loader fullscreen /> }
         {
-          showTour && <TourWizard
-            steps={tourWizardConfig}
-            generalClassName={'schedule-posts'}
-            closeTutorial={() => this.setState({ showTour: false })}
-            finalMessage={tutorialFinalMsg}
-            actions={[
-              {
-                callback: this.moveToScheduleSettings,
-                atStepNumber: 4
-              },
-              {
-                callback: this.comeBackToSchedulePost,
-                atStepNumber: 6
-              }
-            ]}
-          />
+          showTour && <ScheduleWizard closeTour={() => this.setState({ showTour: false })} />
         }
       </div>
     );
