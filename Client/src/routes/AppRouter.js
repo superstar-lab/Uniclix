@@ -25,7 +25,7 @@ class AppRouter extends React.Component {
                         <PrivateRoute path="/accounts" component={Settings} />
                         <PrivateRoute path="/settings" component={Settings} />
                         <PrivateRoute path="/analytics" component={MasterPage} />
-                        <PrivateRoute path="/monitor-activity" component={MasterPage} />
+                        {/* <PrivateRoute path="/monitor-activity" component={MasterPage} /> */}
                         <PrivateRoute path="/content-finder" component={MasterPage} />
                         <PrivateRoute path="/scheduled" component={MasterPage} />
                         <PrivateRoute path="/social-media-manager" component={Accounts} />

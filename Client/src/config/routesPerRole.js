@@ -11,7 +11,7 @@ const ADMIN_ROUTES = [
   ...MEMBER_ROUTES,
   '/scheduled/unapproved',
   '/scheduled/past',
-  '/monitor-activity',
+  // '/monitor-activity',
   '/content-finder',
   '/analytics/facebook',
   '/analytics/twitter',
