@@ -1336,12 +1336,40 @@
   margin-top: 80px;
 }
 
+.no-agenda {
+  font-family: Rubik;
+  color: #363636;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 150px;
+  text-align: center;
+
+  img {
+    margin-bottom: 30px;
+  }
+
+  .no-agenda-title {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 10px
+  }
+
+  .no-agenda-msg {
+    font-size: 16px;
+  }
+}
+
 .todays-agenda {
   background-color: #F5F7FB;
   border: 1px solid #DBDBDB;
   border-radius: 30px 0 0 0;
   padding: 24px 10px 0;
   width: 286px;
+  min-height: 860px;
 
   .ta-title {
     font-size: 18px;
