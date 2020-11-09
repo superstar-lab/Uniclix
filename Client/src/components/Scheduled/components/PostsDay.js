@@ -36,14 +36,27 @@ class PostsDay extends React.Component {
               className="infinite-time"
               onMouseEnter={() => this.props.onHover(indexI, index, false)}
               onMouseLeave={() => this.props.onHover(indexI, index, true)}
-              style={{display: moment().tz(timezone).unix() > moment(settingTime.time !== undefined ? day + ' ' + settingTime.time : settingTime.payload.scheduled.publishDateTime).tz(timezone).unix() ? "none" : "block"}}
+              style={
+                {
+                  display: moment().tz(timezone).unix() > moment(settingTime.time !== undefined ? day + ' ' + settingTime.time : settingTime.payload.scheduled.publishDateTime).tz(timezone).unix() ? "none" : "block",
+                  padding: settingTime.time === undefined ? 20 : 0
+                }
+              }
             >
               {
                 settingTime.time === undefined ?
-                  <PostsDayBestTime bestTime={settingTime} weekdayNames={weekdayNames} timezone={timezone} fetchMoreData={fetchMoreData} onResetPage={onResetPage} fetchPosts={fetchPosts} postNow={postNow}/>
+                  <PostsDayBestTime
+                    bestTime={settingTime}
+                    weekdayNames={weekdayNames}
+                    timezone={timezone}
+                    fetchMoreData={fetchMoreData}
+                    onResetPage={onResetPage}
+                    fetchPosts={fetchPosts}
+                    postNow={postNow}
+                  />
                   :
                   settingTime.hover ?
-                    <span>{this.getDateTime(settingTime.time)}</span>
+                    <div className="available-time">{this.getDateTime(settingTime.time)}</div>
                     :
                     <button className="btn-hover" id={day + ' ' + settingTime.time} onClick={(e)=>this.props.onBestPostClick(e)}>
                       <i id={day + ' ' + settingTime.time} className={`fab fa-${selectedChannel.type} ${selectedChannel.type}_bg`}/>

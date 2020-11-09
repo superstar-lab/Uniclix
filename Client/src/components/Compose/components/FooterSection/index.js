@@ -96,9 +96,9 @@ class FooterSection extends React.Component {
     } = this.props;
 
     try {
-
+      const publishType = this.getPublishType();
       let bestDate = moment().tz(selectedTimezone).format('YYYY-MM-DDTHH:mmZ');
-      const isBest = this.getPublishType() === "best";
+      const isBest = publishType === "best";
 
       const scheduled = {
         publishUTCDateTime: (isBest && postCalendar === 'Week') ? bestDate : date,
@@ -120,20 +120,29 @@ class FooterSection extends React.Component {
         postCalendar: postCalendar,
         publishChannels: this.getPublishChannels(),
         type,
-        publishType: this.getPublishType(),
+        publishType: publishType,
         id,
         articleId,
         category_id: category
       }).then((res) => {
+        const notificationMessage = publishType === 'now' ?
+          'Your post has been published' :
+          'Your post has been sheduled';
+
+
         this.setState({ isLoading: false });
         if (onPost) {
           onPost();
         }
         closeModal();
         onUploadCancelMedia();
-        notification.success({
-          message: 'Done!',
-          description: 'The post has been scheduled'
+        notification.open({
+          message: notificationMessage,
+          placement: 'bottomRight',
+          closeIcon: (
+            <span className="close-notif">Got it</span>
+          ),
+          bottom: 110
         });
       })
       .catch((error) => {

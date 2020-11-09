@@ -93,6 +93,7 @@ class ScheduledPosts extends React.Component {
       scheduledPosts(cloneStart.format('YYYY-MM-DD'), cloneEnd.format('YYYY-MM-DD'))
         .then((response) => {
             const posts = response.items;
+            this.props.setTodaysPosts(posts);
             this.setState({
                 posts,
                 isLoading: false,
@@ -275,9 +276,9 @@ class ScheduledPosts extends React.Component {
           <div className="new-post step-1">
             <h4 className="infinite-best-btn-title">Create Post</h4>
             <button className="infinite-best-btn" onClick={this.props.onNewPostClick}>
-              <div>What's on your mind?</div>
+              <div className="new-post-placeholder">What's on your mind?</div>
               <div className="infinite-best-btn-icon">
-                <div className="infinite-best-btn-icon-laugh"><strong>☺</strong></div>
+                <div className="infinite-best-btn-icon-laugh">☺</div>
                 <i className="fa fa-image upload-images"/>
               </div>
             </button>
@@ -317,7 +318,8 @@ class ScheduledPosts extends React.Component {
                   {this.state.items.map((item, index) => (
                     <div>
                       <div className="infinite-title">
-                        <strong>{item.weekdayNames}, </strong>{item.monthNames} {item.date}
+                        <div className="weekday">{item.weekdayNames},</div>
+                        <div className="month-date">{item.monthNames} {item.date}</div>
                       </div>
                       <PostsDay
                         item={item}
@@ -346,13 +348,6 @@ class ScheduledPosts extends React.Component {
                 onPeriodChange={this.onPeriodChange}
               />
           }
-        </div>
-        <div>
-          <TodaysAgenda
-            posts={posts}
-            timezone={timezone}
-            startTour={startTour}
-          />
         </div>
         { isLoading && <Loader fullscreen /> }
         <Compose onPost={()=>{this.onResetPage(), this.fetchPosts(), this.fetchMoreData()}} />

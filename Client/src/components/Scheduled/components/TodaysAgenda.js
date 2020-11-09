@@ -28,41 +28,56 @@ class TodaysAgenda extends React.Component {
     const { showAgenda } = this.state;
     const currentDate = timezone ? moment().tz(timezone) : moment();
     let lastDate = '';
+    const agendaPosts = posts.filter(this.filterTodaysByTimezone);
     
     return (
       <div className="agenda-container">
         {
           showAgenda && (
             <div className="todays-agenda">
-              <div className="ta-title">
-                <span className="ta-label">Today’s agenda,</span>
-                <span>{currentDate.format('MMM D.')}</span>
-              </div>
-              {
-                posts.filter(this.filterTodaysByTimezone).map((post) => {
-                  let showTime = false;
-                  
-                  if (lastDate !== post.payload.scheduled.publishUTCDateTime) {
-                    lastDate = post.payload.scheduled.publishUTCDateTime;
-                    showTime = true;
-                  }
-
-                  return (
-                    <React.Fragment>
-                      {
-                        showTime && (
-                          <div className="time-title">
-                            <div className="time">
-                              {moment(post.payload.scheduled.publishUTCDateTime).tz(timezone).format("h.mm A")}
-                            </div>
-                            <div className="separator"></div>
-                          </div>
-                        )
+              { !!agendaPosts.length && (
+                <React.Fragment>
+                  <div className="ta-title">
+                    <span className="ta-label">Today’s agenda,</span>
+                    <span>{currentDate.format('MMM D.')}</span>
+                  </div>
+                  {
+                    agendaPosts.map((post) => {
+                      let showTime = false;
+                      
+                      if (lastDate !== post.payload.scheduled.publishUTCDateTime) {
+                        lastDate = post.payload.scheduled.publishUTCDateTime;
+                        showTime = true;
                       }
-                      <AgendaItem key={post.id} post={post} channelsList={channelsList} />
-                    </React.Fragment>
-                  )
-                })
+
+                      return (
+                        <React.Fragment>
+                          {
+                            showTime && (
+                              <div className="time-title">
+                                <div className="time">
+                                  {moment(post.payload.scheduled.publishUTCDateTime).tz(timezone).format("h.mm A")}
+                                </div>
+                                <div className="separator"></div>
+                              </div>
+                            )
+                          }
+                          <AgendaItem key={post.id} post={post} channelsList={channelsList} />
+                        </React.Fragment>
+                      )
+                    })
+                  }
+                  </React.Fragment>
+                )
+              }
+              {
+                !agendaPosts.length && (
+                  <div className="no-agenda">
+                    <img src="../images/empty-agenda.svg"/>
+                    <div className="no-agenda-title">Nothing here</div>
+                    <div className="no-agenda-msg">Once you schedule posts they will show up here.</div>
+                  </div>
+                )
               }
             </div>
           )
