@@ -88,7 +88,7 @@ class User extends Authenticatable
 
         $selectedChannel = $this->selectedChannel();
         $selectedTwitterChannel = $this->selectedTwitterChannel();
-        
+
         if($channels = $this->channels()->get()){
 
             return collect($channels)->map(function($channel) use ($selectedChannel, $selectedTwitterChannel) {
@@ -274,7 +274,7 @@ class User extends Authenticatable
     public function getAllScheduledPosts($from_date = null, $to_date = null)
     {
         $id = $this->id;
-        
+
         if($from_date == null && $to_date == null){
             return ScheduledPost::with('category')->select('scheduled_posts.*')
             ->orderBy('scheduled_at', 'asc')->leftJoin('channels', 'scheduled_posts.channel_id', '=', 'channels.id')
@@ -311,7 +311,7 @@ class User extends Authenticatable
     public function getMemberScheduledPosts($from_date = null, $to_date = null)
     {
         $id = $this->id;
-        
+
         if($from_date == null || $to_date == null){
             return ScheduledPost::with('category')->select('scheduled_posts.*')
             ->orderBy('scheduled_at', 'asc')->leftJoin('team_user_channels', 'scheduled_posts.channel_id', '=', 'team_user_channels.channel_id')
@@ -337,7 +337,7 @@ class User extends Authenticatable
             ->orderBy('scheduled_at', 'asc')
             ->get();
     }
-    
+
     public function getRemainDate($user_id)
     {
         $selectedUser = $this->where('id', $user_id)->first();
@@ -370,5 +370,35 @@ class User extends Authenticatable
                 ? 'admin'
                 : 'member'
             : 'owner';
+    }
+
+    public static function updateActiveUsers()
+    {
+        \DB::table('users')
+            ->leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+            ->where(function ($q) {
+                $q->where('users.trial_ends_at', '<', Carbon::now())
+                    ->orWhere(function ($r){
+                        $r->whereNull('users.trial_ends_at')
+                            ->where(function ($s){
+                                $s->whereNull('subscriptions.id')
+                                    ->orWhere('subscriptions.ends_at', '<', Carbon::now());
+                            });
+                    });
+            })
+            ->update(['users.active' => 0]);
+
+        \DB::table('users')
+            ->leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+            ->where(function ($q) {
+                $q->where('users.trial_ends_at', '>', Carbon::now())
+                    ->orWhere(function ($r){
+                        $r->where(function ($s){
+                            $s->whereNull('subscriptions.ends_at')
+                                ->orWhere('subscriptions.ends_at', '>', Carbon::now());
+                        })->whereNotNull('subscriptions.id');
+                    });
+            })
+            ->update(['users.active' => 1, 'users.updated_at' => Carbon::now()]);
     }
 }

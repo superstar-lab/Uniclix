@@ -81,7 +81,7 @@ class ChannelController extends Controller
 
             if(!$pages) return;
 
-            if($user->countChannels() + count($pages) > $user->getLimit("account_limit")) return response()->json(["error" => "You have exceeded the account limit for this plan."], 403);
+            if($user->countChannels() + count($pages) > $user->getLimit("account_limit")) return response()->json(["error" => "You have exceeded the account limit for this plan."], 432);
 
             $accountData = [];
             foreach($pages as $account){

@@ -101,9 +101,9 @@ class PostsDayBestTime extends React.Component {
     return (
       <div className="infinite-best-time">
         <div className="infinite-best-time-title">
-          <div  className="col-xs-12 col-md-11">
-            <div className="content">{content}</div>
-            <div className="infinite-best-media-preview">
+          <div className="content">{content}</div>
+          {
+            (!!images.length || !!videos.length) && <div className="infinite-best-media-preview">
               {images.length > 0 ?
                 images.map((image, index) => (
                   <img src={image} className="preview" alt="preview"/>
@@ -117,12 +117,12 @@ class PostsDayBestTime extends React.Component {
                   ""
               }
             </div>
-          </div>
+          }
           <i className="fa fa-close" onClick={this.deleteBestPost}/>
         </div>
         <div className="infinite-best-time-boundary" />
         <div className="infinite-best-time-body">
-          <div className="infinite-best-time-body-footer col-md-9">
+          <div className="infinite-best-time-body-footer">
             <div className="infinite-best-time-channels">
               {
                 channels.map(({ type, avatar }, index) => (
@@ -133,8 +133,15 @@ class PostsDayBestTime extends React.Component {
                 ))
               }
             </div>
-            <div className="infinite-best-time-category" style={{ backgroundColor: category.color }}>{category.category_name}</div>
-            <div className="infinite-best-time-post"><p>This post will be published {weekdayNames} at {this.getDateTime(publishDateTime)}</p></div>
+            <div
+              className="infinite-best-time-category"
+              style={{ backgroundColor: category.color }}
+            >
+              {category.category_name}
+            </div>
+            <div className="infinite-best-time-post">
+              This post will be published {weekdayNames} at {this.getDateTime(publishDateTime)}
+            </div>
           </div>
           <div className="infinite-best-time-body-footer-btn col-md-3">
             <Button type="link" size="medium" onClick={this.editBestPost}>

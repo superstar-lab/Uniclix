@@ -49,10 +49,15 @@ class AnalyticsLanding extends React.Component {
     componentDidMount() {
         // This will be erased once Linkedin analytics is done
         if (this.state.selectedSocialMedia === 'linkedin') {
-            notification.warning({
+            notification.open({
                 message: 'Heads up!',
                 description: "We don't support LinkedIn Analytics currently. You can still use Facebook and Twitter though!",
-                duration: 10
+                duration: 10,
+                placement: 'bottomRight',
+                closeIcon: (
+                    <span className="close-notif">Got it</span>
+                ),
+                bottom: 110
             });
             if (this.socialMediasSelectorOptions.length) {
                 const socialMediaToRedirectIndex = this.socialMediasSelectorOptions.findIndex(

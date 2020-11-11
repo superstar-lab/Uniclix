@@ -22,3 +22,10 @@ export const updateTimeZone = (data) => {
             return response.data;
         });
 };
+
+export const saveOnBoardingQuestions = (data) => {
+    return axios.post(`${apiUrl}/profile/on-boarding-questions`, data)
+        .then((response) => {
+            return response.data;
+        });
+}

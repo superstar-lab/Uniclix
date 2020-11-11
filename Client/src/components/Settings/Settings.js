@@ -3,7 +3,7 @@ import SettingsRouter from '../../routes/SettingsRouter';
 import channelSelector from "../../selectors/channels";
 import { setGlobalChannel } from '../../actions/channels';
 import { connect } from "react-redux";
-import { settingsMenus } from '../../config/menuItems';
+import { settingsMenus, getExtraForSettings } from '../../config/menuItems';
 import VerticalMenu from '../Menus/VerticalMenu';
 import { filterFacebookProfiles, isOwner } from '../../utils/helpers';
 
@@ -14,7 +14,7 @@ const Settings = ({ channels, selectedChannel, selectChannel, accessLevel, profi
         <div className={`body-wrap ${hasBanner ? 'with-banner' : ''}`}>
             <div>
                 <VerticalMenu
-                    menuItems={settingsMenus[accessLevel]}
+                    menuItems={[...settingsMenus[accessLevel], ...getExtraForSettings()]}
                     channels={channels}
                     selectedChannel={selectedChannel}
                     selectChannel={selectChannel}

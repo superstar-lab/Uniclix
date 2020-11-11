@@ -14,49 +14,56 @@ import {
     MobileView
 } from "react-device-detect";
 
+// routes excent from showing the middleware
+const noMiddleware = ['/on-boarding'];
+
 export const PrivateRoute = ({
     isAuthenticated,
     middleware,
     component: Component,
     accessLevel,
     location,
+    noWrappers,
     ...rest }) => {
 
         return (
         <Route {...rest} component={(props) => (
             isAuthenticated ?
                 (
-                    (!!middleware) ?
+                    (!!middleware && noMiddleware.indexOf(location.pathname) === -1) ?
                         (
                             <div>
                                 <Middleware />
                             </div>
                         ) :
                         ROUTES[accessLevel].indexOf(location.pathname) !== -1 ?
-                        (
-                            <div>
-                                <BrowserView viewClassName="app-wrap">
-                                    <TopMenu />
-                                    <Component {...props} />
-                                    <EmailChecker />
-                                    <ActiveChecker />
-                                    <FreeTrialChecker isBillingPage={location.pathname === '/settings/billing'}/>
-                                </BrowserView>
+                            noWrappers ?
+                                <Component {...props} /> :
+                                (
+                                    <div>
+                                        <BrowserView viewClassName="app-wrap">
+                                            <TopMenu />
+                                            <Component {...props} />
+                                            <EmailChecker />
+                                            <ActiveChecker />
+                                            <FreeTrialChecker isBillingPage={location.pathname === '/settings/billing'}/>
+                                        </BrowserView>
 
-                                <MobileView>
-                                    <div className="p20">
-                                        <SocialAccountsPrompt
-                                            image="/images/hello_bubble_smiley.svg"
-                                            title="Please switch to desktop version!"
-                                            description="We support only the desktop version at the moment. Please hang in there, our mobile app is coming soon."
-                                        />
+                                        <MobileView>
+                                            <div className="p20">
+                                                <SocialAccountsPrompt
+                                                    image="/images/hello_bubble_smiley.svg"
+                                                    title="Please switch to desktop version!"
+                                                    description="We support only the desktop version at the moment. Please hang in there, our mobile app is coming soon."
+                                                />
+                                            </div>
+
+                                        </MobileView>
+
                                     </div>
-
-                                </MobileView>
-
-                            </div>
-                        ) :
-                        <Redirect to="/scheduled/posts" />
+                                )
+                            :
+                            <Redirect to="/scheduled/posts" />
                 ) : (
                     <Redirect to="/" />
                 )

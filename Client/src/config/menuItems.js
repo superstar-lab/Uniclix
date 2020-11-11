@@ -14,12 +14,12 @@ export const getMenuItems = (socialMedia) => ([
       uri: '/scheduled',
       icon: 'pencil'
   },
-  {
-      id: 'twitter-booster_monitor_activity',
-      displayName: 'Monitor activity',
-      uri: '/monitor-activity',
-      icon: 'desktop'
-  },
+//   {
+//       id: 'twitter-booster_monitor_activity',
+//       displayName: 'Monitor activity',
+//       uri: '/monitor-activity',
+//       icon: 'desktop'
+//   },
   {
       id: 'twitter-booster_search',
       displayName: 'Content Finder',
@@ -96,3 +96,18 @@ export const settingsMenus = {
         }
     ]
 };
+
+export const getExtraForSettings = () => ([
+    {
+        id: 'twitter-booster_manage_posts',
+        displayName: 'Manage posts',
+        uri: '/scheduled',
+        icon: 'pencil'
+    },
+    {
+        id: 'twitter-booster_search',
+        displayName: 'Content Finder',
+        uri: '/content-finder',
+        icon: 'search'
+    }
+  ]);

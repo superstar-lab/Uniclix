@@ -2,26 +2,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { setMiddleware } from '../actions/middleware';
-import TwitterLogin from 'react-twitter-auth';
-import Modal from './Modal';
 import SelectAccountsModal from './Accounts/SelectAccountsModal';
 import { startSetChannels, startAddFacebookChannel, startAddLinkedinChannel, startAddPinterestChannel, startAddTwitterChannel } from "../actions/channels";
 import { startSetProfile } from "../actions/profile";
-import { getAccounts, saveAccounts } from "../requests/facebook/channels";
-import FacebookLogin from 'react-facebook-login';
-import { twitterRequestTokenUrl, twitterAccessTokenUrl, backendUrl, facebookAppId, linkedinAppId, pinterestAppId } from "../config/api";
-import LinkedInButton from "./LinkedInButton";
-import { changePlan, activateAddon, cancelAddon, getPlanData } from '../requests/billing';
+import { changePlan, activateAddon, getPlanData } from '../requests/billing';
 // import PinterestButton from "./PinterestButton";
 import channelSelector, { findAccounts } from "../selectors/channels";
-import { fbFields, fbScope } from "./FacebookButton";
 import { destroyChannel } from "../requests/channels";
 import Loader, { LoaderWithOverlay } from './Loader';
 import { getParameterByName, getCookie } from "../utils/helpers";
 import { PRICING_COOKIE_KEY } from '../utils/constants';
 import Checkout from "./Settings/Sections/Checkout";
-import ChannelItems from "./Accounts/ChannelItems";
-import {getPages, savePages} from "../requests/linkedin/channels";
+import ConnectAccounts from './ConnectAccounts';
 
 class Middleware extends React.Component {
     state = {
@@ -37,10 +29,6 @@ class Middleware extends React.Component {
         forbidden: false,
         addAccounts: ""
     }
-
-    twitterRef = React.createRef();
-    facebookRef = React.createRef();
-    linkedinRef = React.createRef();
 
     componentDidMount() {
         const { profile } = this.props;
@@ -85,11 +73,6 @@ class Middleware extends React.Component {
     defaultAction = {
         id: "",
         type: ""
-    };
-
-
-    onFailure = (response) => {
-        this.setState(() => ({ loading: false }));
     };
 
     setForbidden = (forbidden = false) => {
@@ -152,117 +135,6 @@ class Middleware extends React.Component {
         });
     };
 
-    onTwitterSuccess = (response) => {
-        this.setState(() => ({ loading: true }));
-
-        try {
-            response.json().then(body => {
-                this.props.startAddTwitterChannel(body.oauth_token, body.oauth_token_secret)
-                    .then(response => {
-                        this.setState(() => ({ loading: false, addAccounts: "twitter" }));
-                    }).catch(error => {
-                        this.setState(() => ({ loading: false }));
-                        if (error.response.status === 409) {
-                            Modal({
-                                type: 'error',
-                                title: 'Error',
-                                content: 'This account is currently being used by other Uniclix users, please contact our helpdesk support for additional details'
-                            });
-                        } else {
-                            Modal({
-                                type: 'error',
-                                title: 'Error',
-                                content: 'Something went wrong!'
-                            });
-                        }
-                    });
-            });
-        } catch (e) {
-        }
-    };
-
-    onFacebookSuccess = (response) => {
-        try {
-            this.setState(() => ({ loading: true }));
-            if (response) {
-                this.props.startAddFacebookChannel(response.accessToken)
-                    .then(() => {
-                        this.setState(() => ({ loading: true }));
-                        getAccounts().then((response) => {
-
-                            if (response.length) {
-                                this.setState(() => ({
-                                    bussinesPages: response,
-                                    bussinesModal: true,
-                                    loading: false,
-                                    addAccounts: 'facebook'
-                                }));
-                            }
-                        });
-                    }).catch(error => {
-                        this.setState(() => ({ loading: false }));
-                        if (error.response.status === 403) {
-                            this.setForbidden(true);
-                            return;
-                        }
-
-                        if (error.response.status === 409) {
-                            Modal({
-                                type: 'error',
-                                title: 'Error',
-                                content: 'This account is currently being used by other Uniclix users, please contact our helpdesk support for additional details'
-                            });
-                        } else {
-                            Modal({
-                                type: 'error',
-                                title: 'Error',
-                                content: 'Something went wrong!'
-                            });
-                        }
-                    });
-            }
-        } catch (e) {
-            this.setState(() => ({ loading: false }));
-        }
-
-    };
-
-    onBussinesPagesSave = (accounts) => {
-        this.setState(() => ({
-            error: "",
-            loading: true
-        }));
-        
-        if(this.state.addAccounts == 'linkedin'){
-            savePages(accounts).then(() => {
-                this.setState(() => ({ loading: false}));
-                this.props.startSetChannels();
-                this.togglebussinesModal();
-            }).catch(error => {
-                this.setState(() => ({ loading: false }));
-                if (error.response.status === 403) {
-                    this.setForbidden(true);
-                } else {
-                    this.setError("Something went wrong!");
-                }
-            });
-        }else{
-        saveAccounts(accounts).then(() => {
-            this.setState(() => ({ loading: false}));
-            this.props.startSetChannels();
-            this.togglebussinesModal();
-        }).catch(error => {
-            this.setState(() => ({ loading: false }));
-            if (error.response.status === 403) {
-                this.setForbidden(true);
-            } else {
-                this.setError("Something went wrong!");
-            }
-        });
-    }
-            
-    };
-
     setAction = (action = this.defaultAction) => {
         this.setState(() => ({
             action
@@ -274,60 +146,6 @@ class Middleware extends React.Component {
             bussinesModal: !this.state.bussinesModal
         }));
     }
-
-    onLinkedInSuccess = (response) => {
-        try {
-            this.setState(() => ({ loading: true }));
-            this.props.startAddLinkedinChannel(response.accessToken).then(() => {
-                this.setState(() => ({ addAccounts: "linkedin" }));
-                getPages().then((response) =>{
-                    if(response.length){
-                        this.setState(() => ({
-                            bussinesPages: response,
-                            bussinesModal: true,
-                            addAccounts: "linkedin",
-                            loading: false
-                        }));
-                    }
-                });
-            }).catch(error => {
-                this.setState(() => ({ loading: false }));
-                if (error.response.status === 409) {
-                    Modal({
-                        type: 'error',
-                        title: 'Error',
-                        content: 'This account is currently being used by other Uniclix users, please contact our helpdesk support for additional details'
-                    });
-                } else {
-                    Modal({
-                        type: 'error',
-                        title: 'Error',
-                        content: 'Something went wrong!'
-                    });
-                }
-            });
-        } catch (e) {
-            this.setState(() => ({ loading: false }));
-        }
-    };
-
-    onPinterestSuccess = (response) => {
-        try {
-            this.setState(() => ({ loading: true }));
-            this.props.startAddPinterestChannel(response.accessToken).then(() => {
-                this.setState(() => ({ loading: false, addAccounts: "pinterest"}));
-            }).catch(error => {
-                this.setState(() => ({ loading: false }));
-                if (error.response.status === 403) {
-                    this.setForbidden(true);
-                } else {
-                    this.setError("Something went wrong!");
-                }
-            });
-        } catch (e) {
-            this.setState(() => ({ loading: false }));
-        }
-    };
 
     setBillingPeriod = () => {
         this.setState(() => ({ billingPeriod: this.state.billingPeriod === "annually" ? "monthly" : "annually" }));
@@ -355,74 +173,6 @@ class Middleware extends React.Component {
             });
     }
 
-    renderTypeaccounts(param) {
-        return (
-            <div className="channel-buttons">
-                <ChannelItems channels={[param]} setAction={()=>this.remove(param.id)} />
-                {!!this.props.loading && <Loader />}
-            </div>
-        )
-      }
-
-    renderTypeLoginAccounts(param) {
-        switch(param) {
-          case 'twitter':
-            return (
-                <div className="channel-buttons">
-                   <TwitterLogin 
-                        loginUrl={twitterAccessTokenUrl}
-                        onFailure={this.onFailure} 
-                        onSuccess={this.onTwitterSuccess}
-                        requestTokenUrl={twitterRequestTokenUrl}
-                        showIcon={false}
-                        forceLogin={true}
-                        className="hide"
-                        ref={this.twitterRef}
-                        >
-                    </TwitterLogin>  
-                    <button 
-                        className="col-md-12 twitter-middleware-btn" 
-                        onClick={(e) => this.twitterRef.current.onButtonClick(e)}> 
-                        <i className="fab fa-twitter"></i> Add Another Account</button>
-                </div>
-            );
-        case 'facebook':
-            return(
-            <FacebookLogin
-                appId={facebookAppId}
-                autoLoad={false}
-                fields={fbFields}
-                scope={fbScope}
-                callback={this.onFacebookSuccess} 
-                cssClass="col-md-12 twitter-middleware-btn"
-                icon={<i className="fab fa-facebook"></i>}
-                textButton="Connect my Facebook Account"
-                ref={this.facebookRef}
-                disableMobileRedirect={true}
-            />);
-        case 'linkedin':
-            return(
-            <LinkedInButton 
-                clientId={linkedinAppId}
-                redirectUri={`${backendUrl}/api/linkedin/callback`}
-                onSuccess={this.onLinkedInSuccess}
-                onError={this.onFailure}
-                cssClass="col-md-12 twitter-middleware-btn"
-                icon={<i className="fab fa-linkedin"></i>}
-                countLinkedLinkedinAcc
-                textButton={"Connect my Linkedin Account"}
-                ref={this.linkedinRef}
-            />
-            )
-        default:
-            return 'foo';
-        }
-    }
-
-    showAllChannels = ()=>{
-        this.setState({addAccounts: ""})
-    }
-
     getAccountsForModal = () => {
         const { channels } = this.props;
         const { bussinesPages } = this.state;
@@ -446,11 +196,8 @@ class Middleware extends React.Component {
             planName = this.state.billingPeriod === "annually" ? planData["Name"].toLowerCase() + "_annual" : planData["Name"].toLowerCase();
         }
 
-        let countLinkedFacebookAcc = channels.length > 0 ? channels.filter(item => item.type == 'facebook').length : 0
-        let countLinkedTwitterAcc = channels.length  > 0 ? channels.filter(item => item.type == 'twitter').length : 0
-        let countLinkedLinkedinAcc = channels.length  > 0 ? channels.filter(item => item.type == 'linkedin').length : 0
         return (
-            <div className="login-container">
+            <div className={`login-container ${middleware}`}>
                 { middleware && middleware !== 'loading' && (
                     <div className="logo">
                         <span className="minimalist-logo">Uniclix.</span>
@@ -469,87 +216,28 @@ class Middleware extends React.Component {
                         {middleware !== "channels" && middleware !== "billing" && <Loader />}
                         {loading && <LoaderWithOverlay />}
                         
-                        {middleware == "channels" &&
-                            <div className="box channels-box">
-                                {channels.length > 0 && addAccounts.length > 0 
-                                ? 
-                                <div className="">  
-                                    <div className="channel-profiles">
-                                        <h2>Connected your <span className="capitalized-text">{addAccounts}</span> account</h2>
-                                        <h5>Cats who destroy birds. Eat an easter feather as if it were a bird then burp victoriously</h5>
-                                            
-                                        {channels.map(channel => {
-                                            if(addAccounts == channel.type ){
-                                            return(
-                                            <div key={channel.id} className="channel-profile-box col-xs-12">
-                                                {this.renderTypeaccounts(channel)}                                        
-                                            </div> 
-                                             )}
-                                            })}
-                                        {this.renderTypeLoginAccounts(addAccounts)}
-                                        <button className="magento-btn mt50" onClick={()=>this.showAllChannels()}>Continue</button>
+                        {
+                            middleware == "channels" && (
+                                <div className="box channels-box">
+                                    <div>
+                                        <ConnectAccounts middleware={'channels'} />
+                                        {
+                                            channels.length > 0  ?
+                                                <button
+                                                    className="magento-btn mt50"
+                                                    onClick={this.setRole}
+                                                >
+                                                    Connect and continue
+                                                </button> :
+                                                <button className="magento-btn mt50 disabled-btn">
+                                                    Connect and continue
+                                                </button>
+                                            }
                                     </div>
                                 </div>
-                                :
-                                <div>
-                                    {loading && <LoaderWithOverlay />}
-                                    <div className="header-title">
-                                        {middleware !== "loading" && <h2>Connect your accounts</h2>}
-                                        <h5>Click one of the buttons below to get started:</h5>
-                                    </div>
-                                    <div className="channel-buttons">
-                                        <FacebookLogin
-                                            appId={facebookAppId}
-                                            autoLoad={false}
-                                            fields={fbFields}
-                                            scope={fbScope}
-                                            callback={this.onFacebookSuccess} 
-                                            cssClass="col-md-12 twitter-middleware-btn"
-                                            icon={<i className="fab fa-facebook"></i>}
-                                            textButton={countLinkedFacebookAcc ? countLinkedFacebookAcc + " Connected Facebook Accounts. Add more" : "Connect my Facebook Account"}
-                                            ref={this.facebookRef}
-                                            disableMobileRedirect={true}
-                                        />
-
-                                        <button 
-                                        className="col-md-12 twitter-middleware-btn" 
-                                        onClick={(e) => this.twitterRef.current.onButtonClick(e)}> 
-                                        <i className="fab fa-twitter"></i>
-                                        {countLinkedTwitterAcc ? countLinkedTwitterAcc + " connected Twitter Accounts. Add more" : "Connect my Twitter Account"}
-                                        </button>
-
-                                        <LinkedInButton 
-                                            clientId={linkedinAppId}
-                                            redirectUri={`${backendUrl}/api/linkedin/callback`}
-                                            onSuccess={this.onLinkedInSuccess}
-                                            onError={this.onFailure}
-                                            cssClass="col-md-12 twitter-middleware-btn"
-                                            icon={<i className="fab fa-linkedin"></i>}
-                                            countLinkedLinkedinAcc
-                                            textButton={countLinkedLinkedinAcc ? countLinkedLinkedinAcc + " Connected Linkedin Accounts. Add more" : "Connect my Linkedin Account"}
-                                            ref={this.linkedinRef}
-                                        />
-
-                                        <TwitterLogin loginUrl={twitterAccessTokenUrl}
-                                            onFailure={this.onFailure} onSuccess={this.onTwitterSuccess}
-                                            requestTokenUrl={twitterRequestTokenUrl}
-                                            showIcon={false}
-                                            forceLogin={true}
-                                            className="hide"
-                                            ref={this.twitterRef}
-                                        ></TwitterLogin>
-                                        { channels.length > 0  ?
-                                            <button className="magento-btn mt50" onClick={this.setRole}>Connect and continue</button>
-                                            :
-                                            <button className="magento-btn mt50 disabled-btn">Connect and continue</button> }
-                                    </div>
-                                </div>
-                            }
-                        <div>
+                            )
+                        }
                     </div>
-                </div>
-            }
-        </div>
         {middleware == "billing" && !!planData ?
             <div className="box billing channels-box">
                     <div className="col-md-12">

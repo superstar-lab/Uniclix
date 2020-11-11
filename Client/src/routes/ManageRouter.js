@@ -19,7 +19,7 @@ const ManageRouter = () => (
     <div>
         <Switch>
             <Route path={`/analytics`} component={AnalyticsLanding} />
-            <Route path={`/monitor-activity`} component={MonitorActivity} />
+            {/* <Route path={`/monitor-activity`} component={MonitorActivity} /> */}
             <Route path={`/content-finder`} component={ContentFinderLanding} />
             <Route path={'/scheduled/'} component={ScheduledRouter} />
             {/*Obsolete routes. Still there to avoid breaking things but will be changed in the future*/}

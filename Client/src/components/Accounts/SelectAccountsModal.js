@@ -1,5 +1,8 @@
 import React from 'react';
 import Modal from 'react-modal';
+import { Tabs, Button } from 'antd';
+
+const { TabPane } = Tabs
 
 class SelectAccountsModal extends React.Component{
 
@@ -19,39 +22,110 @@ class SelectAccountsModal extends React.Component{
         }));
     };
 
+    renderAccount = account => {
+        return (
+            <AccountItem
+                key={account.id}
+                account={account}
+                removeAccount={this.removeAccount}
+                addAccount={this.addAccount}
+            />
+        )
+    }
+
+    renderLinkedinTabs = () => {
+        const { accounts } = this.props;
+
+        return (
+            <Tabs animated={false}>
+                <TabPane tab="Linkedin pages" key="1">
+                    {
+                        accounts.length ?
+                        accounts.map(this.renderAccount) :
+                            <div className="no-accounts-msg">There are no pages to be added</div>
+                    }
+                </TabPane>
+            </Tabs>
+        )
+    }
+
+    renderFacebookTabs = () => {
+        const fbAccounts = { pages: [], groups: [] };
+        const { accounts } = this.props;
+
+        accounts.map(account => {
+            if (account.type === 'page') fbAccounts.pages.push(account);
+            if (account.type === 'group') fbAccounts.groups.push(account);
+        });
+
+        return (
+            <Tabs animated={false}>
+                <TabPane tab="Facebook pages" key="0">
+                    {
+                        fbAccounts.pages.length ?
+                            fbAccounts.pages.map(this.renderAccount) :
+                            <div className="no-accounts-msg">There are no pages to be added</div>
+                    }
+                </TabPane>
+                <TabPane tab="Facebook groups" key="1">
+                    {
+                        fbAccounts.groups.length ?
+                            fbAccounts.groups.map(this.renderAccount) :
+                            <div className="no-accounts-msg">There are no groups to be added</div>
+                    }
+                </TabPane>
+            </Tabs>
+        )
+    }
+
+    renderTabs = () => {
+        const { socialMedia } = this.props;
+
+        switch(socialMedia) {
+            case 'facebook':
+                return this.renderFacebookTabs();
+            case 'linkedin':
+                return this.renderLinkedinTabs();
+        }
+    }
+
     render(){
-        const {isOpen, accounts, onSave, error, closeModal} = this.props;
+        const {isOpen, onSave, error, closeModal, socialMedia} = this.props;
+
         return (
             <Modal
-            isOpen={isOpen}
-            ariaHideApp={false}
-            className="account-select-modal"
+                isOpen={isOpen}
+                ariaHideApp={false}
+                className="account-select-modal"
             >       
-        
-                <div className="center-inline p10 m10-top">
-                    Select Accounts
+                <div className="modal-title">
+                    { socialMedia === 'facebook' ? 
+                        'Select groups and pages to connect' :
+                        'Select pages to connect'
+                    }
                 </div>
 
                 <div className="close-icon" onClick={closeModal}>
                     <img src="/images/monitor-icons/close.svg" />
                 </div>
-
-                <div className="center-inline p10 m10-top">
-                    <div className="form-group center-inline account-items-wrapper top-border">
-                        {accounts.map(account => (
-                            <AccountItem
-                                key={account.id}
-                                account={account}
-                                removeAccount={this.removeAccount}
-                                addAccount={this.addAccount}
-                            />
-                        ))}
-                    </div>
-                </div>
-
-                <div className="center-inline p10">
+                { this.renderTabs() }
+                <div className="modal-btns">
                     {!!error && <div className="alert-danger">{error}</div>}
-                    <button onClick={() => onSave(this.state.addedAccounts)} className="upgrade-btn fat-btn-filled">Save</button>
+                    <Button
+                        type="link"
+                        onClick={() => closeModal()}
+                        className="cancel"
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        type="primary"
+                        shape="round"
+                        onClick={() => onSave(this.state.addedAccounts)}
+                        className="connect" 
+                    >
+                        Connect
+                    </Button>
                 </div>
         
             </Modal>
@@ -77,24 +151,20 @@ class AccountItem extends React.Component{
     };
 
     render(){
-        const actionBtn = this.state.added ? "sub-btn" : "add-btn";
+        const { added } = this.state
         const {account} = this.props;
 
         return (                
             
-                <div className="account-item-container bottom-border">
-                    <div>
+                <div
+                    className={`account-item-container bottom-border ${added ? 'selected': ''}`}
+                    onClick={this.toggleAdded}
+                >
+                    <div className="account-info">
                         <img src={account.avatar} className="account-img"></img>
+                        <div className="name">{account.name}</div>
                     </div>
-                    <h5 className="ps10">{account.name}</h5>
-                    <div className={`${actionBtn} action-btn`} onClick={this.toggleAdded}>
-                        {this.state.added ?
-                            <i className="fa fa-minus-circle"></i>
-                        :
-                            <i className="fa fa-plus-circle"></i>
-                        }
-                        
-                    </div>
+                    { added && <i className="fa fa-check" />}
                 </div>
         );
     }

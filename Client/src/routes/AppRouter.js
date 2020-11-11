@@ -10,11 +10,12 @@ import NotFoundPage from "../components/NotFoundPage";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 import MasterPage from '../components/MasterPage';
+import OnBoarding from '../components/OnBoarding';
 
 export const history = createHistory();
 
 class AppRouter extends React.Component {
-    render(){
+    render() {
         return  (
             <Router history={history}>
                 <div>
@@ -24,10 +25,11 @@ class AppRouter extends React.Component {
                         <PrivateRoute path="/accounts" component={Settings} />
                         <PrivateRoute path="/settings" component={Settings} />
                         <PrivateRoute path="/analytics" component={MasterPage} />
-                        <PrivateRoute path="/monitor-activity" component={MasterPage} />
+                        {/* <PrivateRoute path="/monitor-activity" component={MasterPage} /> */}
                         <PrivateRoute path="/content-finder" component={MasterPage} />
                         <PrivateRoute path="/scheduled" component={MasterPage} />
                         <PrivateRoute path="/social-media-manager" component={Accounts} />
+                        <PrivateRoute path="/on-boarding" noWrappers component={OnBoarding} />
                         <PublicRoute path="/autologin/:email/:password" component={AutoLogin} />
                         <Route component={NotFoundPage}/>
                     </Switch>

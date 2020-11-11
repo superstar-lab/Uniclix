@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\Article;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -51,6 +52,10 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('sync:articles')
             ->twiceDaily(1, 13);
+
+        $schedule->call(function (){ // Delete articles older than one month
+            Article::removeOlderArticles();
+        })->weekly();
     }
 
     /**

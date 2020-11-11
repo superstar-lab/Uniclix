@@ -17,6 +17,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/profile', 'ProfileController@update');
     Route::post('/update-timezone', 'ProfileController@updateTimeZone');
     Route::get('/profile', 'ProfileController@profile');
+    Route::post('/profile/on-boarding-questions', 'ProfileController@saveOnBoardingQuestions');
 
     Route::get('/team', 'TeamController@getTeams');
     Route::get('/team/members', 'TeamController@getMembers');

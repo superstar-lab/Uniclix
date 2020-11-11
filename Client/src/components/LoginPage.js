@@ -183,10 +183,19 @@ export class LoginPage extends React.Component{
 
                 return;
             }  
-            
+
             console.log(e);
         });
     };
+
+    afterRegister = () => {
+        this.props.history.push({
+            pathname: '/on-boarding',
+            state: {
+                comingFromRegister: true
+            }
+        });
+    }
 
     render(){
         
@@ -224,7 +233,11 @@ export class LoginPage extends React.Component{
                                     }
                                 </div>
                                 :
-                                <RegisterPage register={this.state.register} isInvited={this.state.isInvited} />
+                                <RegisterPage
+                                    register={this.state.register}
+                                    isInvited={this.state.isInvited}
+                                    goToOnboarding={this.afterRegister}
+                                />
                             }
 
 
