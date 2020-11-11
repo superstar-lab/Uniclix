@@ -8,7 +8,6 @@ import {scheduledPosts, schedulingTimes, postNow} from '../../../requests/channe
 import Compose from '../../Compose/index';
 import DateRangeSelector from '../components/DateRangeSelector';
 import PostsCalendar from '../components/PostsCalendar';
-import TodaysAgenda from '../components/TodaysAgenda';
 import PostsDay from '../components/PostsDay';
 import Loader from '../../Loader';
 import FunctionModal from "../../Modal";

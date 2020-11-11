@@ -231,7 +231,7 @@ class AddMemberModal extends React.Component {
         FunctionModal({
           type: 'error',
           title: 'Error',
-          content: 'There was an error trying to save the new member, please try again later.'
+          content: 'You have exceeded the account limit for your current plan.'
         })
         console.log(err);
       });
