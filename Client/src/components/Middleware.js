@@ -195,7 +195,7 @@ class Middleware extends React.Component {
         if (planData) {
             planName = this.state.billingPeriod === "annually" ? planData["Name"].toLowerCase() + "_annual" : planData["Name"].toLowerCase();
         }
-        
+
         return (
             <div className={`login-container ${middleware}`}>
                 { middleware && middleware !== 'loading' && (

@@ -54,20 +54,28 @@ class ScheduleWizard extends React.Component {
   closeComposer = (nextStep, toggleCard) => {
     toggleCard();
     document.querySelectorAll('.composer-container #closeModal')[0].click();
-    // We make sure to be on DAY view to continue with the tour
-    document.querySelectorAll('.ant-select-dropdown-menu-item')[2].click()
+
     // We put the normal value back
     document.getElementById('tour-wizard-node').style = 'z-index: 1000';
-    
-    const intervalId = setInterval(() => {
-      const el = document.querySelectorAll('.infinite-scroll-component > div:first-child');
 
-      if (el) {
-        nextStep();
-        toggleCard();
-        clearInterval(intervalId);
+    // We open the display-by dropdown to create the option elements
+    document.querySelectorAll('.display-by .ant-select')[0].click();
+
+    const intervalId = setInterval(() => {
+      // We make sure to be on DAY view to continue with the tour
+      const dayViewOption = document.querySelectorAll('.ant-select-dropdown-menu-item')[2];
+
+      if (dayViewOption) {
+        dayViewOption.click();
+        const el = document.querySelectorAll('.infinite-scroll-component > div:first-child');
+
+        if (el) {
+          nextStep();
+          toggleCard();
+          clearInterval(intervalId);
+        }
       }
-    }, 1000);
+    }, 300);
   }
 
   moveToScheduleSettings = (nextStep, toggleCard) => {
