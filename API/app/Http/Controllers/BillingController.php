@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\RoleAddon;
@@ -146,7 +147,7 @@ class BillingController extends Controller
 
             $user->cancel_status = 1;
             $user->feedback = $feedback;
-            
+
             $user->subscription('main')->cancel();
             $user->save();
 
@@ -162,7 +163,7 @@ class BillingController extends Controller
             $user = $this->user;
 
             //$user->deletePaymentMethods();
-            
+
             return response()->json(["success" => true], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => "Something went wrong!"], 404);
@@ -261,14 +262,14 @@ class BillingController extends Controller
         if(!$role) return response()->json(["error" => "Plan not found"], 404);
 
         if($current_role_name == 'premium'){
-            if($channels_count > $role->roleLimit->account_limit) 
+            if($channels_count > $role->roleLimit->account_limit)
             return response()->json(["message" => "more than 5 accounts", "accounts" => 5], 432);
-            if($user->teamMembers()->count() + 1 > $role->roleLimit->team_accounts) 
+            if($user->teamMembers()->count() + 1 > $role->roleLimit->team_accounts)
             return response()->json(["message" => 'team members limit'], 433);
         } else if($current_role_name == 'pro') {
-            if($channels_count > $role->roleLimit->account_limit) 
+            if($channels_count > $role->roleLimit->account_limit)
             return response()->json(["message" => "more than 20 accounts", "accounts" => 20], 432);
-            if($user->teamMembers()->count() + 1 > $role->roleLimit->team_accounts) 
+            if($user->teamMembers()->count() + 1 > $role->roleLimit->team_accounts)
             return response()->json(["message" => 'team members limit'], 433);
         }
 
@@ -318,6 +319,34 @@ class BillingController extends Controller
             return response()->json(["success" => true], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => "Something went wrong!"], 500);
+        }
+    }
+
+    public function getCoupon(Request $request)
+    {
+        $client = new Client(['base_uri' => 'https://api.stripe.com']);
+
+        //We fetch that particular discount.
+        try{
+
+            $response = $client->request('GET', '/v1/coupons/' . $request->id, [
+                'headers' => ['Authorization' => 'Bearer ' . env('STRIPE_SECRET')]
+            ]);
+
+            if($response->getStatusCode() == 200){
+
+                $content = json_decode($response->getBody()->getContents());
+
+                //I return the discount, so we may properly add it to the payment
+                return response()->json(["discount" => $content->percent_off], 200);
+            }
+
+            return response()->json(["discount" => null], 200);
+
+        }catch (\Exception $e){
+            \Log::info('Coupon validation error: ' . $e->getMessage());
+
+            return response()->json(["discount" => null], 200);
         }
     }
 }

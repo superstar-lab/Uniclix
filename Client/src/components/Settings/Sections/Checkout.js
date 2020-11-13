@@ -8,7 +8,7 @@ import { startAddTwitterChannel, startSetChannels } from "../../../actions/chann
 import channelSelector from "../../../selectors/channels";
 import Loader, { LoaderWithOverlay } from '../../Loader';
 import CongratsPayment from "./CongratsPayment";
-import { createSubscription, deleteSubscription, addSubscription } from '../../../requests/billing';
+import { createSubscription, deleteSubscription, addSubscription, checkCoupon } from '../../../requests/billing';
 import { stripePublishableKey } from '../../../config/api';
 import Countries from "../../../fixtures/country";
 import { Select } from 'antd';
@@ -65,7 +65,9 @@ class Checkout extends React.Component {
       address_line1: '',
       address_city: '',
       postal: ''
-    }
+    },
+    discountPercentage: 0,
+    validatingCode: false
   }
 
   handleAMonthChange = (value, text) => {
@@ -246,12 +248,37 @@ class Checkout extends React.Component {
     });
   }
 
+  CheckCoupon = () => {
+    this.setState({ validatingCode: true });
+    checkCoupon(this.state.couponCode).then(response => {
+
+      if (response.discount) {
+        this.setState({ discountPercentage: response.discount, validatingCode: false })
+      } else {
+        // -1 means that the discount code is invalid
+        this.setState({ discountPercentage: -1, validatingCode: false })
+      }
+
+    }).catch(e => {
+      this.setState({ discountPercentage: -1, validatingCode: false })
+    });
+  }
+
+  calculateDiscount = () => {
+    const { billingPeriod, plan } = this.props;
+    const { discountPercentage } = this.state;
+    const planValue = Math.round((billingPeriod === "annually" ? plan['Annual Billing'] : plan["Monthly"]) * 100.0) / 100.0;
+
+    return (planValue - (planValue * discountPercentage * 0.01)).toFixed(2);
+  }
+
   onToken = (token) => {    
     token.plan = this.props.billingPeriod === "annually" ? this.props.planName + "_annual" : this.props.planName;
     token.trialDays = 0;
     token.created = new Date().getTime();
     token.subType = "main"
-    token.couponCode = this.props.billingPeriod === "annually" ? this.state.couponCode : '';
+    token.couponCode = this.state.couponCode;
+    //ADD DISCOUNT
     createSubscription(token).then(response => {
       this.props.startSetChannels().then(res => {
         this.props.startSetProfile().then(res => {
@@ -352,7 +379,7 @@ class Checkout extends React.Component {
 
   render() {
     const { validClaas, form, years, loading, 
-      countries, newAccounts, actualUsers, openCountry, location, planTitle, setStart, endCardSetting, editCardSetting, editCardInfo, deleteCard, stripeError } = this.state
+      countries, planTitle, setStart, endCardSetting, editCardSetting, editCardInfo, deleteCard, stripeError, discountPercentage, validatingCode } = this.state
     const { plan, billingPeriod, onChangePlan, onChangePeriod } = this.props;
     const todayDate = new Date();
     const minumumYear = todayDate.getFullYear();
@@ -673,14 +700,22 @@ class Checkout extends React.Component {
                   <div className=" plan-info-container">
                     <h3>Order summary</h3>
 
-                    <div className="plan-content table">
+                    <div className="plan-content">
                         <div className="row-price">
-                          <div className="col-price">
-                            <p className="plan-content-description">{planTitle}</p>
-                            <p className="price">${billingPeriod === "annually" ? plan['Annual Billing'] : plan["Monthly"]}</p>
-                            <button className="btn-text-pink" onClick={() => onChangePlan() }>Change</button>
+                          <div className="plan-content-description">{planTitle}</div>
+                          <div className={`price`}>
+                            <div className={discountPercentage > 0 ? 'with-discount' : ''}>
+                              ${billingPeriod === "annually" ? plan['Annual Billing'] : plan["Monthly"]}
+                            </div>
                           </div>
                         </div>
+                        { discountPercentage > 0  && (
+                          <div className="row-price discount-row">
+                            <p className="plan-content-description">With discount</p>
+                            <p className="price">{`$${this.calculateDiscount()}`}</p>
+                          </div>
+                        )}
+                        <button className="btn-text-pink" onClick={() => onChangePlan() }>Change</button>
                         <br />
                     </div>
                     <div className="order-total table">
@@ -696,8 +731,21 @@ class Checkout extends React.Component {
                       </div>
                     </div>
                     <div className="discount-cnt">
-                      <input className="discount" placeholder="Add discount code" onChange={(e) => this.setCouponCode(e)}/>
+                      <input
+                        className="discount"
+                        placeholder="Add discount code"
+                        onChange={(e) => this.setCouponCode(e)}
+                        disabled={validatingCode}
+                      />
+                      <button
+                        className="btn-blue"
+                        onClick={() => this.CheckCoupon()}
+                        disabled={validatingCode}
+                      >
+                        Check discount
+                      </button>
                     </div>
+                    { discountPercentage === -1 && <div className="invalid-code">The code is invalid</div>}
                     {
                       form.cardnumber != "" ?
                       <button className="btn-blue" onClick={(e) => this.ConfirmOrder(e)}>Confirm order</button>
