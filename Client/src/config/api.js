@@ -30,3 +30,5 @@ export const userFlowToken = process.env.USERFLOW_TOKEN ? process.env.USERFLOW_T
 
 export const facebookPixelID = process.env.FACEBOOK_PIXEL_ID ? process.env.FACEBOOK_PIXEL_ID : '';
 
+export const googleTagManagerID = process.env.GOOGLE_TAG_MANAGER_ID ? process.env.GOOGLE_TAG_MANAGER_ID : '';
+
