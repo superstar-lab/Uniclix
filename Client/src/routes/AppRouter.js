@@ -1,6 +1,10 @@
 import React from "react";
+import { Helmet } from 'react-helmet';
 import {Router, Route, Switch} from "react-router-dom";
 import createHistory from "history/createBrowserHistory";
+
+import { googleTagManagerID } from '../config/api';
+
 import Streams from "../components/Streams/Streams";
 import Accounts from "../components/Accounts/Accounts";
 import Settings from "../components/Settings/Settings";
@@ -33,6 +37,17 @@ class AppRouter extends React.Component {
                         <PublicRoute path="/autologin/:email/:password" component={AutoLogin} />
                         <Route component={NotFoundPage}/>
                     </Switch>
+                    <Helmet>
+                        {
+                            googleTagManagerID ? (
+                                <noscript>
+                                    {
+                                        `<iframe src="https://www.googletagmanager.com/ns.html?id=${googleTagManagerID}"height="0" width="0" style="display:none;visibility:hidden"></iframe>`
+                                    }
+                                </noscript>
+                            ) : null
+                        }
+                    </Helmet>
                 </div>
             </Router>
         );
