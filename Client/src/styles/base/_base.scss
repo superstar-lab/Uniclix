@@ -239,24 +239,35 @@
 }
 
 .row-price {
-    display: table-row;
+    display: flex;
+    justify-content: space-between;
+    width: 85%;
+    margin-bottom: 10px;
 
     &.new-accounts {
         color: $primary_blue;
         font-size: 17px;
     }
 
-    .col-price {
-        display: table-cell;
+    .price {
+        font-weight: bold;
+        font-size: 21px;
+        color: rgba(0,0,0,0.65);
+    }
 
-        &:last-child {
-            
-            vertical-align: bottom;
-        }
+    .with-discount {
+        position: relative;
+    }
 
-        .price {
-            font-weight: bold;
-        }
+    .with-discount:before {
+        content: '';
+        position: absolute;
+        width: calc(100% + 10px);
+        height: 20%;
+        background: #d83e7f;
+        top: 13px;
+        left: -5px;
+        border-radius: 30px;
     }
 }
 
@@ -268,12 +279,30 @@
     align-items: center;
 }
 
+.discount-cnt {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    button.btn-blue {
+        margin: 0;
+        font-size: 12px;
+        padding: 0;
+        width: 25%;
+    }
+}
+
+.invalid-code {
+    color: rgb(255, 43, 61);
+    font-size: 15px;
+}
+
 .discount {
     border: 1px dashed $secondary_gray;
     background: $gray;
     padding: 10px 15px;
     font-size: 1.6rem;
-    width: 100%;
+    width: 70%;
     border-radius: 6px;
 }
 
