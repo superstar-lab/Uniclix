@@ -1,16 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Button, Modal, Select, TimePicker} from 'antd';
+import React from "react";
+import PropTypes from "prop-types";
+import { Button, Modal, Select, TimePicker } from "antd";
 import moment from "moment";
-import {connect} from "react-redux";
-import {setComposerModal, setComposerToEdit, setPostAtBestTime, setPostCalendar} from "../../../actions/composer";
+import { connect } from "react-redux";
+import {
+  setComposerModal,
+  setComposerToEdit,
+  setPostAtBestTime,
+  setPostCalendar,
+} from "../../../actions/composer";
 import Loader from "../../Loader";
-import {destroyPost} from "../../../requests/channels";
+import { destroyPost } from "../../../requests/channels";
 
 const { Option } = Select;
 
 class PostsDayBestTime extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -21,7 +25,9 @@ class PostsDayBestTime extends React.Component {
 
   getDateTime = (time) => {
     const { timezone } = this.props;
-    const dateTime = moment.tz(time, 'yyyy-mm-dd h:mm A', timezone).format('h:mm A');
+    const dateTime = moment
+      .tz(time, "yyyy-mm-dd h:mm A", timezone)
+      .format("h:mm A");
 
     return dateTime;
   };
@@ -37,7 +43,7 @@ class PostsDayBestTime extends React.Component {
   };
 
   handleOk = () => {
-    const { bestTime, fetchMoreData,onResetPage, fetchPosts } = this.props;
+    const { bestTime, fetchMoreData, onResetPage, fetchPosts } = this.props;
 
     this.toggleLoading();
     destroyPost(bestTime.post_id)
@@ -62,18 +68,30 @@ class PostsDayBestTime extends React.Component {
   };
 
   editBestPost = () => {
-    const { bestTime, timezone, setComposerToEdit, setPostAtBestTime, setPostCalendar } = this.props;
+    const {
+      bestTime,
+      timezone,
+      setComposerToEdit,
+      setPostAtBestTime,
+      setPostCalendar,
+    } = this.props;
     const {
       post_id,
       channel_ids,
       content,
-      payload: { images, videos, scheduled: { publishUTCDateTime } },
+      payload: {
+        images,
+        videos,
+        scheduled: { publishUTCDateTime },
+      },
       category_id,
-      posted
+      posted,
     } = bestTime;
 
     if (!posted) {
-      const date = moment(publishUTCDateTime).tz(timezone).format('YYYY-MM-DDTHH:mmZ');
+      const date = moment(publishUTCDateTime)
+        .tz(timezone)
+        .format("YYYY-MM-DDTHH:mmZ");
 
       const postData = {
         id: post_id,
@@ -83,55 +101,63 @@ class PostsDayBestTime extends React.Component {
         videos: videos,
         category: category_id,
         date,
-        selectedTimezone: timezone
+        selectedTimezone: timezone,
       };
 
       setComposerToEdit(postData);
       setPostAtBestTime(true);
-      setPostCalendar('Day');
+      setPostCalendar("Day");
     }
   };
 
   render() {
-    const { channelsList, bestTime, weekdayNames, fetchMoreData, postNow } = this.props;
+    const { channelsList, bestTime, weekdayNames, fetchMoreData, postNow } =
+      this.props;
     const { isLoading, visible } = this.state;
-    const { post_id, content, payload: { scheduled: { publishDateTime }, images, videos }, category, channel_ids } = bestTime;
-    const channels = channelsList.filter(channel => channel_ids.indexOf(channel.id) !== -1);
+    const {
+      post_id,
+      content,
+      payload: {
+        scheduled: { publishDateTime },
+        images,
+        videos,
+      },
+      category,
+      channel_ids,
+    } = bestTime;
+    const channels = channelsList.filter(
+      (channel) => channel_ids.indexOf(channel.id) !== -1
+    );
 
     return (
       <div className="infinite-best-time">
         <div className="infinite-best-time-title">
           <div className="content">{content}</div>
-          {
-            (!!images.length || !!videos.length) && <div className="infinite-best-media-preview">
-              {images.length > 0 ?
-                images.map((image, index) => (
-                  <img src={image} className="preview" alt="preview"/>
-                ))
-                :
-                videos.length > 0 ?
-                  videos.map((video, index) => (
-                    <video src={video} className="preview" alt="preview"/>
+          {(!!images.length || !!videos.length) && (
+            <div className="infinite-best-media-preview">
+              {images.length > 0
+                ? images.map((image, index) => (
+                    <img src={image} className="preview" alt="preview" />
                   ))
-                  :
-                  ""
-              }
+                : videos.length > 0
+                ? videos.map((video, index) => (
+                    <video src={video} className="preview" alt="preview" />
+                  ))
+                : ""}
             </div>
-          }
-          <i className="fa fa-close" onClick={this.deleteBestPost}/>
+          )}
+          <i className="fa fa-close" onClick={this.deleteBestPost} />
         </div>
         <div className="infinite-best-time-boundary" />
         <div className="infinite-best-time-body">
           <div className="infinite-best-time-body-footer">
             <div className="infinite-best-time-channels">
-              {
-                channels.map(({ type, avatar }, index) => (
-                  <div key={`${type}-${index}`}>
-                    <img src={avatar} />
-                    <i className={`fab fa-${type} ${type}_bg`} />
-                  </div>
-                ))
-              }
+              {channels.map(({ type, avatar }, index) => (
+                <div key={`${type}-${index}`}>
+                  <img src={avatar} />
+                  <i className={`fab fa-${type} ${type}_bg`} />
+                </div>
+              ))}
             </div>
             <div
               className="infinite-best-time-category"
@@ -140,7 +166,8 @@ class PostsDayBestTime extends React.Component {
               {category.category_name}
             </div>
             <div className="infinite-best-time-post">
-              This post will be published {weekdayNames} at {this.getDateTime(publishDateTime)}
+              This post will be published {weekdayNames} at{" "}
+              {this.getDateTime(publishDateTime)}
             </div>
           </div>
           <div className="infinite-best-time-body-footer-btn col-md-3">
@@ -151,7 +178,7 @@ class PostsDayBestTime extends React.Component {
               type="primary"
               shape="round"
               size="medium"
-              onClick={()=>postNow(post_id)}
+              onClick={() => postNow(post_id)}
             >
               Share Now
             </Button>
@@ -168,7 +195,7 @@ class PostsDayBestTime extends React.Component {
         >
           Are you sure you want to delete the post?
         </Modal>
-        { isLoading && <Loader fullscreen /> }
+        {isLoading && <Loader fullscreen />}
       </div>
     );
   }
@@ -180,4 +207,9 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setComposerModal, setComposerToEdit, setPostAtBestTime, setPostCalendar })(PostsDayBestTime);
+export default connect(mapStateToProps, {
+  setComposerModal,
+  setComposerToEdit,
+  setPostAtBestTime,
+  setPostCalendar,
+})(PostsDayBestTime);
