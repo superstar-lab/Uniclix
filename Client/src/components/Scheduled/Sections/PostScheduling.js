@@ -1,12 +1,18 @@
-import React from 'react';
-import moment from 'moment';
-import {Select, Button, notification, TimePicker, Modal} from 'antd';
+import React from "react";
+import moment from "moment";
+import { Select, Button, notification, TimePicker, Modal } from "antd";
 
-import { schedulingTimes, schedulingStore, schedulingEdit, destroyTime, clearAll } from '../../../requests/channels';
+import {
+  schedulingTimes,
+  schedulingStore,
+  schedulingEdit,
+  destroyTime,
+  clearAll,
+} from "../../../requests/channels";
 
-import SchedulingTableHeader from '../components/SchedulingTableHeader';
-import SchedulingTableBody from '../components/SchedulingTableBody';
-import Loader from '../../Loader';
+import SchedulingTableHeader from "../components/SchedulingTableHeader";
+import SchedulingTableBody from "../components/SchedulingTableBody";
+import Loader from "../../Loader";
 
 const { Option } = Select;
 
@@ -24,27 +30,26 @@ const POSTSCHEDULING = [
 ];
 
 class PostScheduling extends React.Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
       isLoading: false,
       isQueue: true,
-      postSchedulingOption: 'Every Day',
+      postSchedulingOption: "Every Day",
       bestTime: "21:00",
       weeks: [
-        {name: "Monday", status: false},
-        {name: "Tuesday", status: false},
-        {name: "Wednesday", status: false},
-        {name: "Thursday", status: false},
-        {name: "Friday", status: false},
-        {name: "Saturday", status: false},
-        {name: "Sunday", status: false},
+        { name: "Monday", status: false },
+        { name: "Tuesday", status: false },
+        { name: "Wednesday", status: false },
+        { name: "Thursday", status: false },
+        { name: "Friday", status: false },
+        { name: "Saturday", status: false },
+        { name: "Sunday", status: false },
       ],
       schedulingTimes: [],
       visible: false,
-    }
+    };
   }
 
   componentWillMount() {
@@ -63,10 +68,11 @@ class PostScheduling extends React.Component {
             schedulingTimes,
             isLoading: false,
           });
-        }).catch((error) => {
-        this.setState({ isLoading: false });
-      });
-    } catch(error) {
+        })
+        .catch((error) => {
+          this.setState({ isLoading: false });
+        });
+    } catch (error) {
       console.log(error);
     }
   }
@@ -74,29 +80,29 @@ class PostScheduling extends React.Component {
   getDateTime() {
     const { timezone } = this.props;
     const { bestTime } = this.state;
-    const dateTime = moment.tz(bestTime, 'hh:mm A', timezone);
+    const dateTime = moment.tz(bestTime, "hh:mm A", timezone);
 
     return dateTime;
-  };
+  }
 
   getStringTime24 = (valueString) => {
-    let isAm = valueString.split(' ')[1];
-    let time = '';
+    let isAm = valueString.split(" ")[1];
+    let time = "";
     if (isAm == "AM") {
       let hour = 0;
-      if (parseInt(valueString.split(' ')[0].split(":")[0]) == 12) {
-        time = hour + ":" + valueString.split(' ')[0].split(":")[1];
+      if (parseInt(valueString.split(" ")[0].split(":")[0]) == 12) {
+        time = hour + ":" + valueString.split(" ")[0].split(":")[1];
       } else {
-        time = valueString.split(' ')[0];
+        time = valueString.split(" ")[0];
       }
     } else {
       let hour = 0;
-      if (parseInt(valueString.split(' ')[0].split(":")[0]) == 12) {
-        hour = parseInt(valueString.split(' ')[0].split(":")[0]);
-      } else  {
-        hour = parseInt(valueString.split(' ')[0].split(":")[0]) + 12;
+      if (parseInt(valueString.split(" ")[0].split(":")[0]) == 12) {
+        hour = parseInt(valueString.split(" ")[0].split(":")[0]);
+      } else {
+        hour = parseInt(valueString.split(" ")[0].split(":")[0]) + 12;
       }
-      time = hour + ":" + valueString.split(' ')[0].split(":")[1];
+      time = hour + ":" + valueString.split(" ")[0].split(":")[1];
     }
 
     return time;
@@ -109,28 +115,63 @@ class PostScheduling extends React.Component {
       schedulingTimes[i] = [];
     }
 
-    tmpSchedulingTimes.forEach(time => {
-      switch(time.schedule_week) {
+    tmpSchedulingTimes.forEach((time) => {
+      switch (time.schedule_week) {
         case 0:
-          schedulingTimes[0].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted, content: time.content });
+          schedulingTimes[0].push({
+            time: time.schedule_time,
+            timeId: time.time_id,
+            posted: time.posted,
+            content: time.content,
+          });
           break;
         case 1:
-          schedulingTimes[1].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted, content: time.content });
+          schedulingTimes[1].push({
+            time: time.schedule_time,
+            timeId: time.time_id,
+            posted: time.posted,
+            content: time.content,
+          });
           break;
         case 2:
-          schedulingTimes[2].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted, content: time.content });
+          schedulingTimes[2].push({
+            time: time.schedule_time,
+            timeId: time.time_id,
+            posted: time.posted,
+            content: time.content,
+          });
           break;
         case 3:
-          schedulingTimes[3].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted, content: time.content });
+          schedulingTimes[3].push({
+            time: time.schedule_time,
+            timeId: time.time_id,
+            posted: time.posted,
+            content: time.content,
+          });
           break;
         case 4:
-          schedulingTimes[4].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted, content: time.content });
+          schedulingTimes[4].push({
+            time: time.schedule_time,
+            timeId: time.time_id,
+            posted: time.posted,
+            content: time.content,
+          });
           break;
         case 5:
-          schedulingTimes[5].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted, content: time.content });
+          schedulingTimes[5].push({
+            time: time.schedule_time,
+            timeId: time.time_id,
+            posted: time.posted,
+            content: time.content,
+          });
           break;
         case 6:
-          schedulingTimes[6].push({ time: time.schedule_time, timeId: time.time_id, posted: time.posted, content: time.content });
+          schedulingTimes[6].push({
+            time: time.schedule_time,
+            timeId: time.time_id,
+            posted: time.posted,
+            content: time.content,
+          });
       }
     });
 
@@ -140,13 +181,14 @@ class PostScheduling extends React.Component {
   onChangeQueue = () => {
     if (this.state.isQueue) {
       notification.success({
-        message: 'Done!',
-        description: 'Ok! Your stack is now active again.'
+        message: "Done!",
+        description: "Ok! Your stack is now active again.",
       });
     } else {
       notification.success({
-        message: 'Done!',
-        description: 'Awesome, we\'ve paused all updates for this social account!'
+        message: "Done!",
+        description:
+          "Awesome, we've paused all updates for this social account!",
       });
     }
     this.setState({
@@ -156,9 +198,9 @@ class PostScheduling extends React.Component {
 
   onDateTimeChange = (value, valueString) => {
     let time = this.getStringTime24(valueString);
-    value.tz('Europe/London');
+    value.tz("Europe/London");
     this.setState({
-      bestTime: time
+      bestTime: time,
     });
   };
 
@@ -167,7 +209,7 @@ class PostScheduling extends React.Component {
     const { schedulingTimes } = this.state;
 
     if (value != null) {
-      value.tz('Europe/London');
+      value.tz("Europe/London");
       const dateTime = this.getStringTime24(valueString);
 
       try {
@@ -182,9 +224,9 @@ class PostScheduling extends React.Component {
             this.setState({
               schedulingTimes,
             });
-          }).catch((error) => {
-        });
-      } catch(error) {
+          })
+          .catch((error) => {});
+      } catch (error) {
         console.log(error);
       }
     } else {
@@ -200,16 +242,16 @@ class PostScheduling extends React.Component {
             this.setState({
               schedulingTimes,
             });
-          }).catch((error) => {
-        });
-      } catch(error) {
+          })
+          .catch((error) => {});
+      } catch (error) {
         console.log(error);
       }
     }
 
     notification.success({
-      message: 'Done!',
-      description: 'Awesome! Your schedule has been successfully saved.'
+      message: "Done!",
+      description: "Awesome! Your schedule has been successfully saved.",
     });
   };
 
@@ -222,10 +264,11 @@ class PostScheduling extends React.Component {
     const { schedulingTimes, postSchedulingOption, bestTime } = this.state;
     const dateTime = this.getDateTime();
 
-    let start, end = 0;
+    let start,
+      end = 0;
     let times = [];
 
-    switch(postSchedulingOption) {
+    switch (postSchedulingOption) {
       case "Every Day":
         start = 0;
         end = 7;
@@ -273,7 +316,7 @@ class PostScheduling extends React.Component {
 
     try {
       schedulingStore({
-        times
+        times,
       })
         .then((response) => {
           const tmpSchedulingTimes = response.items;
@@ -287,12 +330,12 @@ class PostScheduling extends React.Component {
           });
 
           notification.success({
-            message: 'Done!',
-            description: 'Awesome! Your schedule has been successfully saved.'
+            message: "Done!",
+            description: "Awesome! Your schedule has been successfully saved.",
           });
-        }).catch((error) => {
-      });
-    } catch(error) {
+        })
+        .catch((error) => {});
+    } catch (error) {
       console.log(error);
     }
   };
@@ -311,10 +354,10 @@ class PostScheduling extends React.Component {
       weeks: tmpWeeks,
     });
     notification.success({
-      message: 'Done!',
-      description: 'Awesome! Your schedule has been successfully saved.'
+      message: "Done!",
+      description: "Awesome! Your schedule has been successfully saved.",
     });
-  }
+  };
 
   handleOk = () => {
     try {
@@ -331,12 +374,12 @@ class PostScheduling extends React.Component {
             visible: false,
           });
           notification.success({
-            message: 'Done!',
-            description: 'Awesome! Your schedule has been successfully saved.'
+            message: "Done!",
+            description: "Awesome! Your schedule has been successfully saved.",
           });
-        }).catch((error) => {
-      });
-    } catch(error) {
+        })
+        .catch((error) => {});
+    } catch (error) {
       console.log(error);
     }
   };
@@ -348,7 +391,8 @@ class PostScheduling extends React.Component {
   };
 
   render() {
-    const { postSchedulingOption, weeks, schedulingTimes, visible, isLoading } = this.state;
+    const { postSchedulingOption, weeks, schedulingTimes, visible, isLoading } =
+      this.state;
     const { name, timezone } = this.props;
     const dateTime = this.getDateTime();
 
@@ -371,8 +415,18 @@ class PostScheduling extends React.Component {
           </div>
           <div className="post-scheduling-queue-section">
             <div className="post-scheduling-padding">
-              <div>{this.state.isQueue ? "Your stack has been paused!" : "Stop all posts from being sent on this Social Account?"}</div>
-              <Button type="primary" className="btn-queue" onClick={this.onChangeQueue}>{this.state.isQueue ? "Resume Stacks" : "Pause Stacks"}</Button>
+              <div>
+                {this.state.isQueue
+                  ? "Your stack has been paused!"
+                  : "Stop all posts from being sent on this Social Account?"}
+              </div>
+              <Button
+                type="primary"
+                className="btn-queue"
+                onClick={this.onChangeQueue}
+              >
+                {this.state.isQueue ? "Resume Stacks" : "Pause Stacks"}
+              </Button>
             </div>
           </div>
           <div className="post-scheduling-time-section">
@@ -384,15 +438,16 @@ class PostScheduling extends React.Component {
                 className="post-time-margin-right"
                 onChange={this.onPostSchedulingChange}
               >
-                {
-                  POSTSCHEDULING && POSTSCHEDULING.map(schedule => (
+                {POSTSCHEDULING &&
+                  POSTSCHEDULING.map((schedule) => (
                     <Option key={schedule} value={schedule} title={schedule}>
                       {schedule}
                     </Option>
-                  ))
-                }
+                  ))}
               </Select>
-              <div className="time-label post-time-margin-right">Choose times</div>
+              <div className="time-label post-time-margin-right">
+                Choose times
+              </div>
               <TimePicker
                 use12Hours
                 format="hh:mm A"
@@ -401,35 +456,55 @@ class PostScheduling extends React.Component {
                 size="large"
                 className="post-time-margin-right"
               />
-              <Button className="post-time-margin-right" type="primary" onClick={this.onAddPostTime}>Add Posting Time</Button>
+              <Button
+                className="post-time-margin-right"
+                type="primary"
+                onClick={this.onAddPostTime}
+              >
+                Add Posting Time
+              </Button>
             </div>
           </div>
           <div className="post-scheduling-display-section">
             <div className="post-scheduling-display-header">
-              <div className="post-scheduling-display-title">Posting times<i className="fa fa-question-circle"></i></div>
-              {
-                schedulingTimes.length == 0 ?
-                  ""
-                  :
-                  <Button onClick={this.onClearPostTime}>Clear all Posting Times</Button>
-              }
+              <div className="post-scheduling-display-title">
+                Posting times<i className="fa fa-question-circle"></i>
+              </div>
+              {schedulingTimes.length == 0 ? (
+                ""
+              ) : (
+                <Button onClick={this.onClearPostTime}>
+                  Clear all Posting Times
+                </Button>
+              )}
             </div>
-            {
-              schedulingTimes.length == 0 ?
-                <div className="post-scheduling-display-body">
-                  <i className="fa fa-3x fa-clock-o"></i>
-                  <div className="post-scheduling-display-title">Looks like you don't have any posting times set!</div>
-                  <div className="post-scheduling-display-subtitle">Add a new posting time to start publishing posts from your stack.</div>
+            {schedulingTimes.length == 0 ? (
+              <div className="post-scheduling-display-body">
+                <i className="fa fa-3x fa-clock-o"></i>
+                <div className="post-scheduling-display-title">
+                  Looks like you don't have any posting times set!
                 </div>
-                :
-                <table>
-                  <SchedulingTableHeader weeks={weeks} onTurnScheduleTime={this.onTurnScheduleTime}/>
-                  <SchedulingTableBody schedulingTimes={schedulingTimes} timezone={timezone} onEveryDateTimeChange={this.onEveryDateTimeChange}/>
-                </table>
-            }
+                <div className="post-scheduling-display-subtitle">
+                  Add a new posting time to start publishing posts from your
+                  stack.
+                </div>
+              </div>
+            ) : (
+              <table>
+                <SchedulingTableHeader
+                  weeks={weeks}
+                  onTurnScheduleTime={this.onTurnScheduleTime}
+                />
+                <SchedulingTableBody
+                  schedulingTimes={schedulingTimes}
+                  timezone={timezone}
+                  onEveryDateTimeChange={this.onEveryDateTimeChange}
+                />
+              </table>
+            )}
           </div>
         </div>
-        { isLoading && <Loader fullscreen /> }
+        {isLoading && <Loader fullscreen />}
       </div>
     );
   }
