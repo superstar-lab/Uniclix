@@ -1,43 +1,46 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Tabs } from 'antd';
-import moment from 'moment';
-import { notification, Button } from 'antd';
-import userflow from 'userflow.js';
-import Modal from 'react-modal';
+import React from "react";
+import { connect } from "react-redux";
+import { Tabs } from "antd";
+import moment from "moment";
+import { notification, Button } from "antd";
+import userflow from "userflow.js";
+import Modal from "react-modal";
 
-import FunctionModal from '../Modal';
-import { updateTimeZone } from '../../requests/profile';
-import { setComposerModal, setPostAtBestTime, setPostCalendar } from '../../actions/composer';
-import { isOwnerOrAdmin } from '../../utils/helpers';
-import { unapprovedPosts } from '../../requests/channels';
-import { setTimezone } from '../../actions/profile';
+import FunctionModal from "../Modal";
+import { updateTimeZone } from "../../requests/profile";
+import {
+  setComposerModal,
+  setPostAtBestTime,
+  setPostCalendar,
+} from "../../actions/composer";
+import { isOwnerOrAdmin } from "../../utils/helpers";
+import { unapprovedPosts } from "../../requests/channels";
+import { setTimezone } from "../../actions/profile";
 import channelSelector from "../../selectors/channels";
 
-import ScheduledPosts from './Sections/ScheduledPosts';
-import PostScheduling from './Sections/PostScheduling';
-import TimezoneSelector from './components/TimezoneSelector';
-import AwaitingApproval from './Sections/AwaitingApproval';
-import AwaitingApprovalTabTitle from './components/AwaitingApprovalTabTitle';
-import Loader from '../Loader';
-import ScheduleWizard from './components/ScheduleWizard';
-import TodaysAgenda from './components/TodaysAgenda';
+import ScheduledPosts from "./Sections/ScheduledPosts";
+import PostScheduling from "./Sections/PostScheduling";
+import TimezoneSelector from "./components/TimezoneSelector";
+import AwaitingApproval from "./Sections/AwaitingApproval";
+import AwaitingApprovalTabTitle from "./components/AwaitingApprovalTabTitle";
+import Loader from "../Loader";
+import ScheduleWizard from "./components/ScheduleWizard";
+import TodaysAgenda from "./components/TodaysAgenda";
 
 const { TabPane } = Tabs;
 
 class Scheduled extends React.Component {
-
   constructor(props) {
     super(props);
 
     const {
       location: {
-        state: { comingFromOnBoarding } = { comingFromOnBoarding: false }
-      }
+        state: { comingFromOnBoarding } = { comingFromOnBoarding: false },
+      },
     } = this.props;
 
     this.state = {
-      activeTab: 'scheduled',
+      activeTab: "scheduled",
       selectedTimezone: !!props.timezone ? props.timezone : moment.tz.guess(),
       isLoading: false,
       accountsModal: false,
@@ -45,12 +48,15 @@ class Scheduled extends React.Component {
       awaitingLoading: false,
       tourModalOpen: comingFromOnBoarding,
       showTour: false,
-      todaysPosts: []
-    }
+      todaysPosts: [],
+    };
   }
 
   componentDidMount() {
-    const { accessLevel, user: { id, name, email, created_at } } = this.props;
+    const {
+      accessLevel,
+      user: { id, name, email, created_at },
+    } = this.props;
     if (isOwnerOrAdmin(accessLevel)) {
       this.getAwaitingPosts();
     }
@@ -58,8 +64,8 @@ class Scheduled extends React.Component {
     userflow.identify(id, {
       name,
       email,
-      signed_up_at: created_at
-    })
+      signed_up_at: created_at,
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -76,10 +82,13 @@ class Scheduled extends React.Component {
 
     this.setState({ awaitingLoading: true });
     unapprovedPosts(page)
-      .then(response => {
-        this.setState({ awaitingApprovalPosts: response.items, awaitingLoading: false });
+      .then((response) => {
+        this.setState({
+          awaitingApprovalPosts: response.items,
+          awaitingLoading: false,
+        });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         this.setState({ awaitingLoading: false });
       });
@@ -92,37 +101,46 @@ class Scheduled extends React.Component {
         this.setState({ selectedTimezone: timezone, isLoading: false });
         this.props.setTimezone(timezone);
         notification.success({
-          message: 'Done!',
-          description: 'The timezone has been changed'
+          message: "Done!",
+          description: "The timezone has been changed",
         });
       })
       .catch((error) => {
         this.setState({ isLoading: false });
         console.log(error);
         FunctionModal({
-          type: 'error',
-          title: 'Error',
-          content: 'Something went wrong when trying to change the timezone, please try again later.'
+          type: "error",
+          title: "Error",
+          content:
+            "Something went wrong when trying to change the timezone, please try again later.",
         });
       });
-  }
+  };
 
   getTabExtraContent = () => {
     const { activeTab, selectedTimezone } = this.state;
 
-    switch(activeTab) {
-      case 'scheduled':
-        return <TimezoneSelector value={selectedTimezone} onChange={this.changeTimezone} />;
+    switch (activeTab) {
+      case "scheduled":
+        return (
+          <TimezoneSelector
+            value={selectedTimezone}
+            onChange={this.changeTimezone}
+          />
+        );
     }
   };
 
   onNewPostClick = () => {
-    this.props.setComposerModal(moment().format('YYYY-MM-DDTHH:mmZ'), this.state.selectedTimezone);
+    this.props.setComposerModal(
+      moment().format("YYYY-MM-DDTHH:mmZ"),
+      this.state.selectedTimezone
+    );
     this.props.setPostAtBestTime(true);
   };
 
   onTabChange = (key) => {
-    if (key === 'awaiting') {
+    if (key === "awaiting") {
       this.getAwaitingPosts();
     }
 
@@ -131,30 +149,36 @@ class Scheduled extends React.Component {
 
   onBestPostClick = (e) => {
     if (e.target.id === "") {
-      const date = moment().format('YYYY-MM-DDTHH:mm');
-      const postTz = moment().tz(this.state.selectedTimezone).format('Z');
-      this.props.setComposerModal(`${date}${postTz}`, this.state.selectedTimezone);
-      this.props.setPostCalendar('Week');
+      const date = moment().format("YYYY-MM-DDTHH:mm");
+      const postTz = moment().tz(this.state.selectedTimezone).format("Z");
+      this.props.setComposerModal(
+        `${date}${postTz}`,
+        this.state.selectedTimezone
+      );
+      this.props.setPostCalendar("Week");
     } else {
-      const date = moment(e.target.id).format('YYYY-MM-DDTHH:mm');
-      const postTz = moment().tz(this.state.selectedTimezone).format('Z');
-      this.props.setComposerModal(`${date}${postTz}`, this.state.selectedTimezone);
-      this.props.setPostCalendar('Day');
+      const date = moment(e.target.id).format("YYYY-MM-DDTHH:mm");
+      const postTz = moment().tz(this.state.selectedTimezone).format("Z");
+      this.props.setComposerModal(
+        `${date}${postTz}`,
+        this.state.selectedTimezone
+      );
+      this.props.setPostCalendar("Day");
     }
     this.props.setPostAtBestTime(true);
   };
 
   closeTourModal = () => {
     this.setState({ tourModalOpen: false });
-  }
+  };
 
   startTour = () => {
     this.setState({ tourModalOpen: false, showTour: true });
-  }
+  };
 
-  setTodaysPosts = posts => {
+  setTodaysPosts = (posts) => {
     this.setState({ todaysPosts: posts });
-  }
+  };
 
   render() {
     const {
@@ -165,18 +189,18 @@ class Scheduled extends React.Component {
       awaitingLoading,
       tourModalOpen,
       showTour,
-      todaysPosts
+      todaysPosts,
     } = this.state;
     const { accessLevel, user, selectedChannel } = this.props;
 
     return (
       <div className="scheduled">
-        <Modal
-          isOpen={tourModalOpen}
-          className="tour-modal"
-        >
+        <Modal isOpen={tourModalOpen} className="tour-modal">
           <div className="tour-container">
-            <div className="close-icon fa fa-times" onClick={this.closeTourModal}></div>
+            <div
+              className="close-icon fa fa-times"
+              onClick={this.closeTourModal}
+            ></div>
             <div className="picture">
               <img src="/images/welcome-tour.svg" />
             </div>
@@ -220,34 +244,37 @@ class Scheduled extends React.Component {
           >
             <TabPane tab="Post Queue" key="scheduled">
               {/* I needed a way to force the call that is made when the component gets mounted*/}
-              { activeTab === 'scheduled' && (
-                  <ScheduledPosts
-                    timezone={selectedTimezone}
-                    selectedChannel={selectedChannel}
-                    onBestPostClick={this.onBestPostClick}
-                    onNewPostClick={this.onNewPostClick}
-                    setTodaysPosts={this.setTodaysPosts}
-                  />
-                )
-              }
+              {activeTab === "scheduled" && (
+                <ScheduledPosts
+                  timezone={selectedTimezone}
+                  selectedChannel={selectedChannel}
+                  onBestPostClick={this.onBestPostClick}
+                  onNewPostClick={this.onNewPostClick}
+                  setTodaysPosts={this.setTodaysPosts}
+                />
+              )}
             </TabPane>
-            {
-              isOwnerOrAdmin(accessLevel) && (
-                <TabPane
-                  tab={<AwaitingApprovalTabTitle amountOfPendingPosts={awaitingApprovalPosts.length}/>}
-                  key="awaiting"
-                >
-                  <AwaitingApproval
-                    timezone={selectedTimezone}
-                    pendingPosts={awaitingApprovalPosts}
-                    getAwaitingPosts={this.getAwaitingPosts}
+            {isOwnerOrAdmin(accessLevel) && (
+              <TabPane
+                tab={
+                  <AwaitingApprovalTabTitle
+                    amountOfPendingPosts={awaitingApprovalPosts.length}
                   />
-                </TabPane>
-              )
-            }
+                }
+                key="awaiting"
+              >
+                <AwaitingApproval
+                  timezone={selectedTimezone}
+                  pendingPosts={awaitingApprovalPosts}
+                  getAwaitingPosts={this.getAwaitingPosts}
+                />
+              </TabPane>
+            )}
             <TabPane tab="Schedule Settings" key="schedule settings">
               {/* I needed a way to force the call that is made when the component gets mounted*/}
-              { activeTab === 'schedule settings' && <PostScheduling timezone={selectedTimezone} name={user.name} /> }
+              {activeTab === "schedule settings" && (
+                <PostScheduling timezone={selectedTimezone} name={user.name} />
+              )}
             </TabPane>
           </Tabs>
           <TodaysAgenda
@@ -256,10 +283,12 @@ class Scheduled extends React.Component {
             startTour={this.startTour}
           />
         </div>
-        { (isLoading || awaitingLoading) && <Loader fullscreen /> }
-        {
-          showTour && <ScheduleWizard closeTour={() => this.setState({ showTour: false })} />
-        }
+        {(isLoading || awaitingLoading) && <Loader fullscreen />}
+        {showTour && (
+          <ScheduleWizard
+            closeTour={() => this.setState({ showTour: false })}
+          />
+        )}
       </div>
     );
   }
@@ -269,7 +298,10 @@ const mapStateToProps = (state) => {
   const { profile: { user, accessLevel } = {} } = state;
   const selectedGlobalChannel = { selected: 1, provider: undefined };
 
-  const selectedChannel = channelSelector(state.channels.list, selectedGlobalChannel);
+  const selectedChannel = channelSelector(
+    state.channels.list,
+    selectedGlobalChannel
+  );
 
   return {
     timezone: user.timezone,
@@ -279,12 +311,9 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    setComposerModal,
-    setTimezone,
-    setPostAtBestTime,
-    setPostCalendar
-  }
-)(Scheduled);
+export default connect(mapStateToProps, {
+  setComposerModal,
+  setTimezone,
+  setPostAtBestTime,
+  setPostCalendar,
+})(Scheduled);
