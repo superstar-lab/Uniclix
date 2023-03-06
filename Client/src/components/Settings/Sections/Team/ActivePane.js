@@ -1,30 +1,32 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import AddMemberModal from './AddMemberModal';
-import MemberRow from './MemberRow';
+import AddMemberModal from "./AddMemberModal";
+import MemberRow from "./MemberRow";
 
 class ActivePane extends React.Component {
-
   static propTypes = {
     members: PropTypes.array.isRequired,
     teams: PropTypes.array.isRequired,
     fetchActiveMembers: PropTypes.func.isRequired,
-    refreshMembers: PropTypes.func.isRequired
+    refreshMembers: PropTypes.func.isRequired,
   };
 
   state = {
     isAddModalOpen: false,
-    memberToEdit: null
+    memberToEdit: null,
   };
 
   toggleModal = () => {
-    this.setState({ isAddModalOpen: !this.state.isAddModalOpen, memberToEdit: null });
-  }
+    this.setState({
+      isAddModalOpen: !this.state.isAddModalOpen,
+      memberToEdit: null,
+    });
+  };
 
   editMember = (member) => {
     this.setState({ isAddModalOpen: true, memberToEdit: member });
-  }
+  };
 
   render() {
     const { teams, members, fetchActiveMembers, refreshMembers } = this.props;
@@ -32,18 +34,16 @@ class ActivePane extends React.Component {
 
     return (
       <div>
-        {
-          members.map(member => (
-            <MemberRow
-              member={member}
-              refreshMembers={refreshMembers}
-              editMember={this.editMember}
-            />
-          ))
-        }
+        {members.map((member) => (
+          <MemberRow
+            member={member}
+            refreshMembers={refreshMembers}
+            editMember={this.editMember}
+          />
+        ))}
         <button onClick={this.toggleModal} className="add-button">
           <div className="add-channel-plus-btn">
-              <i className="fa fa-plus"></i>
+            <i className="fa fa-plus"></i>
           </div>
           <span className="btn-label">Add New Team Member</span>
         </button>
