@@ -1,14 +1,14 @@
-import React from 'react';
-import { connect } from 'react-redux'
-import ReactModal from 'react-modal';
-import PropTypes from 'prop-types';
-import { Select, Button } from 'antd';
+import React from "react";
+import { connect } from "react-redux";
+import ReactModal from "react-modal";
+import PropTypes from "prop-types";
+import { Select, Button } from "antd";
 
-import { validateEmail } from '../../../../utils/validator'
-import { updateTeamMember } from '../../../../requests/team';
+import { validateEmail } from "../../../../utils/validator";
+import { updateTeamMember } from "../../../../requests/team";
 
-import FunctionModal from '../../../Modal';
-import Loader from '../../../Loader';
+import FunctionModal from "../../../Modal";
+import Loader from "../../../Loader";
 
 const { Option } = Select;
 
@@ -19,21 +19,19 @@ class AddMemberModal extends React.Component {
     channels: PropTypes.array.isRequired,
     teamId: PropTypes.number.isRequired,
     refreshMembers: PropTypes.func.isRequired,
-    editMember: PropTypes.object
-  }
+    editMember: PropTypes.object,
+  };
 
   constructor(props) {
     super(props);
 
     let member = {
-      name: '',
-      email: '',
-      isAdmin: '',
-      accountsGroups: [
-        []
-      ],
-      accountsGroupsRoles: ['']
-    }
+      name: "",
+      email: "",
+      isAdmin: "",
+      accountsGroups: [[]],
+      accountsGroupsRoles: [""],
+    };
 
     if (!!props.editMember) {
       member = this.prepareMemeberToEdit();
@@ -41,21 +39,24 @@ class AddMemberModal extends React.Component {
 
     this.state = {
       ...member,
-      remainingAccountOptions: [ ...props.channels ],
+      remainingAccountOptions: [...props.channels],
       isLoading: false,
-      errors: []
-    }
+      errors: [],
+    };
   }
 
   componentDidUpdate(prevProps) {
-    if (!!this.props.editMember && prevProps.editMember !== this.props.editMember) {
+    if (
+      !!this.props.editMember &&
+      prevProps.editMember !== this.props.editMember
+    ) {
       const member = this.prepareMemeberToEdit();
       const remainingAccountOptions = this.getRemaningOptions();
       this.setState({ ...member, remainingAccountOptions });
     }
 
     if (prevProps.channels !== this.props.channels) {
-      let remainingAccountOptions = [ ...this.props.channels ]
+      let remainingAccountOptions = [...this.props.channels];
       if (this.props.editMember) {
         remainingAccountOptions = this.getRemaningOptions();
       }
@@ -64,24 +65,35 @@ class AddMemberModal extends React.Component {
   }
 
   getRemaningOptions = () => {
-    const { channels, editMember: { assignedChannels } } = this.props;
-    const remaningAccounts = channels.filter(channel => {
-      const i = assignedChannels.findIndex(selected => selected.id === channel.id);
+    const {
+      channels,
+      editMember: { assignedChannels },
+    } = this.props;
+    const remaningAccounts = channels.filter((channel) => {
+      const i = assignedChannels.findIndex(
+        (selected) => selected.id === channel.id
+      );
       return i === -1;
     });
 
     return remaningAccounts;
-  }
+  };
 
   // This function gets the data that came from the editMember
   // and shape it to match with what the component needs
   prepareMemeberToEdit() {
-    const { editMember: { is_admin, assignedChannels, details: { name, email } } } = this.props;
+    const {
+      editMember: {
+        is_admin,
+        assignedChannels,
+        details: { name, email },
+      },
+    } = this.props;
     const member = {};
 
-    member.name = name
+    member.name = name;
     member.email = email;
-    member.isAdmin = is_admin ? 'true' : 'false';
+    member.isAdmin = is_admin ? "true" : "false";
     member.accountsGroups = [];
     member.accountsGroupsRoles = [];
     assignedChannels.forEach(({ permissionLevel, ...channel }) => {
@@ -90,7 +102,7 @@ class AddMemberModal extends React.Component {
       if (groupIndex === -1) {
         // If the role was not saved yet, we push the channel in a new array into the
         // accountsGroups array and the role into the accountsGroupsRoles array
-        member.accountsGroups.push([ channel ]);
+        member.accountsGroups.push([channel]);
         member.accountsGroupsRoles.push(permissionLevel);
       } else {
         // If already exists, we add it into the corresponding array
@@ -103,74 +115,81 @@ class AddMemberModal extends React.Component {
 
   onEmailChange = (e) => {
     this.setState({ email: e.currentTarget.value });
-  }
+  };
 
   onNameChange = (e) => {
     this.setState({ name: e.currentTarget.value });
-  }
+  };
 
   onRoleChange = (value) => {
     this.setState({ isAdmin: value });
-  }
+  };
 
-  onAddAccount = groupIndex => id => {
+  onAddAccount = (groupIndex) => (id) => {
     const { accountsGroups, remainingAccountOptions } = this.state;
     // We get all the options with an id different to the one sent
-    const remainingOptions = remainingAccountOptions.filter(option => option.id !== id);
+    const remainingOptions = remainingAccountOptions.filter(
+      (option) => option.id !== id
+    );
     // Now we get the choosen channel and add it to the group
-    const selectedChannel = remainingAccountOptions.find(channel => channel.id === id);
+    const selectedChannel = remainingAccountOptions.find(
+      (channel) => channel.id === id
+    );
     accountsGroups[groupIndex].push(selectedChannel);
 
     this.setState({
       accountsGroups: [...accountsGroups],
-      remainingAccountOptions: [ ...remainingOptions ]
+      remainingAccountOptions: [...remainingOptions],
     });
-  }
+  };
 
-  onRemoveAccount = groupIndex => id => {
+  onRemoveAccount = (groupIndex) => (id) => {
     const { accountsGroups, remainingAccountOptions } = this.state;
-    const selectedChannel = accountsGroups[groupIndex].find(option => option.id === id);
+    const selectedChannel = accountsGroups[groupIndex].find(
+      (option) => option.id === id
+    );
 
-    accountsGroups[groupIndex] = accountsGroups[groupIndex].filter(option => option.id !== id);
+    accountsGroups[groupIndex] = accountsGroups[groupIndex].filter(
+      (option) => option.id !== id
+    );
     remainingAccountOptions.push(selectedChannel);
 
     this.setState({
       accountsGroups: [...accountsGroups],
-      remainingAccountOptions: [ ...remainingAccountOptions ]
-    });
-  }
-
-  addNewGroup = () => {
-    this.setState({
-      accountsGroups: [ ...this.state.accountsGroups, [] ],
-      accountsGroupsRoles: [ ...this.state.accountsGroupsRoles, '' ]
+      remainingAccountOptions: [...remainingAccountOptions],
     });
   };
 
-  onGroupRoleChange = groupIndex => value => {
+  addNewGroup = () => {
+    this.setState({
+      accountsGroups: [...this.state.accountsGroups, []],
+      accountsGroupsRoles: [...this.state.accountsGroupsRoles, ""],
+    });
+  };
+
+  onGroupRoleChange = (groupIndex) => (value) => {
     const { accountsGroupsRoles } = this.state;
     accountsGroupsRoles[groupIndex] = value;
-    this.setState({ accountsGroupsRoles: [ ...accountsGroupsRoles ] })
+    this.setState({ accountsGroupsRoles: [...accountsGroupsRoles] });
   };
 
   closeModal = () => {
     // We reset the modal
     this.setState({
-      name: '',
-      email: '',
-      isAdmin: '',
-      accountsGroups: [
-        []
-      ],
-      accountsGroupsRoles: [''],
-      remainingAccountOptions: [ ...this.props.channels ],
-      isLoading: false
-    })
+      name: "",
+      email: "",
+      isAdmin: "",
+      accountsGroups: [[]],
+      accountsGroupsRoles: [""],
+      remainingAccountOptions: [...this.props.channels],
+      isLoading: false,
+    });
     this.props.toggleModal();
   };
 
   isSaveDisabled = () => {
-    const { name, email, isAdmin, accountsGroups, accountsGroupsRoles } = this.state;
+    const { name, email, isAdmin, accountsGroups, accountsGroupsRoles } =
+      this.state;
 
     if (!name.length) {
       return true;
@@ -185,13 +204,17 @@ class AddMemberModal extends React.Component {
     }
 
     let groupsFilled = false;
-    accountsGroups.forEach(group => {if (!group.length) groupsFilled = true});
+    accountsGroups.forEach((group) => {
+      if (!group.length) groupsFilled = true;
+    });
     if (groupsFilled) {
       return true;
     }
 
     let rolesFilled = false;
-    accountsGroupsRoles.forEach(roles => {if (!roles.length) groupsFilled = true});
+    accountsGroupsRoles.forEach((roles) => {
+      if (!roles.length) groupsFilled = true;
+    });
     if (rolesFilled) {
       return true;
     }
@@ -201,22 +224,23 @@ class AddMemberModal extends React.Component {
 
   onSaveMember = () => {
     const assignedChannels = [];
-    const { name, email, isAdmin, accountsGroups, accountsGroupsRoles } = this.state;
+    const { name, email, isAdmin, accountsGroups, accountsGroupsRoles } =
+      this.state;
     const { teamId, refreshMembers } = this.props;
 
     accountsGroups.forEach((group, i) => {
-      group.forEach(account => {
+      group.forEach((account) => {
         account.permissionLevel = accountsGroupsRoles[i];
-        assignedChannels.push(account)
+        assignedChannels.push(account);
       });
     });
 
     const data = {
       name,
       email,
-      isAdmin: isAdmin === 'true' ? 1 : 0,
+      isAdmin: isAdmin === "true" ? 1 : 0,
       teamId,
-      assignedChannels
+      assignedChannels,
     };
 
     this.setState({ isLoading: true });
@@ -226,20 +250,28 @@ class AddMemberModal extends React.Component {
         this.closeModal();
         refreshMembers();
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({ isLoading: false });
         FunctionModal({
-          type: 'error',
-          title: 'Error',
-          content: 'You have exceeded the account limit for your current plan.'
-        })
+          type: "error",
+          title: "Error",
+          content: "You have exceeded the account limit for your current plan.",
+        });
         console.log(err);
       });
   };
 
   render() {
     const { isOpen, editMember } = this.props;
-    const { name, email, isAdmin, accountsGroups, remainingAccountOptions, accountsGroupsRoles, isLoading } = this.state;
+    const {
+      name,
+      email,
+      isAdmin,
+      accountsGroups,
+      remainingAccountOptions,
+      accountsGroupsRoles,
+      isLoading,
+    } = this.state;
 
     return (
       <ReactModal
@@ -247,9 +279,7 @@ class AddMemberModal extends React.Component {
         className="add-memeber-modal"
         isOpen={isOpen}
       >
-        <div className="add-member-title">
-          Add team member
-        </div>
+        <div className="add-member-title">Add team member</div>
         <div className="name-section">
           <label htmlFor="name">Name</label>
           <input
@@ -266,76 +296,91 @@ class AddMemberModal extends React.Component {
           <div>
             <label htmlFor="email">Email</label>
             <div className="input-group">
-                <input
-                  type="email"
-                  className="form-control"
-                  onChange={this.onEmailChange}
-                  value={email}
-                  placeholder="johndoe@example.com"
-                  id="email"
-                  name="email"
-                  disabled={!!editMember}
-                />
-                <Select
-                  value={isAdmin}
-                  onSelect={this.onRoleChange}
-                >
-                    <Option key="Select Role" value="">Select Role</Option>
-                    <Option key="Member" value="false">Member</Option>
-                    <Option key="Admin" value="true">Admin</Option>
-                </Select>
+              <input
+                type="email"
+                className="form-control"
+                onChange={this.onEmailChange}
+                value={email}
+                placeholder="johndoe@example.com"
+                id="email"
+                name="email"
+                disabled={!!editMember}
+              />
+              <Select value={isAdmin} onSelect={this.onRoleChange}>
+                <Option key="Select Role" value="">
+                  Select Role
+                </Option>
+                <Option key="Member" value="false">
+                  Member
+                </Option>
+                <Option key="Admin" value="true">
+                  Admin
+                </Option>
+              </Select>
             </div>
           </div>
         </div>
         <div>
           <label>Accounts</label>
-          {
-            accountsGroups.map((group, groupIndex) => (
-              <div className="input-group accounts-group-container">
-                <Select
-                  mode="multiple"
-                  showArrow
-                  style={{ width: '100%' }}
-                  onSelect={this.onAddAccount(groupIndex)}
-                  onDeselect={this.onRemoveAccount(groupIndex)}
-                  value={group.map(account => account.id)}
-                >
-                  {
-                    [...group, ...remainingAccountOptions].map(account => (
-                      <Option key={`${account.id}-${groupIndex}`} value={account.id}>
-                        { account.username ? `@${account.username}` : account.name }
-                      </Option>
-                    ))
-                  }
-                </Select>
-                <Select
-                  value={accountsGroupsRoles[groupIndex]}
-                  onSelect={this.onGroupRoleChange(groupIndex)}
-                >
-                    <Option key="Select Permission" value="">Select Role</Option>
-                    <Option key="Select Role" value="member">Approval Required</Option>
-                    <Option key="Member" value="publisher">Publisher</Option>
-                </Select>
-              </div>
-            ))
-          }
-          <button onClick={this.addNewGroup} className="add-modal-button-container">
+          {accountsGroups.map((group, groupIndex) => (
+            <div className="input-group accounts-group-container">
+              <Select
+                mode="multiple"
+                showArrow
+                style={{ width: "100%" }}
+                onSelect={this.onAddAccount(groupIndex)}
+                onDeselect={this.onRemoveAccount(groupIndex)}
+                value={group.map((account) => account.id)}
+              >
+                {[...group, ...remainingAccountOptions].map((account) => (
+                  <Option
+                    key={`${account.id}-${groupIndex}`}
+                    value={account.id}
+                  >
+                    {account.username ? `@${account.username}` : account.name}
+                  </Option>
+                ))}
+              </Select>
+              <Select
+                value={accountsGroupsRoles[groupIndex]}
+                onSelect={this.onGroupRoleChange(groupIndex)}
+              >
+                <Option key="Select Permission" value="">
+                  Select Role
+                </Option>
+                <Option key="Select Role" value="member">
+                  Approval Required
+                </Option>
+                <Option key="Member" value="publisher">
+                  Publisher
+                </Option>
+              </Select>
+            </div>
+          ))}
+          <button
+            onClick={this.addNewGroup}
+            className="add-modal-button-container"
+          >
             <div className="add-modal-plus-btn">
-                <i className="fa fa-plus"></i>
+              <i className="fa fa-plus"></i>
             </div>
             <span className="btn-label">Add Accounts Group</span>
           </button>
         </div>
         <div className="buttons-section">
-          <Button type="link" onClick={this.closeModal}>Cancel</Button>
+          <Button type="link" onClick={this.closeModal}>
+            Cancel
+          </Button>
           <Button
             type="primary"
             shape="round"
             disabled={this.isSaveDisabled()}
             onClick={this.onSaveMember}
-          >Save</Button>
+          >
+            Save
+          </Button>
         </div>
-        { isLoading && <Loader fullscreen /> }
+        {isLoading && <Loader fullscreen />}
       </ReactModal>
     );
   }
@@ -343,7 +388,7 @@ class AddMemberModal extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    channels: state.channels.list
+    channels: state.channels.list,
   };
 };
 

@@ -1,17 +1,20 @@
-import React from 'react';
-import { Tabs } from 'antd';
+import React from "react";
+import { Tabs } from "antd";
 
-import { getTeamMembers, getTeams, getPendingMembers } from '../../../../requests/team';
+import {
+  getTeamMembers,
+  getTeams,
+  getPendingMembers,
+} from "../../../../requests/team";
 
-import FunctionModal from '../../../Modal';
-import Loader from '../../../Loader';
-import ActivePane from './ActivePane';
-import PendingPane from './PendingPane';
+import FunctionModal from "../../../Modal";
+import Loader from "../../../Loader";
+import ActivePane from "./ActivePane";
+import PendingPane from "./PendingPane";
 
 const { TabPane } = Tabs;
 
 class Team extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -21,7 +24,7 @@ class Team extends React.Component {
       pendingIsLoading: false,
       activeMembers: [],
       pendingMembers: [],
-      teams: []
+      teams: [],
     };
   }
 
@@ -39,18 +42,19 @@ class Team extends React.Component {
   fetchTeams() {
     this.setState({ teamsIsLoading: true });
     getTeams()
-      .then(response => {
+      .then((response) => {
         this.setState({
           teamsIsLoading: false,
-          teams: response
-        })
+          teams: response,
+        });
       })
       .catch(() => {
         this.setState({ activeIsLoading: false });
         FunctionModal({
-          type: 'error',
-          title: 'Error',
-          content: 'There was a problem trying to get your teams. Please reload the page.'
+          type: "error",
+          title: "Error",
+          content:
+            "There was a problem trying to get your teams. Please reload the page.",
         });
       });
   }
@@ -59,48 +63,50 @@ class Team extends React.Component {
     const { teams } = this.state;
     this.setState({ activeIsLoading: true });
     getTeamMembers(teams[0].id)
-      .then(response => {
+      .then((response) => {
         this.setState({
           activeMembers: response,
-          activeIsLoading: false
+          activeIsLoading: false,
         });
       })
       .catch((error) => {
         console.log(error);
         this.setState({ activeIsLoading: false });
         FunctionModal({
-          type: 'error',
-          title: 'Error',
-          content: 'There was a problem trying to get the active members. Please reload the page.'
+          type: "error",
+          title: "Error",
+          content:
+            "There was a problem trying to get the active members. Please reload the page.",
         });
       });
-  }
+  };
 
   fetchPendingMembers = () => {
     const { teams } = this.state;
     this.setState({ pendingIsLoading: true });
     getPendingMembers(teams[0].id)
-      .then(response => {
+      .then((response) => {
         this.setState({
           pendingMembers: response,
-          pendingIsLoading: false
+          pendingIsLoading: false,
         });
       })
       .catch((error) => {
         console.log(error);
         this.setState({ activeIsLoading: false });
         FunctionModal({
-          type: 'error',
-          title: 'Error',
-          content: 'There was a problem trying to get the pending members. Please reload the page.'
+          type: "error",
+          title: "Error",
+          content:
+            "There was a problem trying to get the pending members. Please reload the page.",
         });
       });
-  }
+  };
 
   refreshMembers = () => {
     this.fetchActiveMembers();
     this.fetchPendingMembers();
-  }
+  };
 
   render() {
     const {
@@ -109,7 +115,7 @@ class Team extends React.Component {
       teamsIsLoading,
       activeMembers,
       pendingMembers,
-      teams
+      teams,
     } = this.state;
 
     return (
@@ -125,15 +131,15 @@ class Team extends React.Component {
             />
           </TabPane>
           <TabPane tab="Pending" key="pending">
-            <PendingPane
-              pendingMembers={pendingMembers}
-            />
+            <PendingPane pendingMembers={pendingMembers} />
           </TabPane>
         </Tabs>
-        { (teamsIsLoading || activeIsLoading || pendingIsLoading) && <Loader fullscreen/> }
+        {(teamsIsLoading || activeIsLoading || pendingIsLoading) && (
+          <Loader fullscreen />
+        )}
       </div>
     );
   }
-};
+}
 
 export default Team;
