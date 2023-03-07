@@ -1,7 +1,13 @@
-import React from 'react';
+import React from "react";
 import {
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
-} from 'recharts';
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 class SimpleAreaChart extends React.Component {
   render() {
@@ -12,19 +18,15 @@ class SimpleAreaChart extends React.Component {
         <AreaChart
           data={data}
           margin={{
-            top: 10, right: 30, left: 0, bottom: 0,
+            top: 10,
+            right: 30,
+            left: 0,
+            bottom: 0,
           }}
         >
           <CartesianGrid strokeDasharray="3 3" fill="#FFF" />
-          <XAxis
-            dataKey="name"
-            axisLine={false}
-            tickMargin={20}
-            />
-          <YAxis
-            axisLine={false}
-            tickMargin={20}
-          />
+          <XAxis dataKey="name" axisLine={false} tickMargin={20} />
+          <YAxis axisLine={false} tickMargin={20} />
           <Tooltip />
           <Area
             type="monotone"
@@ -37,6 +39,5 @@ class SimpleAreaChart extends React.Component {
     );
   }
 }
-
 
 export default SimpleAreaChart;

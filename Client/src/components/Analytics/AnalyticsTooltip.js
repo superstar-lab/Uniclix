@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import Popup from "reactjs-popup";
 
 class AnalyticsTooltip extends React.Component {
@@ -15,18 +15,17 @@ class AnalyticsTooltip extends React.Component {
   };
 
   render() {
-    return <Popup
-      trigger={<i className="fa fa-question-circle"></i>}
-      on="hover"
-      position="bottom center"
-      arrow={false}
-      closeOnDocumentClick={true}
-    >
-      {
-        close => (
-          <div className="anl-tooltip">{this.props.tooltipDesc}</div>
-        )}
-    </Popup>
+    return (
+      <Popup
+        trigger={<i className="fa fa-question-circle"></i>}
+        on="hover"
+        position="bottom center"
+        arrow={false}
+        closeOnDocumentClick={true}
+      >
+        {(close) => <div className="anl-tooltip">{this.props.tooltipDesc}</div>}
+      </Popup>
+    );
   }
 }
 
