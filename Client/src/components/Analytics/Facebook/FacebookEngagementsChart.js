@@ -1,13 +1,13 @@
-import React from 'react';
-import moment from 'moment';
-import PropTypes from 'prop-types';
-import Loader from 'react-loader-spinner';
+import React from "react";
+import moment from "moment";
+import PropTypes from "prop-types";
+import Loader from "react-loader-spinner";
 
-import { UTC_MONTHS } from '../../../utils/constants';
+import { UTC_MONTHS } from "../../../utils/constants";
 
-import { pageInsightsByType } from '../../../requests/facebook/channels';
-import EngagementsChart from '../EngagementsChart';
-import EngagementCardsSection from '../EngagementCardsSection';
+import { pageInsightsByType } from "../../../requests/facebook/channels";
+import EngagementsChart from "../EngagementsChart";
+import EngagementCardsSection from "../EngagementCardsSection";
 
 class FacebookEngagementsChart extends React.Component {
   static propTypes = {
@@ -15,12 +15,12 @@ class FacebookEngagementsChart extends React.Component {
     startDate: PropTypes.number.isRequired,
     endDate: PropTypes.number.isRequired,
     selectedPeriod: PropTypes.string.isRequired,
-    socialMedia: PropTypes.string.isRequired
+    socialMedia: PropTypes.string.isRequired,
   };
 
   state = {
     isLoading: false,
-    data: []
+    data: [],
   };
 
   mapDataForDay = (data) => {
@@ -30,13 +30,13 @@ class FacebookEngagementsChart extends React.Component {
       // We are using Europe/London because the time of where the tweets
       // were published is comming in GMT +0 and we need to be precise with
       // the time in the chart.
-      const date = moment(row[0]).tz('Europe/London');
+      const date = moment(row[0]).tz("Europe/London");
       const hour = date.hour();
       mappedData.push({
-        name: `${hour < 10 ? '0' + hour.toString() : hour}:00`,
+        name: `${hour < 10 ? "0" + hour.toString() : hour}:00`,
         Reactions: row[1],
         Comments: row[2],
-        Shares: row[3]
+        Shares: row[3],
       });
     });
 
@@ -52,7 +52,7 @@ class FacebookEngagementsChart extends React.Component {
     });
 
     this.setState({ data: mappedData, isLoading: false });
-  }
+  };
 
   mapDataForWeek = (data) => {
     const mappedData = [];
@@ -63,7 +63,7 @@ class FacebookEngagementsChart extends React.Component {
         name: `${date.getDate()} ${UTC_MONTHS[date.getMonth()]}`,
         Reactions: row[1],
         Comments: row[2],
-        Shares: row[3]
+        Shares: row[3],
       });
     });
 
@@ -79,12 +79,12 @@ class FacebookEngagementsChart extends React.Component {
         name: date.getDate(),
         Reactions: row[1],
         Comments: row[2],
-        Shares: row[3]
+        Shares: row[3],
       });
     });
 
     this.setState({ data: mappedData, isLoading: false });
-  }
+  };
 
   mapDataForYear = (data) => {
     const mappedData = [];
@@ -95,44 +95,44 @@ class FacebookEngagementsChart extends React.Component {
         name: UTC_MONTHS[date.getMonth()],
         Reactions: row[1],
         Comments: row[2],
-        Shares: row[3]
+        Shares: row[3],
       });
     });
 
     this.setState({ data: mappedData, isLoading: false });
-  }
+  };
 
   fetchAnalyticsData = () => {
     const { accountId, startDate, endDate, selectedPeriod } = this.props;
-    this.setState(() => ({isLoading: true}));
+    this.setState(() => ({ isLoading: true }));
     pageInsightsByType(
       accountId,
       startDate,
       endDate,
-      'engagementsChartData',
+      "engagementsChartData",
       selectedPeriod.toLowerCase()
     )
       .then((response) => {
         switch (selectedPeriod) {
-          case 'Day':
+          case "Day":
             this.mapDataForDay(response);
             break;
-          case 'Week':
+          case "Week":
             this.mapDataForWeek(response);
             break;
-          case 'Month':
+          case "Month":
             this.mapDataForMonth(response);
             break;
-          case 'Year':
+          case "Year":
             this.mapDataForYear(response);
             break;
         }
       })
       .catch((error) => {
         console.log(error);
-        this.setState(() => ({isLoading: false}));
+        this.setState(() => ({ isLoading: false }));
       });
-  }
+  };
 
   componentDidMount() {
     this.fetchAnalyticsData();
@@ -151,24 +151,25 @@ class FacebookEngagementsChart extends React.Component {
 
   render() {
     const { isLoading, data } = this.state;
-    const { accountId, startDate, endDate, selectedPeriod, socialMedia } = this.props;
+    const { accountId, startDate, endDate, selectedPeriod, socialMedia } =
+      this.props;
 
     return (
-    <div>
-      <EngagementsChart data={data} />
-      {isLoading && (
-        <div className="loading-layer">
-          <Loader type="Bars" color="#46a5d1" height={60} width={60} />
-        </div>
-      )}
-      {/* <EngagementCardsSection
+      <div>
+        <EngagementsChart data={data} />
+        {isLoading && (
+          <div className="loading-layer">
+            <Loader type="Bars" color="#46a5d1" height={60} width={60} />
+          </div>
+        )}
+        {/* <EngagementCardsSection
         socialMedia={socialMedia}
         accountId={accountId}
         startDate={startDate}
         endDate={endDate}
         selectedPeriod={selectedPeriod}
       /> */}
-    </div>
+      </div>
     );
   }
 }
