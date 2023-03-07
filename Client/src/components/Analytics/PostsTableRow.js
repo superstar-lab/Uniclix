@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import ReadMore from '../ReadMore';
+import ReadMore from "../ReadMore";
 
 class PostsTableRow extends React.Component {
   static propTypes = {
@@ -14,7 +14,7 @@ class PostsTableRow extends React.Component {
     comments: PropTypes.number.isRequired,
     shares: PropTypes.number.isRequired,
     sharesLabel: PropTypes.string.isRequired,
-    screenName: PropTypes.string
+    screenName: PropTypes.string,
   };
 
   render() {
@@ -28,7 +28,7 @@ class PostsTableRow extends React.Component {
       comments,
       shares,
       sharesLabel,
-      likesLabel
+      likesLabel,
     } = this.props;
 
     return (
@@ -39,10 +39,14 @@ class PostsTableRow extends React.Component {
           </div>
           <div className="user-names">
             <div className="username">{username}</div>
-            { screenName && <div className="screen-name">{`@${screenName}`}</div> }
+            {screenName && (
+              <div className="screen-name">{`@${screenName}`}</div>
+            )}
           </div>
         </div>
-        <div className="text"><ReadMore>{text}</ReadMore></div>
+        <div className="text">
+          <ReadMore>{text}</ReadMore>
+        </div>
         <div className="date">{date}</div>
         <div className="post-info">
           <div className="data">

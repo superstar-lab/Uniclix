@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { pageInsightsByType as fbpageInsightsByType } from '../../requests/facebook/channels';
-import { pageInsightsByType as twPageInsightsByType } from '../../requests/twitter/channels';
+import { pageInsightsByType as fbpageInsightsByType } from "../../requests/facebook/channels";
+import { pageInsightsByType as twPageInsightsByType } from "../../requests/twitter/channels";
 
-import EngagementsCard from './EngagementsCard';
+import EngagementsCard from "./EngagementsCard";
 
 const endpoints = {
   twitter: twPageInsightsByType,
-  facebook: fbpageInsightsByType
+  facebook: fbpageInsightsByType,
 };
 
 class EngagementCardsSection extends React.Component {
@@ -17,34 +17,35 @@ class EngagementCardsSection extends React.Component {
     startDate: PropTypes.number.isRequired,
     endDate: PropTypes.number.isRequired,
     selectedPeriod: PropTypes.string.isRequired,
-    socialMedia: PropTypes.string.isRequired
-  }
+    socialMedia: PropTypes.string.isRequired,
+  };
 
   state = {
     data: null,
-    isLoading: false
+    isLoading: false,
   };
 
   fetchAnalyticsData = () => {
-    const { accountId, startDate, endDate, selectedPeriod, socialMedia } = this.props;
+    const { accountId, startDate, endDate, selectedPeriod, socialMedia } =
+      this.props;
     const pageInsightsByType = endpoints[socialMedia];
 
-    this.setState({isLoading: true});
+    this.setState({ isLoading: true });
 
     pageInsightsByType(
       accountId,
       startDate,
       endDate,
-      'engagementsCardData',
+      "engagementsCardData",
       selectedPeriod.toLowerCase()
     )
       .then((response) => {
-        this.setState({isLoading: false, data: response});
+        this.setState({ isLoading: false, data: response });
       })
       .catch(() => {
-        this.setState({isLoading: false});
+        this.setState({ isLoading: false });
       });
-  }
+  };
 
   componentDidMount() {
     this.fetchAnalyticsData();
@@ -85,7 +86,7 @@ class EngagementCardsSection extends React.Component {
           period={selectedPeriod.toLowerCase()}
           isLoading={isLoading}
         />
-    </div>
+      </div>
     );
   }
 }
