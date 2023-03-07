@@ -1,15 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import Tabs from '../../Tabs';
-import ChartsSectionTab from '../Sections/ChartsSectionTab';
-import FacebookSimpleChart from './FacebookSimpleChart';
-import FacebookEngagementsChart from './FacebookEngagementsChart';
+import Tabs from "../../Tabs";
+import ChartsSectionTab from "../Sections/ChartsSectionTab";
+import FacebookSimpleChart from "./FacebookSimpleChart";
+import FacebookEngagementsChart from "./FacebookEngagementsChart";
 
 class FacebookChartsSection extends React.Component {
   static propTypes = {
     selectedAccount: PropTypes.number.isRequired,
-    socialMedia: PropTypes.string.isRequired
+    socialMedia: PropTypes.string.isRequired,
   };
 
   engagementsInfo = (
@@ -38,47 +38,52 @@ class FacebookChartsSection extends React.Component {
           <ChartsSectionTab
             accountId={selectedAccount}
             socialMedia={socialMedia}
-            renderChart={
-            (props) =>
-              (<FacebookSimpleChart {...props} endPointType="postsChartData" chartDataKey="Posts" />)
-            }
+            renderChart={(props) => (
+              <FacebookSimpleChart
+                {...props}
+                endPointType="postsChartData"
+                chartDataKey="Posts"
+              />
+            )}
           />
         </div>
         <div label="Fans">
           <ChartsSectionTab
             accountId={selectedAccount}
             socialMedia={socialMedia}
-            renderChart={
-            (props) =>
-              (<FacebookSimpleChart {...props} endPointType="fansChartData" chartDataKey="Fans" />)
-            }
+            renderChart={(props) => (
+              <FacebookSimpleChart
+                {...props}
+                endPointType="fansChartData"
+                chartDataKey="Fans"
+              />
+            )}
           />
         </div>
         <div label="Engagements">
           <ChartsSectionTab
-              leftInfo={this.engagementsInfo}
-              accountId={selectedAccount}
-              socialMedia={socialMedia}
-              renderChart={
-              (props) =>
-                (<FacebookEngagementsChart {...props} />)
-              }
-            />
+            leftInfo={this.engagementsInfo}
+            accountId={selectedAccount}
+            socialMedia={socialMedia}
+            renderChart={(props) => <FacebookEngagementsChart {...props} />}
+          />
         </div>
         <div label="Impressions">
           <ChartsSectionTab
             accountId={selectedAccount}
             socialMedia={socialMedia}
-            renderChart={
-            (props) =>
-              (<FacebookSimpleChart {...props} endPointType="impressionsChartData" chartDataKey="Tweets" />)
-            }
+            renderChart={(props) => (
+              <FacebookSimpleChart
+                {...props}
+                endPointType="impressionsChartData"
+                chartDataKey="Tweets"
+              />
+            )}
           />
         </div>
       </Tabs>
     );
   }
-
 }
 
 export default FacebookChartsSection;
