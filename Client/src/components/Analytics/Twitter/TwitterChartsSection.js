@@ -1,16 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import Tabs from '../../Tabs';
-import ChartsSectionTab from '../Sections/ChartsSectionTab';
-import TwitterSimpleChart from './TwitterSimpleChart';
-import TwitterEngagementsChart from './TwitterEngagementsChart';
-import TwitterImpressionsChart from './TwitterImpressionsChart';
+import Tabs from "../../Tabs";
+import ChartsSectionTab from "../Sections/ChartsSectionTab";
+import TwitterSimpleChart from "./TwitterSimpleChart";
+import TwitterEngagementsChart from "./TwitterEngagementsChart";
+import TwitterImpressionsChart from "./TwitterImpressionsChart";
 
 class TwitterChartsSection extends React.Component {
   static propTypes = {
     selectedAccount: PropTypes.number.isRequired,
-    socialMedia: PropTypes.string.isRequired
+    socialMedia: PropTypes.string.isRequired,
   };
 
   engagementsInfo = (
@@ -40,10 +40,13 @@ class TwitterChartsSection extends React.Component {
             accountId={selectedAccount}
             socialMedia={socialMedia}
             pastTimeLimit={90}
-            renderChart={
-            (props) =>
-              (<TwitterSimpleChart {...props} endPointType="tweetsChartData" chartDataKey="Tweets" />)
-            }
+            renderChart={(props) => (
+              <TwitterSimpleChart
+                {...props}
+                endPointType="tweetsChartData"
+                chartDataKey="Tweets"
+              />
+            )}
           />
         </div>
         <div label="Fans">
@@ -51,23 +54,23 @@ class TwitterChartsSection extends React.Component {
             accountId={selectedAccount}
             socialMedia={socialMedia}
             pastTimeLimit={90}
-            renderChart={
-            (props) =>
-              (<TwitterSimpleChart {...props} endPointType="followersChartData" chartDataKey="Followers" />)
-            }
+            renderChart={(props) => (
+              <TwitterSimpleChart
+                {...props}
+                endPointType="followersChartData"
+                chartDataKey="Followers"
+              />
+            )}
           />
         </div>
         <div label="Engagements">
           <ChartsSectionTab
-              leftInfo={this.engagementsInfo}
-              accountId={selectedAccount}
-              socialMedia={socialMedia}
-              pastTimeLimit={90}
-              renderChart={
-              (props) =>
-                (<TwitterEngagementsChart {...props} />)
-              }
-            />
+            leftInfo={this.engagementsInfo}
+            accountId={selectedAccount}
+            socialMedia={socialMedia}
+            pastTimeLimit={90}
+            renderChart={(props) => <TwitterEngagementsChart {...props} />}
+          />
         </div>
         {/* <div label="Impressions">
           <ChartsSectionTab
@@ -83,7 +86,6 @@ class TwitterChartsSection extends React.Component {
       </Tabs>
     );
   }
-
 }
 
 export default TwitterChartsSection;

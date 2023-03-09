@@ -1,48 +1,55 @@
-import React from 'react';
+import React from "react";
 
-import { pageInsightsByType } from '../../../requests/twitter/channels';
-import SimpleAreaChart from '../SimpleAreaChart';
+import { pageInsightsByType } from "../../../requests/twitter/channels";
+import SimpleAreaChart from "../SimpleAreaChart";
 
 const data = [
   {
-    name: 'Page A', Impressions: 30
+    name: "Page A",
+    Impressions: 30,
   },
   {
-    name: 'Page B', Impressions: 10
+    name: "Page B",
+    Impressions: 10,
   },
   {
-    name: 'Page C', Impressions: 15
+    name: "Page C",
+    Impressions: 15,
   },
   {
-    name: 'Page D', Impressions: 2
+    name: "Page D",
+    Impressions: 2,
   },
   {
-    name: 'Page E', Impressions: 13
+    name: "Page E",
+    Impressions: 13,
   },
   {
-    name: 'Page F', Impressions: 45
+    name: "Page F",
+    Impressions: 45,
   },
   {
-    name: 'Page G', Impressions: 32
+    name: "Page G",
+    Impressions: 32,
   },
 ];
 
 class TweeterImpressionsChart extends React.Component {
   state = {
     isLoading: false,
-    data: []
+    data: [],
   };
 
   fetchAnalyticsData = () => {
-    this.setState(() => ({isLoading: true}));
-    pageInsightsByType(this.props.accountId, null, null, 'impressionsChartData')
+    this.setState(() => ({ isLoading: true }));
+    pageInsightsByType(this.props.accountId, null, null, "impressionsChartData")
       .then((response) => {
         console.log(response, startDate);
       })
       .catch(() => {
-        this.setState(() => ({isLoading: false}));
+        this.setState(() => ({ isLoading: false }));
       });
-  }
+  };
 
   // componentDidMount() {
   //   this.fetchAnalyticsData();
