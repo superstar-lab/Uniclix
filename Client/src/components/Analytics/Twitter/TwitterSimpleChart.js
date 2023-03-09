@@ -1,12 +1,12 @@
-import React from 'react';
-import moment from 'moment';
-import PropTypes from 'prop-types';
-import Loader from 'react-loader-spinner';
+import React from "react";
+import moment from "moment";
+import PropTypes from "prop-types";
+import Loader from "react-loader-spinner";
 
-import { UTC_MONTHS } from '../../../utils/constants';
+import { UTC_MONTHS } from "../../../utils/constants";
 
-import { pageInsightsByType } from '../../../requests/twitter/channels';
-import SimpleAreaChart from '../SimpleAreaChart';
+import { pageInsightsByType } from "../../../requests/twitter/channels";
+import SimpleAreaChart from "../SimpleAreaChart";
 
 class TwitterSimpleChart extends React.Component {
   static propTypes = {
@@ -15,12 +15,12 @@ class TwitterSimpleChart extends React.Component {
     endDate: PropTypes.number.isRequired,
     selectedPeriod: PropTypes.string.isRequired,
     endPointType: PropTypes.string.isRequired,
-    chartDataKey: PropTypes.string.isRequired
-  }
+    chartDataKey: PropTypes.string.isRequired,
+  };
 
   state = {
     isLoading: false,
-    data: []
+    data: [],
   };
 
   mapDataForDay = (data) => {
@@ -31,11 +31,11 @@ class TwitterSimpleChart extends React.Component {
       // We are using Europe/London because the time of where the tweets
       // were published is comming in GMT +0 and we need to be precise with
       // the time in the chart.
-      const date = moment(row[0]).tz('Europe/London');
+      const date = moment(row[0]).tz("Europe/London");
       const hour = date.hour();
       mappedData.push({
-        name: `${hour < 10 ? '0' + hour.toString() : hour}:00`,
-        [chartDataKey]: row[1]
+        name: `${hour < 10 ? "0" + hour.toString() : hour}:00`,
+        [chartDataKey]: row[1],
       });
     });
 
@@ -51,7 +51,7 @@ class TwitterSimpleChart extends React.Component {
     });
 
     this.setState({ data: mappedData, isLoading: false });
-  }
+  };
 
   mapDataForWeek = (data) => {
     const { chartDataKey } = this.props;
@@ -61,7 +61,7 @@ class TwitterSimpleChart extends React.Component {
       const date = new Date(row[0]);
       mappedData.push({
         name: `${date.getDate()} ${UTC_MONTHS[date.getMonth()]}`,
-        [chartDataKey]: row[1]
+        [chartDataKey]: row[1],
       });
     });
 
@@ -76,12 +76,12 @@ class TwitterSimpleChart extends React.Component {
       const date = new Date(row[0]);
       mappedData.push({
         name: date.getDate(),
-        [chartDataKey]: row[1]
+        [chartDataKey]: row[1],
       });
     });
 
     this.setState({ data: mappedData, isLoading: false });
-  }
+  };
 
   mapDataForYear = (data) => {
     const { chartDataKey } = this.props;
@@ -91,16 +91,17 @@ class TwitterSimpleChart extends React.Component {
       const date = new Date(row[0]);
       mappedData.push({
         name: UTC_MONTHS[date.getMonth()],
-        [chartDataKey]: row[1]
+        [chartDataKey]: row[1],
       });
     });
 
     this.setState({ data: mappedData, isLoading: false });
-  }
+  };
 
   fetchAnalyticsData = () => {
-    const { accountId, startDate, endDate, selectedPeriod, endPointType } = this.props;
-    this.setState(() => ({isLoading: true}));
+    const { accountId, startDate, endDate, selectedPeriod, endPointType } =
+      this.props;
+    this.setState(() => ({ isLoading: true }));
     pageInsightsByType(
       accountId,
       startDate,
@@ -110,24 +111,24 @@ class TwitterSimpleChart extends React.Component {
     )
       .then((response) => {
         switch (selectedPeriod) {
-          case 'Day':
+          case "Day":
             this.mapDataForDay(response);
             break;
-          case 'Week':
+          case "Week":
             this.mapDataForWeek(response);
             break;
-          case 'Month':
+          case "Month":
             this.mapDataForMonth(response);
             break;
-          case 'Year':
+          case "Year":
             this.mapDataForYear(response);
             break;
         }
       })
       .catch(() => {
-        this.setState(() => ({isLoading: false}));
+        this.setState(() => ({ isLoading: false }));
       });
-  }
+  };
 
   componentDidMount() {
     this.fetchAnalyticsData();
