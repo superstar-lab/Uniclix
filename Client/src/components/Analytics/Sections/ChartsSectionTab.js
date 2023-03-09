@@ -1,34 +1,24 @@
-import React from 'react';
+import React from "react";
 
-import { UTC_MONTHS, MONTHS_FINISH_DATE } from '../../../utils/constants';
+import { UTC_MONTHS, MONTHS_FINISH_DATE } from "../../../utils/constants";
 
-const PERIODS = [
-  'Year',
-  'Month',
-  'Week',
-  'Day'
-];
+const PERIODS = ["Year", "Month", "Week", "Day"];
 
-const TWITTER_PERIODS = [
-  'Month',
-  'Week',
-  'Day'
-];
+const TWITTER_PERIODS = ["Month", "Week", "Day"];
 
 class ChartsSectionTab extends React.Component {
-
   constructor(props) {
     super(props);
 
     const endDate = new Date();
 
     // If there is a limit we calculate it, if not we set a limit impossible to reach
-    const rangeMovementLimit = props.pastTimeLimit ?
-      this.calculateRangeMovementLimit('Week') :
-      -99999999;
+    const rangeMovementLimit = props.pastTimeLimit
+      ? this.calculateRangeMovementLimit("Week")
+      : -99999999;
 
     this.state = {
-      selectedPeriod: 'Week',
+      selectedPeriod: "Week",
       rangeMovement: 0, // Will determine the dates that the user is seeing
       startDate: new Date(
         endDate.getFullYear(),
@@ -36,7 +26,7 @@ class ChartsSectionTab extends React.Component {
         endDate.getDate() - 6
       ).getTime(),
       endDate: endDate.getTime(),
-      rangeMovementLimit
+      rangeMovementLimit,
     };
   }
 
@@ -50,24 +40,25 @@ class ChartsSectionTab extends React.Component {
       startDate: startDate.getTime(),
       endDate: endDate.getTime(),
       selectedPeriod,
-      rangeMovementLimit
+      rangeMovementLimit,
     });
-  }
+  };
 
   renderButtons = () => {
     const { selectedPeriod } = this.state,
-      periodsToMap = this.props.socialMedia === 'twitter' ? TWITTER_PERIODS : PERIODS;
+      periodsToMap =
+        this.props.socialMedia === "twitter" ? TWITTER_PERIODS : PERIODS;
 
-    return periodsToMap.map(period => (
+    return periodsToMap.map((period) => (
       <button
         key={period}
-        className={period === selectedPeriod ? 'btn selected' : 'btn'}
+        className={period === selectedPeriod ? "btn selected" : "btn"}
         onClick={() => this.onPeriodChange(period)}
       >
         {period}
       </button>
-    ))
-  }
+    ));
+  };
 
   getDate = (rangeMovement, period) => {
     const date = new Date(),
@@ -77,16 +68,20 @@ class ChartsSectionTab extends React.Component {
     let resultingDate = null;
 
     switch (period) {
-      case 'Day':
+      case "Day":
         resultingDate = new Date(baseYear, baseMonth, baseDate + rangeMovement);
         break;
-      case 'Week':
-        resultingDate = new Date(baseYear, baseMonth, baseDate + 6 * (rangeMovement));
+      case "Week":
+        resultingDate = new Date(
+          baseYear,
+          baseMonth,
+          baseDate + 6 * rangeMovement
+        );
         break;
-      case 'Month':
+      case "Month":
         resultingDate = new Date(baseYear, baseMonth + rangeMovement, baseDate);
         break;
-      case 'Year':
+      case "Year":
         resultingDate = new Date(baseYear + rangeMovement, baseMonth, baseDate);
         break;
     }
@@ -100,17 +95,31 @@ class ChartsSectionTab extends React.Component {
       baseDate = null;
 
     switch (period) {
-      case 'Day':
+      case "Day":
         startDate = this.getDate(rangeMovement, period);
         // End date will same date but at 23:59:59
-        endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 23, 59, 59);
+        endDate = new Date(
+          startDate.getFullYear(),
+          startDate.getMonth(),
+          startDate.getDate(),
+          23,
+          59,
+          59
+        );
         break;
-      case 'Week':
+      case "Week":
         baseDate = this.getDate(rangeMovement, period);
         startDate = this.getDate(rangeMovement - 1, period);
-        endDate = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate(), 23, 59, 59);
+        endDate = new Date(
+          baseDate.getFullYear(),
+          baseDate.getMonth(),
+          baseDate.getDate(),
+          23,
+          59,
+          59
+        );
         break;
-      case 'Month':
+      case "Month":
         baseDate = this.getDate(rangeMovement, period);
         const year = baseDate.getFullYear(),
           month = baseDate.getMonth();
@@ -118,7 +127,7 @@ class ChartsSectionTab extends React.Component {
         startDate = new Date(year, month, 1);
         endDate = new Date(year, month, MONTHS_FINISH_DATE[month], 23, 59, 59);
         break;
-      case 'Year':
+      case "Year":
         baseDate = this.getDate(rangeMovement, period);
         startDate = new Date(baseDate.getFullYear(), 0, 1);
         endDate = new Date(baseDate.getFullYear(), 11, 31, 23, 59, 59);
@@ -126,18 +135,21 @@ class ChartsSectionTab extends React.Component {
     }
 
     return { startDate, endDate };
-  }
+  };
 
   // We need to change the dates here in order to trigger the API call
   // with the correct data.
   moveDates = (toAdd, selectedPeriod) => {
     const { rangeMovement } = this.state;
-    const { startDate, endDate } = this.getStateDates(rangeMovement + toAdd, selectedPeriod);
+    const { startDate, endDate } = this.getStateDates(
+      rangeMovement + toAdd,
+      selectedPeriod
+    );
 
     this.setState({
       rangeMovement: rangeMovement + toAdd,
       startDate: startDate.getTime(),
-      endDate: endDate.getTime()
+      endDate: endDate.getTime(),
     });
   };
 
@@ -148,17 +160,17 @@ class ChartsSectionTab extends React.Component {
     let rangeMovementLimit = null;
 
     switch (selectedPeriod) {
-      case 'Day':
-        rangeMovementLimit = - pastTimeLimit;
+      case "Day":
+        rangeMovementLimit = -pastTimeLimit;
         break;
-      case 'Week':
-        rangeMovementLimit = - pastTimeLimit / 7;
+      case "Week":
+        rangeMovementLimit = -pastTimeLimit / 7;
         break;
-      case 'Month':
-        rangeMovementLimit = - pastTimeLimit / 30;
+      case "Month":
+        rangeMovementLimit = -pastTimeLimit / 30;
         break;
-      case 'Year':
-        rangeMovementLimit = - pastTimeLimit / 365;
+      case "Year":
+        rangeMovementLimit = -pastTimeLimit / 365;
         break;
     }
 
@@ -168,55 +180,67 @@ class ChartsSectionTab extends React.Component {
 
   renderDateRangePicker = () => {
     const { selectedPeriod, rangeMovement, rangeMovementLimit } = this.state;
-    let dateStructure = '';
+    let dateStructure = "";
 
     switch (selectedPeriod) {
-      case 'Day':
+      case "Day":
         // I'm adding since the value of rangeMovement will be a negative number
         const date = this.getDate(rangeMovement, selectedPeriod);
-        dateStructure = <span>{`${date.getDate()} ${UTC_MONTHS[date.getMonth()]}`}</span>;
+        dateStructure = (
+          <span>{`${date.getDate()} ${UTC_MONTHS[date.getMonth()]}`}</span>
+        );
         break;
-      case 'Week':
+      case "Week":
         // Multiplying by 6 because of the edge day + the rest of the days in the week
         const startWeek = this.getDate(rangeMovement - 1, selectedPeriod),
           endWeek = this.getDate(rangeMovement, selectedPeriod);
-        
-        dateStructure = <span>
-          {`${startWeek.getDate()} ${UTC_MONTHS[startWeek.getMonth()]} - ${endWeek.getDate()} ${UTC_MONTHS[endWeek.getMonth()]}`}
-        </span>;
+
+        dateStructure = (
+          <span>
+            {`${startWeek.getDate()} ${
+              UTC_MONTHS[startWeek.getMonth()]
+            } - ${endWeek.getDate()} ${UTC_MONTHS[endWeek.getMonth()]}`}
+          </span>
+        );
         break;
-      case 'Month':
+      case "Month":
         const month = this.getDate(rangeMovement, selectedPeriod),
           showYear = new Date().getFullYear() !== month.getFullYear();
-        dateStructure = <span>
-          {
-            showYear ?
-              `${UTC_MONTHS[month.getMonth()]} - ${month.getFullYear()}` :
-              `${UTC_MONTHS[month.getMonth()]}`
-          }
-        </span>;
+        dateStructure = (
+          <span>
+            {showYear
+              ? `${UTC_MONTHS[month.getMonth()]} - ${month.getFullYear()}`
+              : `${UTC_MONTHS[month.getMonth()]}`}
+          </span>
+        );
         break;
-      case 'Year':
+      case "Year":
         const year = this.getDate(rangeMovement, selectedPeriod);
         dateStructure = <span>{`${year.getFullYear()}`}</span>;
-        break;          
+        break;
     }
 
-    return <div className="date-range-container">
-      {
-        rangeMovement > rangeMovementLimit && <span className="arrow left" onClick={() => this.moveDates(-1, selectedPeriod)}>
-          <img src="/images/icons/blue-arrow.svg" />
-        </span>
-      }
-      <span className="text">
-        {dateStructure}
-      </span>
-      {
-        !!rangeMovement && <span className="arrow right" onClick={() => this.moveDates(1, selectedPeriod)}>
-          <img src="/images/icons/blue-arrow.svg" />
-        </span>
-      }
-    </div>
+    return (
+      <div className="date-range-container">
+        {rangeMovement > rangeMovementLimit && (
+          <span
+            className="arrow left"
+            onClick={() => this.moveDates(-1, selectedPeriod)}
+          >
+            <img src="/images/icons/blue-arrow.svg" />
+          </span>
+        )}
+        <span className="text">{dateStructure}</span>
+        {!!rangeMovement && (
+          <span
+            className="arrow right"
+            onClick={() => this.moveDates(1, selectedPeriod)}
+          >
+            <img src="/images/icons/blue-arrow.svg" />
+          </span>
+        )}
+      </div>
+    );
   };
 
   render() {
@@ -234,10 +258,16 @@ class ChartsSectionTab extends React.Component {
             {this.renderButtons()}
           </div>
         </div>
-        {renderChart({ accountId, selectedPeriod, startDate, endDate, socialMedia })}
+        {renderChart({
+          accountId,
+          selectedPeriod,
+          startDate,
+          endDate,
+          socialMedia,
+        })}
       </div>
     );
-  };
-};
+  }
+}
 
 export default ChartsSectionTab;
