@@ -1,15 +1,15 @@
-import React from 'react';
-import { Button } from 'antd';
-import PropTypes from 'prop-types';
-import moment from 'moment';
-import { notification } from 'antd';
+import React from "react";
+import { Button } from "antd";
+import PropTypes from "prop-types";
+import moment from "moment";
+import { notification } from "antd";
 
-import { isOwnerOrAdmin } from '../../../../utils/helpers';
-import FunctionModal from '../../../Modal';
-import { publish } from '../../../../requests/channels';
+import { isOwnerOrAdmin } from "../../../../utils/helpers";
+import FunctionModal from "../../../Modal";
+import { publish } from "../../../../requests/channels";
 
-import Loader from '../../../Loader';
-import PostButton from './PostButton';
+import Loader from "../../../Loader";
+import PostButton from "./PostButton";
 
 class FooterSection extends React.Component {
   static propTypes = {
@@ -28,26 +28,28 @@ class FooterSection extends React.Component {
     onPost: PropTypes.func,
     onUploadCancelMedia: PropTypes.func,
     onAdvancedChange: PropTypes.func,
-    setPostType: PropTypes.func
+    setPostType: PropTypes.func,
   };
 
   state = {
-    isLoading: false
+    isLoading: false,
   };
 
   canPost = () => {
+    const { content, date, publishChannels, pictures, videos, withError } =
+      this.props;
 
-    const { content, date, publishChannels, pictures, videos, withError } = this.props;
-
-    return (!!content.length || !!pictures.length || !!videos.length) &&
+    return (
+      (!!content.length || !!pictures.length || !!videos.length) &&
       date &&
       !!publishChannels.size &&
-      !withError;
+      !withError
+    );
   };
 
-
   getPublishType = () => {
-    let { postAtBestTime, postNow, selectedTimezone, date, accessLevel } = this.props;
+    let { postAtBestTime, postNow, selectedTimezone, date, accessLevel } =
+      this.props;
     const publishTime = moment(date).tz(selectedTimezone);
     const now = moment().tz(selectedTimezone);
 
@@ -58,21 +60,19 @@ class FooterSection extends React.Component {
       }
     }
 
-    return postNow ?
-      'now' :
-      postAtBestTime ?
-        'best' :
-        'date';
+    return postNow ? "now" : postAtBestTime ? "best" : "date";
   };
 
   // This is necessary since we are storing the ids of the channels and the
   // backend expects the whole object
   getPublishChannels = () => {
     const { channels, publishChannels } = this.props;
-    const selectedChannels = channels.filter(channel => publishChannels.has(channel.details.channel_id));
+    const selectedChannels = channels.filter((channel) =>
+      publishChannels.has(channel.details.channel_id)
+    );
 
     return selectedChannels;
-  }
+  };
 
   savePost = () => {
     const {
@@ -84,7 +84,7 @@ class FooterSection extends React.Component {
       selectedTimezone,
       date,
       type,
-      articleId = '',
+      articleId = "",
       closeModal,
       onPost,
       uploadImages,
@@ -97,17 +97,20 @@ class FooterSection extends React.Component {
 
     try {
       const publishType = this.getPublishType();
-      let bestDate = moment().tz(selectedTimezone).format('YYYY-MM-DDTHH:mmZ');
+      let bestDate = moment().tz(selectedTimezone).format("YYYY-MM-DDTHH:mmZ");
       const isBest = publishType === "best";
 
       const scheduled = {
-        publishUTCDateTime: (isBest && postCalendar === 'Week') ? bestDate : date,
-        publishDateTime: (isBest && postCalendar === 'Week') ? moment(bestDate).tz(selectedTimezone).format('YYYY-MM-DDTHH:mm') : moment(date).tz(selectedTimezone).format('YYYY-MM-DDTHH:mm'),
-        publishTimezone: selectedTimezone
+        publishUTCDateTime: isBest && postCalendar === "Week" ? bestDate : date,
+        publishDateTime:
+          isBest && postCalendar === "Week"
+            ? moment(bestDate).tz(selectedTimezone).format("YYYY-MM-DDTHH:mm")
+            : moment(date).tz(selectedTimezone).format("YYYY-MM-DDTHH:mm"),
+        publishTimezone: selectedTimezone,
       };
 
       this.setState({ isLoading: true });
-	  
+
       publish({
         scheduled,
         content,
@@ -123,39 +126,39 @@ class FooterSection extends React.Component {
         publishType: publishType,
         id,
         articleId,
-        category_id: category
-      }).then((res) => {
-        const notificationMessage = publishType === 'now' ?
-          'Your post has been published' :
-          'Your post has been sheduled';
-
-
-        this.setState({ isLoading: false });
-        if (onPost) {
-          onPost();
-        }
-        closeModal();
-        onUploadCancelMedia();
-        notification.open({
-          message: notificationMessage,
-          placement: 'bottomRight',
-          closeIcon: (
-            <span className="close-notif">Got it</span>
-          ),
-          bottom: 110
-        });
+        category_id: category,
       })
-      .catch((error) => {
-        console.log(error);
-        closeModal();
-        onUploadCancelMedia();
-        FunctionModal({
-          type: 'error',
-          title: 'Error',
-          content: 'Something went wrong when trying to schedule your post, please try again later.'
+        .then((res) => {
+          const notificationMessage =
+            publishType === "now"
+              ? "Your post has been published"
+              : "Your post has been sheduled";
+
+          this.setState({ isLoading: false });
+          if (onPost) {
+            onPost();
+          }
+          closeModal();
+          onUploadCancelMedia();
+          notification.open({
+            message: notificationMessage,
+            placement: "bottomRight",
+            closeIcon: <span className="close-notif">Got it</span>,
+            bottom: 110,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          closeModal();
+          onUploadCancelMedia();
+          FunctionModal({
+            type: "error",
+            title: "Error",
+            content:
+              "Something went wrong when trying to schedule your post, please try again later.",
+          });
         });
-      });
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       this.setState({ isLoading: false });
       closeModal();
@@ -164,19 +167,35 @@ class FooterSection extends React.Component {
   };
 
   render() {
-    const { closeModal, onUploadCancelMedia, onAdvancedChange, advancedVisible, setPostType, accessLevel } = this.props;
+    const {
+      closeModal,
+      onUploadCancelMedia,
+      onAdvancedChange,
+      advancedVisible,
+      setPostType,
+      accessLevel,
+    } = this.props;
     const { isLoading } = this.state;
-    
+
     return (
       <div className="footer-section">
         <Button
           type="link"
-          className={advancedVisible == true ? "btn-advanced" : "btn-advanced btn-advanced-hidden"}
+          className={
+            advancedVisible == true
+              ? "btn-advanced"
+              : "btn-advanced btn-advanced-hidden"
+          }
           onClick={onAdvancedChange}
         >
           Advanced
         </Button>
-        <Button type="link" onClick={() => {closeModal(), onUploadCancelMedia()}}>
+        <Button
+          type="link"
+          onClick={() => {
+            closeModal(), onUploadCancelMedia();
+          }}
+        >
           Cancel
         </Button>
         <PostButton
@@ -186,7 +205,7 @@ class FooterSection extends React.Component {
           setPostType={setPostType}
           accessLevel={accessLevel}
         />
-        { isLoading && <Loader fullscreen />}
+        {isLoading && <Loader fullscreen />}
       </div>
     );
   }
