@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import SelectChannelsModal from '../../SelectChannelsModal';
+import SelectChannelsModal from "../../SelectChannelsModal";
 
 class ChannelSelector extends React.Component {
   static propTypes = {
     publishChannels: PropTypes.array.isRequired,
     showSelectAccounts: PropTypes.bool.isRequired,
     setShowSelectAccount: PropTypes.func.isRequired,
-    updatePublishChannels: PropTypes.func.isRequired
+    updatePublishChannels: PropTypes.func.isRequired,
   };
 
   toggleSelectChannelsModal = () => {
@@ -22,22 +22,21 @@ class ChannelSelector extends React.Component {
       if (channel.id === selectedChannel.id) {
         return {
           ...channel,
-          selected: channel.selected ? 0 : 1
-        }
-      }
-      else {
+          selected: channel.selected ? 0 : 1,
+        };
+      } else {
         // If the account type is twitter, we want to make sure that only one is
         // selected. We can not have more than one twitter account selected at the
         // same time.
         if (selectedChannel.type === "twitter" && channel.type === "twitter") {
-            return {
-              ...channel,
-              selected: 0
-            }
+          return {
+            ...channel,
+            selected: 0,
+          };
         } else {
-            return {
-              ...channel
-            };
+          return {
+            ...channel,
+          };
         }
       }
     });
