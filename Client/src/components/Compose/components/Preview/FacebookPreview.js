@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import moment from 'moment';
+import React from "react";
+import PropTypes from "prop-types";
+import moment from "moment";
 
-import PreviewCard from './PreviewCard';
+import PreviewCard from "./PreviewCard";
 
 class FacebookPreview extends React.Component {
   static propTypes = {
@@ -11,28 +11,25 @@ class FacebookPreview extends React.Component {
     channel: PropTypes.object.isRequired,
     timezone: PropTypes.string.isRequired,
     pictures: PropTypes.array.isRequired,
-    videos: PropTypes.array.isRequired
-  }
+    videos: PropTypes.array.isRequired,
+  };
 
   render() {
     const {
       channel: {
         details: {
-          payload: {
-            name,
-            avatar
-          }
-        }
+          payload: { name, avatar },
+        },
       },
       text,
       date,
       timezone,
       pictures,
-      videos
+      videos,
     } = this.props;
-    const previewDate = date ?
-      moment(date).tz(timezone).format('MMMM DD, HH:mm a') :
-      new Date().toString();
+    const previewDate = date
+      ? moment(date).tz(timezone).format("MMMM DD, HH:mm a")
+      : new Date().toString();
 
     return (
       <PreviewCard

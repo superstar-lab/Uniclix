@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Carousel } from 'antd';
+import React from "react";
+import PropTypes from "prop-types";
+import { Carousel } from "antd";
 
-import FacebookPreview from './FacebookPreview';
-import TwitterPreview from './TwitterPreview';
-import LinkedinPreview from './LinkedinPreview';
+import FacebookPreview from "./FacebookPreview";
+import TwitterPreview from "./TwitterPreview";
+import LinkedinPreview from "./LinkedinPreview";
 
 class Preview extends React.Component {
   static propTypes = {
@@ -14,8 +14,8 @@ class Preview extends React.Component {
     date: PropTypes.object.isRequired,
     timezone: PropTypes.string.isRequired,
     pictures: PropTypes.array.isRequired,
-    videos: PropTypes.array.isRequired
-  }
+    videos: PropTypes.array.isRequired,
+  };
 
   slider = React.createRef();
 
@@ -23,38 +23,32 @@ class Preview extends React.Component {
     const selectedChannels = [];
     const { publishChannels, channels } = this.props;
 
-    publishChannels && publishChannels.forEach(chId => {
-      const chIndex = channels.findIndex(channel => channel.id === chId);
-      if (chIndex !== -1) {
-        selectedChannels.push(channels[chIndex]);
-      }
-    });
+    publishChannels &&
+      publishChannels.forEach((chId) => {
+        const chIndex = channels.findIndex((channel) => channel.id === chId);
+        if (chIndex !== -1) {
+          selectedChannels.push(channels[chIndex]);
+        }
+      });
 
     return selectedChannels;
   }
 
-
   getSocialMediaFromChannels = (socialMedia, channels) => {
-    return channels.find(channel => channel.type === socialMedia);
-  }
+    return channels.find((channel) => channel.type === socialMedia);
+  };
 
   render() {
-    const {
-      text,
-      date,
-      timezone,
-      pictures,
-      videos
-    } = this.props;
+    const { text, date, timezone, pictures, videos } = this.props;
     const selectedChannels = this.getSelectedChannels();
 
     return (
       <div className="preview-container">
         <Carousel ref={this.slider}>
-          {
-            !!selectedChannels && selectedChannels.map(channel => {
-              switch(channel.type) {
-                case 'facebook':
+          {!!selectedChannels &&
+            selectedChannels.map((channel) => {
+              switch (channel.type) {
+                case "facebook":
                   return (
                     <FacebookPreview
                       text={text}
@@ -65,7 +59,7 @@ class Preview extends React.Component {
                       videos={videos}
                     />
                   );
-                case 'twitter':
+                case "twitter":
                   return (
                     <TwitterPreview
                       channel={channel}
@@ -74,7 +68,7 @@ class Preview extends React.Component {
                       videos={videos}
                     />
                   );
-                case 'linkedin':
+                case "linkedin":
                   return (
                     <LinkedinPreview
                       channel={channel}
@@ -84,23 +78,30 @@ class Preview extends React.Component {
                     />
                   );
               }
-            })
-          }
+            })}
         </Carousel>
-        {
-          selectedChannels.length > 1 && (
-            <div className="arrows-container">
-              <div className="arrow arrow-right" onClick={() => {this.slider.current.prev()}}>
-                <i className="fa fa-angle-left"></i>
-                <span>Previous</span>
-              </div>
-              <div className="arrow arrow-left" onClick={() => {this.slider.current.next()}}>
-                <span>Next</span>
-                <i className="fa fa-angle-right"></i>
-              </div>
+        {selectedChannels.length > 1 && (
+          <div className="arrows-container">
+            <div
+              className="arrow arrow-right"
+              onClick={() => {
+                this.slider.current.prev();
+              }}
+            >
+              <i className="fa fa-angle-left"></i>
+              <span>Previous</span>
             </div>
-          )
-        }
+            <div
+              className="arrow arrow-left"
+              onClick={() => {
+                this.slider.current.next();
+              }}
+            >
+              <span>Next</span>
+              <i className="fa fa-angle-right"></i>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
