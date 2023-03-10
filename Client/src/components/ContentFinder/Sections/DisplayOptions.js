@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Select } from 'antd';
+import React from "react";
+import PropTypes from "prop-types";
+import { Select } from "antd";
 
 const { Option } = Select;
 
@@ -9,16 +9,12 @@ class DisplayOptions extends React.Component {
     setView: PropTypes.func.isRequired,
     selectedTopics: PropTypes.array,
     setFilterTopic: PropTypes.func.isRequired,
-    deleteFilterTopic: PropTypes.func.isRequired
+    deleteFilterTopic: PropTypes.func.isRequired,
   };
-  
+
   render() {
-    const {
-      setView,
-      selectedTopics,
-      setFilterTopic,
-      deleteFilterTopic
-    } = this.props;
+    const { setView, selectedTopics, setFilterTopic, deleteFilterTopic } =
+      this.props;
 
     return (
       <div className="options-container">
@@ -27,17 +23,15 @@ class DisplayOptions extends React.Component {
             mode="multiple"
             showSearch
             showArrow
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
             onSelect={setFilterTopic}
             onDeselect={deleteFilterTopic}
           >
-            {
-              selectedTopics.map((topic, index) => (
-                <Option key={`${topic}-${index}`} value={topic}>
-                  {`#${topic}`}
-                </Option>
-              ))
-            }
+            {selectedTopics.map((topic, index) => (
+              <Option key={`${topic}-${index}`} value={topic}>
+                {`#${topic}`}
+              </Option>
+            ))}
           </Select>
         </div>
         {/* Will be commented until we decide to add this feature
