@@ -1,13 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { updateProfile } from '../../../requests/profile';
+import { updateProfile } from "../../../requests/profile";
 
 class SaveTopicsButton extends React.Component {
   static propTypes = {
     setLoading: PropTypes.func.isRequired,
     selectedTopics: PropTypes.array.isRequired,
-    resetTopics: PropTypes.func.isRequired
+    resetTopics: PropTypes.func.isRequired,
   };
 
   onTopicsSave = () => {
@@ -16,14 +16,16 @@ class SaveTopicsButton extends React.Component {
     setLoading(true);
 
     updateProfile({
-        topics: selectedTopics
-    }).then((response) => {
+      topics: selectedTopics,
+    })
+      .then((response) => {
         setLoading(false, false);
         resetTopics();
-    }).catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
         setLoading(false);
-    });
+      });
   };
 
   render() {
@@ -35,7 +37,7 @@ class SaveTopicsButton extends React.Component {
         onClick={() => this.onTopicsSave(false)}
         disabled={!selectedTopics.length}
       >
-          Find Content
+        Find Content
       </button>
     );
   }
