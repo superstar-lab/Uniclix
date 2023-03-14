@@ -1,67 +1,75 @@
-import React, { Component } from 'react';
-import {truncate, parseTextWithLinks} from '../utils/helpers';
+import React, { Component } from "react";
+import { truncate, parseTextWithLinks } from "../utils/helpers";
 
 class ReadMore extends Component {
+  state = {
+    expanded: false,
+    text: "",
+    length: 200,
+  };
 
-    state = {
-      expanded: false,
-      text: "",
-      length: 200
+  componentDidMount() {
+    const { expanded } = this.state;
+    const { children, characters, onTagClick = false } = this.props;
+    const length = characters ? characters : 200;
+
+    let text = "";
+
+    if (typeof children !== "undefined") {
+      text = expanded
+        ? parseTextWithLinks(children, onTagClick)
+        : parseTextWithLinks(truncate(children, length), onTagClick);
     }
 
-    componentDidMount(){
-        const { expanded } = this.state;
-        const {children, characters, onTagClick = false} = this.props;
-        const length = characters ? characters : 200;
+    this.setState(() => ({
+      text,
+      length,
+    }));
+  }
 
-        let text = "";
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.expanded !== this.state.expanded ||
+      prevProps.children !== this.props.children
+    ) {
+      const { expanded, length } = this.state;
+      const { children, onTagClick = false } = this.props;
+      const text = expanded
+        ? parseTextWithLinks(children, onTagClick)
+        : parseTextWithLinks(truncate(children, length), onTagClick);
 
-        if(typeof(children) !== "undefined"){
-            text = expanded ? parseTextWithLinks(children, onTagClick) : parseTextWithLinks(truncate(children, length), onTagClick);
-        }
-        
-        this.setState(() => ({
-            text,
-            length
-        }));
+      this.setState(() => ({
+        text,
+      }));
     }
+  }
 
-    componentDidUpdate(prevProps, prevState){
-        if(prevState.expanded !== this.state.expanded || prevProps.children !== this.props.children){
-            const { expanded, length } = this.state;
-            const {children, onTagClick = false} = this.props;
-            const text = expanded ? parseTextWithLinks(children, onTagClick) : parseTextWithLinks(truncate(children, length), onTagClick);
+  //function that takes in expanded and makes it the opposite of what it currently is
+  toggleExpand = () => {
+    this.setState({ expanded: !this.state.expanded });
+  };
 
-            this.setState(() => ({
-                text
-            }));
-        }
-    }
+  prepareHtml = () => {
+    return <div dangerouslySetInnerHTML={{ __html: this.state.text }}></div>;
+  };
 
-    //function that takes in expanded and makes it the opposite of what it currently is
-    toggleExpand = () => { 
-        this.setState({ expanded: !this.state.expanded });
-    }
+  render() {
+    const { expanded, length } = this.state;
+    const { children, onTagClick = (str) => {} } = this.props;
 
-    prepareHtml = () => {
-        return <div dangerouslySetInnerHTML={{__html: this.state.text}}></div>
-    }
-
-    render() {
-        const { expanded, length } = this.state;
-        const {children, onTagClick = (str) => {}} = this.props;
-        
-        return (
-            
-            <div onClick={(e) => onTagClick(e.target.text)} className="readMore-body">            
-                <div className="readMore-content">{this.prepareHtml()}</div>
-                {typeof(children) !== "undefined" && children.length > length ?
-                    <p className="linkify-text" onClick={this.toggleExpand}>{!expanded ? "Read more" : "Read less"}</p> : ""
-                }
-                
-            </div>
-        )
-    }
+    return (
+      <div onClick={(e) => onTagClick(e.target.text)} className="readMore-body">
+        <div className="readMore-content">{this.prepareHtml()}</div>
+        {typeof children !== "undefined" && children.length > length ? (
+          <p className="linkify-text" onClick={this.toggleExpand}>
+            {!expanded ? "Read more" : "Read less"}
+          </p>
+        ) : (
+          ""
+        )}
+      </div>
+    );
+  }
 }
 
 export default ReadMore;

@@ -1,18 +1,26 @@
-import React from 'react';
-import { Modal as AntdModal } from 'antd';
-import ReactModal from 'react-modal';
+import React from "react";
+import { Modal as AntdModal } from "antd";
+import ReactModal from "react-modal";
 
 const FunctionModal = ({ type, ...props }) => {
   return AntdModal[type]({
-    className: 'alert-modal',
+    className: "alert-modal",
     icon: null,
-    okType: 'link',
+    okType: "link",
     centered: true,
-    ...props
+    ...props,
   });
-}
+};
 
-export const Modal = ({ title, message, onOk, onCancel, className, isOpen, okText = 'Yes' }) => {
+export const Modal = ({
+  title,
+  message,
+  onOk,
+  onCancel,
+  className,
+  isOpen,
+  okText = "Yes",
+}) => {
   return (
     <ReactModal
       ariaHideApp={false}
@@ -21,9 +29,15 @@ export const Modal = ({ title, message, onOk, onCancel, className, isOpen, okTex
     >
       <div className="modal-title">{title}</div>
       <div className="modal-content1">{message}</div>
-      <div style={{float:'right'}}>
-        { !!onCancel && <button onClick={onCancel} className="modalBtn" >No</button>}
-        <button onClick={onOk} className="modalBtn">{ okText }</button>
+      <div style={{ float: "right" }}>
+        {!!onCancel && (
+          <button onClick={onCancel} className="modalBtn">
+            No
+          </button>
+        )}
+        <button onClick={onOk} className="modalBtn">
+          {okText}
+        </button>
       </div>
     </ReactModal>
   );
