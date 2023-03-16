@@ -1,14 +1,14 @@
 .settings-team {
   .team-member-row {
-    background-color: #FFF;
+    background-color: #fff;
     margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    
+
     &:hover {
-      background-color: #EAF3FB;
+      background-color: #eaf3fb;
 
       .created-at,
       .role {
@@ -35,7 +35,7 @@
         justify-content: center;
         align-items: center;
         border-radius: 20px;
-        color: #2D86DA;
+        color: #2d86da;
       }
 
       .action-label {
@@ -43,9 +43,9 @@
         position: absolute;
         bottom: -30px;
         left: -7px;
-        background-color: #0E4F8C;
+        background-color: #0e4f8c;
         padding: 5px;
-        color: #FFF;
+        color: #fff;
         border-radius: 5px;
         width: 50px;
         text-align: center;
@@ -56,7 +56,7 @@
         .svg-container {
           background-color: rgba(45, 134, 218, 0.12);
         }
-        
+
         .action-label {
           display: block;
         }
@@ -95,7 +95,7 @@
       .channel-avatar {
         position: relative;
         margin-right: 10px;
-  
+
         img {
           width: 30px;
           height: 30px;
@@ -103,7 +103,7 @@
           border-radius: 100%;
           border: 1px solid #ccc;
         }
-  
+
         .icon {
           width: 10px;
           height: 10px;
@@ -161,7 +161,7 @@
   }
 
   .ant-tabs-ink-bar {
-    background-color: #D83E7F;
+    background-color: #d83e7f;
   }
 }
 
@@ -169,11 +169,11 @@
   width: 620px;
   height: 460px;
   padding: 20px;
-  background: #F5F7FB;
+  background: #f5f7fb;
   font-family: Rubik;
   overflow: scroll;
 
-  .name-section, 
+  .name-section,
   .email-section {
     margin-bottom: 20px;
   }
@@ -210,14 +210,14 @@
     border-radius: 6px;
     margin-right: 20px;
     min-width: 100%;
-    
+
     .add-modal-plus-btn {
       margin-right: 10px;
       padding: 7px 10px;
       border-radius: 100px;
-      color: #FFF;
+      color: #fff;
       font-size: 10px;
-      background-color: #2D86DA;
+      background-color: #2d86da;
     }
   }
 
@@ -229,12 +229,12 @@
     justify-content: space-between;
 
     .ant-btn-link {
-      color: #2D86DA;
+      color: #2d86da;
     }
 
     .ant-btn-primary {
-      background-color: #2D86DA;
-      border-color: #2D86DA;
+      background-color: #2d86da;
+      border-color: #2d86da;
       width: 120px;
       height: 42px;
     }
@@ -242,8 +242,8 @@
 
   //Overrides
   .ant-select-selection--multiple .ant-select-selection__choice {
-    background-color: rgba(216,62,127, 0.15);
-    color: #D83E7F;
+    background-color: rgba(216, 62, 127, 0.15);
+    color: #d83e7f;
     font-weight: 500;
     font-family: Rubik;
     border-radius: 5px;

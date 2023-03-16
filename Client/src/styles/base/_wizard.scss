@@ -39,7 +39,7 @@
 }
 
 .tour-card {
-  background: #F5F7FB;
+  background: #f5f7fb;
   display: flex;
   flex-direction: column;
   color: #333333;
@@ -61,7 +61,7 @@
     .tour-text {
       display: flex;
       flex-direction: column;
-      
+
       .tour-card-title {
         font-size: 20px;
         margin-bottom: 10px;
@@ -82,7 +82,7 @@
   .buttons-section {
     display: flex;
     justify-content: space-between;
-    color: #2D86DA;
+    color: #2d86da;
 
     .next-btn {
       span {
@@ -90,7 +90,7 @@
       }
 
       i {
-        font-size: 12px
+        font-size: 12px;
       }
     }
   }
@@ -104,7 +104,7 @@
   align-items: center;
   font-family: Rubik;
   color: #363636;
-  background: #F5F7FB;
+  background: #f5f7fb;
   border-radius: 6px;
   padding: 30px 70px;
 
@@ -127,6 +127,6 @@
   }
 
   button {
-    background-color: #2D86DA;
+    background-color: #2d86da;
   }
 }

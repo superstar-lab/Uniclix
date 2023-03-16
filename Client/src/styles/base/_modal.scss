@@ -16,7 +16,9 @@ body.ReactModal__Body--open {
   margin-bottom: 0;
 }
 
-.ReactModal__Content.ReactModal__Content--after-open.topicsModal .form-group>div {
+.ReactModal__Content.ReactModal__Content--after-open.topicsModal
+  .form-group
+  > div {
   width: 100%;
 }
 
@@ -54,7 +56,6 @@ body.ReactModal__Body--open {
   padding-right: 0;
 }
 
-
 .main-modal-style {
   padding: 30px;
   width: 92vh;
@@ -77,14 +78,12 @@ body.ReactModal__Body--open {
   padding: 15px 50px;
 }
 
-
 .small-btn {
   width: auto;
   padding: 10px 30px;
 }
 
 .modal {
-
   .main-modal-style input,
   .main-content-style input,
   .main-modal-style select,
@@ -208,13 +207,13 @@ body.ReactModal__Body--open {
       box-sizing: border-box;
     }
 
-    &>i {
+    & > i {
       display: block;
       font-size: 2.5rem;
       width: 30px;
     }
 
-    &>p {
+    & > p {
       margin: 0;
     }
   }
@@ -236,8 +235,8 @@ body.ReactModal__Body--open {
 }
 
 .modal-results .channel-selection-container.selected {
-  border: 1px solid #2D86DA;
-  background: #EAF3FB;
+  border: 1px solid #2d86da;
+  background: #eaf3fb;
 }
 
 .modal-results .channel-selection-container label {
@@ -247,7 +246,7 @@ body.ReactModal__Body--open {
   color: #485576;
 }
 
-.modal-results .channel-selection-container label>img {
+.modal-results .channel-selection-container label > img {
   border: 1px solid #e5e5e5;
   border-radius: 100px;
   margin-right: 5px;
@@ -278,7 +277,7 @@ body.ReactModal__Body--open {
   .ant-btn-link {
     background: none;
     border: none;
-    color: #2D86DA;
+    color: #2d86da;
     padding: 10px 20px;
     font-size: 16px;
   }
@@ -298,10 +297,10 @@ body.ReactModal__Body--open {
       width: 100%;
       align-items: center;
       padding: 5px 15px;
-      
+
       .account-info {
         display: flex;
-  
+
         .avatar {
           object-fit: contain;
           width: 50px;
@@ -309,18 +308,18 @@ body.ReactModal__Body--open {
           border-radius: 50px;
           margin-right: 10px;
         }
-  
+
         .names-container {
           display: flex;
           justify-content: center;
           flex-direction: column;
-  
+
           .account-name {
             font-weight: bold;
             font-size: 16px;
             color: #363636;
           }
-  
+
           .twitter-name {
             margin-top: 5px;
             font-size: 14px;
@@ -330,9 +329,8 @@ body.ReactModal__Body--open {
       }
 
       .fa-check {
-        color: #2D86DA;
+        color: #2d86da;
       }
     }
-
   }
 }
