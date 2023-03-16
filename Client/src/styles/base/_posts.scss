@@ -80,13 +80,13 @@
   }
 
   .infinite-best-btn-title {
-    background-color: #2D86DA;
+    background-color: #2d86da;
     border-radius: 5px 5px 0 0;
     padding-left: 30px;
     height: 40px;
     line-height: 40px;
     margin: 25px 0 0 0;
-    color: #FFF;
+    color: #fff;
     font-size: 16px;
   }
 
@@ -106,7 +106,7 @@
     .infinite-best-btn-icon {
       display: flex;
       justify-content: flex-end;
-      color: #2D86DA;
+      color: #2d86da;
       font-size: 20px;
       align-items: center;
       height: 50px;
@@ -143,7 +143,7 @@
     margin-top: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
-    border: 0.5px solid #DBDBDB;
+    border: 0.5px solid #dbdbdb;
     position: relative;
 
     .infinite-best-time {
@@ -160,7 +160,7 @@
 
         div {
           text-align: left;
-          color: #1F2024;
+          color: #1f2024;
           align-items: center;
 
           .content {
@@ -186,7 +186,7 @@
           position: absolute;
           top: 14px;
           right: 14px;
-          color: #C3C8CC;
+          color: #c3c8cc;
         }
 
         img,
@@ -198,7 +198,7 @@
       }
 
       .infinite-best-time-boundary {
-        border-bottom: 1px solid #DAE1E8;
+        border-bottom: 1px solid #dae1e8;
         margin: 20px 0;
       }
 
@@ -284,7 +284,7 @@
 
     .btn-hover {
       background-color: #eaf3fb;
-      border: 1px solid #2D86DA;
+      border: 1px solid #2d86da;
       border-radius: 5px;
       display: flex;
       justify-content: center;
@@ -314,11 +314,10 @@
     height: 1950px;
   }
 
-
-   // Events calendar
-   .rbc-calendar {
+  // Events calendar
+  .rbc-calendar {
     height: auto;
-   }
+  }
 
   .rbc-day-bg.disabled,
   .rbc-time-slot.disabled {
@@ -356,12 +355,12 @@
     }
 
     .rbc-time-content {
-      border-top: 1px solid #DDD;
+      border-top: 1px solid #ddd;
       overflow: visible;
 
       .rbc-time-gutter {
         margin-top: -10px;
-        background-color: #F5F7FB;
+        background-color: #f5f7fb;
 
         .rbc-timeslot-group {
           border: none;
@@ -396,7 +395,7 @@
             left: 0 !important;
             width: 100% !important;
 
-            .event-card-calendar  {
+            .event-card-calendar {
               display: flex;
               justify-content: space-between;
               width: 100%;
@@ -405,7 +404,7 @@
             }
 
             .left-section,
-            .right-section{
+            .right-section {
               display: flex;
               flex-direction: column;
               justify-content: space-between;
@@ -420,7 +419,6 @@
                 margin-bottom: 0;
               }
             }
-
           }
 
           .event-card-calendar {
@@ -448,7 +446,7 @@
 
             .topic {
               display: block;
-              color: #FFF;
+              color: #fff;
               padding: 5px;
               font-weight: 500;
               border-radius: 5px;
@@ -458,9 +456,9 @@
               display: flex;
               width: 100px;
               justify-content: flex-end;
-              color: #2D86DA;
+              color: #2d86da;
               font-size: 18px;
-              
+
               div:nth-child(2) {
                 margin: 0 20px;
               }
@@ -528,7 +526,7 @@
         .event-card-calendar {
           transition: 300ms ease-in-out;
           height: 100%;
-          background-color: #FFF;
+          background-color: #fff;
           color: #363636;
           padding: 5px;
           min-width: 85px;
@@ -541,7 +539,7 @@
           }
 
           .title {
-            font-size: 14px;;
+            font-size: 14px;
             margin-top: 0;
             margin-bottom: 10px;
           }
@@ -588,7 +586,7 @@
       color: rgb(54, 54, 54);
       padding-top: 20px;
       padding-bottom: 20px;
-      border-bottom: 0.5px solid #DBDBDB;
+      border-bottom: 0.5px solid #dbdbdb;
     }
 
     .post-scheduling-title {
@@ -600,7 +598,7 @@
       color: rgb(54, 54, 54);
       padding-top: 20px;
       padding-bottom: 20px;
-      border-bottom: 0.5px solid #DBDBDB;
+      border-bottom: 0.5px solid #dbdbdb;
     }
 
     .post-scheduling-queue-section {
@@ -610,7 +608,7 @@
       margin-right: 20px;
       padding-top: 20px;
       padding-bottom: 30px;
-      border-bottom: 0.5px solid #DBDBDB;
+      border-bottom: 0.5px solid #dbdbdb;
 
       .post-scheduling-padding {
         text-align: right;
@@ -627,7 +625,7 @@
       margin-right: 20px;
       padding-top: 20px;
       padding-bottom: 30px;
-      border-bottom: 0.5px solid #DBDBDB;
+      border-bottom: 0.5px solid #dbdbdb;
 
       .time-label {
         font-weight: bold;
@@ -680,11 +678,11 @@
       }
 
       table {
-        border: 0.5px solid #DBDBDB;
+        border: 0.5px solid #dbdbdb;
         width: 100%;
 
         th {
-          border: 0.5px solid #DBDBDB;
+          border: 0.5px solid #dbdbdb;
           padding: 5px;
           text-align: center;
 
@@ -694,7 +692,7 @@
         }
 
         td {
-          border: 0.5px solid #DBDBDB;
+          border: 0.5px solid #dbdbdb;
           padding: 5px;
           text-align: center;
           vertical-align: top;
@@ -715,7 +713,7 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 border-radius: 5px;
-                border: 0.5px solid #DBDBDB;
+                border: 0.5px solid #dbdbdb;
                 margin-left: 4px;
                 padding: 2px;
                 font-size: 12px;
@@ -738,7 +736,7 @@
     min-height: 600px;
     height: auto;
     padding: 15px 30px;
-    background-color: #F5F7FB;
+    background-color: #f5f7fb;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -784,20 +782,18 @@
                 button {
                   width: 8px;
                   height: 8px;
-                  background: #FFFFFF;
+                  background: #ffffff;
                   border-radius: 8px;
                 }
-      
               }
               li.slick-active button {
-                background: #2D86DA;
+                background: #2d86da;
               }
             }
             .slick-dots.slick-dots-bottom {
               bottom: -30px;
             }
           }
-        
         }
 
         .arrows-container {
@@ -809,7 +805,7 @@
 
           .arrow {
             font-size: 14px;
-            color: #2D86DA;
+            color: #2d86da;
             z-index: 1;
           }
 
@@ -864,20 +860,20 @@
 
             .social-media-label {
               padding: 5px;
-              color: #FFF;
+              color: #fff;
               height: fit-content;
               border-radius: 5px;
 
               &.facebook {
-                background-color: #3B5998;
+                background-color: #3b5998;
               }
 
               &.twitter {
-                background-color: #1DA1F2;
+                background-color: #1da1f2;
               }
 
               &.linkedin {
-                background-color: #2867B2;
+                background-color: #2867b2;
               }
             }
           }
@@ -1053,7 +1049,6 @@
             }
           }
         }
-
       }
     }
 
@@ -1062,7 +1057,7 @@
       justify-content: space-between;
       width: 100%;
       margin-bottom: 15px;
-      
+
       .composer-title {
         font-size: 18px;
         font-weight: 500;
@@ -1086,7 +1081,7 @@
     }
 
     .selected-category-container {
-      background-color: #FFF;
+      background-color: #fff;
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
       border-radius: 8px;
       display: flex;
@@ -1097,7 +1092,7 @@
 
       i {
         font-size: 16px;
-        color: #2D86DA;
+        color: #2d86da;
       }
     }
 
@@ -1130,7 +1125,7 @@
     }
 
     .separator {
-      border-top: 1px solid #DBDBDB;
+      border-top: 1px solid #dbdbdb;
       margin: 10px 0;
     }
 
@@ -1180,9 +1175,9 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        border: 1px solid #2D86DA;
-        background-color: #FFF;
-        color: #2D86DA;
+        border: 1px solid #2d86da;
+        background-color: #fff;
+        color: #2d86da;
         border-radius: 25px;
         margin-right: 10px;
         cursor: pointer;
@@ -1204,7 +1199,7 @@
     }
 
     .draft_editor_container {
-      background-color: #FFF;
+      background-color: #fff;
       margin-bottom: 15px;
       border: 1px solid #d9d9d9;
       transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -1217,17 +1212,17 @@
       }
 
       .editor-icons {
-        color: #2D86DA;
+        color: #2d86da;
 
         .draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu {
-          color: #2D86DA !important;
+          color: #2d86da !important;
         }
       }
     }
 
     .ant-select-arrow {
       svg {
-        fill: #2D86DA;
+        fill: #2d86da;
       }
     }
 
@@ -1263,7 +1258,7 @@
     }
 
     .ant-checkbox-inner {
-      border: 2px solid #2D86DA;
+      border: 2px solid #2d86da;
     }
 
     .ant-checkbox-wrapper {
@@ -1277,11 +1272,11 @@
       position: relative;
 
       .ant-btn-primary {
-        background-color: #2D86DA;
+        background-color: #2d86da;
       }
 
       .ant-btn-link {
-        color: #2D86DA;
+        color: #2d86da;
         margin-right: 30px;
       }
 
@@ -1310,8 +1305,8 @@
 
     button:disabled,
     button[disabled] {
-      background-color: #BFBFBF !important;
-      color: #FFF;
+      background-color: #bfbfbf !important;
+      color: #fff;
     }
 
     .selector {
@@ -1325,7 +1320,6 @@
         color: white;
       }
     }
-
   }
 }
 
@@ -1355,7 +1349,7 @@
   .no-agenda-title {
     font-size: 22px;
     font-weight: 500;
-    margin-bottom: 10px
+    margin-bottom: 10px;
   }
 
   .no-agenda-msg {
@@ -1364,8 +1358,8 @@
 }
 
 .todays-agenda {
-  background-color: #F5F7FB;
-  border: 1px solid #DBDBDB;
+  background-color: #f5f7fb;
+  border: 1px solid #dbdbdb;
   border-radius: 30px 0 0 0;
   padding: 24px 10px 0;
   width: 286px;
@@ -1396,7 +1390,7 @@
     }
 
     .separator {
-      border-bottom: 1px solid #DAE1E8;
+      border-bottom: 1px solid #dae1e8;
       width: 180px;
     }
   }
@@ -1407,7 +1401,7 @@
 
     .event-content {
       padding: 15px;
-      background-color: #FFF;
+      background-color: #fff;
 
       .content {
         font-size: 12px;
@@ -1435,41 +1429,41 @@
     .event-channels {
       display: flex;
 
-        .channel {
-          position: relative;
-          margin-right: 10px;
+      .channel {
+        position: relative;
+        margin-right: 10px;
 
-          img {
-            width: 30px;
-            height: 30px;
-            border-radius: 100%;
-          }
-
-          i {
-            width: 12px;
-            height: 12px;
-            font-size: 6px;
-            border-radius: 100%;
-            position: absolute;
-            right: -3px;
-            bottom: -2px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          }
-        }
-
-        .rest-of-channels {
+        img {
           width: 30px;
           height: 30px;
           border-radius: 100%;
-          border: 0.740741px solid #2D86DA;
-          font-size: 14px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #2D86DA;
         }
+
+        i {
+          width: 12px;
+          height: 12px;
+          font-size: 6px;
+          border-radius: 100%;
+          position: absolute;
+          right: -3px;
+          bottom: -2px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      .rest-of-channels {
+        width: 30px;
+        height: 30px;
+        border-radius: 100%;
+        border: 0.740741px solid #2d86da;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #2d86da;
+      }
     }
   }
 }
@@ -1477,7 +1471,7 @@
 .post-queue-bar {
   width: 58px;
   height: 100%;
-  background: #FFF;
+  background: #fff;
   border-radius: 20px 0 0 0;
   padding-top: 15px;
 
@@ -1494,14 +1488,13 @@
   }
 
   .option.active {
-    color: #2D86DA;
-    border-left: 2px solid #2D86DA;
-    background-color: #F5F7FB;
+    color: #2d86da;
+    border-left: 2px solid #2d86da;
+    background-color: #f5f7fb;
   }
 }
 
 .awaiting-approval-container {
-
   .table-header {
     display: flex;
     justify-content: space-between;
@@ -1530,7 +1523,7 @@
   }
 
   .post-awaiting {
-    background-color: #FFF;
+    background-color: #fff;
     border-left: 12px solid;
     border-radius: 7px;
     height: 100px;
@@ -1624,14 +1617,14 @@
 
   div:hover {
     background-color: #2d86da;
-    color: #FFF;
+    color: #fff;
   }
 }
 
 .tour-modal {
   width: 505px;
   height: 560px;
-  font-family: 'Rubik';
+  font-family: "Rubik";
 
   .tour-container {
     height: 100%;
@@ -1644,7 +1637,7 @@
     top: 17px;
     right: 25px;
     cursor: pointer;
-    color: #C4C8CC !important;
+    color: #c4c8cc !important;
   }
 
   .picture {
@@ -1653,7 +1646,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #DAE1E8;
+    background-color: #dae1e8;
 
     img {
       width: 368px;
@@ -1663,7 +1656,7 @@
 
   .content {
     color: #000000;
-    background-color: #FFF;
+    background-color: #fff;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -1686,8 +1679,8 @@
       }
 
       ul li::before {
-        content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
-        color: #D83E7F;  /* Change the color */
+        content: "\2022"; /* Add content: \2022 is the CSS Code/unicode for a bullet */
+        color: #d83e7f; /* Change the color */
         font-weight: bold; /* If you want it to be bold */
         display: inline-block; /* Needed to add space between the bullet and the text */
         width: 1em; /* Also needed for space (tweak if needed) */

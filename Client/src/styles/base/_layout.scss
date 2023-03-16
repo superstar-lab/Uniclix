@@ -1,69 +1,68 @@
 .navbar-wrap {
-    position: relative;
+  position: relative;
 }
 
 .app-wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100%;
+
+  .navbar-wrap {
     display: flex;
     flex-direction: column;
+  }
+
+  .body-wrap {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
     flex: 1;
-    min-height: 100%;
+    background-color: #f5f7fb;
 
-    .navbar-wrap {
-        display: flex;
-        flex-direction: column;
+    & > div {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      max-height: 100%;
     }
 
-    .body-wrap {
-        display: flex;
-        flex-direction: row;
-        overflow: hidden;
-        flex: 1;
-        background-color: #F5F7FB;
-
-        &>div {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            max-height: 100%;
-
-        }
-
-        .vertical-menu {
-            position: fixed;
-            top: 70px;
-            height: calc(100% - 70px);
-        }
-
-        .body-container {
-            overflow: auto;
-            min-height: 100vh;
-            width: 100%;
-            padding-top: 70px;
-            padding-left: 295px;
-            padding-bottom: 30px;
-            padding-right: 30px;
-
-            .main-section {
-                padding: 30px 0 0 0;
-                width: 100%;
-                height: auto;
-                .rbc-calendar{
-                    width: 100%;
-                    min-height: 600px;
-                }
-            }
-        }
+    .vertical-menu {
+      position: fixed;
+      top: 70px;
+      height: calc(100% - 70px);
     }
 
-    /* Styles for when there is a banner */
-    .body-wrap.with-banner {
-        .body-container {
-            padding-top: 100px;
-        }
+    .body-container {
+      overflow: auto;
+      min-height: 100vh;
+      width: 100%;
+      padding-top: 70px;
+      padding-left: 295px;
+      padding-bottom: 30px;
+      padding-right: 30px;
 
-        .vertical-menu {
-            top: 100px;
-            height: calc(100% - 100px);
+      .main-section {
+        padding: 30px 0 0 0;
+        width: 100%;
+        height: auto;
+        .rbc-calendar {
+          width: 100%;
+          min-height: 600px;
         }
+      }
     }
+  }
+
+  /* Styles for when there is a banner */
+  .body-wrap.with-banner {
+    .body-container {
+      padding-top: 100px;
+    }
+
+    .vertical-menu {
+      top: 100px;
+      height: calc(100% - 100px);
+    }
+  }
 }
